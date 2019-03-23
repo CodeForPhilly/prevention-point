@@ -68,11 +68,18 @@ class Appointment(models.Model):
     cm_timestamp = models.DateTimeField()
     cm_employee_id = models.ForeignKey(Employee, on_delete=models.CASCADE)
     cm_seen = models.BooleanField(default=False)
+    hcv_status = models.BooleanField(default=False)
 
-class BehaviorHealthNotes(models.Model):
+# TODO: we probably want to move the HCV data into its own table(s), similar to how UDS works
+
+class BehavioralHealthNotes(models.Model):
     participant_id = models.ForeignKey(Participant, on_delete=models.CASCADE)
+    employee_id = models.ForeignKey(Employee, on_delete=models.CASCADE)
     note_timestamp = models.DateTimeField()
     behavior_note = models.TextField()
 
-
-
+class HCVNotes(models.Model):
+    participant_id = models.ForeignKey(Appointment, on_delete=models.CASCADE)
+    employee_id = models.ForeignKey(Employee, on_delete-models.CASCADE)
+    note_timestamp = models.DateTimeField()
+    hcv_note = models.TextField()
