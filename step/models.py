@@ -41,3 +41,15 @@ class UrineDrugScreen(model.Model):
     bzo = models.BooleanField(default=False)
     tca = models.BooleanField(default=False)
     oxy = models.BooleanField(default=False)
+
+class EmployeeRole(model.Model):
+    role_value = models.CharField(max_length=30)
+
+# TODO: seed with front desk, case manager, admin
+
+class Employee(model.Model):
+    fist_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=100)
+    username = models.CharField(max_length=50)
+    password = models.CharField(max_length=100)
+    role_id = models.ForeignKey(EmployeeRole, on_delete=models.CASCADE)
