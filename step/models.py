@@ -1,14 +1,14 @@
 from django.db import models
 
-class Gender(model.Model):
-    gender_value = model.CharField(max_length=30)
+class Gender(models.Model):
+    gender_value = models.CharField(max_length=30)
 
-class Race(model.Model):
-    race_value = model.CharField(max_length=30)
+class Race(models.Model):
+    race_value = models.CharField(max_length=30)
 
 # TODO: seed these tables ^^^
 
-class Participant(model.Model):
+class Participant(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=100)
     last_four_ssn = models.CharField(max_length=4)
@@ -16,14 +16,15 @@ class Participant(model.Model):
     gender_id = models.ForeignKey(Gender, on_delete=models.CASCADE)
     race_id = models.ForeignKey(Race, on_delete=models.CASCADE)
     date_of_birth = models.DateField()
+    start_date = models.DateFields()
 
-class Medical(model.Model):
+class Medication(models.Model):
     participant_id = models.ForeignKey(Participant, on_delete=models.CASCADE)
     medical_delivery = models.CharField(max_length=100)
     medication_name = models.CharField(max_length=100)
     ingestion_frequency = models.IntegerField()
 
-class UrineDrugScreen(model.Model):
+class UrineDrugScreen(models.Model):
     participant_id = models.ForeignKey(Participant, on_delete=models.CASCADE)
     date_of_test = models.DateField()
     uds_temp = models.CharField(max_length=100)
@@ -42,14 +43,36 @@ class UrineDrugScreen(model.Model):
     tca = models.BooleanField(default=False)
     oxy = models.BooleanField(default=False)
 
-class EmployeeRole(model.Model):
+class EmployeeRole(models.Model):
     role_value = models.CharField(max_length=30)
 
 # TODO: seed with front desk, case manager, admin
 
-class Employee(model.Model):
+class Employee(models.Model):
     fist_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=100)
     username = models.CharField(max_length=50)
     password = models.CharField(max_length=100)
     role_id = models.ForeignKey(EmployeeRole, on_delete=models.CASCADE)
+
+class CaseManagement(models.Model):
+    participant_id = models.ForeignKey(Participant, on_delete=models.CASCADE)
+    crs_seen = models.BooleanField(default=False)
+
+class Appointment(models.Model):
+    participant_id = models.ForeignKey(Participant, on_delete=models.CASCADE)
+    appointment_timestamp = models.DateTimeField()
+    crs_timestamp = models.DateTimeField()
+    crs_employee_id = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    crs_seen = models.BooleanField(default=False)
+    cm_timestamp = models.DateTimeField()
+    cm_employee_id = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    cm_seen = models.BooleanField(default=False)
+
+class BehaviorHealthNotes(models.Model):
+    participant_id = models.ForeignKey(Participant, on_delete=models.CASCADE)
+    note_timestamp = models.DateTimeField()
+    behavior_note = models.TextField()
+
+
+
