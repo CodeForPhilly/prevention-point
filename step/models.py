@@ -82,6 +82,6 @@ class BehavioralHealthNotes(models.Model):
 
 class HCVNotes(models.Model):
     participant_id = models.ForeignKey(Appointment, on_delete=models.CASCADE)
-    employee_id = models.ForeignKey(Employee, on_delete-models.CASCADE)
+    employee_id = models.ForeignKey(Employee, on_delete=models.CASCADE)
     note_timestamp = models.DateTimeField()
     hcv_note = models.TextField()
