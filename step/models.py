@@ -7,6 +7,8 @@ class Race(models.Model):
     race_value = models.CharField(max_length=30)
 
 # TODO: seed these tables ^^^
+# The values for Gender are ‘male’, ‘female’, ‘mtf’, ‘ftm’, ‘gender queer’
+# The values for race are ‘white caucasian’, ‘black african american’, ‘asian pi’, ‘native american’, ‘Latino’, ‘Other’
 
 class Participant(models.Model):
     first_name = models.CharField(max_length=50)
@@ -80,6 +82,6 @@ class BehavioralHealthNotes(models.Model):
 
 class HCVNotes(models.Model):
     participant_id = models.ForeignKey(Appointment, on_delete=models.CASCADE)
-    employee_id = models.ForeignKey(Employee, on_delete-models.CASCADE)
+    employee_id = models.ForeignKey(Employee, on_delete=models.CASCADE)
     note_timestamp = models.DateTimeField()
     hcv_note = models.TextField()
