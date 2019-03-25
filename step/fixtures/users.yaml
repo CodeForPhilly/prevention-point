@@ -1,0 +1,16 @@
+---
+- model: auth.user
+  pk: 1
+  fields:
+    password: pbkdf2_sha256$120000$miUDcAk81L1J$umILbBjpRQNwIxf5ONEaL86iwAQjbIkwYUXI0OfIocY=
+    last_login: '2019-03-25T00:50:43.021Z'
+    is_superuser: true
+    username: admin
+    first_name: ''
+    last_name: ''
+    email: admin@ppponline.org
+    is_staff: true
+    is_active: true
+    date_joined: '2019-03-25T00:50:25.641Z'
+    groups: []
+    user_permissions: []
