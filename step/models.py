@@ -12,7 +12,7 @@ class Gender(Enum):
 
 class Race(Enum):
     BLACK_AFRICAN_AMERICAN = 'black (african american)'
-    CAUCASIAN = 'white (caucasion)'
+    CAUCASIAN = 'white (caucasian)'
     ASIAN_PI = 'asian pi'
     NATIVE_AMERICAN = 'native american'
     LATINO = 'latino'
@@ -59,6 +59,9 @@ class UrineDrugScreen(models.Model):
     bzo = models.BooleanField(default=False, verbose_name = "Benzodiazepines")
     tca = models.BooleanField(default=False, verbose_name = "Tricyclic Antidepressants")
     oxy = models.BooleanField(default=False, verbose_name = "Oxycodone")
+
+    def __str__(self):
+        return 'UDS #%i for Participant #%i' % (self.id, self.participant_id)
 
 class EmployeeRole(models.Model):
     role_value = models.CharField(max_length=30)
