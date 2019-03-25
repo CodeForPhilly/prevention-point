@@ -35,29 +35,30 @@ class Participant(models.Model):
         return '%s %s' % (self.first_name, self.last_name)
 
 class Medication(models.Model):
-    participant_id = models.ForeignKey(Participant, on_delete=models.CASCADE)
+    participant = models.ForeignKey(Participant, on_delete=models.CASCADE)
     medical_delivery = models.CharField(max_length=100)
     medication_name = models.CharField(max_length=100)
     ingestion_frequency = models.IntegerField()
 
 class UrineDrugScreen(models.Model):
-    participant_id = models.ForeignKey(Participant, on_delete=models.CASCADE)
+    participant = models.ForeignKey(Participant, on_delete=models.CASCADE)
     date_of_test = models.DateField()
-    uds_temp = models.CharField(max_length=100)
+    uds_temp = models.CharField(max_length=100, verbose_name="Urine Temperature")
+    # TODO: does this belong here? if so, is it a Bool for if a PT was taken, or Bool for if pregnant?
+    pregnancy_test = models.BooleanField(default=False)
     opiates = models.BooleanField(default=False)
     fentanyl = models.BooleanField(default=False)
-    bup = models.BooleanField(default=False)
-    pregnancy_test = models.BooleanField(default=False)
-    coc = models.BooleanField(default=False)
-    amp = models.BooleanField(default=False)
-    m_amp = models.BooleanField(default=False)
-    thc = models.BooleanField(default=False)
-    mtd = models.BooleanField(default=False)
-    pcp = models.BooleanField(default=False)
-    bar = models.BooleanField(default=False)
-    bzo = models.BooleanField(default=False)
-    tca = models.BooleanField(default=False)
-    oxy = models.BooleanField(default=False)
+    bup = models.BooleanField(default=False, verbose_name="Buprenorphine")
+    coc = models.BooleanField(default=False, verbose_name="Cocaine")
+    amp = models.BooleanField(default=False, verbose_name = "Amphetamine")
+    m_amp = models.BooleanField(default=False, verbose_name = "Methamphetamine")
+    thc = models.BooleanField(default=False, verbose_name = "THC")
+    mtd = models.BooleanField(default=False, verbose_name = "Methadone")
+    pcp = models.BooleanField(default=False, verbose_name = "PCP")
+    bar = models.BooleanField(default=False, verbose_name = "Barbiturates")
+    bzo = models.BooleanField(default=False, verbose_name = "Benzodiazepines")
+    tca = models.BooleanField(default=False, verbose_name = "Tricyclic Antidepressants")
+    oxy = models.BooleanField(default=False, verbose_name = "Oxycodone")
 
 class EmployeeRole(models.Model):
     role_value = models.CharField(max_length=30)
@@ -67,7 +68,7 @@ class EmployeeRole(models.Model):
 class Employee(models.Model):
     fist_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=100)
-    role_id = models.ForeignKey(EmployeeRole, on_delete=models.CASCADE)
+    role = models.ForeignKey(EmployeeRole, on_delete=models.CASCADE)
 
 class CaseManagement(models.Model):
     participant = models.ForeignKey(Participant, on_delete=models.CASCADE)
