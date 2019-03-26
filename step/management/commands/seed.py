@@ -1,11 +1,15 @@
 from django.core.management.base import BaseCommand
 from django.core.management import call_command
+from django.contrib.auth.models import Group
+
 from faker import Faker
 from step.models import Participant, Gender, Race, UrineDrugScreen
 from datetime import datetime, date
 import random
 
 fake = Faker()
+
+DEFAULT_GROUPS = ['front desk', 'case manager', 'admin']
 
 class Command(BaseCommand):
     help = "seed database for testing and development."
@@ -17,7 +21,13 @@ def run_seed(self):
     call_command('migrate')
     call_command('flush')
     call_command('loaddata', 'users')
+    create_groups()
     create_participants()
+
+def create_groups():
+    for group in DEFAULT_GROUPS:
+        Group.objects.get_or_create(name=group)
+        print("Created group: {}".format(group))
 
 def create_participants():
     gender_list = list(Gender)
