@@ -18,3 +18,5 @@ This project would work to migrate all of the disparate data sources into one sy
     `$ pipenv shell`
 - Start a local development server:
     `$ python manage.py startserver`
+- Seed the database: 
+    `python manage.py seed`
