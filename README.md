@@ -20,3 +20,8 @@ This project would work to migrate all of the disparate data sources into one sy
     `$ python manage.py startserver`
 - Seed the database: 
     `python manage.py seed`
+
+
+## Links
+[Air Table](https://airtable.com/invite/l?inviteId=invl5OM0ZZXjJQhQo&inviteToken=e57abd5bb2be87cc4156a56a99097db9257ea0c11eb5d737389e71b4239979f7) to track progress
+[Slack Channel](https://codeforphilly.slack.com/messages/CGHQ130MQ)
