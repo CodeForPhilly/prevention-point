@@ -15,12 +15,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-
+from rest_framework import routers
 from rest_framework_simplejwt import views as jwt_views
+
+from step.users import views as user_views
+from step.urine_drug_screens import views as uds_views
+router = routers.DefaultRouter()
+router.register(r'users', user_views.UserViewSet)
+router.register(r'groups', user_views.GroupViewSet)
+router.register(r'uds', uds_views.UrineDrugScreenViewSet)
 
 admin.site.site_header = 'Prevention Point Philadelphia'
 
 urlpatterns = [
+    path('api/', include(router.urls)),
     path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
     path('step/', include('step.urls')),
