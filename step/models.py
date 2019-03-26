@@ -71,7 +71,11 @@ class EmployeeRole(models.Model):
 class Employee(models.Model):
     fist_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=100)
+    username = models.CharField(max_length=100)
     role = models.ForeignKey(EmployeeRole, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.username
 
 class CaseManagement(models.Model):
     participant = models.ForeignKey(Participant, on_delete=models.CASCADE)
