@@ -4,6 +4,13 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+flake8 = "*"
+isort = "*"
+rope = "*"
+flake8-django = "*"
+flake8-pep3101 = "*"
+flake8-string-format = "*"
+black = "==19.3b0"
 
 [packages]
 django = "*"
