@@ -2,21 +2,24 @@ from django.db import models
 
 from enum import Enum
 
+
 class Gender(Enum):
-    MALE = 'male'
-    FEMALE = 'female'
-    MTF = 'mtf'
-    FTM = 'ftm'
-    GENDER_QUEER = 'gender queer'
-    OTHER = 'other'
+    MALE = "male"
+    FEMALE = "female"
+    MTF = "mtf"
+    FTM = "ftm"
+    GENDER_QUEER = "gender queer"
+    OTHER = "other"
+
 
 class Race(Enum):
-    BLACK_AFRICAN_AMERICAN = 'black (african american)'
-    CAUCASIAN = 'white (caucasian)'
-    ASIAN_PI = 'asian pi'
-    NATIVE_AMERICAN = 'native american'
-    LATINO = 'latino'
-    OTHER = 'other'
+    BLACK_AFRICAN_AMERICAN = "black (african american)"
+    CAUCASIAN = "white (caucasian)"
+    ASIAN_PI = "asian pi"
+    NATIVE_AMERICAN = "native american"
+    LATINO = "latino"
+    OTHER = "other"
+
 
 class Participant(models.Model):
     GENDER_CHOICES = [(key.value, key.value.title()) for key in Gender]
@@ -32,13 +35,15 @@ class Participant(models.Model):
     start_date = models.DateField()
 
     def __str__(self):
-        return '%s %s' % (self.first_name, self.last_name)
+        return f"{self.first_name} {self.last_name}"
+
 
 class Medication(models.Model):
     participant = models.ForeignKey(Participant, on_delete=models.CASCADE)
     medical_delivery = models.CharField(max_length=100)
     medication_name = models.CharField(max_length=100)
     ingestion_frequency = models.IntegerField()
+
 
 class UrineDrugScreen(models.Model):
     participant = models.ForeignKey(Participant, on_delete=models.CASCADE)
@@ -50,43 +55,48 @@ class UrineDrugScreen(models.Model):
     fentanyl = models.BooleanField(default=False)
     bup = models.BooleanField(default=False, verbose_name="Buprenorphine")
     coc = models.BooleanField(default=False, verbose_name="Cocaine")
-    amp = models.BooleanField(default=False, verbose_name = "Amphetamine")
-    m_amp = models.BooleanField(default=False, verbose_name = "Methamphetamine")
-    thc = models.BooleanField(default=False, verbose_name = "THC")
-    mtd = models.BooleanField(default=False, verbose_name = "Methadone")
-    pcp = models.BooleanField(default=False, verbose_name = "PCP")
-    bar = models.BooleanField(default=False, verbose_name = "Barbiturates")
-    bzo = models.BooleanField(default=False, verbose_name = "Benzodiazepines")
-    tca = models.BooleanField(default=False, verbose_name = "Tricyclic Antidepressants")
-    oxy = models.BooleanField(default=False, verbose_name = "Oxycodone")
+    amp = models.BooleanField(default=False, verbose_name="Amphetamine")
+    m_amp = models.BooleanField(default=False, verbose_name="Methamphetamine")
+    thc = models.BooleanField(default=False, verbose_name="THC")
+    mtd = models.BooleanField(default=False, verbose_name="Methadone")
+    pcp = models.BooleanField(default=False, verbose_name="PCP")
+    bar = models.BooleanField(default=False, verbose_name="Barbiturates")
+    bzo = models.BooleanField(default=False, verbose_name="Benzodiazepines")
+    tca = models.BooleanField(default=False, verbose_name="Tricyclic Antidepressants")
+    oxy = models.BooleanField(default=False, verbose_name="Oxycodone")
 
     def __str__(self):
-        return 'UDS #%i for Participant #%i' % (self.id, self.participant_id)
+        return f"UDS {self.id} for Participant {self.participant_id}"
+
 
 class EmployeeRole(models.Model):
     role_value = models.CharField(max_length=30)
 
+
 # TODO: seed with front desk, case manager, admin
+
 
 class Employee(models.Model):
     fist_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=100)
     role = models.ForeignKey(EmployeeRole, on_delete=models.CASCADE)
 
+
 class CaseManagement(models.Model):
     participant = models.ForeignKey(Participant, on_delete=models.CASCADE)
     crs_seen = models.BooleanField(default=False)
+
 
 class Appointment(models.Model):
     participant = models.ForeignKey(Participant, on_delete=models.CASCADE)
 
     cm_employee = models.ForeignKey(
-            Employee, related_name='cm_%(class)s', on_delete=models.CASCADE
-            )
+        Employee, related_name="cm_%(class)s", on_delete=models.CASCADE
+    )
 
     crs_employee = models.ForeignKey(
-            Employee, related_name='crs_%(class)s', on_delete=models.CASCADE
-            )
+        Employee, related_name="crs_%(class)s", on_delete=models.CASCADE
+    )
 
     appointment_timestamp = models.DateTimeField()
     crs_timestamp = models.DateTimeField()
@@ -95,13 +105,16 @@ class Appointment(models.Model):
     cm_seen = models.BooleanField(default=False)
     hcv_status = models.BooleanField(default=False)
 
+
 # TODO: we probably want to move the HCV data into its own table(s), similar to how UDS works
+
 
 class BehavioralHealthNotes(models.Model):
     participant = models.ForeignKey(Participant, on_delete=models.CASCADE)
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
     note_timestamp = models.DateTimeField()
     behavior_note = models.TextField()
+
 
 class HCVNotes(models.Model):
     participant = models.ForeignKey(Appointment, on_delete=models.CASCADE)

@@ -7,9 +7,10 @@ from rest_framework.permissions import IsAuthenticated
 def index(request):
     return HttpResponse("Hello, Prevention Point.")
 
+
 class HelloView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request):
-        content = {'message', 'Hello, Prevention Point (from rest framework)'}
+        content = {"message", "Hello, Prevention Point (from rest framework)"}
         return Response(content)
