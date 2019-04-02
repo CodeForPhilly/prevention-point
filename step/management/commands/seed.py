@@ -98,7 +98,6 @@ def create_participants():
         participant.save()
         create_uds_results(participant)
         create_medication(participant)
-        create_bh_notes(participant)
 
 def random_bool():
     return bool(random.getrandbits(1))
