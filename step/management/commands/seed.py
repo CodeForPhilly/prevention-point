@@ -140,18 +140,5 @@ def create_uds_results(participant):
         uds.full_clean()
         uds.save()
 
-def create_bh_notes(participant):
-    case_managers = Employee.objects.filter(role__role_value__exact='case manager')
-    emp_count = case_managers.count()
-    for _ in range(random.randint(1,4)):
-        case_manager = case_managers[random.randint(0, emp_count - 1)]
-        note_timestamp = fake.date_time_between(start_date=participant.start_date, end_date='+5y')
-        bh_note = BehavioralHealthNotes(
-            participant = participant,
-            employee = case_manager,
-            note_timestamp = note_timestamp,
-            behavior_note=fake.sentence(nb_words=12, variable_nb_words=True, ext_word_list=None)
-        )
-        bh_note.full_clean()
-        bh_note.save()
+
 
