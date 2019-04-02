@@ -72,12 +72,12 @@ class EmployeeRole(models.Model):
 # TODO: seed with front desk, case manager, admin
 
 class Employee(models.Model):
-    fist_name = models.CharField(max_length=50)
+    first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=100)
     role = models.ForeignKey(EmployeeRole, on_delete=models.CASCADE)
 
     def __str__(self):
-        return '%s %s' % (self.fist_name, self.last_name)
+        return '%s %s' % (self.first_name, self.last_name)
 
 class CaseManagement(models.Model):
     participant = models.ForeignKey(Participant, on_delete=models.CASCADE)

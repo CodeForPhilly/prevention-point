@@ -67,7 +67,7 @@ def create_roles():
 def create_employees(emp_role):
     for _ in range(5):
         employee = Employee(
-            fist_name = fake.first_name(),
+            first_name = fake.first_name(),
             last_name = fake.last_name(),
             role = emp_role
         )
