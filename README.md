@@ -9,20 +9,29 @@ Currently, they are storing data from their programs in separate Excel spreadshe
 This project would work to migrate all of the disparate data sources into one system, make a UI that allows Prevention Point to access all participant data in one system, and increase the ease with which program coordinators can evaluate and monitor activities.
 
 ## Getting Started
-
+Back-end 
 - Install [Python 3.7](https://www.python.org/downloads/release/python-370/)
 - Install [pipenv](https://github.com/pypa/pipenv), a dependency manager for Python.
 - Install application dependencies:
     `$ pipenv sync`
 - Source a Python virtualenv with all dependencies loaded:
     `$ pipenv shell`
-- Start a local development server:
-    `$ python manage.py startserver`
 - Seed the database: 
     `python manage.py seed`
+- Start a local development server on localhost:8000/admin:
+    `$ python manage.py runserver`
 
+Front-end
+TODO: React?
 
+Other tools
+TODO: Postman?
 ## Links
 [Air Table](https://airtable.com/invite/l?inviteId=invl5OM0ZZXjJQhQo&inviteToken=e57abd5bb2be87cc4156a56a99097db9257ea0c11eb5d737389e71b4239979f7) to track progress
 
 [Slack Channel](https://codeforphilly.slack.com/messages/CGHQ130MQ)
+`#preventionpoint`
+`#prevpoint-frontend`
+`#prevpoint-pairing`
+
+[Google Drive](https://drive.google.com/drive/folders/1wIVM8ZZOVGA8uxEuVnRTM-NaVCOS3vcn)
