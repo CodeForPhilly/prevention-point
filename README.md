@@ -17,7 +17,9 @@ Back-end
 - Source a Python virtualenv with all dependencies loaded:
     `$ pipenv shell`
 - Seed the database: 
-    `python manage.py seed`
+    `$ python manage.py seed`
+- Create a superuser:
+    `$ python manage.py createsuperuser`
 - Start a local development server on localhost:8000/admin:
     `$ python manage.py runserver`
 
