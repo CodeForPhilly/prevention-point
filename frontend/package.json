@@ -1,22 +1,22 @@
 {
-  "name": "frontend",
+  "name": "prevpoint-uds-frontend",
   "version": "1.0.0",
-  "description": "Prevention Point frontend app",
+  "description": "Prevention Point URS frontend app",
   "main": "src/index.js",
   "author": "Code for Philly",
   "license": "MIT",
   "private": true,
+  "engines": {
+    "node": ">=10.15.3",
+    "yarn": ">=1.15.2"
+  },
   "dependencies": {
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.2",
-    "bootstrap": "^4.3.1",
-    "jquery": "1.9.1 - 3",
     "node-sass": "^4.11.0",
-    "popper.js": "^1.14.7",
     "prop-types": "^15.7.2",
     "react": "^16.3.0",
-    "react-dom": "^16.3.0",
-    "reactstrap": "^8.0.0"
+    "react-dom": "^16.3.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
@@ -28,10 +28,16 @@
     "eslint-plugin-react": "^7.12.4",
     "husky": "^1.3.1",
     "lint-staged": "^8.1.5",
-    "prettier": "^1.16.4"
+    "parcel-bundler": "^1.12.3",
+    "prettier": "^1.16.4",
+    "stylelint": "^9.10.1",
+    "stylelint-config-recommended": "^2.1.0",
+    "stylelint-config-recommended-scss": "^3.2.0",
+    "stylelint-scss": "^3.5.4"
   },
   "scripts": {
-    "start": "parcel public/index.html"
+    "dev": "parcel public/index.html",
+    "build": "parcel build public/index.html"
   },
   "husky": {
     "hooks": {
@@ -42,6 +48,10 @@
     "*.{js,jsx}": [
       "prettier --write",
       "eslint --fix",
+      "git add"
+    ],
+    "*.scss": [
+      "stylelint --fix",
       "git add"
     ]
   }

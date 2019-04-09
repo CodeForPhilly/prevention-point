@@ -1,11 +1,11 @@
-# Prevention Point UDS Frontend
-The frontend app for the Prevention Point Unified Data System (UDS) project.
+# Prevention Point URS Frontend
+The frontend app for the Prevention Point Unified Reporting System (URS) project.
 
 ## Get started:
- - Make sure you have [`node`](https://nodejs.org/en/) and [`yarn`](https://yarnpkg.com/en/docs/install) installed 
+ - Make sure you have [`node (>=10.15.3)`](https://nodejs.org/en/) and [`yarn (>=1.15.2)`](https://yarnpkg.com/en/docs/install) installed 
  - From the project's root directory, `cd frontend`
  - Run `yarn` to install dependencies
- - Run `yarn start` and navigate to `localhost:1234`
+ - Run `yarn dev` and navigate to `localhost:1234`
 
 ## Project Frameworks and Tools
  - Main Framework: [React](https://reactjs.org/)
@@ -22,5 +22,6 @@ The frontend app for the Prevention Point Unified Data System (UDS) project.
 - The project uses [Husky](https://github.com/typicode/husky) to run a precommit hook to lint files before they are commited. If there are any files ESlint and/or Prettier can't fix automatically, they'll fail to commit and an error log will be displayed
 
 ### SCSS
-- When writing SCSS, try to adhear to [BEM conventions](https://www.joeforshaw.com/blog/writing-scss-with-bem)
-- When possible, try to rely on styling directly within Material UI component APIs
+- When possible, try to rely onn Material UI component APIs for styling
+- SCSS styling enforced by [stylelint](https://stylelint.io/)
+- When writing SCSS, try to adhear to [BEM conventions](http://getbem.com/)
