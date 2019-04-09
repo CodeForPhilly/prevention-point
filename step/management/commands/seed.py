@@ -1,16 +1,20 @@
 from django.core.management.base import BaseCommand
 from django.core.management import call_command
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, User
 
 from faker import Faker
 from faker.providers import BaseProvider
 from step.models import Participant, Gender, Race, UrineDrugScreen,Medication,EmployeeRole,Employee,BehavioralHealthNotes
+from step.participants.models import Participant, Gender, Race
+from step.models import UrineDrugScreen
 from datetime import datetime, date
 import random
+import re
 
 fake = Faker()
 
-DEFAULT_GROUPS = ['front desk', 'case manager', 'admin']
+DEFAULT_GROUPS = ['front desk', 'case manager', 'admins']
+DEFAULT_DEV_ENV_PASS = 'password123'
 
 class Command(BaseCommand):
     help = "seed database for testing and development."
@@ -47,32 +51,24 @@ def run_seed(self):
     call_command('flush')
     call_command('loaddata', 'users')
     create_groups()
-    create_roles()
+    create_users()
     create_participants()
 
-def create_groups():
+def create_groups(output=True):
     for group in DEFAULT_GROUPS:
         Group.objects.get_or_create(name=group)
-        print("Created group: {}".format(group))
+        if output:
+            print("Created group: {}".format(group))
 
-def create_roles():
+def create_users(output=True):
     for group in DEFAULT_GROUPS:
-        emp_role = EmployeeRole(
-                role_value=group
-            )
-        emp_role.full_clean()
-        emp_role.save()
-        create_employees(emp_role)
-
-def create_employees(emp_role):
-    for _ in range(5):
-        employee = Employee(
-            first_name = fake.first_name(),
-            last_name = fake.last_name(),
-            role = emp_role
-        )
-        employee.full_clean()
-        employee.save()
+        uname = re.sub(" ", "", group)
+        email = "{}@{}.com".format(uname, uname)
+        u = User.objects.create_user(username=uname, email=email)
+        u.set_password(DEFAULT_DEV_ENV_PASS)
+        u.save()
+        if output:
+            print("Created user: {}".format(email))
 
 def create_participants():
     gender_list = list(Gender)
@@ -138,6 +134,3 @@ def create_uds_results(participant):
 
         uds.full_clean()
         uds.save()
-
-
-
