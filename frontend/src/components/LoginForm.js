@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import PropTypes from "prop-types"
 import "../scss/login-form.scss"
 import {
   FormGroup,
@@ -7,10 +8,23 @@ import {
   Input,
   Button,
 } from "@material-ui/core"
+import { Redirect } from "react-router-dom"
+import fakeAuth from "../auth"
 
-export default function Login() {
+const LoginForm = ({ location }) => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
+  const [redirectToReferrer, setRedirectToReferrer] = useState(false)
+
+  const login = () => {
+    fakeAuth.authenticate(() => {
+      setRedirectToReferrer(true)
+    })
+  }
+
+  const { from } = location.state || { from: { pathname: "/" } }
+
+  if (redirectToReferrer) return <Redirect to={from} />
 
   return (
     <div className="login-form">
@@ -43,11 +57,18 @@ export default function Login() {
         <Button
           type="submit"
           variant="contained"
-          style={{ "margin-top": "10px" }}
+          style={{ marginTop: "10px" }}
+          onClick={login}
         >
-          Log In
+          Sign In
         </Button>
       </form>
     </div>
   )
 }
+
+LoginForm.propTypes = {
+  location: PropTypes.object,
+}
+
+export default LoginForm
