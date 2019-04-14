@@ -7,4 +7,4 @@ class EmployeeRoleViewSet(viewsets.ModelViewSet):
     API endpoint that allows Employees to be viewed or edited
     """
     queryset = EmployeeRole.objects.all()
-    serializer_class = EmployeeSerializer
+    serializer_class = EmployeeRoleSerializer
