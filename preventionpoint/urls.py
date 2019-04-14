@@ -16,18 +16,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from rest_framework import routers
-from rest_framework_simplejwt import views as jwt_views
 
+from rest_framework_simplejwt import views as jwt_views
 from step.users import views as user_views
 from step.urine_drug_screens import views as uds_views
 from step.participants import views as participant_views
+
+admin.site.site_header = 'Prevention Point Philadelphia'
+
 router = routers.DefaultRouter()
 router.register(r'users', user_views.UserViewSet)
 router.register(r'groups', user_views.GroupViewSet)
 router.register(r'uds', uds_views.UrineDrugScreenViewSet)
 router.register(r'participants', participant_views.ParticipantViewSet)
-
-admin.site.site_header = 'Prevention Point Philadelphia'
 
 urlpatterns = [
     path('api/', include(router.urls)),
