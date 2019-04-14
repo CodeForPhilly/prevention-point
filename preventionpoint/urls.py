@@ -21,6 +21,7 @@ from rest_framework_simplejwt import views as jwt_views
 from step.users import views as user_views
 from step.urine_drug_screens import views as uds_views
 from step.participants import views as participant_views
+from step.employees import views as employee_views
 
 admin.site.site_header = 'Prevention Point Philadelphia'
 
@@ -29,6 +30,7 @@ router.register(r'users', user_views.UserViewSet)
 router.register(r'groups', user_views.GroupViewSet)
 router.register(r'uds', uds_views.UrineDrugScreenViewSet)
 router.register(r'participants', participant_views.ParticipantViewSet)
+router.register(r'employees', employee_views.EmployeeViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),
