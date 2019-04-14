@@ -77,7 +77,7 @@ class Employee(models.Model):
     role = models.ForeignKey(EmployeeRole, on_delete=models.CASCADE)
 
     def __str__(self):
-        return '%s %s' % (self.first_name, self.last_name)
+        return '%s %s %s' % (self.first_name, self.last_name, self.role)
 
 class CaseManagement(models.Model):
     participant = models.ForeignKey(Participant, on_delete=models.CASCADE)
