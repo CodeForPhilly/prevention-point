@@ -34,6 +34,7 @@ TODO: Postman?
 [Slack Channel](https://codeforphilly.slack.com/messages/CGHQ130MQ)
 `#preventionpoint`
 `#prevpoint-frontend`
+`#prevpoint-backend`
 `#prevpoint-pairing`
 
 [Google Drive](https://drive.google.com/drive/folders/1wIVM8ZZOVGA8uxEuVnRTM-NaVCOS3vcn)
