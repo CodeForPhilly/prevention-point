@@ -7,6 +7,7 @@ import {
   IconButton,
   Menu,
   MenuItem,
+  Typography,
 } from "@material-ui/core"
 import AccountCircle from "@material-ui/icons/AccountCircle"
 import NotificationsIcon from "@material-ui/icons/Notifications"
@@ -64,19 +65,24 @@ const NavHeader = () => {
           className={"navbar__logo"}
           width="150"
         />
-        <IconButton color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <IconButton
-          aria-owns={isMenuOpen ? "material-appbar" : undefined}
-          aria-haspopup="true"
-          onClick={handleProfileMenuOpen}
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
+        <Typography className="navbar__welcome" variant="h6" color="inherit">
+          <div>Welcome to General Services</div>
+        </Typography>
+        <div className="navbar__icons">
+          <IconButton color="inherit" className="navbar__notif">
+            <Badge badgeContent={11} color="secondary">
+              <NotificationsIcon />
+            </Badge>
+          </IconButton>
+          <IconButton
+            aria-owns={isMenuOpen ? "material-appbar" : undefined}
+            aria-haspopup="true"
+            onClick={handleProfileMenuOpen}
+            color="inherit"
+          >
+            <AccountCircle />
+          </IconButton>
+        </div>
         <AccountMenu />
       </Toolbar>
     </AppBar>

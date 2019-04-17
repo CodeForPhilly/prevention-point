@@ -1,8 +1,6 @@
 .navbar{
     &__toolbar{
-        justify-content: flex-end;
-    }
-    &__logo{
-        margin-right: auto;
+        justify-content: space-around;
+        flex-direction: row;
     }
 }
