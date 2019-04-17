@@ -66,7 +66,9 @@ const NavHeader = () => {
           width="150"
         />
         <Typography className="navbar__welcome" variant="h6" color="inherit">
-          <div>Welcome to General Services</div>
+          <div>
+            Welcome to <span className="navbar__gs">General Services</span>
+          </div>
         </Typography>
         <div className="navbar__icons">
           <IconButton color="inherit" className="navbar__notif">
