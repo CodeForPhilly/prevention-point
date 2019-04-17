@@ -4,7 +4,7 @@ from django.contrib.auth.models import Group
 
 from faker import Faker
 from faker.providers import BaseProvider
-from step.models import Participant, Gender, Race, UrineDrugScreen,Medication,EmployeeRole,Employee,BehavioralHealthNotes
+from core.models import Participant, Gender, Race, UrineDrugScreen,Medication,EmployeeRole,Employee,BehavioralHealthNotes
 from datetime import datetime, date
 import random
 

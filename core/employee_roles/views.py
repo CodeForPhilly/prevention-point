@@ -1,6 +1,6 @@
 from rest_framework import viewsets
-from step.models import EmployeeRole
-from step.employee_roles.serializers import EmployeeRoleSerializer
+from core.models import EmployeeRole
+from core.employee_roles.serializers import EmployeeRoleSerializer
 
 class EmployeeRoleViewSet(viewsets.ModelViewSet):
     """

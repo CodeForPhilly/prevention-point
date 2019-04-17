@@ -1,6 +1,6 @@
 from rest_framework import viewsets
-from step.models import Participant
-from step.participants.serializers import ParticipantSerializer
+from core.models import Participant
+from core.participants.serializers import ParticipantSerializer
 
 class ParticipantViewSet(viewsets.ModelViewSet):
     """

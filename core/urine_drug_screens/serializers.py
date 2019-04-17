@@ -1,4 +1,4 @@
-from step.models import UrineDrugScreen
+from core.models import UrineDrugScreen
 from rest_framework import serializers
 
 class UrineDrugScreenSerializer(serializers.HyperlinkedModelSerializer):
