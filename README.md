@@ -27,11 +27,8 @@ Back-end
 - Start a local development server on localhost:8000/admin:
     `$ python manage.py runserver`
 
-Front-end
-TODO: React?
-
 Other tools
-TODO: Postman?
+TODO: move dev to postgres
 ## Links
 [Air Table](https://airtable.com/invite/l?inviteId=invl5OM0ZZXjJQhQo&inviteToken=e57abd5bb2be87cc4156a56a99097db9257ea0c11eb5d737389e71b4239979f7) to track progress
 
