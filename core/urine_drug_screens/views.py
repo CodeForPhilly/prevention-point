@@ -1,6 +1,6 @@
 from rest_framework import viewsets
-from step.models import UrineDrugScreen
-from step.urine_drug_screens.serializers import UrineDrugScreenSerializer
+from core.models import UrineDrugScreen
+from core.urine_drug_screens.serializers import UrineDrugScreenSerializer
 
 class UrineDrugScreenViewSet(viewsets.ModelViewSet):
     """

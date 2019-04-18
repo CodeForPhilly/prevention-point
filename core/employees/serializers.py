@@ -1,4 +1,4 @@
-from step.models import Employee
+from core.models import Employee
 from rest_framework import serializers
 
 # class EmployeeSerializer(serializers.HyperlinkedModelSerializer):

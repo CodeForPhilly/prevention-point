@@ -18,11 +18,11 @@ from django.urls import include, path
 from rest_framework import routers
 
 from rest_framework_simplejwt import views as jwt_views
-from step.users import views as user_views
-from step.urine_drug_screens import views as uds_views
-from step.participants import views as participant_views
-from step.employees import views as employee_views
-from step.employee_roles import views as employee_roles_views
+from core.users import views as user_views
+from core.urine_drug_screens import views as uds_views
+from core.participants import views as participant_views
+from core.employees import views as employee_views
+from core.employee_roles import views as employee_roles_views
 
 admin.site.site_header = 'Prevention Point Philadelphia'
 
@@ -38,6 +38,6 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
-    path('step/', include('step.urls')),
+    path('core/', include('core.urls')),
     path('admin/', admin.site.urls),
 ]
