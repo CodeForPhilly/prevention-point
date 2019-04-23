@@ -15,6 +15,8 @@ class ParticipantListView(generics.ListAPIView):
     Read-only endpoint for listing participants
     """
     serializer_class = ParticipantSerializer
-    model = serializer_class.Meta.model
+    # model = serializer_class.Meta.model
     def get_queryset(self):
+        first_name = self.request.query_params.get('first_name', None)
+        print('***** First Name: ' + first_name)
         return Participant.objects.all()
