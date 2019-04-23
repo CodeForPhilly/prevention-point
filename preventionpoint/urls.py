@@ -31,12 +31,14 @@ router.register(r'users', user_views.UserViewSet)
 router.register(r'groups', user_views.GroupViewSet)
 router.register(r'uds', uds_views.UrineDrugScreenViewSet)
 router.register(r'participants', participant_views.ParticipantViewSet)
+# router.register(r'participants-new', participant_views.ParticipantListView)
 router.register(r'employees', employee_views.EmployeeViewSet)
 router.register(r'employee_roles', employee_roles_views.EmployeeRoleViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),
-    path('frontdesk/', include(router.urls)),
+    # path('frontdesk/', include(router.urls)),
+    path('frontdesk/participants-new', participant_views.ParticipantListView.as_view()),
     path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
     path('core/', include('core.urls')),
