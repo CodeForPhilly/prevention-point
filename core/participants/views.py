@@ -23,6 +23,10 @@ class ParticipantListView(generics.ListAPIView):
         queryset = Participant.objects.all()
         if first_name is not None:
             queryset = queryset.filter(first_name__iexact=first_name)
+        if last_name is not None:
+            queryset = queryset.filter(last_name__iexact=last_name)
+        if last_four_ssn is not None:
+            queryset = queryset.filter(last_four_ssn=last_four_ssn)
 
         return queryset
     
