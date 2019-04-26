@@ -1,14 +1,8 @@
-import React from "react"
+import React, { useState } from "react"
 import PropTypes from "prop-types"
-import {
-  ExpansionPanel,
-  ExpansionPanelSummary,
-  ExpansionPanelDetails,
-  Typography,
-  withStyles,
-} from "@material-ui/core"
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
+import { Tabs, Tab, withStyles } from "@material-ui/core"
 import QueueTable from "./QueueTable"
+import _ from "lodash"
 
 const styles = theme => ({
   root: {
@@ -25,26 +19,25 @@ const styles = theme => ({
 })
 
 function AllQueues({ queueData, classes }) {
+  const [value, setValue] = useState(queueData[0]["id"])
+  const [rows, setRows] = useState(queueData[0]["rows"])
+  function handleChange(event, newValue) {
+    setValue(newValue)
+    setRows(_.find(queueData, ["id", newValue])["rows"])
+  }
+
   return (
     <div className={classes.root}>
-      {queueData.map(queue => (
-        <ExpansionPanel key={queue.id}>
-          <ExpansionPanelSummary
-            className={classes.panelSummary}
-            expandIcon={<ExpandMoreIcon />}
-          >
-            <Typography className={classes.heading}>
-              {queue.name}{" "}
-              <span className={classes.waitTime}>
-                Wait time: {queue.waitTime}
-              </span>
-            </Typography>{" "}
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <QueueTable rows={queue.rows} />
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-      ))}
+      <Tabs value={value} onChange={handleChange}>
+        {queueData.map(queue => (
+          <Tab
+            key={queue.id}
+            value={queue.id}
+            label={`${queue.name} Wait Time: ${queue.waitTime}`}
+          />
+        ))}
+      </Tabs>
+      <QueueTable rows={rows} />
     </div>
   )
 }

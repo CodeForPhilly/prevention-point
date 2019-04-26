@@ -1,7 +1,8 @@
 import React from "react"
 import AllQueues from "../components/AllQueues"
 import ParticipantSearch from "../components/ParticipantSearch"
-import { Grid, Paper } from "@material-ui/core"
+import { Grid, Paper, IconButton, Typography } from "@material-ui/core"
+import SearchIcon from "@material-ui/icons/Search"
 
 let id = 0
 function createData(urgent, uid, last, first, timeElapsed) {
@@ -9,32 +10,37 @@ function createData(urgent, uid, last, first, timeElapsed) {
   return { id, urgent, uid, last, first, timeElapsed }
 }
 
-const rows = [
-  createData("Yes", "FL159", "Last", "First", "4.0 min"),
-  createData("No", "FL237", "Last", "First", "4.3 min"),
-  createData("Yes", "FL262", "Last", "First", "6.0 min"),
-  createData("No", "FL305", "Last", "First", "4.3 min"),
-  createData("Yes", "FL356", "Last", "First", "3.9 min"),
-]
-
 const queueData = [
   {
-    id: 1,
+    id: "case_management",
     name: "Case Management",
     waitTime: "10 minutes",
-    rows,
+    rows: [
+      createData("Yes", "FL159", "Last", "First", "4.0 min"),
+      createData("No", "FL237", "Last", "First", "4.3 min"),
+    ],
   },
   {
-    id: 2,
+    id: "legal_services",
     name: "Legal Services",
     waitTime: "5 minutes",
-    rows,
+    rows: [
+      createData("Yes", "FL262", "Last", "First", "6.0 min"),
+      createData("No", "FL305", "Last", "First", "4.3 min"),
+      createData("Yes", "FL356", "Last", "First", "3.9 min"),
+    ],
   },
   {
-    id: 3,
+    id: "step",
     name: "Step",
     waitTime: "7 minutes",
-    rows,
+    rows: [
+      createData("Yes", "FL159", "Last", "First", "4.0 min"),
+      createData("No", "FL237", "Last", "First", "4.3 min"),
+      createData("Yes", "FL262", "Last", "First", "6.0 min"),
+      createData("No", "FL305", "Last", "First", "4.3 min"),
+      createData("Yes", "FL356", "Last", "First", "3.9 min"),
+    ],
   },
 ]
 
@@ -47,12 +53,16 @@ function ParticipantQueue() {
         className="participant-dashboard"
         spacing={16}
       >
-        <Grid item xs={3}>
+        <Grid item xs={1}>
           <Paper>
+            <IconButton>
+              <SearchIcon />
+              <Typography>Participant Search</Typography>
+            </IconButton>
             <ParticipantSearch />
           </Paper>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={10}>
           <Paper>
             <AllQueues queueData={queueData} />
           </Paper>
