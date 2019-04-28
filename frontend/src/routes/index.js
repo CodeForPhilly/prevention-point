@@ -3,13 +3,13 @@ import Navbar from "../components/Navbar"
 import LoginForm from "../components/LoginForm"
 import { Route } from "react-router-dom"
 import PrivateRoute from "../routes/PrivateRoute"
-import ParticipantQueue from "../containers/ParticipantQueue"
+import ServicesQueues from "./ServicesQueues"
 
 const Routes = () => {
   return (
     <div>
       <Navbar />
-      <PrivateRoute exact path="/" component={ParticipantQueue} />
+      <PrivateRoute exact path="/" component={ServicesQueues} />
       <Route path="/login" component={LoginForm} />
     </div>
   )
