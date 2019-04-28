@@ -2,7 +2,6 @@ import React, { useState } from "react"
 import PropTypes from "prop-types"
 import { Tabs, Tab, withStyles } from "@material-ui/core"
 import QueueTable from "./QueueTable"
-import _ from "lodash"
 
 const styles = theme => ({
   root: {
@@ -20,10 +19,8 @@ const styles = theme => ({
 
 function AllQueues({ queueData, classes }) {
   const [value, setValue] = useState(queueData[0]["id"])
-  const [rows, setRows] = useState(queueData[0]["rows"])
   function handleChange(event, newValue) {
     setValue(newValue)
-    setRows(_.find(queueData, ["id", newValue])["rows"])
   }
 
   return (
@@ -37,7 +34,10 @@ function AllQueues({ queueData, classes }) {
           />
         ))}
       </Tabs>
-      <QueueTable rows={rows} />
+      {queueData.map(
+        queue =>
+          queue.id === value && <QueueTable key={queue.id} rows={queue.rows} />
+      )}
     </div>
   )
 }
