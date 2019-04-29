@@ -23,6 +23,7 @@ from core.urine_drug_screens import views as uds_views
 from core.participants import views as participant_views
 from core.employees import views as employee_views
 from core.employee_roles import views as employee_roles_views
+from core.visits import views as visits_views
 
 admin.site.site_header = 'Prevention Point Philadelphia'
 
@@ -33,6 +34,8 @@ router.register(r'uds', uds_views.UrineDrugScreenViewSet)
 router.register(r'participants', participant_views.ParticipantViewSet)
 router.register(r'employees', employee_views.EmployeeViewSet)
 router.register(r'employee_roles', employee_roles_views.EmployeeRoleViewSet)
+router.register(r'visits', visits_views.VisitViewSet)
+
 
 urlpatterns = [
     path('api/', include(router.urls)),

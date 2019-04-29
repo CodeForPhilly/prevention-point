@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from core.models import Visit
 from core.visits.serializer import VisitSerializer
-from core.permissions import FrontDesk
+from core.permissions import HasGroupPermission
 
 
 class VisitViewSet(viewsets.ModelViewSet):
@@ -10,6 +10,8 @@ class VisitViewSet(viewsets.ModelViewSet):
     """
     queryset = Visit.objects.all()
     serializer_class = VisitSerializer
-
-    def check_permissions(self):
-        self.permission_classes = [FrontDesk]
+    permission_classes = [HasGroupPermission]
+    permission_roles = {
+        'create':['front desk', 'admin'],
+        'retrieve': ['front desk', 'case manager', 'admin']
+    }
