@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import PropTypes from "prop-types"
-import { Tabs, Tab, withStyles } from "@material-ui/core"
+import { Tabs, Tab, withStyles, Typography } from "@material-ui/core"
 import QueueTable from "./QueueTable"
 
 const styles = theme => ({
@@ -17,6 +17,13 @@ const styles = theme => ({
   },
 })
 
+const queueTabText = (name, waitTime) => (
+  <div>
+    <Typography variant="button">{name}</Typography>
+    <Typography variant="caption">{`Wait Time: ${waitTime}`}</Typography>
+  </div>
+)
+
 function AllQueues({ queueData, classes }) {
   const [value, setValue] = useState(queueData[0]["id"])
   function handleChange(event, newValue) {
@@ -30,13 +37,19 @@ function AllQueues({ queueData, classes }) {
           <Tab
             key={queue.id}
             value={queue.id}
-            label={`${queue.name} Wait Time: ${queue.waitTime}`}
+            label={queueTabText(queue.name, queue.waitTime)}
           />
         ))}
       </Tabs>
       {queueData.map(
         queue =>
-          queue.id === value && <QueueTable key={queue.id} rows={queue.rows} />
+          queue.id === value && (
+            <QueueTable
+              key={queue.id}
+              rows={queue.rows}
+              queueName={queue.name}
+            />
+          )
       )}
     </div>
   )
