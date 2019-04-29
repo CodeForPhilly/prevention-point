@@ -1,16 +1,8 @@
 import React, { useState } from "react"
 import PropTypes from "prop-types"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Paper,
-  withStyles,
-  Checkbox,
-} from "@material-ui/core"
+import { Paper, withStyles, Checkbox } from "@material-ui/core"
 import _ from "lodash"
+import MaterialTable from "material-table"
 
 const styles = theme => ({
   root: {
@@ -23,7 +15,7 @@ const styles = theme => ({
   },
 })
 
-function QueueTable({ rows, classes }) {
+function QueueTable({ queueName, rows, classes }) {
   const rowsInitialState = {}
   rows.forEach(
     row => (rowsInitialState[row.id] = { seen: row.seen, called: row.called })
@@ -38,46 +30,37 @@ function QueueTable({ rows, classes }) {
     })
   }
 
+  const checkbox = (rowData, value) => (
+    <Checkbox
+      checked={_.get(state, [rowData.id, value])}
+      onChange={handleCheck(rowData.id, value)}
+    />
+  )
+
   return (
     <Paper className={classes.root}>
-      <Table className={classes.table}>
-        <TableHead>
-          <TableRow>
-            <TableCell>Urgency</TableCell>
-            <TableCell align="right">UID</TableCell>
-            <TableCell align="right">First</TableCell>
-            <TableCell align="right">Last</TableCell>
-            <TableCell align="right">Time Elapsed (min)</TableCell>
-            <TableCell align="right">Seen</TableCell>
-            <TableCell align="right">Called</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map(row => (
-            <TableRow key={row.id}>
-              <TableCell component="th" scope="row">
-                {row.urgency}
-              </TableCell>
-              <TableCell align="right">{row.uid}</TableCell>
-              <TableCell align="right">{row.first}</TableCell>
-              <TableCell align="right">{row.last}</TableCell>
-              <TableCell align="right">{row.timeElapsed}</TableCell>
-              <TableCell align="right">
-                <Checkbox
-                  checked={_.get(state, [row.id, "seen"])}
-                  onChange={handleCheck(row.id, "seen")}
-                />
-              </TableCell>
-              <TableCell align="right">
-                <Checkbox
-                  checked={_.get(state, [row.id, "called"])}
-                  onChange={handleCheck(row.id, "called")}
-                />
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <MaterialTable
+        className={classes.table}
+        columns={[
+          { title: "Urgency", field: "urgency" },
+          { title: "UID", field: "uid" },
+          { title: "First", field: "first" },
+          { title: "Last", field: "last" },
+          { title: "Time", field: "timeElapsed" },
+          {
+            title: "Called",
+            field: "called",
+            render: rowData => checkbox(rowData, "called"),
+          },
+          {
+            title: "Seen",
+            field: "seen",
+            render: rowData => checkbox(rowData, "seen"),
+          },
+        ]}
+        data={rows}
+        title={queueName}
+      />
     </Paper>
   )
 }
@@ -85,6 +68,7 @@ function QueueTable({ rows, classes }) {
 QueueTable.propTypes = {
   rows: PropTypes.array,
   classes: PropTypes.object,
+  queueName: PropTypes.string,
 }
 
 export default withStyles(styles)(QueueTable)
