@@ -1,7 +1,16 @@
 import React, { useState } from "react"
+import PropTypes from "prop-types"
 import AllQueues from "../components/AllQueues"
 import ParticipantSearch from "../components/ParticipantSearch"
-import { Grid, Paper, IconButton, Typography, Drawer } from "@material-ui/core"
+import {
+  Grid,
+  Paper,
+  IconButton,
+  Typography,
+  Drawer,
+  Hidden,
+} from "@material-ui/core"
+import { withStyles } from "@material-ui/core/styles"
 import SearchIcon from "@material-ui/icons/Search"
 
 let id = 0
@@ -45,39 +54,64 @@ const queueData = [
   },
 ]
 
-function ParticipantQueue() {
+const drawerWidth = 240
+
+const styles = theme => ({
+  root: {
+    display: "flex",
+  },
+  searchButton: {
+    marginRight: 20,
+    [theme.breakpoints.up("lg")]: {
+      display: "none",
+    },
+  },
+  drawer: {
+    width: drawerWidth,
+  },
+})
+
+function ParticipantQueue({ classes }) {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const toggleDrawer = open => () => {
     setDrawerOpen(open)
   }
   return (
     <div>
-      <Drawer open={drawerOpen} onClose={toggleDrawer(false)}>
-        <div
-          tabIndex={0}
-          role="button"
-          onClick={toggleDrawer(false)}
-          onKeyDown={toggleDrawer(false)}
+      <Hidden smDown implementation="css">
+        <Drawer
+          variant="temporary"
+          anchor={"left"}
+          open={drawerOpen}
+          onClose={toggleDrawer(false)}
+          className={classes.drawer}
+          ModalProps={{
+            keepMounted: true,
+          }}
         >
           <ParticipantSearch />
-        </div>
-      </Drawer>
+        </Drawer>
+      </Hidden>
       <Grid
         container
         style={{ justifyContent: "space-around" }}
         className="participant-dashboard"
         spacing={16}
       >
-        <Grid item xs={2}>
+        <Hidden mdDown>
+          <Grid item md={3}>
+            <ParticipantSearch />
+          </Grid>
+        </Hidden>
+        <Grid item md>
           <Paper>
-            <IconButton onClick={toggleDrawer(true)}>
+            <IconButton
+              onClick={toggleDrawer(true)}
+              className={classes.searchButton}
+            >
               <SearchIcon />
               <Typography>Participant Search</Typography>
             </IconButton>
-          </Paper>
-        </Grid>
-        <Grid item xs={10}>
-          <Paper>
             <AllQueues queueData={queueData} />
           </Paper>
         </Grid>
@@ -86,4 +120,8 @@ function ParticipantQueue() {
   )
 }
 
-export default ParticipantQueue
+ParticipantQueue.propTypes = {
+  classes: PropTypes.object,
+}
+
+export default withStyles(styles, { withTheme: true })(ParticipantQueue)
