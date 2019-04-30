@@ -1,7 +1,7 @@
 from django.db import models
+from django.utils import timezone
 from enum import Enum
 from core.participants.models import Participant
-
 class Medication(models.Model):
     participant = models.ForeignKey(Participant, on_delete=models.CASCADE)
     medical_delivery = models.CharField(max_length=100)
@@ -85,4 +85,4 @@ class HCVNotes(models.Model):
 
 class Visit(models.Model):
     participant = models.ForeignKey(Participant, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(default=timezone.now)
+    created_at = models.DateTimeField(default=timezone.now())
