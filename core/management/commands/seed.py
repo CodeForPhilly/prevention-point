@@ -6,13 +6,14 @@ from faker import Faker
 from faker.providers import BaseProvider
 from core.models import UrineDrugScreen,Medication,EmployeeRole,Employee,BehavioralHealthNotes
 from core.participants.models import Participant, Gender, Race
+from core.permissions import CASE_MANAGER, FRONT_DESK, ADMIN
 from datetime import datetime, date
 import random, re
 
 fake = Faker()
 
 DEFAULT_DEV_ENV_PASS = 'password123'
-DEFAULT_GROUPS = ['front desk', 'case manager', 'admin']
+DEFAULT_GROUPS = [FRONT_DESK, CASE_MANAGER, ADMIN]
 
 class Command(BaseCommand):
     help = "seed database for testing and development."
