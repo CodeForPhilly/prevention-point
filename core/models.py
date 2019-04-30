@@ -85,4 +85,4 @@ class HCVNotes(models.Model):
 
 class Visit(models.Model):
     participant = models.ForeignKey(Participant, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(default=timezone.now())
+    created_at = models.DateTimeField(default=timezone.now)
