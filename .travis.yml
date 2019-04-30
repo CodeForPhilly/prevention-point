@@ -4,6 +4,6 @@ python:
   - "3.7"
 install:
   - 'pip install pipenv'
-  - 'pipenv sync'
+  - 'pipenv install'
 script:
   - pipenv run python manage.py test
