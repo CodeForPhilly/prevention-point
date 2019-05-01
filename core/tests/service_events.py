@@ -22,11 +22,11 @@ class ServiceEventTests(APITestCase):
 
     def test_get_service_events(self):
         """
-        Ensure we can get a list of visits
+        Ensure we can get a list of service events
         """
         url = reverse('serviceevent-list')
 
-        # create 3 visits for each participant
+        # create 5 service events for 5 visits
         for visit in range(1, 6):
             post_response = self.client.post(
                 url,

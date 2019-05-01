@@ -5,7 +5,7 @@ from core.service_events.serializer import ServiceEventSerializer
 
 class ServiceEventViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows Visits to be viewed or edited
+    API endpoint that allows Service Events to be viewed or edited
     """
     queryset = ServiceEvent.objects.all()
     serializer_class = ServiceEventSerializer
