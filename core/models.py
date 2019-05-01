@@ -86,3 +86,17 @@ class HCVNotes(models.Model):
 class Visit(models.Model):
     participant = models.ForeignKey(Participant, on_delete=models.CASCADE)
     created_at = models.DateTimeField(default=timezone.now)
+
+class ServiceEvent(models.Model):
+    class ServiceEventPurpose(Enum):
+        ARRIVED = 'arrived'
+        CALLED = 'called'
+        SEEN = 'seen'
+        LEFT = 'left'
+
+    visit = models.ForeignKey(Visit, on_delete=models.CASCADE)
+    # service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    purpose = models.CharField(
+        max_length=10,
+        choices=[(tag.name, tag.value) for tag in ServiceEventPurpose]
+    )

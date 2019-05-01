@@ -28,7 +28,9 @@ class VisitTests(APITestCase):
 
         # create 3 visits for each participant
         for participant in range(1, 4):
-            post_response = self.client.post(url, {'participant': participant}, format='json')
+            post_response = self.client.post(
+                url, {'participant': participant}, format='json'
+            )
             self.assertEqual(post_response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Visit.objects.count(), 3)
 
