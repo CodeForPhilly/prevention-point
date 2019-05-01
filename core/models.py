@@ -87,13 +87,13 @@ class Visit(models.Model):
     participant = models.ForeignKey(Participant, on_delete=models.CASCADE)
     created_at = models.DateTimeField(default=timezone.now)
 
-class ServiceEvent(models.Model):
-    class ServiceEventPurpose(Enum):
-        ARRIVED = 'arrived'
-        CALLED = 'called'
-        SEEN = 'seen'
-        LEFT = 'left'
+class ServiceEventPurpose(Enum):
+    ARRIVED = 'arrived'
+    CALLED = 'called'
+    SEEN = 'seen'
+    LEFT = 'left'
 
+class ServiceEvent(models.Model):
     visit = models.ForeignKey(Visit, on_delete=models.CASCADE)
     # service = models.ForeignKey(Service, on_delete=models.CASCADE)
     purpose = models.CharField(
