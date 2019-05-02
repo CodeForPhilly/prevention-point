@@ -10,6 +10,7 @@ The frontend app for the Prevention Point Unified Reporting System (URS) project
 ## Project Frameworks and Tools
  - Main Framework: [React](https://reactjs.org/)
  - UI Framework: [Material UI](https://material-ui.com/)
+ - State Management: [Mobx](https://mobx.js.org/), including bindings for both [class components](https://github.com/mobxjs/mobx-react) and [functional components with hooks](https://github.com/mobxjs/mobx-react-lite)
  - Styling: [Sass](https://sass-lang.com/)
  - Bundler: [Parcel](https://parceljs.org/)
  - Package manager: [Yarn](https://yarnpkg.com/)
