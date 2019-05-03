@@ -1,28 +1,5 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
-import { BrowserRouter as Router } from "react-router-dom"
-import Routes from "./routes"
+import App from "./App"
 
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: "#086375", contrastText: "#ffffff" },
-    secondary: { main: "#119da4", contrastText: "#ffffff" },
-  },
-  typography: {
-    useNextVariants: true,
-  },
-})
-
-function App() {
-  return (
-    <MuiThemeProvider theme={theme}>
-      <Router>
-        <Routes />
-      </Router>
-    </MuiThemeProvider>
-  )
-}
-
-let app = document.getElementById("app")
-ReactDOM.render(<App />, app)
+ReactDOM.render(<App />, document.getElementById("app"))
