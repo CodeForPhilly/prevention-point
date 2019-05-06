@@ -1,7 +1,15 @@
 
+
 from django.contrib.auth.models import User, Group
 from rest_framework import permissions
 from core.models import EmployeeRole
+
+from rest_framework import permissions
+
+CASE_MANAGER = 'case manager'
+FRONT_DESK = 'front desk'
+ADMIN = 'admin'
+
 
 def is_in_group(user, group_name):
   try Group.objects.get(name=group_name).user_set.filter(id=user).exists()
@@ -19,3 +27,4 @@ class HasGroupPermission(permissions.BasePermission):
 
   
 #https://gist.github.com/leonardo-/b348e6c607b91ddef586e7262481dfcc
+

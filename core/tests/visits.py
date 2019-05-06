@@ -10,7 +10,7 @@ class VisitTests(APITestCase):
 
     def test_create_visit(self):
         """
-       Ensure we can create a new visit
+        Ensure we can create a new visit
         """
         url = reverse('visit-list')
         data = {'participant': 1}

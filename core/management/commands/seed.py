@@ -1,16 +1,19 @@
 from django.core.management.base import BaseCommand
 from django.core.management import call_command
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, User
 
 from faker import Faker
 from faker.providers import BaseProvider
-from core.models import Participant, Gender, Race, UrineDrugScreen,Medication,EmployeeRole,Employee,BehavioralHealthNotes
+from core.models import UrineDrugScreen,Medication,EmployeeRole,Employee,BehavioralHealthNotes
+from core.participants.models import Participant, Gender, Race
+from core.permissions import CASE_MANAGER, FRONT_DESK, ADMIN
 from datetime import datetime, date
-import random
+import random, re
 
 fake = Faker()
 
-DEFAULT_GROUPS = ['front desk', 'case manager', 'admin']
+DEFAULT_DEV_ENV_PASS = 'password123'
+DEFAULT_GROUPS = [FRONT_DESK, CASE_MANAGER, ADMIN]
 
 class Command(BaseCommand):
     help = "seed database for testing and development."
@@ -50,10 +53,21 @@ def run_seed(self):
     create_roles()
     create_participants()
 
-def create_groups():
+def create_users(output=True):
+    for group in DEFAULT_GROUPS:
+        uname = re.sub(" ", "", group)
+        email = "{}@{}.com".format(uname, uname)
+        u = User.objects.create_user(username=uname, email=email)
+        u.set_password(DEFAULT_DEV_ENV_PASS)
+        u.save()
+        if output:
+            print("Created user: {}".format(email))
+
+def create_groups(output=True):
     for group in DEFAULT_GROUPS:
         Group.objects.get_or_create(name=group)
-        print("Created group: {}".format(group))
+        if output:
+            print("Created group: {}".format(group))
 
 def create_roles():
     for group in DEFAULT_GROUPS:
