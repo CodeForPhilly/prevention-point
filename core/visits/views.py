@@ -13,5 +13,7 @@ class VisitViewSet(viewsets.ModelViewSet):
     permission_classes = [HasGroupPermission]
     permission_roles = {
         'create':['front desk', 'admin'],
-        'retrieve': ['front desk', 'case manager', 'admin']
+        'retrieve': ['front desk', 'case manager', 'admin'],
+        'update': ['front desk', 'case manager', 'admin'],
+        'delete':['front desk', 'admin']
     }

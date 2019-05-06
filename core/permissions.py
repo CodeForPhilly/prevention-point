@@ -3,11 +3,8 @@ from django.contrib.auth.models import User, Group
 from rest_framework import permissions
 from core.models import EmployeeRole
 
-def check_employee_role(user, role_name):
-  front_desk_id = EmployeeRole.objects.values_list('pk', flat=True).get(role_value=role_name)
-  if user.role ==front_desk_id:
-    return True
-  return False
+def is_in_group(user, group_name):
+  try Group.objects.get(name=group_name).user_set.filter(id=user).exists()
 
 class HasGroupPermission(permissions.BasePermission):
   """
