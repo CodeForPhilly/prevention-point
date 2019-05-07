@@ -10,6 +10,40 @@
     "node": ">=10.15.3",
     "yarn": ">=1.15.2"
   },
+  "scripts": {
+    "dev": "parcel public/index.html",
+    "build": "parcel build public/index.html",
+    "test": "jest",
+    "lint": "eslint src && prettier --check \"src/**/*.js\""
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "jest": {
+    "setupFilesAfterEnv": [
+      "<rootDir>src/setupTests.js"
+    ],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ],
+    "moduleNameMapper": {
+      "^.+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/test/__mocks__/fileMock.js",
+      "^.+\\.(css|less|scss)$": "identity-obj-proxy"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "prettier",
+      "eslint",
+      "git add"
+    ],
+    "*.scss": [
+      "stylelint",
+      "git add"
+    ]
+  },
   "dependencies": {
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.2",
@@ -51,39 +85,5 @@
     "stylelint-config-recommended": "^2.1.0",
     "stylelint-config-recommended-scss": "^3.2.0",
     "stylelint-scss": "^3.5.4"
-  },
-  "scripts": {
-    "dev": "parcel public/index.html",
-    "build": "parcel build public/index.html",
-    "test": "jest",
-    "lint": "eslint src && prettier --check \"src/**/*.js\""
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "jest": {
-    "setupFilesAfterEnv": [
-      "<rootDir>src/setupTests.js"
-    ],
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
-    ],
-    "moduleNameMapper": {
-      "^.+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/test/__mocks__/fileMock.js",
-      "^.+\\.(css|less|scss)$": "identity-obj-proxy"
-    }
-  },
-  "lint-staged": {
-    "*.{js,jsx}": [
-      "prettier",
-      "eslint",
-      "git add"
-    ],
-    "*.scss": [
-      "stylelint",
-      "git add"
-    ]
   }
 }
