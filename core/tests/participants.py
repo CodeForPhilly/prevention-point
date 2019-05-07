@@ -8,10 +8,10 @@ class ParticipantsTestCase(BaseTestCase):
         super().setUp()
         self.seed_fake_users()
         self.participant = Participant.objects.create(
-                first_name="Foo", last_name="Bar", pp_id="1234",
-                gender="m", race="other", last_four_ssn="1234", date_of_birth="1949-08-23",
-                start_date="2019-01-01"
-                )
+            first_name="Foo", last_name="Bar", pp_id="1234",
+            gender="m", race="other", last_four_ssn="1234", date_of_birth="1949-08-23",
+            start_date="2019-01-01"
+        )
 
     def test_participants_api_when_authed_as_front_desk(self):
         headers = self.auth_headers_for_user('front_desk')
