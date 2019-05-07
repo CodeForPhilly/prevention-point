@@ -11,7 +11,7 @@
     "yarn": ">=1.15.2"
   },
   "scripts": {
-    "dev": "parcel public/index.html",
+    "dev": "node devServer.js",
     "build": "parcel build public/index.html",
     "test": "jest",
     "lint": "eslint src && prettier --check \"src/**/*.js\""
