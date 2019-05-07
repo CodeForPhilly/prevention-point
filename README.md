@@ -26,6 +26,11 @@ Back-end
     `$ python manage.py createsuperuser`
 - Start a local development server on localhost:8000/admin:
     `$ python manage.py runserver`
+Front-end
+ - Make sure you have [`node (>=10.15.3)`](https://nodejs.org/en/) and [`yarn (>=1.15.2)`](https://yarnpkg.com/en/docs/install) installed 
+ - From the project's root directory, `cd frontend`
+ - Run `yarn` to install dependencies
+ - Run `yarn dev` and navigate to `localhost:1234`
 
 Other tools
 TODO: move dev to postgres
