@@ -1,9 +1,22 @@
 dist: xenial
-language: python
-python:
-  - "3.7"
-install:
-  - 'pip install pipenv'
-  - 'pipenv install'
-script:
-  - pipenv run python manage.py test
+matrix:
+  include:
+    - language: python
+      python:
+        - "3.7"
+      install:
+        - "pip install pipenv"
+        - "pipenv sync"
+      script:
+        - pipenv run python manage.py test
+
+    - language: node_js
+      node_js:
+        - "10.15.3"
+      before_install:
+        - cd frontend
+      install:
+        - yarn
+      script:
+        - yarn lint
+        - yarn test

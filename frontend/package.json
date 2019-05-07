@@ -11,22 +11,36 @@
     "yarn": ">=1.15.2"
   },
   "scripts": {
-    "dev": "node devServer.js ",
-    "build": "parcel build public/index.html"
+    "dev": "node devServer.js",
+    "build": "parcel build public/index.html",
+    "test": "jest",
+    "lint": "eslint src && prettier --check \"src/**/*.js\""
   },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
     }
   },
+  "jest": {
+    "setupFilesAfterEnv": [
+      "<rootDir>src/setupTests.js"
+    ],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ],
+    "moduleNameMapper": {
+      "^.+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/test/__mocks__/fileMock.js",
+      "^.+\\.(css|less|scss)$": "identity-obj-proxy"
+    }
+  },
   "lint-staged": {
     "*.{js,jsx}": [
-      "prettier --write",
-      "eslint --fix",
+      "prettier",
+      "eslint",
       "git add"
     ],
     "*.scss": [
-      "stylelint --fix",
+      "stylelint",
       "git add"
     ]
   },
@@ -43,22 +57,29 @@
     "react-router-dom": "^5.0.0"
   },
   "devDependencies": {
-    "babel-core": "^6.26.3",
+    "@babel/core": "^7.4.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "@babel/preset-react": "^7.0.0",
     "babel-eslint": "^10.0.1",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-react": "^6.24.1",
+    "babel-jest": "^24.7.1",
+    "enzyme": "^3.9.0",
+    "enzyme-adapter-react-16": "^1.12.1",
+    "enzyme-to-json": "^3.3.5",
     "eslint": "^5.16.0",
     "eslint-config-prettier": "^4.1.0",
+    "eslint-plugin-jest": "^22.5.1",
     "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-react": "^7.12.4",
     "husky": "^1.3.1",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^24.7.1",
     "lint-staged": "^8.1.5",
     "mobx-react-devtools": "^6.1.1",
     "parcel-bundler": "^1.12.3",
     "parcel-proxy-server": "^1.1.0",
     "prettier": "^1.16.4",
+    "react-test-renderer": "^16.8.6",
     "sass": "^1.18.0",
     "stylelint": "^9.10.1",
     "stylelint-config-recommended": "^2.1.0",
