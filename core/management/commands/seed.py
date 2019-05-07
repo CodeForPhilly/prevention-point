@@ -69,6 +69,17 @@ def create_groups(output=True):
         if output:
             print("Created group: {}".format(group))
 
+def add_users_to_groups(output=True):
+    """
+    adds user to group of same name
+    """
+    
+    for group in DEFAULT_GROUPS:
+        user = User.objects.get(username=group)
+        role_title = Group.objects.get(name=group)        
+        user.groups.add(role_title)
+
+
 def create_roles():
     for group in DEFAULT_GROUPS:
         emp_role = EmployeeRole(

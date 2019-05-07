@@ -1,29 +1,29 @@
 
-
 from django.contrib.auth.models import User, Group
 from rest_framework import permissions
 from core.models import EmployeeRole
 
-from rest_framework import permissions
-
-CASE_MANAGER = 'case manager'
-FRONT_DESK = 'front desk'
+FRONT_DESK = 'front_desk' 
+CASE_MANAGER = 'case_manager' 
 ADMIN = 'admin'
 
 
 def is_in_group(user, group_name):
-  try Group.objects.get(name=group_name).user_set.filter(id=user).exists()
+    try:
+        return Group.objects.get(name=group_name).user_set.filter(id=user.id).exists()
+    except Group.DoesNotExist:
+        return False
 
 class HasGroupPermission(permissions.BasePermission):
   """
-  Basic Permission for front desk tasks
+    checks view to see if user has access to the action
   """
   def has_permission(self, request, view):
-    required_roles = view.permission_roles.get(view.action)
-    if required_roles ==None:
+    required_groups = view.permission_groups.get(view.action)
+    if required_groups == None:
     		return False	
     else:
-      return any([check_employee_role(request.user, role_name) for role_name in required_roles])
+      return any([is_in_group(request.user, group_name) for group_name in required_groups])
 
   
 #https://gist.github.com/leonardo-/b348e6c607b91ddef586e7262481dfcc

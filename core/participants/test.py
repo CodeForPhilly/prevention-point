@@ -1,6 +1,6 @@
 from django.contrib.auth.models import Group, User
 
-from core.test.base import BaseTestCase
+from core.tests.base import BaseTestCase
 from core.participants.models import Participant
 
 class ParticipantsTestCase(BaseTestCase):
@@ -14,17 +14,18 @@ class ParticipantsTestCase(BaseTestCase):
                 )
 
     def test_participants_api_when_authed_as_front_desk(self):
-        headers = self.auth_headers_for_user('frontdesk')
+        headers = self.auth_headers_for_user('front_desk')
         response = self.client.get('/api/participants', follow=True, **headers)
+    
         self.assertEqual(200, response.status_code)
 
     def test_participants_api_when_unauthenticated(self):
         response = self.client.get('/api/participants', follow=True)
         self.assertEqual(401, response.status_code)
 
-    def test_participants_api_when_unauthenticated(self):
-        response = self.client.get('/api/participants', follow=True)
-        self.assertEqual(401, response.status_code)
+    # def test_participants_api_when_unauthenticated(self):
+    #     response = self.client.get('/api/participants', follow=True)
+    #     self.assertEqual(401, response.status_code)
 
     def test_participants_have_no_uds_by_default(self):
         self.assertEqual(0, self.participant.urinedrugscreen_set.count())

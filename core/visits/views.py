@@ -11,9 +11,10 @@ class VisitViewSet(viewsets.ModelViewSet):
     queryset = Visit.objects.all()
     serializer_class = VisitSerializer
     permission_classes = [HasGroupPermission]
-    permission_roles = {
-        'create':['front desk', 'admin'],
-        'retrieve': ['front desk', 'case manager', 'admin'],
-        'update': ['front desk', 'case manager', 'admin'],
-        'delete':['front desk', 'admin']
+    permission_groups = {
+        'create':['front_desk', 'admin'],
+        'list': ['front_desk', 'case manager', 'admin'],
+        'retrieve': ['front_desk', 'case manager', 'admin'],
+        'update': ['front_desk', 'case manager', 'admin'],
+        'delete':['front_desk', 'admin']
     }
