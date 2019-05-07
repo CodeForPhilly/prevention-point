@@ -10,6 +10,26 @@
     "node": ">=10.15.3",
     "yarn": ">=1.15.2"
   },
+  "scripts": {
+    "dev": "node devServer.js ",
+    "build": "parcel build public/index.html"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "prettier --write",
+      "eslint --fix",
+      "git add"
+    ],
+    "*.scss": [
+      "stylelint --fix",
+      "git add"
+    ]
+  },
   "dependencies": {
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.2",
@@ -33,31 +53,12 @@
     "husky": "^1.3.1",
     "lint-staged": "^8.1.5",
     "parcel-bundler": "^1.12.3",
+    "parcel-proxy-server": "^1.1.0",
     "prettier": "^1.16.4",
     "sass": "^1.18.0",
     "stylelint": "^9.10.1",
     "stylelint-config-recommended": "^2.1.0",
     "stylelint-config-recommended-scss": "^3.2.0",
     "stylelint-scss": "^3.5.4"
-  },
-  "scripts": {
-    "dev": "parcel public/index.html",
-    "build": "parcel build public/index.html"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{js,jsx}": [
-      "prettier --write",
-      "eslint --fix",
-      "git add"
-    ],
-    "*.scss": [
-      "stylelint --fix",
-      "git add"
-    ]
   }
 }
