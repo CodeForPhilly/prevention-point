@@ -1,6 +1,7 @@
 from rest_framework import generics, viewsets
 from core.models import Participant
 from core.participants.serializers import ParticipantSerializer
+from core.permissions import HasGroupPermission
 
 class ParticipantViewSet(viewsets.ModelViewSet):
     """
@@ -8,7 +9,14 @@ class ParticipantViewSet(viewsets.ModelViewSet):
     """
     queryset = Participant.objects.all()
     serializer_class = ParticipantSerializer
-
+    permission_classes = [HasGroupPermission]
+    permission_groups = {
+        'create':['front_desk', 'admin'], #POST
+        'retrieve': ['front_desk', 'case_manager', 'admin'], #GET one
+        'update': ['front_desk', 'case_manager', 'admin'], #PATCH
+        'list': ['front_desk', 'case_manager', 'admin'] #GET all
+        # 'delete':['front_desk', 'admin'] no one can delete, with no delete permission
+    }
 
 class ParticipantListView(generics.ListAPIView):
     """

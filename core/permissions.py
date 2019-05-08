@@ -1,25 +1,30 @@
-from rest_framework import permissions
 
-CASE_MANAGER = 'case manager'
-FRONT_DESK = 'front desk'
+from django.contrib.auth.models import User, Group
+from rest_framework import permissions
+from core.models import EmployeeRole
+
+FRONT_DESK = 'front_desk' 
+CASE_MANAGER = 'case_manager' 
 ADMIN = 'admin'
 
-class IsFrontDesk(permissions.BasePermission):
-    """
-    Custom permission that allows a front desk to read any resource.
-    TODO/tvendetta: determine models a front desk user should
-    be able to access.
-    """
-    def has_object_permission(self, request, view, obj):
-        in_front_desk_group = request.user.groups.filter(name=FRONT_DESK).exists()
-        if request.method in permissions.SAFE_METHODS and in_front_desk_group:
-            return True
-        else:
-            return False
 
-class IsCaseManager(permissions.BasePermission):
-    """
-    Custom permission that only allows case managers to view or edit an object
-    """
-    def has_object_permission(self, request, view, obj):
-        return request.user.groups.filter(name=CASE_MANAGER).exists()
+def is_in_group(user, group_name):
+    try:
+        return Group.objects.get(name=group_name).user_set.filter(id=user.id).exists()
+    except Group.DoesNotExist:
+        return False
+
+class HasGroupPermission(permissions.BasePermission):
+  """
+    checks view to see if user has access to the action
+  """
+  def has_permission(self, request, view):
+    required_groups = view.permission_groups.get(view.action)
+    if required_groups == None:
+    		return False	
+    else:
+      return any([is_in_group(request.user, group_name) for group_name in required_groups])
+
+  
+#https://gist.github.com/leonardo-/b348e6c607b91ddef586e7262481dfcc
+
