@@ -12,6 +12,5 @@ router.register(r'service-events', ServiceEventViewSet)
 urlpatterns = [
     path('', views.index, name='index'),
     path('hello/', views.HelloView.as_view(), name='hello'),
-
     path('', include(router.urls))
 ]

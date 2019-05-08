@@ -16,8 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from rest_framework import routers
-
+from rest_framework_swagger.views import get_swagger_view
 from rest_framework_simplejwt import views as jwt_views
+
 from core.users import views as user_views
 from core.urine_drug_screens import views as uds_views
 from core.participants import views as participant_views
@@ -30,6 +31,7 @@ admin.site.site_header = 'Prevention Point Philadelphia'
 router = routers.DefaultRouter()
 router.register(r'users', user_views.UserViewSet)
 router.register(r'groups', user_views.GroupViewSet)
+router.register(r'visits', visits_views.VisitViewSet)
 router.register(r'uds', uds_views.UrineDrugScreenViewSet)
 router.register(r'participants', participant_views.ParticipantViewSet)
 router.register(r'employees', employee_views.EmployeeViewSet)
@@ -37,12 +39,14 @@ router.register(r'employee_roles', employee_roles_views.EmployeeRoleViewSet)
 router.register(r'visits', visits_views.VisitViewSet)
 
 
+schema_view = get_swagger_view(title='PreventionPoint API')
+
 urlpatterns = [
     path('api/', include(router.urls)),
     # path('frontdesk/', include(router.urls)),
     path('frontdesk/participants', participant_views.ParticipantListView.as_view()),
     path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
-    path('core/', include('core.urls')),
+    path('swagger/', schema_view),
     path('admin/', admin.site.urls),
 ]
