@@ -40,8 +40,9 @@ router.register(r'visits', visits_views.VisitViewSet)
 urlpatterns = [
     path('api/', include(router.urls)),
     # path('frontdesk/', include(router.urls)),
-    path('frontdesk/participants', participant_views.ParticipantListView.as_view()),
-    path('frontdesk/employees', employee_views.EmployeeListView.as_view()),
+    path('api/participants', participant_views.ParticipantListView.as_view()),
+    path('api/users', user_views.UserListView.as_view()),
+    path('api/employees', employee_views.EmployeeListView.as_view()),
     path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
     path('core/', include('core.urls')),
