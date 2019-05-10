@@ -23,6 +23,11 @@ class ParticipantListView(generics.ListAPIView):
     Read-only endpoint for listing participants
     """
     serializer_class = ParticipantSerializer
+    permission_classes = [HasGroupPermission]
+    action = 'list'
+    permission_groups = {
+        'list':['front_desk', 'case_manager', 'admin']
+    }
     def get_queryset(self):
         first_name = self.request.query_params.get('first_name', None)
         last_name = self.request.query_params.get('last_name', None)
