@@ -48,6 +48,7 @@
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.2",
     "apisauce": "^1.0.2",
+    "axios-auth-refresh": "^1.0.6",
     "babel-polyfill": "^6.26.0",
     "mobx": "^5.9.4",
     "mobx-react": "^5.4.3",
