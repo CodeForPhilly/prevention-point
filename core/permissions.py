@@ -19,6 +19,7 @@ class HasGroupPermission(permissions.BasePermission):
     checks view to see if user has access to the action
   """
   def has_permission(self, request, view):
+    
     required_groups = view.permission_groups.get(view.action)
     if required_groups == None:
     		return False	

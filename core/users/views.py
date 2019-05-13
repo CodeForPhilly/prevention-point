@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets, generics
 from core.users.serializers import UserSerializer, GroupSerializer
+from core.permissions import HasGroupPermission
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -9,12 +10,27 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
+    permission_classes = [HasGroupPermission]
+    permission_groups = {
+        'create':['admin'], #POST
+        'retrieve': ['admin'], #GET one
+        'update': ['admin'], #PATCH
+        'list': ['admin'] #GET all
+        # 'delete':['front_desk', 'admin'] no one can delete, with no delete permission
+    }
+
 
 class UserListView(generics.ListAPIView):
     """
-    Read-only endpoint for listing employees
+    Read-only endpoint for listing employees(users)
     """
     serializer_class = UserSerializer
+    permission_classes = [HasGroupPermission]
+    action = 'list'
+    permission_groups = {
+        'list':['admin']
+    }
+
     def get_queryset(self):
         username =  self.request.query_params.get('username', None)
         first_name = self.request.query_params.get('first_name', None)
@@ -42,3 +58,11 @@ class GroupViewSet(viewsets.ModelViewSet):
     """
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+    permission_classes = [HasGroupPermission]
+    permission_groups = {
+        'create':['admin'], #POST
+        'retrieve': ['admin'], #GET one
+        'update': ['admin'], #PATCH
+        'list': ['admin'] #GET all
+        # 'delete':['front_desk', 'admin'] no one can delete, with no delete permission
+    }

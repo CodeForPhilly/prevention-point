@@ -50,6 +50,7 @@ def run_seed(self):
     call_command('flush')
     call_command('loaddata', 'users')
     create_groups()
+    add_admin_to_group_admin()
     create_roles()
     create_participants()
 
@@ -60,6 +61,7 @@ def create_users(output=True):
         u = User.objects.create_user(username=uname, email=email)
         u.set_password(DEFAULT_DEV_ENV_PASS)
         u.save()
+      
         if output:
             print("Created user: {}".format(email))
 
@@ -68,6 +70,15 @@ def create_groups(output=True):
         Group.objects.get_or_create(name=group)
         if output:
             print("Created group: {}".format(group))
+
+def add_admin_to_group_admin(output=True):
+    """
+    adds admin to admin group for seed
+    TODO re write user/group seed/test creations for long term usability
+    """
+    admin_group = Group.objects.get(name='admin')      
+    admin = User.objects.get(username='admin')
+    admin.groups.add(admin_group)
 
 def add_users_to_groups(output=True):
     """
