@@ -13,7 +13,7 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes = [HasGroupPermission]
     permission_groups = {
         'create':['admin'], #POST
-        'retrieve': ['admin'], #GET one
+        'retrieve': ['admin', 'front_desk', 'case_manager'], #GET one
         'update': ['admin'], #PATCH
         'list': ['admin'] #GET all
         # 'delete':['front_desk', 'admin'] no one can delete, with no delete permission
@@ -39,7 +39,7 @@ class UserListView(generics.ListAPIView):
         pk = self.request.query_params.get('pk', None)
         queryset = User.objects.all()
         if username is not None:
-            queryset = queryset.filter(first_name__iexact=username)
+            queryset = queryset.filter(username__iexact=username)
         if first_name is not None:
             queryset = queryset.filter(first_name__iexact=first_name)
         if last_name is not None:
