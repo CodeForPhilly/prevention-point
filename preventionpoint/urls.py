@@ -25,6 +25,7 @@ from core.participants import views as participant_views
 from core.employees import views as employee_views
 from core.employee_roles import views as employee_roles_views
 from core.visits import views as visits_views
+from core.service_events import views as service_events_views
 
 admin.site.site_header = 'Prevention Point Philadelphia'
 
@@ -37,7 +38,7 @@ router.register(r'participants', participant_views.ParticipantViewSet)
 router.register(r'employees', employee_views.EmployeeViewSet)
 router.register(r'employee_roles', employee_roles_views.EmployeeRoleViewSet)
 router.register(r'visits', visits_views.VisitViewSet)
-
+router.register(r'service-events', service_events_views.ServiceEventViewSet)
 
 schema_view = get_swagger_view(title='PreventionPoint API')
 
