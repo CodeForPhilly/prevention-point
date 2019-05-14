@@ -1,4 +1,4 @@
-# [Prevention Point](http://ppponline.org/)
+# [Prevention Point](http://ppponline.org/) [![Build Status](https://travis-ci.org/CodeForPhilly/prevention-point.svg?branch=master)](https://travis-ci.org/CodeForPhilly/prevention-point)
 
 Prevention Point Philadelphia is a private nonprofit organization providing harm reduction services to Philadelphia and the surrounding area.
 
