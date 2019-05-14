@@ -24,6 +24,8 @@ from core.participants import views as participant_views
 from core.employees import views as employee_views
 from core.employee_roles import views as employee_roles_views
 from core.visits import views as visits_views
+from core.service_events import views as service_events_views
+
 
 admin.site.site_header = 'Prevention Point Philadelphia'
 
@@ -35,7 +37,7 @@ router.register(r'participants', participant_views.ParticipantViewSet)
 router.register(r'employees', employee_views.EmployeeViewSet)
 router.register(r'employee_roles', employee_roles_views.EmployeeRoleViewSet)
 router.register(r'visits', visits_views.VisitViewSet)
-
+router.register(r'service_events', service_events_views.ServiceEventViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),
@@ -44,6 +46,5 @@ urlpatterns = [
     path('frontdesk/employees', employee_views.EmployeeListView.as_view()),
     path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
-    path('core/', include('core.urls')),
     path('admin/', admin.site.urls),
 ]
