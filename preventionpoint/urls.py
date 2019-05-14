@@ -24,6 +24,7 @@ from core.participants import views as participant_views
 from core.visits import views as visits_views
 from core.service_events import views as service_events_views
 
+
 admin.site.site_header = 'Prevention Point Philadelphia'
 
 router = routers.DefaultRouter()
@@ -32,7 +33,8 @@ router.register(r'groups', user_views.GroupViewSet)
 router.register(r'uds', uds_views.UrineDrugScreenViewSet)
 router.register(r'participants', participant_views.ParticipantViewSet)
 router.register(r'visits', visits_views.VisitViewSet)
-router.register(r'service-events', service_events_views.ServiceEventViewSet)
+router.register(r'service_events', service_events_views.ServiceEventViewSet)
+
 
 urlpatterns = [
     path('api/', include(router.urls)),
