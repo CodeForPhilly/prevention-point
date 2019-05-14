@@ -1,0 +1,15 @@
+- model: auth.group
+  pk: 22
+  fields:
+    name: front_desk
+    permissions: []
+- model: auth.group
+  pk: 23
+  fields:
+    name: case_manager
+    permissions: []
+- model: auth.group
+  pk: 24
+  fields:
+    name: admin
+    permissions: []

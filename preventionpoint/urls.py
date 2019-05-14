@@ -22,6 +22,7 @@ from core.users import views as user_views
 from core.urine_drug_screens import views as uds_views
 from core.participants import views as participant_views
 from core.visits import views as visits_views
+from core.service_events import views as service_events_views
 
 admin.site.site_header = 'Prevention Point Philadelphia'
 
@@ -31,15 +32,11 @@ router.register(r'groups', user_views.GroupViewSet)
 router.register(r'uds', uds_views.UrineDrugScreenViewSet)
 router.register(r'participants', participant_views.ParticipantViewSet)
 router.register(r'visits', visits_views.VisitViewSet)
-
+router.register(r'service-events', service_events_views.ServiceEventViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),
-    # path('frontdesk/', include(router.urls)),
-    path('api/participants', participant_views.ParticipantListView.as_view()),
-    path('api/users', user_views.UserListView.as_view()),
     path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
-    path('core/', include('core.urls')),
     path('admin/', admin.site.urls),
 ]

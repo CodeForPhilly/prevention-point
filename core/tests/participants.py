@@ -16,7 +16,7 @@ class ParticipantsTestCase(BaseTestCase):
     def test_participants_api_when_authed_as_front_desk(self):
         headers = self.auth_headers_for_user('front_desk')
         response = self.client.get('/api/participants', follow=True, **headers)
-    
+
         self.assertEqual(200, response.status_code)
 
     def test_participants_api_when_unauthenticated(self):

@@ -1,19 +1,14 @@
-from rest_framework import generics, viewsets
+from core.viewsets import ModelViewSet
 from core.models import Employee
 from core.employees.serializers import EmployeeSerializer
 
-class EmployeeViewSet(viewsets.ModelViewSet):
+class EmployeeViewSet(ModelViewSet):
     """
     API endpoint that allows Employees to be viewed or edited
     """
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
 
-class EmployeeListView(generics.ListAPIView):
-    """
-    Read-only endpoint for listing employees
-    """
-    serializer_class = EmployeeSerializer
     def get_queryset(self):
         first_name = self.request.query_params.get('first_name', None)
         last_name = self.request.query_params.get('last_name', None)

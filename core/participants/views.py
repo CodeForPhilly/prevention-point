@@ -1,33 +1,21 @@
-from rest_framework import generics, viewsets
+from core.viewsets import ModelViewSet
 from core.models import Participant
 from core.participants.serializers import ParticipantSerializer
-from core.permissions import HasGroupPermission
+from core.permissions import FRONT_DESK, CASE_MANAGER, ADMIN
 
-class ParticipantViewSet(viewsets.ModelViewSet):
+class ParticipantViewSet(ModelViewSet):
     """
     API endpoint that allows Participants to be viewed or edited
     """
     queryset = Participant.objects.all()
     serializer_class = ParticipantSerializer
-    permission_classes = [HasGroupPermission]
     permission_groups = {
-        'create':['front_desk', 'admin'], #POST
-        'retrieve': ['front_desk', 'case_manager', 'admin'], #GET one
-        'update': ['front_desk', 'case_manager', 'admin'], #PATCH
-        'list': ['front_desk', 'case_manager', 'admin'] #GET all
-        # 'delete':['front_desk', 'admin'] no one can delete, with no delete permission
+        'create':[FRONT_DESK, ADMIN],
+        'retrieve': [FRONT_DESK, CASE_MANAGER, ADMIN],
+        'update': [FRONT_DESK, CASE_MANAGER, ADMIN],
+        'list': [FRONT_DESK, CASE_MANAGER, ADMIN]
     }
 
-class ParticipantListView(generics.ListAPIView):
-    """
-    Read-only endpoint for listing participants
-    """
-    serializer_class = ParticipantSerializer
-    permission_classes = [HasGroupPermission]
-    action = 'list'
-    permission_groups = {
-        'list':['front_desk', 'case_manager', 'admin']
-    }
     def get_queryset(self):
         first_name = self.request.query_params.get('first_name', None)
         last_name = self.request.query_params.get('last_name', None)
@@ -44,4 +32,3 @@ class ParticipantListView(generics.ListAPIView):
             queryset = queryset.filter(date_of_birth=dob)
 
         return queryset
-    
