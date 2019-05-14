@@ -31,7 +31,7 @@ class ServiceEventTests(BaseTestCase):
         headers = self.auth_headers_for_user('case_manager')
         headers['format'] = 'json'
 
-# create 5 service events for 5 visits
+        # create 5 service events for 5 visits
         for visit in range(1, 6):
             data = {'visit': visit, 'purpose': ServiceEventPurpose.SEEN.name}
             post_response = self.client.post(url, data, **headers)
