@@ -42,6 +42,7 @@ router.register(r'service-events', service_events_views.ServiceEventViewSet)
 
 schema_view = get_swagger_view(title='PreventionPoint API')
 
+
 urlpatterns = [
     path('api/', include(router.urls)),
     path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
