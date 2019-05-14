@@ -5,6 +5,10 @@ verify_ssl = true
 
 [dev-packages]
 pylint = "*"
+flake8 = "*"
+flake8-django = "*"
+flake8-string-format = "*"
+flake8-pep3101 = "*"
 
 [packages]
 django = "*"
