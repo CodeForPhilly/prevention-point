@@ -35,7 +35,6 @@ class UsersTests(BaseTestCase):
     def test_filter_users_by_params(self):
         """
         Ensure we can get a list of users by parameter search
-        TODO does not count objects on response, would be preferred
         """
         headers = self.auth_headers_for_user('admin')
         response = self.client.get( '/api/users?username=admin', follow=True, **headers)
