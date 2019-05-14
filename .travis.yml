@@ -9,6 +9,7 @@ matrix:
         - "pipenv sync"
       script:
         - pipenv run python manage.py test
+        - pipenv run flake8 || true
 
     - language: node_js
       node_js:
