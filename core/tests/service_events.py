@@ -1,12 +1,12 @@
 import json
 from django.urls import reverse
 from rest_framework import status
-from rest_framework.test import APITestCase
+from core.tests.base import BaseTestCase
 from core.models import ServiceEvent, ServiceEventPurpose
 
 
-class ServiceEventTests(APITestCase):
-    fixtures = ['participants.yaml', 'visits.yaml']
+class ServiceEventTests(BaseTestCase):
+    fixtures = ['participants.yaml', 'visits.yaml', 'groups.yaml', 'users.yaml']
 
     def test_create_service_event(self):
         """
@@ -14,7 +14,9 @@ class ServiceEventTests(APITestCase):
         """
         url = reverse('serviceevent-list')
         data = {'visit': 1, 'purpose': ServiceEventPurpose.ARRIVED.name}
-        response = self.client.post(url, data, format='json')
+        headers = self.auth_headers_for_user('case_manager')
+        headers['format'] = 'json'
+        response = self.client.post(url, data, **headers)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(ServiceEvent.objects.count(), 1)
@@ -26,19 +28,19 @@ class ServiceEventTests(APITestCase):
         """
         url = reverse('serviceevent-list')
 
+        headers = self.auth_headers_for_user('case_manager')
+        headers['format'] = 'json'
+
         # create 5 service events for 5 visits
         for visit in range(1, 6):
-            post_response = self.client.post(
-                url,
-                {'visit': visit, 'purpose': ServiceEventPurpose.SEEN.name},
-                format='json'
-            )
+            data = {'visit': visit, 'purpose': ServiceEventPurpose.SEEN.name}
+            post_response = self.client.post(url, data, **headers)
             self.assertEqual(
                 post_response.status_code, status.HTTP_201_CREATED
             )
         self.assertEqual(ServiceEvent.objects.count(), 5)
 
-        get_response = self.client.get(url)
+        get_response = self.client.get(url, **headers)
         self.assertEqual(get_response.status_code, status.HTTP_200_OK)
 
         content = json.loads(get_response.content)

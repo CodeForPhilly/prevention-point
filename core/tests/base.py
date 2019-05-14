@@ -1,15 +1,14 @@
-from django.test import TestCase, Client
+from rest_framework.test import APITestCase
 from core.management.commands.seed import (
         create_groups,
         create_users,
         add_users_to_groups,
         DEFAULT_DEV_ENV_PASS
-        )
+    )
 
-class BaseTestCase(TestCase):
+class BaseTestCase(APITestCase):
     def setUp(self):
         self.auth_tokens_for_users = {}
-        self.client = Client()
 
     def seed_fake_users(self):
         create_groups(output=False)
@@ -25,7 +24,7 @@ class BaseTestCase(TestCase):
         """
         Memoize and return a jwt access token for a given user
         """
-    
+
         try:
             return self.auth_tokens_for_users[uname]
         except KeyError:
