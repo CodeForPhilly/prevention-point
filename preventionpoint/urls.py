@@ -22,8 +22,6 @@ from rest_framework_simplejwt import views as jwt_views
 from core.users import views as user_views
 from core.urine_drug_screens import views as uds_views
 from core.participants import views as participant_views
-from core.employees import views as employee_views
-from core.employee_roles import views as employee_roles_views
 from core.visits import views as visits_views
 from core.service_events import views as service_events_views
 
@@ -35,12 +33,11 @@ router.register(r'groups', user_views.GroupViewSet)
 router.register(r'visits', visits_views.VisitViewSet)
 router.register(r'uds', uds_views.UrineDrugScreenViewSet)
 router.register(r'participants', participant_views.ParticipantViewSet)
-router.register(r'employees', employee_views.EmployeeViewSet)
-router.register(r'employee_roles', employee_roles_views.EmployeeRoleViewSet)
 router.register(r'visits', visits_views.VisitViewSet)
 router.register(r'service-events', service_events_views.ServiceEventViewSet)
 
 schema_view = get_swagger_view(title='PreventionPoint API')
+
 
 
 urlpatterns = [

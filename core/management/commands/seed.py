@@ -48,18 +48,23 @@ fake.add_provider(FrequencyProvider)
 def run_seed(self):
     call_command('migrate')
     call_command('flush')
-    call_command('loaddata', 'users')
     create_groups()
-    create_roles()
+    create_users()
+    add_users_to_groups()
     create_participants()
 
 def create_users(output=True):
     for group in DEFAULT_GROUPS:
-        uname = re.sub(" ", "", group)
-        email = "{}@{}.com".format(uname, uname)
-        u = User.objects.create_user(username=uname, email=email)
+        email = "{}@{}.com".format(group, group)
+        u = User.objects.create_user(username=group, email=email)
         u.set_password(DEFAULT_DEV_ENV_PASS)
+
+        if group == ADMIN:
+            u.is_superuser=True
+            u.is_staff=True
+
         u.save()
+
         if output:
             print("Created user: {}".format(email))
 
@@ -73,31 +78,11 @@ def add_users_to_groups(output=True):
     """
     adds user to group of same name
     """
-    
+
     for group in DEFAULT_GROUPS:
         user = User.objects.get(username=group)
-        role_title = Group.objects.get(name=group)        
+        role_title = Group.objects.get(name=group)
         user.groups.add(role_title)
-
-
-def create_roles():
-    for group in DEFAULT_GROUPS:
-        emp_role = EmployeeRole(
-                role_value=group
-            )
-        emp_role.full_clean()
-        emp_role.save()
-        create_employees(emp_role)
-
-def create_employees(emp_role):
-    for _ in range(5):
-        employee = Employee(
-            first_name = fake.first_name(),
-            last_name = fake.last_name(),
-            role = emp_role
-        )
-        employee.full_clean()
-        employee.save()
 
 def create_participants():
     gender_list = list(Gender)
@@ -163,6 +148,4 @@ def create_uds_results(participant):
 
         uds.full_clean()
         uds.save()
-
-
 
