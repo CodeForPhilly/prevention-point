@@ -39,4 +39,4 @@ class ParticipantListView(generics.ListAPIView):
             queryset = queryset.filter(date_of_birth=dob)
 
         return queryset
-    
+

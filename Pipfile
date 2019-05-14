@@ -12,6 +12,7 @@ djangorestframework-simplejwt = "*"
 djangorestframework = "*"
 pyyaml = "*"
 faker = "*"
+django-rest-swagger = "*"
 
 [requires]
 python_version = "3.7"
