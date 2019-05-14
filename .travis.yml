@@ -6,7 +6,7 @@ matrix:
         - "3.7"
       install:
         - "pip install pipenv"
-        - "pipenv sync"
+        - "pipenv sync --dev"
       script:
         - pipenv run python manage.py test
         - pipenv run flake8 || true
