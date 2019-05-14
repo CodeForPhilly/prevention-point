@@ -1,12 +1,6 @@
 # Prevention Point URS Frontend
 The frontend app for the Prevention Point Unified Reporting System (URS) project.
 
-## Get started:
- - Make sure you have [`node (>=10.15.3)`](https://nodejs.org/en/) and [`yarn (>=1.15.2)`](https://yarnpkg.com/en/docs/install) installed 
- - From the project's root directory, `cd frontend`
- - Run `yarn` to install dependencies
- - Run `yarn dev` and navigate to `localhost:1234`
-
 ## Project Frameworks and Tools
  - Main Framework: [React](https://reactjs.org/)
  - UI Framework: [Material UI](https://material-ui.com/)
