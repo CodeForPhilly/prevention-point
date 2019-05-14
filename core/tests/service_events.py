@@ -1,5 +1,5 @@
 import json
-from django.urls import reverse
+from rest_framework.reverse import reverse
 from rest_framework import status
 from core.tests.base import BaseTestCase
 from core.models import ServiceEvent, ServiceEventPurpose
