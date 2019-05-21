@@ -1,8 +1,11 @@
 from rest_framework import serializers
 from django.utils import timezone
 from core.programs.models import Program
+from core.services.serializers import ServicesSerializer
 
 class ProgramSerializer(serializers.ModelSerializer):
+    services = ServicesSerializer(many=True, read_only=True)
+
     class Meta:
         model = Program
-        fields = ('id', 'name')
+        fields = ('id', 'name', 'services')
