@@ -30,7 +30,7 @@ const App = observer(() => {
     stillAuthenticated()
   }, []) // Hooks equivalent to "componentDidMount"
 
-  if (!rootStore.authStore.isAuthenticated) {
+  if (rootStore.authStore.isAuthenticated === null) {
     return null
   }
 
