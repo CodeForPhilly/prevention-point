@@ -7,7 +7,7 @@ export class AuthStore {
     this.rootStore = rootStore
   }
 
-  @observable isAuthenticated = false
+  @observable isAuthenticated = null
   @observable username = null
   @observable email = null
 

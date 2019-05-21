@@ -1,6 +1,9 @@
-import React from "react"
+import React, { useEffect, useContext } from "react"
+import { rootStoreContext } from "./stores/rootStore"
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
 import RoutesIndex from "./routes"
+import authApi from "./api/authApi"
+import { observer } from "mobx-react-lite"
 
 const theme = createMuiTheme({
   palette: {
@@ -12,12 +15,30 @@ const theme = createMuiTheme({
   },
 })
 
-const App = () => {
+const App = observer(() => {
+  const rootStore = useContext(rootStoreContext)
+
+  useEffect(() => {
+    async function stillAuthenticated() {
+      const verifyToken = await authApi.verifyToken()
+      if (verifyToken.ok) {
+        rootStore.authStore.setIsAuthenticated(true)
+      } else {
+        rootStore.authStore.setIsAuthenticated(false)
+      }
+    }
+    stillAuthenticated()
+  }, []) // Hooks equivalent to "componentDidMount"
+
+  if (!rootStore.authStore.isAuthenticated) {
+    return null
+  }
+
   return (
     <MuiThemeProvider theme={theme}>
       <RoutesIndex />
     </MuiThemeProvider>
   )
-}
+})
 
 export default App
