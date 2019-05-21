@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from "react"
-import { rootStoreContext } from "./stores/rootStore"
+import { rootStoreContext } from "./stores/RootStore"
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
 import RoutesIndex from "./routes"
 import authApi from "./api/authApi"

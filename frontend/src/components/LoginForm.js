@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react"
 import PropTypes from "prop-types"
 import { Redirect } from "react-router-dom"
 import { observer } from "mobx-react-lite"
-import { rootStoreContext } from "../stores/rootStore"
+import { rootStoreContext } from "../stores/RootStore"
 
 import "../scss/login-form.scss"
 import FormGroup from "@material-ui/core/FormGroup"

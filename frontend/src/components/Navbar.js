@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react"
 import { withRouter } from "react-router-dom"
-import { rootStoreContext } from "../stores/rootStore"
+import { rootStoreContext } from "../stores/RootStore"
 import { observer } from "mobx-react-lite"
 
 import PreventionPointLogo from "../../public/img/logo.svg"

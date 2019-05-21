@@ -2,7 +2,7 @@ import React, { useContext } from "react"
 import PropTypes from "prop-types"
 import { Route, Redirect } from "react-router-dom"
 import { observer } from "mobx-react-lite"
-import { rootStoreContext } from "../stores/rootStore"
+import { rootStoreContext } from "../stores/RootStore"
 
 const PrivateRoute = observer(({ component: Component, ...rest }) => {
   const rootStore = useContext(rootStoreContext)
