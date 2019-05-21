@@ -10,9 +10,11 @@ const create = () => {
   createAuthRefreshInterceptor(api.axiosInstance, refreshAuthLogic(api))
 
   api.addRequestTransform(request => {
-    const jwtAccess = localStorage.getItem("JWT_ACCESS")
-    if (jwtAccess) {
-      request.headers.Authorization = `Bearer ${jwtAccess}`
+    if (!["/token/", "/token/verify/"].includes(request.url)) {
+      const jwtAccess = localStorage.getItem("JWT_ACCESS")
+      if (jwtAccess) {
+        request.headers.Authorization = `Bearer ${jwtAccess}`
+      }
     }
   })
 
