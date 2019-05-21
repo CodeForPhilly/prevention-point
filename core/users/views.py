@@ -41,12 +41,6 @@ class UserViewSet(viewsets.ModelViewSet):
 
         return queryset
 
-    @action(detail=False, methods=['get'])
-    def profile(self, request):
-        instance = request.user
-        serializer = self.get_serializer(instance)
-        return Response(serializer.data)
-
 class GroupViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
