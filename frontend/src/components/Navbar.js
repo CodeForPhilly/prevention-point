@@ -1,21 +1,21 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
+import { withRouter } from "react-router-dom"
+import { rootStoreContext } from "../stores/rootStore"
+import { observer } from "mobx-react-lite"
+
 import PreventionPointLogo from "../../public/img/logo.svg"
-import {
-  AppBar,
-  Badge,
-  Toolbar,
-  IconButton,
-  Menu,
-  MenuItem,
-} from "@material-ui/core"
+import "../scss/navbar.scss"
+import AppBar from "@material-ui/core/AppBar"
+import Badge from "@material-ui/core/Badge"
+import Toolbar from "@material-ui/core/Toolbar"
+import IconButton from "@material-ui/core/IconButton"
+import Menu from "@material-ui/core/Menu"
+import MenuItem from "@material-ui/core/MenuItem"
 import AccountCircle from "@material-ui/icons/AccountCircle"
 import NotificationsIcon from "@material-ui/icons/Notifications"
-import { withRouter } from "react-router-dom"
-import fakeAuth from "../auth"
 
-import "../scss/navbar.scss"
-
-const NavHeader = () => {
+const NavHeader = observer(() => {
+  const rootStore = useContext(rootStoreContext)
   const [anchorEl, setAnchorEl] = useState(null)
   const isMenuOpen = Boolean(anchorEl)
 
@@ -27,13 +27,14 @@ const NavHeader = () => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      {fakeAuth.isAuthenticated ? (
+      {rootStore.authStore.isAuthenticated ? (
         <div>
           <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
           <MenuItem
             onClick={() => {
               handleMenuClose()
-              fakeAuth.signout(() => history.push("/"))
+              rootStore.authStore.logout()
+              history.push("/")
             }}
           >
             Sign out
@@ -81,6 +82,6 @@ const NavHeader = () => {
       </Toolbar>
     </AppBar>
   )
-}
+})
 
 export default NavHeader

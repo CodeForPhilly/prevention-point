@@ -1,13 +1,11 @@
 import React from "react"
 import "../scss/participant-search.scss"
-import {
-  FormGroup,
-  FormControl,
-  InputLabel,
-  Input,
-  Button,
-  Typography,
-} from "@material-ui/core"
+import FormGroup from "@material-ui/core/FormGroup"
+import FormControl from "@material-ui/core/FormControl"
+import InputLabel from "@material-ui/core/InputLabel"
+import Input from "@material-ui/core/Input"
+import Button from "@material-ui/core/Button"
+import Typography from "@material-ui/core/Typography"
 
 const ParticipantSearch = () => {
   return (

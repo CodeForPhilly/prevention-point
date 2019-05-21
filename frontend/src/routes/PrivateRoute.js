@@ -1,14 +1,16 @@
-import React from "react"
+import React, { useContext } from "react"
 import PropTypes from "prop-types"
-import fakeAuth from "../auth"
 import { Route, Redirect } from "react-router-dom"
+import { observer } from "mobx-react-lite"
+import { rootStoreContext } from "../stores/rootStore"
 
-function PrivateRoute({ component: Component, ...rest }) {
+const PrivateRoute = observer(({ component: Component, ...rest }) => {
+  const rootStore = useContext(rootStoreContext)
   return (
     <Route
       {...rest}
       render={({ location, ...props }) =>
-        fakeAuth.isAuthenticated ? (
+        rootStore.authStore.isAuthenticated ? (
           <Component {...props} />
         ) : (
           <Redirect
@@ -21,7 +23,7 @@ function PrivateRoute({ component: Component, ...rest }) {
       }
     />
   )
-}
+})
 
 PrivateRoute.propTypes = {
   component: PropTypes.func,

@@ -1,30 +1,27 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import PropTypes from "prop-types"
-import "../scss/login-form.scss"
-import {
-  FormGroup,
-  FormControl,
-  InputLabel,
-  Input,
-  Button,
-} from "@material-ui/core"
 import { Redirect } from "react-router-dom"
-import fakeAuth from "../auth"
+import { observer } from "mobx-react-lite"
+import { rootStoreContext } from "../stores/rootStore"
 
-const LoginForm = ({ location }) => {
+import "../scss/login-form.scss"
+import FormGroup from "@material-ui/core/FormGroup"
+import FormControl from "@material-ui/core/FormControl"
+import InputLabel from "@material-ui/core/InputLabel"
+import Input from "@material-ui/core/Input"
+import Button from "@material-ui/core/Button"
+
+const LoginForm = observer(({ location }) => {
+  const rootStore = useContext(rootStoreContext)
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
-  const [redirectToReferrer, setRedirectToReferrer] = useState(false)
-
-  const login = () => {
-    fakeAuth.authenticate(() => {
-      setRedirectToReferrer(true)
-    })
-  }
-
   const { from } = location.state || { from: { pathname: "/" } }
 
-  if (redirectToReferrer) return <Redirect to={from} />
+  const login = () => {
+    rootStore.authStore.login(username, password)
+  }
+
+  if (rootStore.authStore.isAuthenticated) return <Redirect to={from} />
 
   return (
     <div className="login-form">
@@ -55,7 +52,7 @@ const LoginForm = ({ location }) => {
           </FormControl>
         </FormGroup>
         <Button
-          type="submit"
+          type="button"
           variant="contained"
           style={{ marginTop: "10px" }}
           onClick={login}
@@ -65,7 +62,7 @@ const LoginForm = ({ location }) => {
       </form>
     </div>
   )
-}
+})
 
 LoginForm.propTypes = {
   location: PropTypes.object,
