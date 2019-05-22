@@ -8,6 +8,7 @@ class ServiceViewSet(ModelViewSet):
     serializer_class = ServiceSerializer
     permission_groups = {
         'retrieve': [FRONT_DESK, CASE_MANAGER, ADMIN],
-        'list': [FRONT_DESK, CASE_MANAGER, ADMIN]
+        'list': [FRONT_DESK, CASE_MANAGER, ADMIN],
+        'update': [FRONT_DESK, CASE_MANAGER, ADMIN]
     }
   

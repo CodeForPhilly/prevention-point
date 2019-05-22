@@ -38,7 +38,7 @@ class UserViewSet(ModelViewSet):
 
         return queryset
 
-class GroupViewSet(viewsets.ModelViewSet):
+class GroupViewSet(ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
     """

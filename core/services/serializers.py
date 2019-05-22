@@ -8,3 +8,9 @@ class ServiceSerializer(serializers.ModelSerializer):
   class Meta:
       model = Service
       fields = ('id', 'name', 'program', 'available')
+
+class ServiceforProgramSerializer(serializers.ModelSerializer):
+  
+  class Meta:
+      model = Service
+      fields = ('id', 'name', 'available')
