@@ -2,14 +2,13 @@ import React, { useState } from "react"
 import PropTypes from "prop-types"
 import AllQueues from "../components/AllQueues"
 import ParticipantSearch from "../components/ParticipantSearch"
-import {
-  Grid,
-  Paper,
-  IconButton,
-  Typography,
-  Drawer,
-  Hidden,
-} from "@material-ui/core"
+
+import Grid from "@material-ui/core/Grid"
+import Paper from "@material-ui/core/Paper"
+import IconButton from "@material-ui/core/IconButton"
+import Typography from "@material-ui/core/Typography"
+import Drawer from "@material-ui/core/Drawer"
+import Hidden from "@material-ui/core/Hidden"
 import { withStyles } from "@material-ui/core/styles"
 import SearchIcon from "@material-ui/icons/Search"
 

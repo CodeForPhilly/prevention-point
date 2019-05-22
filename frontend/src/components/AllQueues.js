@@ -1,7 +1,11 @@
 import React, { useState } from "react"
 import PropTypes from "prop-types"
-import { Tabs, Tab, withStyles, Typography } from "@material-ui/core"
 import QueueTable from "./QueueTable"
+
+import Tabs from "@material-ui/core/Tabs"
+import Tab from "@material-ui/core/Tab"
+import Typography from "@material-ui/core/Typography"
+import { withStyles } from "@material-ui/core/styles"
 
 const styles = theme => ({
   root: {

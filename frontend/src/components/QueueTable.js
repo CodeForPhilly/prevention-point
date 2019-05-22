@@ -1,8 +1,11 @@
 import React, { useState } from "react"
 import PropTypes from "prop-types"
-import { Paper, withStyles, Checkbox } from "@material-ui/core"
-import _ from "lodash"
+import { set, get } from "lodash"
 import MaterialTable from "material-table"
+
+import Paper from "@material-ui/core/Paper"
+import Checkbox from "@material-ui/core/Checkbox"
+import { withStyles } from "@material-ui/core/styles"
 
 const styles = theme => ({
   root: {
@@ -23,7 +26,7 @@ function QueueTable({ queueName, rows, classes }) {
 
   const [state, setState] = useState(rowsInitialState)
   const handleCheck = (id, value) => event => {
-    const newState = _.set(state, [id, value], event.target.checked)
+    const newState = set(state, [id, value], event.target.checked)
     setState({
       ...state,
       ...newState,
@@ -32,7 +35,7 @@ function QueueTable({ queueName, rows, classes }) {
 
   const checkbox = (rowData, value) => (
     <Checkbox
-      checked={_.get(state, [rowData.id, value])}
+      checked={get(state, [rowData.id, value])}
       onChange={handleCheck(rowData.id, value)}
     />
   )
