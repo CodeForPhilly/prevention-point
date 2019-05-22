@@ -1,0 +1,36 @@
+- model: core.service
+  pk: 1
+  fields:
+    name: UDS
+    program: 1
+    available: false
+- model: core.service
+  pk: 2
+  fields:
+    name: case management
+    program: 1
+    available: true
+- model: core.service
+  pk: 3
+  fields:
+    name: medical
+    program: 1
+    available: false
+- model: core.service
+  pk: 4
+  fields:
+    name: document review
+    program: 2
+    available: false
+- model: core.service
+  pk: 5
+  fields:
+    name: law education
+    program: 2
+    available: false
+- model: core.service
+  pk: 6
+  fields:
+    name: needle exchange
+    program: 3
+    available: false

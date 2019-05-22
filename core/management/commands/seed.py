@@ -6,6 +6,8 @@ from faker import Faker
 from faker.providers import BaseProvider
 from core.models import UrineDrugScreen,Medication,EmployeeRole,Employee,BehavioralHealthNotes
 from core.participants.models import Participant, Gender, Race
+from core.services.models import Service
+from core.programs.models import Program
 from core.permissions import CASE_MANAGER, FRONT_DESK, ADMIN
 from datetime import datetime, date
 import random, re
