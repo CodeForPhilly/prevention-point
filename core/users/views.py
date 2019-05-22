@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User, Group
-from rest_framework import viewsets, generics
+from rest_framework import viewsets
 from core.users.serializers import UserSerializer, GroupSerializer
 from core.permissions import HasGroupPermission
 
@@ -38,7 +38,6 @@ class UserViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(role__role_value__icontains=groups)
 
         return queryset
-
 
 class GroupViewSet(viewsets.ModelViewSet):
     """
