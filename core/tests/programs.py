@@ -15,9 +15,9 @@ class ProgramsTests(BaseTestCase):
         self.seed_fake_users()
 
     def test_get_programs_list(self):
-      """ 
-      Ensures there are the right number of programs and can GET
-      """
+        """ 
+        Ensures there are the right number of programs and can GET
+        """
         headers = self.auth_headers_for_user('admin')
         response = self.client.get( '/api/programs/', follow=True, **headers)
       
@@ -25,9 +25,9 @@ class ProgramsTests(BaseTestCase):
         self.assertEqual(Program.objects.count(), 3)
 
     def test_services_populate_on_programs(self):
-      """
-      Ensures that all associated services populate on program objects
-      """
+        """
+        Ensures that all associated services populate on program objects
+        """
         headers = self.auth_headers_for_user('admin')
         random_pk = random.randint(1, 3)
         random_program = Program.objects.filter(pk__exact=random_pk).values()[0]
