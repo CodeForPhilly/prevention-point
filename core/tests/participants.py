@@ -1,5 +1,4 @@
 from django.contrib.auth.models import Group, User
-
 from core.tests.base import BaseTestCase
 from core.participants.models import Participant
 
