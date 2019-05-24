@@ -6,6 +6,11 @@ from rest_framework import status
 import random
 import json
 
+def get_random_service():
+    random_pk = random.randint(1, 6)
+    random_service = Service.objects.filter(pk__exact=random_pk).values()[0]
+    return random_service
+
 class ServicesTests(BaseTestCase):
     fixtures = ['services.yaml', 'programs.yaml']
     def setUp(self):
@@ -24,16 +29,21 @@ class ServicesTests(BaseTestCase):
    
     def test_update_availability(self):
         headers = self.auth_headers_for_user('admin')
-        random_pk = random.randint(1, 6)
-        
-        random_service = Service.objects.filter(pk__exact=6).values()[0]
+        random_service = get_random_service()
         service_availability = random_service['available']
         random_service['available'] = not service_availability
-        route = '/api/services/{}/'.format(random_pk)
+        route = '/api/services/{}/'.format(random_service['id'])
         response = self.client.put(route, json.dumps(random_service), content_type='application/json', follow=True, **headers)
-        updated_availabilty = Service.objects.get(pk=random_pk).available
+        updated_availabilty = Service.objects.get(pk=random_service['id']).available
         self.assertNotEqual(service_availability, updated_availabilty)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_disallow_service_name_change(self):  
-      print('hi')
+        headers = self.auth_headers_for_user('admin')
+        random_service = get_random_service()
+        service_name = random_service['name']
+        random_service['name'] = 'Some nonexistent service'
+        route = '/api/services/{}/'.format(random_service['id'])
+        response = self.client.put(route, json.dumps(random_service), content_type='application/json', follow=True, **headers)
+        unchanged_name = Service.objects.get(pk=random_service['id']).name
+        self.assertEqual(service_name, unchanged_name)
