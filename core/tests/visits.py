@@ -2,7 +2,7 @@ import json
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
-from core.models import Visit
+from core.visits.models import Visit
 from core.tests.base import BaseTestCase
 from django.contrib.auth.models import Group, User
 

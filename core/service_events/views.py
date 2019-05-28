@@ -1,5 +1,5 @@
 from core.viewsets import ModelViewSet
-from core.models import ServiceEvent
+from core.service_events.models import ServiceEvent
 from core.service_events.serializer import ServiceEventSerializer
 from core.permissions import FRONT_DESK, CASE_MANAGER, ADMIN
 

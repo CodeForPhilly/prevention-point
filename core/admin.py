@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Participant, Medication, UrineDrugScreen, CaseManagement, Appointment, Employee, BehavioralHealthNotes
+from core.models import Participant, Medication, CaseManagement, Appointment, Employee, BehavioralHealthNotes
+from core.service_events.models import ServiceEvent, UrineDrugScreen
 
 # Register your models here.
 admin.site.register(Medication)
@@ -8,6 +9,7 @@ admin.site.register(CaseManagement)
 admin.site.register(Appointment)
 admin.site.register(Employee)
 admin.site.register(BehavioralHealthNotes)
+admin.site.register(ServiceEvent)
 
 class BaseInline(admin.StackedInline):
     extra = 0

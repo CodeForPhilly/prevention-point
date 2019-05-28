@@ -4,7 +4,9 @@ from django.contrib.auth.models import Group, User
 
 from faker import Faker
 from faker.providers import BaseProvider
-from core.models import UrineDrugScreen,Medication,EmployeeRole,Employee,BehavioralHealthNotes
+from core.service_events.models import ServiceEventPurpose, UrineDrugScreen
+from core.models import Medication,EmployeeRole,Employee,BehavioralHealthNotes
+from core.visits.models import Visit
 from core.participants.models import Participant, Gender, Race
 from core.permissions import CASE_MANAGER, FRONT_DESK, ADMIN
 from datetime import datetime, date
@@ -106,11 +108,23 @@ def create_participants():
             )
         participant.full_clean()
         participant.save()
-        create_uds_results(participant)
-        create_medication(participant)
+        create_visit(participant)
 
 def random_bool():
     return bool(random.getrandbits(1))
+
+def create_visit(participant):
+    create_medication(participant)
+
+    for _ in range(random.randint(2,10)):
+        visit_date = fake.date_time_between(start_date=participant.start_date, end_date='+5y')
+        visit = Visit(
+                    participant=participant,
+                    created_at=visit_date
+                )
+        visit.full_clean()
+        visit.save()
+        create_uds_results(visit)
 
 def create_medication(participant):
     meds = Medication(
@@ -122,30 +136,29 @@ def create_medication(participant):
     meds.full_clean()
     meds.save()
 
-def create_uds_results(participant):
-    for _ in range(random.randint(2,10)):
-        test_date = fake.date_time_between(start_date=participant.start_date, end_date='+5y')
+def create_uds_results(visit):
+    participant = visit.participant
+    uds = UrineDrugScreen(
+            visit=visit,
+            participant=participant,
+            purpose=ServiceEventPurpose.SEEN.name,
+            uds_temp=random.randint(85,105),
+            date_of_test=visit.created_at,
+            pregnancy_test=random_bool(),
+            opiates=random_bool(),
+            fentanyl=random_bool(),
+            bup=random_bool(),
+            coc=random_bool(),
+            amp=random_bool(),
+            m_amp=random_bool(),
+            thc=random_bool(),
+            mtd=random_bool(),
+            pcp=random_bool(),
+            bar=random_bool(),
+            bzo=random_bool(),
+            tca=random_bool(),
+            oxy=random_bool(),
+        )
 
-        uds = UrineDrugScreen(
-                participant=participant,
-                uds_temp=random.randint(85,105),
-                date_of_test=test_date,
-                pregnancy_test=random_bool(),
-                opiates=random_bool(),
-                fentanyl=random_bool(),
-                bup=random_bool(),
-                coc=random_bool(),
-                amp=random_bool(),
-                m_amp=random_bool(),
-                thc=random_bool(),
-                mtd=random_bool(),
-                pcp=random_bool(),
-                bar=random_bool(),
-                bzo=random_bool(),
-                tca=random_bool(),
-                oxy=random_bool(),
-            )
-
-        uds.full_clean()
-        uds.save()
-
+    uds.full_clean()
+    uds.save()

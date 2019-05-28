@@ -17,6 +17,7 @@ djangorestframework = "*"
 pyyaml = "*"
 faker = "*"
 django-rest-swagger = "*"
+django-model-utils = "*"
 
 [requires]
 python_version = "3.7"

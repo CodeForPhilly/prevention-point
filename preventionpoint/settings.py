@@ -106,7 +106,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+SWAGGER_SETTINGS = {
+    'USE_SESSION_AUTH': False,
+    'IGNORE_USER_PERMISSIONS': True
+}
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 

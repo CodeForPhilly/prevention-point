@@ -1,7 +1,8 @@
 from core.viewsets import ModelViewSet
-from core.models import Visit
-from core.visits.serializer import VisitSerializer
 from core.permissions import FRONT_DESK, ADMIN, CASE_MANAGER
+
+from .models import Visit
+from .serializer import VisitSerializer
 
 class VisitViewSet(ModelViewSet):
     """

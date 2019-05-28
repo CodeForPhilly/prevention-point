@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.utils import timezone
-from core.models import Visit
 
+from .models import Visit
 
 class VisitSerializer(serializers.ModelSerializer):
     class Meta:

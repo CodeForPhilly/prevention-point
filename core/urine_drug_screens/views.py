@@ -1,5 +1,5 @@
 from core.viewsets import ModelViewSet
-from core.models import UrineDrugScreen
+from core.service_events.models import UrineDrugScreen
 from core.permissions import CASE_MANAGER, ADMIN
 from core.urine_drug_screens.serializers import UrineDrugScreenSerializer
 
