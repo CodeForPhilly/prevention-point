@@ -10,8 +10,6 @@ class ProgramsTests(BaseTestCase):
     fixtures = ['services.yaml', 'programs.yaml']
     def setUp(self):
         super().setUp()
-        call_command('loaddata', 'core/fixtures/services.yaml', verbosity=0)
-        call_command('loaddata', 'core/fixtures/programs.yaml', verbosity=0)
         self.seed_fake_users()
 
     def test_get_programs_list(self):
