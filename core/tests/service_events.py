@@ -4,16 +4,15 @@ from rest_framework import status
 from core.tests.base import BaseTestCase
 from core.service_events.models import ServiceEvent, ServiceEventPurpose
 
-
 class ServiceEventTests(BaseTestCase):
-    fixtures = ['participants.yaml', 'visits.yaml', 'groups.yaml', 'users.yaml']
+    fixtures = ['programs.yaml', 'services.yaml', 'participants.yaml', 'visits.yaml', 'groups.yaml', 'users.yaml']
 
     def test_create_service_event(self):
         """
         Ensure we can create a new service event
         """
         url = reverse('serviceevent-list')
-        data = {'visit': 1, 'purpose': ServiceEventPurpose.ARRIVED.name}
+        data = {'visit': 1, 'service': 1, 'purpose': ServiceEventPurpose.ARRIVED.name}
         headers = self.auth_headers_for_user('case_manager')
         headers['format'] = 'json'
         response = self.client.post(url, data, **headers)
@@ -33,7 +32,7 @@ class ServiceEventTests(BaseTestCase):
 
         # create 5 service events for 5 visits
         for visit in range(1, 6):
-            data = {'visit': visit, 'purpose': ServiceEventPurpose.SEEN.name}
+            data = {'visit': visit, 'service': 1, 'purpose': ServiceEventPurpose.SEEN.name}
             post_response = self.client.post(url, data, **headers)
             self.assertEqual(
                 post_response.status_code, status.HTTP_201_CREATED

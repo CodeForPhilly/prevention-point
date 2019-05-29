@@ -1,6 +1,7 @@
 from django.contrib import admin
 from core.models import Participant, Medication, CaseManagement, Appointment, Employee, BehavioralHealthNotes
-from core.service_events.models import ServiceEvent, UrineDrugScreen
+from core.service_events.models import ServiceEvent
+from core.urine_drug_screens.models import UrineDrugScreen
 
 # Register your models here.
 admin.site.register(Medication)

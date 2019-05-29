@@ -4,8 +4,9 @@ from django.contrib.auth.models import Group, User
 
 from faker import Faker
 from faker.providers import BaseProvider
-from core.service_events.models import ServiceEventPurpose, UrineDrugScreen
-from core.models import Medication,EmployeeRole,Employee,BehavioralHealthNotes
+from core.service_events.models import ServiceEventPurpose
+from core.urine_drug_screens.models import UrineDrugScreen
+from core.models import Medication, EmployeeRole, Employee, BehavioralHealthNotes
 from core.visits.models import Visit
 from core.participants.models import Participant, Gender, Race
 from core.permissions import CASE_MANAGER, FRONT_DESK, ADMIN
@@ -50,6 +51,7 @@ fake.add_provider(FrequencyProvider)
 def run_seed(self):
     call_command('migrate')
     call_command('flush')
+    call_command('loaddata', 'programs.yaml', 'services.yaml')
     create_groups()
     create_users()
     add_users_to_groups()

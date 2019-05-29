@@ -6,4 +6,4 @@ from core.service_events.models import ServiceEvent
 class ServiceEventSerializer(serializers.ModelSerializer):
     class Meta:
         model = ServiceEvent
-        fields = ('id', 'visit', 'purpose')
+        fields = ('id', 'service', 'visit', 'purpose')

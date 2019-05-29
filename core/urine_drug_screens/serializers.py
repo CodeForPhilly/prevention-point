@@ -1,5 +1,6 @@
-from core.service_events.models import UrineDrugScreen
 from rest_framework import serializers
+
+from .models import UrineDrugScreen
 
 class UrineDrugScreenSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
