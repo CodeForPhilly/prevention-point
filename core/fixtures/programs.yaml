@@ -1,0 +1,12 @@
+- model: core.program
+  pk: 1
+  fields:
+    name: STEP
+- model: core.program
+  pk: 2
+  fields:
+    name: Legal Services
+- model: core.program
+  pk: 3
+  fields:
+    name: Needle Exchange
