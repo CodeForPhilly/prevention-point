@@ -9,6 +9,7 @@ flake8 = "*"
 flake8-django = "*"
 flake8-string-format = "*"
 flake8-pep3101 = "*"
+black = "==19.3b0"
 
 [packages]
 django = "*"
