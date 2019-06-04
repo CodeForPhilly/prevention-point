@@ -2,7 +2,7 @@ import json
 from rest_framework.reverse import reverse
 from rest_framework import status
 from core.tests.base import BaseTestCase
-from core.service_events.models import ServiceEvent, ServiceEventPurpose
+from core.models import ServiceEvent, ServiceEventPurpose, UrineDrugScreen
 
 class ServiceEventTests(BaseTestCase):
     fixtures = ['programs.yaml', 'services.yaml', 'participants.yaml', 'visits.yaml', 'groups.yaml', 'users.yaml']

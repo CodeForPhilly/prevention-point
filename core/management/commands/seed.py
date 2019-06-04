@@ -4,11 +4,7 @@ from django.contrib.auth.models import Group, User
 
 from faker import Faker
 from faker.providers import BaseProvider
-from core.service_events.models import ServiceEventPurpose
-from core.urine_drug_screens.models import UrineDrugScreen
-from core.models import Medication, EmployeeRole, Employee, BehavioralHealthNotes
-from core.visits.models import Visit
-from core.participants.models import Participant, Gender, Race
+from core.models import ServiceEventPurpose, UrineDrugScreen, Medication, BehavioralHealthNotes, Visit, Participant, Gender, Race
 from core.permissions import CASE_MANAGER, FRONT_DESK, ADMIN
 from datetime import datetime, date
 import random, re

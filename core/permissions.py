@@ -1,12 +1,9 @@
-
 from django.contrib.auth.models import User, Group
 from rest_framework import permissions
-from core.models import EmployeeRole
 
 FRONT_DESK = 'front_desk'
 CASE_MANAGER = 'case_manager'
 ADMIN = 'admin'
-
 
 def is_in_group(user, group_name):
     try:
