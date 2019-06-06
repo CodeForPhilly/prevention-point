@@ -4,7 +4,7 @@ from core.permissions import HasGroupPermission
 import os
 
 class ModelViewSet(viewsets.ModelViewSet):
-    if os.getenv("SKIP_PERMISSIONS"):
+    if os.getenv("SKIP_PERMISSIONS") == "yes":
         permission_classes = []
     else:
         permission_classes = [HasGroupPermission, IsAuthenticated]

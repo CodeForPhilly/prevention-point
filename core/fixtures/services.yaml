@@ -4,33 +4,39 @@
     name: UDS
     program: 1
     available: false
+    data_klass_name: UrineDrugScreen
 - model: core.service
   pk: 2
   fields:
     name: case management
     program: 1
     available: true
+    data_klass_name: CaseManagement
 - model: core.service
   pk: 3
   fields:
     name: medical
     program: 1
     available: false
+    data_klass_name: Medication
 - model: core.service
   pk: 4
   fields:
     name: document review
     program: 2
     available: false
+    data_klass_name: TBD
 - model: core.service
   pk: 5
   fields:
     name: law education
     program: 2
     available: false
+    data_klass_name: TBD
 - model: core.service
   pk: 6
   fields:
     name: needle exchange
     program: 3
     available: false
+    data_klass_name: TBD

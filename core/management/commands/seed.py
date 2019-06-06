@@ -4,7 +4,7 @@ from django.contrib.auth.models import Group, User
 
 from faker import Faker
 from faker.providers import BaseProvider
-from core.models import ServiceEventPurpose, UrineDrugScreen, Medication, BehavioralHealthNotes, Visit, Participant, Gender, Race
+from core.models import ServiceEventData, ServiceEvent, ServiceEventPurpose, UrineDrugScreen, Medication, BehavioralHealthNotes, Visit, Participant, Gender, Race, Service
 from core.permissions import CASE_MANAGER, FRONT_DESK, ADMIN
 from datetime import datetime, date
 import random, re
@@ -29,9 +29,7 @@ class MedsProvider(BaseProvider):
         meds = [u'film', u'tab', u'vivitrol']
         return random.choices(meds)
 
-
 fake.add_provider(MedsProvider)
-
 
 class FrequencyProvider(BaseProvider):
     __provider__ = "frequency"
@@ -113,7 +111,7 @@ def random_bool():
 
 def create_visit(participant):
     create_medication(participant)
-
+    uds_service = Service.objects.get(data_klass_name="UrineDrugScreen")
     for _ in range(random.randint(2,10)):
         visit_date = fake.date_time_between(start_date=participant.start_date, end_date='+5y')
         visit = Visit(
@@ -122,7 +120,7 @@ def create_visit(participant):
                 )
         visit.full_clean()
         visit.save()
-        create_uds_results(visit)
+        create_uds_results(visit, uds_service)
 
 def create_medication(participant):
     meds = Medication(
@@ -134,12 +132,27 @@ def create_medication(participant):
     meds.full_clean()
     meds.save()
 
-def create_uds_results(visit):
+def create_service_event_arrived(visit, service):
+    event = ServiceEvent(visit=visit, service=service, purpose=ServiceEventPurpose.ARRIVED.name)
+    event.save()
+    return event
+
+def create_service_event_called(visit, service):
+    event = ServiceEvent(visit=visit, service=service, purpose=ServiceEventPurpose.CALLED.name)
+    event.save()
+    return event
+
+def create_uds_results(visit, service):
     participant = visit.participant
+
+    create_service_event_arrived(visit, service)
+    create_service_event_called(visit, service)
+
+    seen = ServiceEvent(visit=visit, service=service, purpose=ServiceEventPurpose.SEEN.name)
+    seen.save()
+
     uds = UrineDrugScreen(
-            visit=visit,
-            participant=participant,
-            purpose=ServiceEventPurpose.SEEN.name,
+            service_event=seen,
             uds_temp=random.randint(85,105),
             date_of_test=visit.created_at,
             pregnancy_test=random_bool(),

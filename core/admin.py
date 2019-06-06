@@ -29,7 +29,6 @@ class ParticipantAdmin(admin.ModelAdmin):
             AppointmentInline,
             MedicationInline,
             CaseManagement,
-            UrineDrugScreenInline,
             ]
 
 admin.site.register(Participant, ParticipantAdmin)
