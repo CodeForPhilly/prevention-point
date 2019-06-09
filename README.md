@@ -38,7 +38,7 @@ $ docker-compose run app python /app/manage.py seed
  $ docker-compose exec db psql -U postgres
 ```
 
-Front-end
+### Front-end
  - Make sure you have [`node (>=10.15.3)`](https://nodejs.org/en/) and [`yarn (>=1.15.2)`](https://yarnpkg.com/en/docs/install) installed
  - From the project's root directory, `cd frontend`
  - Run `yarn` to install dependencies
