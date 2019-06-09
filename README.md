@@ -14,14 +14,19 @@ This is a Code for Philly project operating under their code of conduct.
 
 ## Getting Started
 Back-end
+- Install [docker-compose](https://docs.docker.com/compose/install/)
 - Build the container images and migrate the database
     `$ docker-compose run app python /app/manage.py migrate --noinput`
 - Seed the database:
     `$ docker-compose run app python /app/manage.py seed`
 - Create a superuser:
     `$ docker-compose run app python /app/manage.py createsuperuser`
-- Start a local development server on localhost:8000/admin:
+- Start the app:
     `$ docker-compose up -d`
+- Now you can:
+  - Navigate to the django admin page at localhost:8000/admin
+  - Connect to the running postgres instance
+      `$ docker-compose exec db psql -U postgres`
 
 Front-end
  - Make sure you have [`node (>=10.15.3)`](https://nodejs.org/en/) and [`yarn (>=1.15.2)`](https://yarnpkg.com/en/docs/install) installed
@@ -30,7 +35,6 @@ Front-end
  - Run `yarn dev` and navigate to `localhost:1234`
 
 Other tools
-TODO: move dev to postgres
 ## Links
 [Air Table](https://airtable.com/invite/l?inviteId=invl5OM0ZZXjJQhQo&inviteToken=e57abd5bb2be87cc4156a56a99097db9257ea0c11eb5d737389e71b4239979f7) to track progress
 
