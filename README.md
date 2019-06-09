@@ -13,20 +13,30 @@ This project would work to migrate all of the disparate data sources into one sy
 This is a Code for Philly project operating under their code of conduct.
 
 ## Getting Started
-Back-end
+### Back-end
 - Install [docker-compose](https://docs.docker.com/compose/install/)
 - Build the container images and migrate the database
-    `$ docker-compose run app python /app/manage.py migrate --noinput`
+```bash
+$ docker-compose run app python /app/manage.py migrate --noinput`
+```
 - Seed the database:
-    `$ docker-compose run app python /app/manage.py seed`
+ ```bash
+$ docker-compose run app python /app/manage.py seed
+```
 - Create a superuser:
-    `$ docker-compose run app python /app/manage.py createsuperuser`
+ ```bash
+ $ docker-compose run app python /app/manage.py createsuperuser
+```
 - Start the app:
-    `$ docker-compose up -d`
+ ```bash
+ $ docker-compose up -d
+```
 - Now you can:
   - Navigate to the django admin page at localhost:8000/admin
   - Connect to the running postgres instance
-      `$ docker-compose exec db psql -U postgres`
+ ```bash
+ $ docker-compose exec db psql -U postgres
+```
 
 Front-end
  - Make sure you have [`node (>=10.15.3)`](https://nodejs.org/en/) and [`yarn (>=1.15.2)`](https://yarnpkg.com/en/docs/install) installed
