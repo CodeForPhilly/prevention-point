@@ -7,14 +7,31 @@ import {
   Input,
   Button,
   Typography,
+  Grid,
 } from "@material-ui/core"
 
 const ParticipantSearch = () => {
   return (
-    <div className="participant-search">
-      <Typography component="h5" variant="h5" gutterBottom>
-        Participant Search
-      </Typography>
+    <Grid className="participant-search">
+      <Grid align="center">
+        <Typography
+          className="participant-head"
+          component="h5"
+          variant="h5"
+          gutterBottom
+        >
+          Participant Search
+        </Typography>
+        <Typography
+          className="participant-reminder"
+          variant="subtitle3"
+          gutterBottom
+        >
+          <b>Reminder:</b> Search for participant profile prior to creating a
+          new profile
+        </Typography>
+      </Grid>
+
       <form className="participant-search__form">
         <FormGroup className="participant-search__input">
           <FormControl>
@@ -38,7 +55,7 @@ const ParticipantSearch = () => {
           Submit
         </Button>
       </form>
-    </div>
+    </Grid>
   )
 }
 
