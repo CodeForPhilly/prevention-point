@@ -1,5 +1,5 @@
 from django.db import models
-from core.programs.models import Program
+from core.models import Program
 
 class Service(models.Model):
     name = models.CharField(max_length=100)
