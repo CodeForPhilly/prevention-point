@@ -8,7 +8,7 @@ matrix:
         - "pip install pipenv"
         - "pipenv sync --dev"
       script:
-        - pipenv run python manage.py test
+        - pipenv run python manage.py test --settings=preventionpoint.settings.test
         - pipenv run flake8 || true  # Enable flake8 linting as a dry-run
 
     - language: node_js
