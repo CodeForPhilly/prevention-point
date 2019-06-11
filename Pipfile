@@ -18,6 +18,7 @@ djangorestframework = "*"
 pyyaml = "*"
 faker = "*"
 django-rest-swagger = "*"
+psycopg2-binary = "*"
 
 [requires]
 python_version = "3.7"
