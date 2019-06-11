@@ -26,6 +26,17 @@ class VisitTests(BaseTestCase):
         self.assertEqual(Visit.objects.count(), 1)
         self.assertEqual(json.loads(response.content)['participant'], 1)
 
+    def test_create_visit_authorization(self):
+        """
+        Ensure only certain users are allowed to create visits
+        """
+        headers = self.auth_headers_for_user('case_manager')
+        url = reverse('visit-list')
+        data = {'participant': 1}
+        response = self.client.post(url, data, format='json',follow=True, **headers)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
     def test_get_visits(self):
         """
         Ensure we can get a list of visits
