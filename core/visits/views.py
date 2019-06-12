@@ -10,8 +10,8 @@ class VisitViewSet(ModelViewSet):
     queryset = Visit.objects.all()
     serializer_class = VisitSerializer
     permission_groups = {
-        'create':[FRONT_DESK, ADMIN],
-        'list': [FRONT_DESK, CASE_MANAGER, ADMIN],
-        'retrieve': [FRONT_DESK, CASE_MANAGER, ADMIN],
-        'update': [FRONT_DESK, CASE_MANAGER, ADMIN]
+        'create':[FRONT_DESK, CASE_MANAGER, ADMIN],
+        'list': [CASE_MANAGER, ADMIN],
+        'retrieve': [CASE_MANAGER, ADMIN],
+        'update': [CASE_MANAGER, ADMIN]
     }

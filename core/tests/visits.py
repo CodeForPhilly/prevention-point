@@ -26,24 +26,12 @@ class VisitTests(BaseTestCase):
         self.assertEqual(Visit.objects.count(), 1)
         self.assertEqual(json.loads(response.content)['participant'], 1)
 
-    def test_create_visit_authorization(self):
-        """
-        Ensure only certain users are allowed to create visits
-        """
-        headers = self.auth_headers_for_user('case_manager')
-        url = reverse('visit-list')
-        data = {'participant': 1}
-        response = self.client.post(url, data, format='json',follow=True, **headers)
-
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-
     def test_get_visits(self):
         """
         Ensure we can get a list of visits
         """
         url = reverse('visit-list')
-        headers = self.auth_headers_for_user('front_desk')
-
+        headers = self.auth_headers_for_user('case_manager')
 
         # create 3 visits for each participant
         for participant in range(1, 4):
@@ -54,3 +42,13 @@ class VisitTests(BaseTestCase):
         # get the visits we just created
         get_response = self.client.get(url, **headers)
         self.assertEqual(get_response.status_code, status.HTTP_200_OK)
+
+    def test_get_visit_authorization(self):
+        """
+        Ensure front desk cannot retrieve visits
+        """
+        headers = self.auth_headers_for_user('front_desk')
+        url = reverse('visit-list')
+
+        get_response = self.client.get(url, **headers)
+        self.assertEqual(get_response.status_code, status.HTTP_403_FORBIDDEN)
