@@ -1,5 +1,5 @@
 from core.viewsets import ModelViewSet
-from core.services.models import Service
+from core.models import Service
 from core.services.serializers import ServiceSerializer
 from core.permissions import FRONT_DESK, CASE_MANAGER, ADMIN
 
@@ -11,4 +11,4 @@ class ServiceViewSet(ModelViewSet):
         'list': [FRONT_DESK, CASE_MANAGER, ADMIN],
         'update': [FRONT_DESK, CASE_MANAGER, ADMIN]
     }
-  
+
