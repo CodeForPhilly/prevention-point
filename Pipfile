@@ -19,6 +19,7 @@ pyyaml = "*"
 faker = "*"
 django-rest-swagger = "*"
 psycopg2-binary = "*"
+django-model-utils = "*"
 
 [requires]
 python_version = "3.7"
