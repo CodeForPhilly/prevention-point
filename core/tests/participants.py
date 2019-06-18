@@ -21,6 +21,3 @@ class ParticipantsTestCase(BaseTestCase):
     def test_participants_api_when_unauthenticated(self):
         response = self.client.get('/api/participants', follow=True)
         self.assertEqual(401, response.status_code)
-
-    def test_participants_have_no_uds_by_default(self):
-        self.assertEqual(0, self.participant.urinedrugscreen_set.count())
