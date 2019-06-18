@@ -30,6 +30,7 @@ class Participant(models.Model):
     date_of_birth = models.DateField()
     start_date = models.DateField()
     created_at = models.DateTimeField(default=timezone.now)
+
     def __str__(self):
         return '%s %s' % (self.first_name, self.last_name)
 
