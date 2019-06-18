@@ -17,7 +17,7 @@ This is a Code for Philly project operating under their code of conduct.
 - Install [docker-compose](https://docs.docker.com/compose/install/)
 - Build the container images and migrate the database
 ```bash
-$ docker-compose run app python /app/manage.py migrate --noinput`
+$ docker-compose run app python /app/manage.py migrate --noinput
 ```
 - Seed the database:
  ```bash
