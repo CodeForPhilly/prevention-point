@@ -10,6 +10,7 @@ class ServiceEventPurpose(Enum):
 
 class ServiceEvent(models.Model):
     visit = models.ForeignKey(Visit, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(default=timezone.now)
     purpose = models.CharField(
         max_length=10,
         choices=[(tag.name, tag.value) for tag in ServiceEventPurpose]

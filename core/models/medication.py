@@ -6,3 +6,4 @@ class Medication(models.Model):
     medical_delivery = models.CharField(max_length=100)
     medication_name = models.CharField(max_length=100)
     ingestion_frequency = models.IntegerField()
+    created_at = models.DateTimeField(default=timezone.now)
