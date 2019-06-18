@@ -1,6 +1,6 @@
 from django.db import models
-from core.models import Participant
 from django.utils import timezone
+from core.models import Participant
 
 class Visit(models.Model):
     participant = models.ForeignKey(Participant, on_delete=models.CASCADE)

@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils import timezone
+
 from enum import Enum
 
 class Gender(Enum):
