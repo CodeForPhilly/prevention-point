@@ -7,4 +7,5 @@ from .medication import *
 from .program import *
 from .service import *
 from .service_event import *
+from .service_event_data import *
 from .urine_drug_screen import *
