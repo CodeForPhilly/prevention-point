@@ -8,10 +8,28 @@ import Button from "@material-ui/core/Button"
 import Typography from "@material-ui/core/Typography"
 import Drawer from "@material-ui/core/Drawer"
 
+import ExpansionPanel from "@material-ui/core/ExpansionPanel"
+import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary"
+import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails"
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 
-const ParticipantSearch = () => {
+
+
+const ParticipantSearch2 = () => {
   return (
     <div className="participant-search">
+
+    <ExpansionPanel>
+        <ExpansionPanelSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+        >
+        {/*<Typography >Expansion Panel 1</Typography>*/}
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails>
+
+
       <div align="left">
       <Typography
           className="participant-head"
@@ -53,8 +71,11 @@ const ParticipantSearch = () => {
         </Button>
       </form>
      </div>
+    </ExpansionPanelDetails>
+      </ExpansionPanel>
+
     </div>
   )
 }
 
-export default ParticipantSearch
+export default ParticipantSearch2

@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import PropTypes from "prop-types"
 import AllQueues from "../components/AllQueues"
 import ParticipantSearch from "../components/ParticipantSearch"
-
+import ParticipantSearch2 from "../components/ParticipantSearch2"
 import Grid from "@material-ui/core/Grid"
 import Paper from "@material-ui/core/Paper"
 import IconButton from "@material-ui/core/IconButton"
@@ -77,6 +77,7 @@ function ParticipantQueue({ classes }) {
   }
   return (
     <div>
+      
       <Hidden smDown implementation="css">
         <Drawer
           variant="temporary"
@@ -88,9 +89,10 @@ function ParticipantQueue({ classes }) {
             keepMounted: true,
           }}
         >
-          <ParticipantSearch />
+           <ParticipantSearch />
         </Drawer>
       </Hidden>
+      
       <Grid
         container
         style={{ justifyContent: "space-around" }}
@@ -99,7 +101,7 @@ function ParticipantQueue({ classes }) {
       >
         <Hidden mdDown>
           <Grid item md={3}>
-            <ParticipantSearch />
+             <ParticipantSearch2 /> {/*particiantSearch is here*/}
           </Grid>
         </Hidden>
         <Grid item md>
