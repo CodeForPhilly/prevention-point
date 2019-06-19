@@ -15,21 +15,21 @@ This is a Code for Philly project operating under their code of conduct.
 ## Getting Started
 ### Back-end
 - Install [docker-compose](https://docs.docker.com/compose/install/)
-- Build the container images and migrate the database
+- Build the images and start the containers
 ```bash
-$ docker-compose run app python /app/manage.py migrate --noinput
+$ docker-compose up -d
+```
+- Apply migrations:
+ ```bash
+$ docker-compose exec app python /app/manage.py migrate --noinput
 ```
 - Seed the database:
  ```bash
-$ docker-compose run app python /app/manage.py seed
+$ docker-compose exec app python /app/manage.py seed
 ```
 - Create a superuser:
  ```bash
- $ docker-compose run app python /app/manage.py createsuperuser
-```
-- Start the app:
- ```bash
- $ docker-compose up -d
+ $ docker-compose exec app python /app/manage.py createsuperuser
 ```
 - Now you can:
   - Navigate to the django admin page at localhost:8000/admin
