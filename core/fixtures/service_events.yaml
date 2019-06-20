@@ -1,0 +1,15 @@
+- model: core.serviceevent
+  pk: 1
+  fields:
+    visit : 1
+    purpose: arrived
+- model: core.serviceevent
+  pk: 2
+  fields:
+    visit : 1
+    purpose : arrived
+- model: core.serviceevent
+  pk: 3
+  fields:
+    visit : 4
+    purpose: left

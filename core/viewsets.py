@@ -4,3 +4,4 @@ from core.permissions import HasGroupPermission
 
 class ModelViewSet(viewsets.ModelViewSet):
     permission_classes = [HasGroupPermission, IsAuthenticated]
+

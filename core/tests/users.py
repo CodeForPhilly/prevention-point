@@ -6,9 +6,10 @@ from django.contrib.auth.models import Group, User
 
 
 class UsersTests(BaseTestCase):
+    fixtures=['groups.yaml', 'users.yaml']
     def setUp(self):
         super().setUp()
-        self.seed_fake_users()
+      
 
     def test_get_users_list(self):
         """
@@ -16,7 +17,6 @@ class UsersTests(BaseTestCase):
         """
         headers = self.auth_headers_for_user('admin')
         response = self.client.get( '/api/users/', follow=True, **headers)
-
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(User.objects.count(), 3)
 
@@ -25,9 +25,8 @@ class UsersTests(BaseTestCase):
         Ensure we can get a single user
         """
         headers = self.auth_headers_for_user('admin')
-        response = self.client.get( '/api/users/3', follow=True, **headers)
+        response = self.client.get( '/api/users/12/', follow=True, **headers)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-
         self.assertContains(response, 'admin')
         self.assertNotContains(response, 'front_desk')
         self.assertNotContains(response, 'partyparty12345')

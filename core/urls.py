@@ -37,7 +37,7 @@ router.register(r'visits', visits_views.VisitViewSet)
 router.register(r'uds', uds_views.UrineDrugScreenViewSet)
 router.register(r'participants', participant_views.ParticipantViewSet)
 router.register(r'visits', visits_views.VisitViewSet)
-router.register(r'service-events', service_events_views.ServiceEventViewSet)
+router.register(r'service-events', service_events_views.ServiceEventViewSet, basename='service-event')
 router.register(r'programs', programs_views.ProgramViewSet)
 router.register(r'services', services_views.ServiceViewSet)
 
