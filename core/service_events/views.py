@@ -13,6 +13,15 @@ from rest_framework import status
 
 EventsAndServices = namedtuple('EventsAndServices',('service_events', 'availability'),rename=True)
 
+def add_availability_to_response(service_event):
+        availability_queryset = Service.objects.all()
+        availability_serializer = ServiceSerializer(availability_queryset, many=True)
+        events_and_services = dict(
+            service_event = service_event,
+            availability = availability_serializer.data
+        )
+        return events_and_services
+
 class ServiceEventViewSet(viewsets.ViewSet):
     """
     API endpoint that allows Service Events to be viewed or edited
@@ -25,6 +34,8 @@ class ServiceEventViewSet(viewsets.ViewSet):
     #     'list': [FRONT_DESK, CASE_MANAGER, ADMIN]
     # }
 
+    
+
     def list(self, request):
         events_and_services = EventsAndServices(
             service_events = ServiceEvent.objects.all(),
@@ -34,29 +45,19 @@ class ServiceEventViewSet(viewsets.ViewSet):
         return Response(serializer.data)
   
     def retrieve(self, request, pk=None):
-            queryset = ServiceEvent.objects.get(pk=pk)
-            event_serializer = ServiceEventSerializer(queryset)
-            print(event_serializer.data)
-            if not queryset:
+            try:
+                queryset = ServiceEvent.objects.get(pk=pk)
+            except ServiceEvent.DoesNotExist:
                 return Response(status=status.HTTP_404_NOT_FOUND)
-            availability_queryset = Service.objects.all()
-            availability_serializer = ServiceSerializer(availability_queryset, many=True)
-            events_and_services = dict(
-                service_events = event_serializer.data,
-                availability = availability_serializer.data
-            )
+            event_serializer = ServiceEventSerializer(queryset)
+            events_and_services = add_availability_to_response(event_serializer.data)    
             return Response(events_and_services)
          
     def create(self, request):
         event_serializer = ServiceEventSerializer(data=request.data)
         if event_serializer.is_valid():
             event_serializer.save()
-            availability_queryset = Service.objects.all()
-            availability_serializer = ServiceSerializer(availability_queryset, many=True)
-            events_and_services = dict(
-                service_events= event_serializer.data,
-                availability= availability_serializer.data
-            )
+            events_and_services = add_availability_to_response(event_serializer.data)    
             return Response(events_and_services, status=status.HTTP_201_CREATED)
         return Response(event_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
