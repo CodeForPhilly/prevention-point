@@ -7,7 +7,6 @@ from core.visits.serializer import VisitSerializer
 
 class ServiceEventSerializer(serializers.ModelSerializer):
 
-
     class Meta:
         model = ServiceEvent
         print(model)

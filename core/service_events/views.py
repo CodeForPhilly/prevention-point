@@ -48,7 +48,28 @@ class ServiceEventViewSet(viewsets.ViewSet):
         serializer = ServiceEventSerializer(data=service_event)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            queryset = ServiceEvent.objects.filter(pk=serializer.data['id'])
+            events_and_services = EventsAndServices(
+                service_events = queryset,
+                availability = Service.objects.all()
+            )
+            event_availabilty_serializer = ServiceEventAndAvailabilitySerializer(events_and_services, context={"request": request})
+            return Response(event_availabilty_serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    # def update(self, request, pk=None):
+    def update(self, request, pk=None):
+        queryset = ServiceEvent.objects.filter(pk=pk)
+        if not queryset:
+             return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = ServiceEventSerializer(queryset, data=service_event)
+        if serializer.is_valid():
+            serializer.save()
+            queryset = ServiceEvent.objects.filter(pk=serializer.data['id'])
+            events_and_services = EventsAndServices(
+                service_events = queryset,
+                availability = Service.objects.all()
+            )
+            event_availabilty_serializer = ServiceEventAndAvailabilitySerializer(events_and_services, context={"request": request})
+            return Response(event_availabilty_serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
