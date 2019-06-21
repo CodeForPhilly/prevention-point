@@ -61,12 +61,12 @@ class ServiceEventViewSet(viewsets.ViewSet):
         queryset = ServiceEvent.objects.filter(pk=pk)
         if not queryset:
              return Response(status=status.HTTP_404_NOT_FOUND)
-        serializer = ServiceEventSerializer(queryset, data=service_event)
+        serializer = ServiceEventSerializer(queryset, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            queryset = ServiceEvent.objects.filter(pk=serializer.data['id'])
+            service_event = ServiceEvent.objects.filter(pk=serializer.data['id'])
             events_and_services = EventsAndServices(
-                service_events = queryset,
+                service_events = service_event,
                 availability = Service.objects.all()
             )
             event_availabilty_serializer = ServiceEventAndAvailabilitySerializer(events_and_services, context={"request": request})
