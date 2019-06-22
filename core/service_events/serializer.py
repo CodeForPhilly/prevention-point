@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from django.utils import timezone
-from core.models import ServiceEvent
-from core.models import Service
+from core.models import ServiceEvent, Service
 from core.services.serializers import ServiceSerializer
 from core.visits.serializer import VisitSerializer 
 
@@ -9,9 +8,8 @@ class ServiceEventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ServiceEvent
-        print(model)
         fields = ('id', 'visit', 'purpose')
 
 class ServiceEventAndAvailabilitySerializer(serializers.Serializer):
     service_events = ServiceEventSerializer(many=True)
-    availability = ServiceSerializer(many=True)
+    service_availability = ServiceSerializer(many=True)
