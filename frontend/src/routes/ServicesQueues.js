@@ -1,14 +1,12 @@
 import React, { useState } from "react"
 import PropTypes from "prop-types"
 import AllQueues from "../components/AllQueues"
-import ParticipantSearch from "../components/ParticipantSearch"
-import ParticipantSearch2 from "../components/ParticipantSearch2"
 import Grid from "@material-ui/core/Grid"
 import Paper from "@material-ui/core/Paper"
 import IconButton from "@material-ui/core/IconButton"
 import Typography from "@material-ui/core/Typography"
-import Drawer from "@material-ui/core/Drawer"
-import Hidden from "@material-ui/core/Hidden"
+//import Drawer from "@material-ui/core/Drawer"
+//import Hidden from "@material-ui/core/Hidden"
 import { withStyles } from "@material-ui/core/styles"
 import SearchIcon from "@material-ui/icons/Search"
 
@@ -71,39 +69,18 @@ const styles = theme => ({
 })
 
 function ParticipantQueue({ classes }) {
-  const [drawerOpen, setDrawerOpen] = useState(false)
+  const [setDrawerOpen] = useState(false)
   const toggleDrawer = open => () => {
     setDrawerOpen(open)
   }
   return (
     <div>
-      
-      <Hidden smDown implementation="css">
-        <Drawer
-          variant="temporary"
-          anchor={"left"}
-          open={drawerOpen}
-          onClose={toggleDrawer(false)}
-          className={classes.drawer}
-          ModalProps={{
-            keepMounted: true,
-          }}
-        >
-           <ParticipantSearch />
-        </Drawer>
-      </Hidden>
-      
       <Grid
         container
         style={{ justifyContent: "space-around" }}
         className="participant-dashboard"
         spacing={16}
       >
-        <Hidden mdDown>
-          <Grid item md={3}>
-             <ParticipantSearch2 /> {/*particiantSearch is here*/}
-          </Grid>
-        </Hidden>
         <Grid item md>
           <Paper>
             <IconButton

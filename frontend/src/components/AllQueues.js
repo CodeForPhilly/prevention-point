@@ -6,6 +6,7 @@ import Tabs from "@material-ui/core/Tabs"
 import Tab from "@material-ui/core/Tab"
 import Typography from "@material-ui/core/Typography"
 import { withStyles } from "@material-ui/core/styles"
+import ParticipantSearch3 from "../components/ParticipantSearch"
 
 const styles = theme => ({
   root: {
@@ -36,6 +37,7 @@ function AllQueues({ queueData, classes }) {
 
   return (
     <div className={classes.root}>
+      <ParticipantSearch3 />
       <Tabs value={value} onChange={handleChange}>
         {queueData.map(queue => (
           <Tab
