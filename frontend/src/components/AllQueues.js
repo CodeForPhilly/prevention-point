@@ -1,16 +1,17 @@
 import React, { useState } from "react"
 import PropTypes from "prop-types"
 import QueueTable from "./QueueTable"
-
 import Tabs from "@material-ui/core/Tabs"
 import Tab from "@material-ui/core/Tab"
 import Typography from "@material-ui/core/Typography"
 import { withStyles } from "@material-ui/core/styles"
-import ParticipantSearch3 from "../components/ParticipantSearch"
+import Grid from "@material-ui/core/Grid"
+import "../scss/participant-search.scss"
 
 const styles = theme => ({
   root: {
-    width: "100%",
+    width: "auto",
+    textAlign: "right",
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
@@ -23,10 +24,36 @@ const styles = theme => ({
 })
 
 const queueTabText = (name, waitTime) => (
-  <div>
-    <Typography variant="button">{name}</Typography>
-    <Typography variant="caption">{`Wait Time: ${waitTime}`}</Typography>
-  </div>
+  <Grid
+    style={{
+      display: "flex-column",
+    }}
+  >
+    <Typography
+      variant="button"
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+        fontWeight: 900,
+      }}
+    >
+      {name}
+    </Typography>
+    <Typography
+      variant="caption"
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "row",
+        fontWeight: 450,
+      }}
+    >
+      {`Wait Time: ${waitTime}`}
+    </Typography>
+  </Grid>
 )
 
 function AllQueues({ queueData, classes }) {
@@ -36,28 +63,31 @@ function AllQueues({ queueData, classes }) {
   }
 
   return (
-    <div className={classes.root}>
-      <ParticipantSearch3 />
-      <Tabs value={value} onChange={handleChange}>
-        {queueData.map(queue => (
-          <Tab
-            key={queue.id}
-            value={queue.id}
-            label={queueTabText(queue.name, queue.waitTime)}
-          />
-        ))}
-      </Tabs>
-      {queueData.map(
-        queue =>
-          queue.id === value && (
-            <QueueTable
-              key={queue.id}
-              rows={queue.rows}
-              queueName={queue.name}
-            />
-          )
-      )}
-    </div>
+    <Grid>
+      <div className={classes.root}>
+        <div>
+          <Tabs value={value} onChange={handleChange}>
+            {queueData.map(queue => (
+              <Tab
+                key={queue.id}
+                value={queue.id}
+                label={queueTabText(queue.name, queue.waitTime)}
+              />
+            ))}
+          </Tabs>
+          {queueData.map(
+            queue =>
+              queue.id === value && (
+                <QueueTable
+                  key={queue.id}
+                  rows={queue.rows}
+                  queueName={queue.name}
+                />
+              )
+          )}
+        </div>
+      </div>
+    </Grid>
   )
 }
 

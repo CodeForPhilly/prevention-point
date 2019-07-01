@@ -6,6 +6,7 @@
     &__form {
       margin: 0 auto;
       max-width: 270px;
+
     }
 
     &__input {
@@ -24,6 +25,11 @@
     width: 270px;
     text-align: left;
     padding: 2px 0;
+    display: flex;
+    justify-content: left;
+    //align-items: center;
+    color: rgb(51, 109, 124);
+    font-family:  Arial, sans-serif;
     
   }
 }

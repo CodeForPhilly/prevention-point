@@ -2,10 +2,12 @@ import React, { useState } from "react"
 import PropTypes from "prop-types"
 import { set, get } from "lodash"
 import MaterialTable from "material-table"
-
-import Paper from "@material-ui/core/Paper"
+//import Paper from "@material-ui/core/Paper"
+import Grid from "@material-ui/core/Grid"
 import Checkbox from "@material-ui/core/Checkbox"
 import { withStyles } from "@material-ui/core/styles"
+import ParticipantSearch from "../components/ParticipantSearch"
+//import Navbar from "../components/Navbar"
 
 const styles = theme => ({
   root: {
@@ -41,7 +43,8 @@ function QueueTable({ queueName, rows, classes }) {
   )
 
   return (
-    <Paper className={classes.root}>
+    <Grid className={classes.root}>
+      <ParticipantSearch />
       <MaterialTable
         className={classes.table}
         columns={[
@@ -64,7 +67,7 @@ function QueueTable({ queueName, rows, classes }) {
         data={rows}
         title={queueName}
       />
-    </Paper>
+    </Grid>
   )
 }
 
