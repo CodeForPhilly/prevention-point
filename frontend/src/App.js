@@ -10,9 +10,6 @@ const theme = createMuiTheme({
     primary: { main: "#086375", contrastText: "#ffffff" },
     secondary: { main: "#119da4", contrastText: "#ffffff" },
   },
-  typography: {
-    useNextVariants: true,
-  },
 })
 
 const App = observer(() => {
