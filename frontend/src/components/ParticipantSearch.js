@@ -12,7 +12,7 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
 import ChevronRightIcon from "@material-ui/icons/ChevronRight"
 import UserSearch from "./UserSearch"
 
-const drawerWidth = 500
+const drawerWidth = 300
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -44,6 +44,7 @@ const useStyles = makeStyles(theme => ({
   },
   drawerPaper: {
     width: drawerWidth,
+    background: "#F2FCFF",
   },
   drawerHeader: {
     display: "flex",
@@ -94,7 +95,7 @@ export default function PersistentDrawerLeft() {
       >
         <Toolbar>
           <IconButton
-            color="inherit"
+            //color="inherit"  //not necessary
             aria-label="Open drawer"
             onClick={handleDrawerOpen}
             edge="start"

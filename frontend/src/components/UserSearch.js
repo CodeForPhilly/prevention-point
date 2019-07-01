@@ -10,18 +10,18 @@ import Typography from "@material-ui/core/Typography"
 const UserSearch = () => {
   return (
     <div className="participant-search">
-      <div>
+      <div align="center">
         <Typography
           className="participant-head"
           component="h5"
           variant="h5"
           gutterBottom
         >
-          Participant Search
+          <b>Participant Search</b>
         </Typography>
         <Typography
           className="participant-reminder"
-          variant="body1"
+          variant="body2"
           gutterBottom
         >
           <b>Reminder:</b> Search for participant profile prior to creating a
