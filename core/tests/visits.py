@@ -24,7 +24,7 @@ class VisitTests(BaseTestCase):
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Visit.objects.count(), 1)
-        self.assertEqual(json.loads(response.content)['participant'], 1)
+        self.assertEqual(json.loads(response.content)['visit']['participant'], 1)
 
     def test_get_visits(self):
         """
@@ -52,3 +52,15 @@ class VisitTests(BaseTestCase):
 
         get_response = self.client.get(url, **headers)
         self.assertEqual(get_response.status_code, status.HTTP_403_FORBIDDEN)
+
+
+    def test_get_service_events_includes_availability(self):
+        """
+        Ensure we can get a list of visits with service avaibilty booleans in included list
+        """
+        headers = self.auth_headers_for_user('case_manager')
+        headers['format'] = 'json'
+        response = self.client.get('/api/visits/',  **headers)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        content = json.loads(response.content)
+        self.assertTrue(all(type(service['available']) == bool for service in content['service_availability']))
