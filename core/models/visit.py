@@ -1,5 +1,6 @@
 from django.db import models
-from core.models import Participant
+from core.models.participant import Participant
+from core.models.program import Program
 from django.utils import timezone
 
 class Visit(models.Model):
