@@ -15,21 +15,34 @@ This is a Code for Philly project operating under their code of conduct.
 ## Getting Started
 ### Back-end
 - Install [docker-compose](https://docs.docker.com/compose/install/)
-- Build the container images and migrate the database
+- Install [pipenv](https://github.com/pypa/pipenv)
+- Install dependencies
 ```bash
-$ docker-compose run app python /app/manage.py migrate --noinput
+pipenv sync
+```
+- Activate virtualenv
+```bash
+pipenv shell
+```
+- Start the postgres database container
+```bash
+docker-compose up -d db
+```
+- Migrate the database
+```bash
+python /app/manage.py migrate
 ```
 - Seed the database:
  ```bash
-$ docker-compose run app python /app/manage.py seed
+python /app/manage.py seed
 ```
 - Create a superuser:
  ```bash
- $ docker-compose run app python /app/manage.py createsuperuser
+ python /app/manage.py createsuperuser
 ```
 - Start the app:
  ```bash
- $ docker-compose up -d
+ python /app/manage.py runserver 0.0.0.0:8000
 ```
 - Now you can:
   - Navigate to the django admin page at localhost:8000/admin

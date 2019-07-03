@@ -7,12 +7,12 @@ services:
       - "5432:5432"
     volumes:
       - data:/var/lib/postgresql/data/
-  app:
-    build: .
-    command: python /app/manage.py runserver 0.0.0.0:8000
-    ports:
-      - "8000:8000"
-    depends_on:
-      - db
+  # app:
+  #   build: .
+  #   command: python /app/manage.py runserver 0.0.0.0:8000
+  #   ports:
+  #     - "8000:8000"
+  #   depends_on:
+  #     - db
 volumes:
   data:
