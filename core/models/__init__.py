@@ -6,5 +6,5 @@ from .case_management import *
 from .medication import *
 from .program import *
 from .service import *
-from .service_event import *
+from .front_desk_event import *
 from .urine_drug_screen import *

@@ -3,6 +3,8 @@ version: '3'
 services:
   db:
     image: postgres:11.3-alpine
+    ports:
+      - "5432:5432"
     volumes:
       - data:/var/lib/postgresql/data/
   app:

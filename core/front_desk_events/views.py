@@ -1,14 +1,14 @@
 from core.viewsets import ModelViewSet
-from core.models import ServiceEvent
-from core.service_events.serializer import ServiceEventSerializer
+from core.models import FrontDeskEvent
+from core.front_desk_events.serializer import FrontDeskEventSerializer
 from core.permissions import FRONT_DESK, CASE_MANAGER, ADMIN
 
-class ServiceEventViewSet(ModelViewSet):
+class FrontDeskEventViewSet(ModelViewSet):
     """
-    API endpoint that allows Service Events to be viewed or edited
+    API endpoint that allows Front Desk Events to be viewed or edited
     """
-    queryset = ServiceEvent.objects.all()
-    serializer_class = ServiceEventSerializer
+    queryset = FrontDeskEvent.objects.all()
+    serializer_class = FrontDeskEventSerializer
     permission_groups = {
         'create':[FRONT_DESK, CASE_MANAGER, ADMIN],
         'retrieve': [FRONT_DESK, CASE_MANAGER, ADMIN],
