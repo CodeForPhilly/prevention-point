@@ -13,7 +13,7 @@ class FrontDeskEventType(Enum):
 class FrontDeskEvent(models.Model):
     visit = models.ForeignKey(Visit, on_delete=models.CASCADE)
     event_type = models.CharField(
-        max_length=10,
+        max_length=50,
         choices=[(tag.name, tag.value) for tag in FrontDeskEventType]
     )
     created_at = models.DateTimeField(default=timezone.now)
