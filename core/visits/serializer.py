@@ -10,7 +10,7 @@ class VisitSerializer(serializers.ModelSerializer):
         fields = ('id', 'participant', 'program', 'created_at')
 
 class VisitForQueueSerializer(serializers.ModelSerializer):
-    participant = ParticipantSerializer(many=True, read_only=True)
+    participant = ParticipantSerializer(read_only=True)
     class Meta:
         model = Visit
         fields = ('id', 'participant', 'program', 'created_at')

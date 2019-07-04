@@ -5,3 +5,4 @@ from core.tests.users import *
 from core.tests.groups import *
 from core.tests.services import *
 from core.tests.programs import *
+from core.tests.queue import *

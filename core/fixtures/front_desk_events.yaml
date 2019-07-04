@@ -2,112 +2,112 @@
   pk: 1
   fields:
     visit: 1
-    event_type: arrived 
+    event_type: ARRIVED 
 - model: core.frontdeskevent
   pk: 2
   fields:
     visit: 1
-    event_type: seen 
+    event_type: SEEN 
 - model: core.frontdeskevent
   pk: 3
   fields:
     visit: 2
-    event_type:  arrived 
+    event_type:  ARRIVED 
 - model: core.frontdeskevent
   pk: 4
   fields:
     visit: 3
-    event_type: arrived 
+    event_type: ARRIVED 
 - model: core.frontdeskevent
   pk: 5
   fields:
     visit: 3
-    event_type: stepped_out 
+    event_type: STEPPED_OUT 
 - model: core.frontdeskevent
   pk: 6
   fields:
     visit: 3
-    event_type: came_back 
+    event_type: CAME_BACK 
 - model: core.frontdeskevent
   pk: 7
   fields:
     visit: 4
-    event_type: arrived 
+    event_type: ARRIVED 
 - model: core.frontdeskevent
   pk: 8
   fields:
     visit: 4
-    event_type: stepped_out 
+    event_type: STEPPED_OUT 
 - model: core.frontdeskevent
   pk: 9
   fields:
     visit: 4
-    event_type: left 
+    event_type: LEFT 
 - model: core.frontdeskevent
   pk: 10
   fields:
     visit: 5
-    event_type: arrived 
+    event_type: ARRIVED 
 - model: core.frontdeskevent
   pk: 11
   fields:
     visit: 5
-    event_type: seen 
+    event_type: SEEN 
 - model: core.frontdeskevent
   pk: 12
   fields:
     visit: 6
-    event_type: arrived 
+    event_type: ARRIVED 
 - model: core.frontdeskevent
   pk: 13
   fields:
     visit: 6
-    event_type: stepped_out 
+    event_type: STEPPED_OUT 
 - model: core.frontdeskevent
   pk: 14
   fields:
     visit: 7
-    event_type: arrived 
+    event_type: ARRIVED 
 - model: core.frontdeskevent
   pk: 15
   fields:
     visit: 7
-    event_type: seen
+    event_type: SEEN
 - model: core.frontdeskevent
   pk: 16
   fields:
     visit: 8
-    event_type: arrived
+    event_type: ARRIVED
 - model: core.frontdeskevent
   pk: 17
   fields:
     visit: 8
-    event_type: stepped_out 
+    event_type: STEPPED_OUT 
 - model: core.frontdeskevent
   pk: 18
   fields:
     visit: 9
-    event_type: arrived 
+    event_type: ARRIVED 
 - model: core.frontdeskevent
   pk: 19
   fields:
     visit: 10
-    event_type: arrived
+    event_type: ARRIVED
 
 - model: core.frontdeskevent
   pk: 20
   fields:
     visit: 11
-    event_type: arrived 
+    event_type: ARRIVED 
 
 - model: core.frontdeskevent
   pk: 21
   fields:
     visit: 12
-    event_type: arrived 
+    event_type: ARRIVED 
 
 - model: core.frontdeskevent
   pk: 22
   fields:
     visit: 13
-    event_type: arrived 
+    event_type: ARRIVED 
