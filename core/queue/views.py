@@ -1,7 +1,7 @@
 from rest_framework import generics, viewsets, status
 from rest_framework.response import Response
 from core.models import Program, Visit, FrontDeskEvent
-from core.visits.serializer import VisitSerializer
+from core.visits.serializer import VisitForQueueSerializer
 from core.front_desk_events.serializer import FrontDeskEventForQueueSerializer
 from core.permissions import FRONT_DESK, CASE_MANAGER, ADMIN, HasGroupPermission
 from rest_framework.permissions import IsAuthenticated
@@ -15,10 +15,10 @@ class QueueViewSet(viewsets.ViewSet):
   hence the permission classes being repeated here instead of using viewsets.py prototypw
   """
 
-  # permission_classes = [HasGroupPermission, IsAuthenticated]
-  # permission_groups = {
-  #     'retrieve': [FRONT_DESK, CASE_MANAGER, ADMIN]
-  # }
+  permission_classes = [HasGroupPermission, IsAuthenticated]
+  permission_groups = {
+      'retrieve': [FRONT_DESK, CASE_MANAGER, ADMIN]
+  }
   
   def retrieve(self, request, program_id=None):
       """
@@ -29,7 +29,7 @@ class QueueViewSet(viewsets.ViewSet):
       # filter by visits that are happening today in a certain program
       visits_queryset = Visit.objects.filter(program_id=program_id, created_at__date=datetime.date.today())
       if visits_queryset.exists():
-        todays_visit_data = VisitSerializer(visits_queryset, many=True).data
+        todays_visit_data = VisitForQueueSerializer(visits_queryset, many=True).data
       else: 
         return Response(status=status.HTTP_404_NOT_FOUND)
       
