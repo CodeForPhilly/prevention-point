@@ -1,0 +1,25 @@
+- model: core.frontdeskevent
+  pk: 1
+  fields:
+    visit: 1
+    event_type: arrived 
+- model: core.frontdeskevent
+  pk: 2
+  fields:
+    visit: 1
+    event_type: seen 
+- model: core.frontdeskevent
+  pk: 3
+  fields:
+    visit: 2
+    event_type:  arrived 
+- model: core.frontdeskevent
+  pk: 4
+  fields:
+    visit: 3
+    event_type: arrived 
+- model: core.frontdeskevent
+  pk: 5
+  fields:
+    visit: 3
+    event_type: stepped_out 

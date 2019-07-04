@@ -2,23 +2,28 @@
   pk: 1
   fields:
     participant_id: 1
+    program_id: 1
 
 - model: core.visit
   pk: 2
   fields:
     participant_id: 1
+    program_id: 1
 
 - model: core.visit
   pk: 3
   fields:
     participant_id: 2
+    program_id: 2
 
 - model: core.visit
   pk: 4
   fields:
     participant_id: 2
+    program_id: 2
 
 - model: core.visit
   pk: 5
   fields:
     participant_id: 2
+    program_id: 3

@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='visit',
             name='program_id',
-            field=models.ForeignKey(default=django.utils.timezone.now, on_delete=django.db.models.deletion.CASCADE, to='core.Program'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.Program'),
             preserve_default=False,
         ),
     ]

@@ -6,4 +6,4 @@ from core.models import Visit
 class VisitSerializer(serializers.ModelSerializer):
     class Meta:
         model = Visit
-        fields = ('id', 'participant', 'created_at')
+        fields = ('id', 'participant_id_id', 'program_id_id', 'created_at')
