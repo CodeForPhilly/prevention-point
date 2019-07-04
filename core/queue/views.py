@@ -32,9 +32,9 @@ class QueueViewSet(viewsets.ViewSet):
         todays_visit_data = VisitSerializer(visits_queryset, many=True).data
       else: 
         return Response(status=status.HTTP_404_NOT_FOUND)
-      # for each visit, get the most recent front desk event, to glean current visit status
+      
       active_visits_queue = []
-
+      # for each visit, get the most recent front desk event, to glean current visit status
       for visit in todays_visit_data:
         front_desk_events_queryset = FrontDeskEvent.objects.filter(visit_id=visit['id']).order_by('-created_at') # -created_at for 'decending'
         visit_event_data = FrontDeskEventForQueueSerializer(front_desk_events_queryset, many=True).data 
@@ -45,4 +45,5 @@ class QueueViewSet(viewsets.ViewSet):
           visit['status'] = visit_event_data[0]
           # then add it to the 'active visits queue'
           active_visits_queue.append(visit)
+          
       return Response(active_visits_queue)

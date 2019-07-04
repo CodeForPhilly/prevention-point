@@ -1,29 +1,80 @@
 - model: core.visit
   pk: 1
   fields:
-    participant_id: 1
-    program_id: 1
+    participant: 1
+    program: 1
 
 - model: core.visit
   pk: 2
   fields:
-    participant_id: 1
-    program_id: 1
+    participant: 1
+    program: 1
 
 - model: core.visit
   pk: 3
   fields:
-    participant_id: 2
-    program_id: 2
+    participant: 2
+    program: 2
 
 - model: core.visit
   pk: 4
   fields:
-    participant_id: 2
-    program_id: 2
+    participant: 2
+    program: 2
 
 - model: core.visit
   pk: 5
   fields:
-    participant_id: 2
-    program_id: 3
+    participant: 2
+    program: 3
+
+- model: core.visit
+  pk: 6
+  fields:
+    participant: 2
+    program: 1
+
+- model: core.visit
+  pk: 7
+  fields:
+    participant: 3
+    program: 1
+
+- model: core.visit
+  pk: 8
+  fields:
+    participant: 1
+    program: 3
+
+- model: core.visit
+  pk: 9
+  fields:
+    participant: 3
+    program: 3
+
+- model: core.visit
+  pk: 10
+  fields:
+    participant: 2
+    program: 3
+
+- model: core.visit
+  pk: 11
+  fields:
+    participant: 2
+    program: 1
+    created_at: 2019-07-03T15:04:20.673658Z
+- model: core.visit
+  pk: 12
+  fields:
+    participant: 2
+    program: 2
+    created_at: 2019-07-03T15:04:20.673658Z
+
+- model: core.visit
+  pk: 13
+  fields:
+    participant: 2
+    program: 3
+    created_at: 2019-07-03T15:04:20.673658Z
+

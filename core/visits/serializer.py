@@ -8,4 +8,4 @@ class VisitSerializer(serializers.ModelSerializer):
     participant = ParticipantSerializer(read_only=True)
     class Meta:
         model = Visit
-        fields = ('id', 'participant', 'program_id_id', 'created_at')
+        fields = ('id', 'participant', 'program', 'created_at')
