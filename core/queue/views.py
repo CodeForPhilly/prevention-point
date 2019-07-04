@@ -1,7 +1,8 @@
 from rest_framework import generics, viewsets, status
 from rest_framework.response import Response
-from core.models import Program, Visit
+from core.models import Program, Visit, FrontDeskEvent
 from core.visits.serializer import VisitSerializer
+from core.front_desk_events.serializer import FrontDeskEventForQueueSerializer
 from core.permissions import FRONT_DESK, CASE_MANAGER, ADMIN, HasGroupPermission
 from rest_framework.permissions import IsAuthenticated
 import datetime
@@ -12,7 +13,8 @@ class QueueViewSet(viewsets.ViewSet):
   API endpoint that displays the queue
   uses regular ViewSet to be able to display adjacent model responses in one view, 
   hence the permission classes being repeated here instead of using viewsets.py prototypw
-  # """
+  """
+
   # permission_classes = [HasGroupPermission, IsAuthenticated]
   # permission_groups = {
   #     'retrieve': [FRONT_DESK, CASE_MANAGER, ADMIN]
@@ -28,23 +30,19 @@ class QueueViewSet(viewsets.ViewSet):
       visits_queryset = Visit.objects.filter(program_id=program_id, created_at__date=datetime.date.today())
       if visits_queryset.exists():
         todays_visit_data = VisitSerializer(visits_queryset, many=True).data
-        
       else: 
         return Response(status=status.HTTP_404_NOT_FOUND)
       # for each visit, get the most recent front desk event, to glean current visit status
-      
-      # return a list of todays visits for a  program that are still active
+      active_visits_queue = []
 
-
-      #  from front desks perspective ( exclude seen and left)   
-
-
-
-
-        # try:
-        #     queryset = .objects.get(pk=pk)
-        # except Visit.DoesNotExist:
-        #     return Response(status=status.HTTP_404_NOT_FOUND)
-        # visit_serializer = VisitSerializer(queryset)
-        # visits_and_services = add_availability_to_response(visit_serializer.data)    
-        # return Response(visits_and_services)
+      for visit in todays_visit_data:
+        front_desk_events_queryset = FrontDeskEvent.objects.filter(visit_id=visit['id']).order_by('-created_at') # -created_at for 'decending'
+        visit_event_data = FrontDeskEventForQueueSerializer(front_desk_events_queryset, many=True).data 
+        event_type = visit_event_data[0]['event_type']
+        # perhaps use enum over string below?
+        if event_type != 'seen' and event_type != 'left':
+          # if most recent front desk event is an 'active' status add it to visit object
+          visit['status'] = visit_event_data[0]
+          # then add it to the 'active visits queue'
+          active_visits_queue.append(visit)
+      return Response(active_visits_queue)
