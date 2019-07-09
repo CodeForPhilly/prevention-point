@@ -11,8 +11,9 @@ import MenuIcon from "@material-ui/icons/Menu"
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
 import ChevronRightIcon from "@material-ui/icons/ChevronRight"
 import UserSearch from "./UserSearch"
+import Navbar from "../components/Navbar"
 
-const drawerWidth = 300
+const drawerWidth = 400
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -103,6 +104,7 @@ export default function PersistentDrawerLeft() {
           >
             <MenuIcon />
           </IconButton>
+          <Navbar />
         </Toolbar>
       </AppBar>
       <Drawer
