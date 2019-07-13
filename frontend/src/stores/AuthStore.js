@@ -1,6 +1,6 @@
 import { observable, action, flow } from "mobx"
 import { createContext } from "react"
-import authApi from "../api/authApi"
+import api from "../api"
 
 export class AuthStore {
   constructor(rootStore) {
@@ -26,7 +26,7 @@ export class AuthStore {
 
   login = flow(function*(username, password) {
     try {
-      const { ok, data } = yield authApi.createToken(username, password)
+      const { ok, data } = yield api.createToken(username, password)
       if (ok) {
         this.setIsAuthenticated(true)
         this.setUsername(data.username)
