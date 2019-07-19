@@ -30,19 +30,19 @@ docker-compose up -d db
 ```
 - Migrate the database
 ```bash
-python /app/manage.py migrate
+python manage.py migrate
 ```
 - Seed the database:
  ```bash
-python /app/manage.py seed
+python manage.py seed
 ```
 - Create a superuser:
  ```bash
- python /app/manage.py createsuperuser
+ python manage.py createsuperuser
 ```
 - Start the app:
  ```bash
- python /app/manage.py runserver 0.0.0.0:8000
+ python manage.py runserver 0.0.0.0:8000
 ```
 - Now you can:
   - Navigate to the django admin page at localhost:8000/admin
