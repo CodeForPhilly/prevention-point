@@ -53,6 +53,7 @@ urlpatterns = [
     path('api/token/verify/', jwt_views.TokenVerifyView.as_view(), name='token_verify'),
     path('api/programs/<int:program_id>/program-availability/', program_availability_views.ProgramAvailabilityViewSet.as_view({'get':'list'})),
     path('api/programs/<int:program_id>/program-availability/<int:pk>/', program_availability_views.ProgramAvailabilityViewSet.as_view({'put':'update'})),
+
     path('api/programs/<int:program_id>/queue/', queues_views.QueueViewSet.as_view({'get':'retrieve'})),
     # above only 'registers' the retrieve path. to use other CRUD actions, must pass that explicitly to .as_view in another register
     path('swagger/', schema_view),

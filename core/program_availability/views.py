@@ -1,6 +1,9 @@
 from core.viewsets import ModelViewSet
+<<<<<<< HEAD
 from rest_framework import status
 from rest_framework.response import Response
+=======
+>>>>>>> migrated new table and stubbed endpoint
 from core.models import ProgramAvailability
 from core.program_availability.serializer import ProgramAvailabilitySerializer
 from core.permissions import FRONT_DESK, CASE_MANAGER, ADMIN
