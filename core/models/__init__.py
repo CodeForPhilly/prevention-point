@@ -8,3 +8,4 @@ from .program import *
 from .service import *
 from .front_desk_event import *
 from .urine_drug_screen import *
+from .program_availability import *
