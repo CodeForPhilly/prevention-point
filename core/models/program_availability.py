@@ -4,5 +4,5 @@ from core.models import Program
 class ProgramAvailability(models.Model):
     program = models.ForeignKey(Program, on_delete=models.CASCADE)
     day_of_week = models.CharField(max_length = 10)
-    start_time = models.DateField()
-    end_time = models.DateField()
+    start_time = models.TimeField()
+    end_time = models.TimeField()

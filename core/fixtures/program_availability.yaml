@@ -1,0 +1,70 @@
+- model: core.programavailability
+  pk: 1
+  fields:
+    program: 1
+    day_of_week: monday
+    start_time: 09:00 
+    end_time:  05:00
+- model: core.programavailability
+  pk: 2
+  fields:
+    program: 1
+    day_of_week: tuesday
+    start_time: 09:00
+    end_time:  05:00    
+- model: core.programavailability
+  pk: 3
+  fields:
+    program: 1
+    day_of_week: wednesday
+    start_time: 09:00
+    end_time:  05:00    
+- model: core.programavailability
+  pk: 4
+  fields:
+    program: 1
+    day_of_week: thursday
+    start_time: 09:00
+    end_time:  05:00    
+- model: core.programavailability
+  pk: 5
+  fields:
+    program: 1
+    day_of_week: friday
+    start_time: 09:00
+    end_time:  05:00    
+- model: core.programavailability
+  pk: 6
+  fields:
+    program: 1
+    day_of_week: saturday
+    start_time: 09:00
+    end_time:  05:00    
+- model: core.programavailability
+  pk: 7
+  fields:
+    program: 1
+    day_of_week: sunday
+    start_time: 09:00
+    end_time:  05:00    
+- model: core.programavailability
+  pk: 8
+  fields:
+    program: 2
+    day_of_week: monday
+    start_time: 09:00
+    end_time:  05:00  
+- model: core.programavailability
+  pk: 9
+  fields:
+    program: 2
+    day_of_week: tuesday
+    start_time: 09:00
+    end_time:  05:00  
+- model: core.programavailability
+  pk: 10
+  fields:
+    program: 3
+    day_of_week: monday
+    start_time: 09:00
+    end_time:  05:00  
