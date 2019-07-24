@@ -21,5 +21,3 @@ class ProgramAvailabilityViewSet(ModelViewSet):
       else: 
         return Response(status=status.HTTP_404_NOT_FOUND)
       return Response(availibility_by_program)
-
-# import pdb; pdb.set_trace()
