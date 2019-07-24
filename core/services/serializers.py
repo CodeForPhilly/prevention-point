@@ -9,7 +9,6 @@ class ServiceSerializer(serializers.ModelSerializer):
       model = Service
       fields = ('id', 'name', 'program', 'available')
       extra_kwargs = {
-            'id': {'read_only': True},
             'name': {'read_only': True}
       }
       #TODO: not sure if this is what we want- goal for the read only tag is to only allow

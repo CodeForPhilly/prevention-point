@@ -14,8 +14,6 @@ class ProgramAvailabilityViewSet(ModelViewSet):
         'list': [FRONT_DESK, CASE_MANAGER, ADMIN]
     }
 
-
-
     def list(self, request, program_id=None):
       availability_queryset = ProgramAvailability.objects.filter(program_id=program_id)
       if availability_queryset.exists():
