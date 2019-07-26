@@ -39,7 +39,6 @@ class FrontDeskEventTests(BaseTestCase):
                 post_response.status_code, status.HTTP_201_CREATED
             )
         self.assertEqual(FrontDeskEvent.objects.count(), 5)
-
         get_response = self.client.get(url, **headers)
         self.assertEqual(get_response.status_code, status.HTTP_200_OK)
 
