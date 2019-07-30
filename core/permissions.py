@@ -1,7 +1,5 @@
-
 from django.contrib.auth.models import User, Group
 from rest_framework import permissions
-from core.models import EmployeeRole
 
 FRONT_DESK = 'front_desk'
 CASE_MANAGER = 'case_manager'
@@ -24,6 +22,5 @@ class HasGroupPermission(permissions.BasePermission):
         return False
     else:
         return any([is_in_group(request.user, group_name) for group_name in required_groups])
-
 
 #https://gist.github.com/leonardo-/b348e6c607b91ddef586e7262481dfcc

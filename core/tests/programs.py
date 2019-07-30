@@ -1,7 +1,6 @@
 from core.tests.base import BaseTestCase
 from django.core.management import call_command
-from core.services.models import Service 
-from core.programs.models import Program
+from core.models import Service, Program
 from rest_framework import status
 import random
 import json
@@ -13,12 +12,12 @@ class ProgramsTests(BaseTestCase):
         self.seed_fake_users()
 
     def test_get_programs_list(self):
-        """ 
+        """
         Ensures there are the right number of programs and can GET
         """
         headers = self.auth_headers_for_user('admin')
         response = self.client.get( '/api/programs/', follow=True, **headers)
-      
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Program.objects.count(), 3)
 
@@ -40,10 +39,10 @@ class ProgramsTests(BaseTestCase):
               programs_services.append(service)
         route ='/api/programs/{}'.format(random_program['id'])
         response = self.client.get(route , follow=True, **headers)
-       
+
         for service in programs_services:
         # check that response contains substring of each service name
             self.assertContains(response, service['name'])
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        
-      
+
+

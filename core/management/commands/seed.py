@@ -4,11 +4,9 @@ from django.contrib.auth.models import Group, User
 
 from faker import Faker
 from faker.providers import BaseProvider
-from core.models import UrineDrugScreen,Medication,EmployeeRole,Employee,BehavioralHealthNotes
-from core.participants.models import Participant, Gender, Race
+from core.models import UrineDrugScreen, Medication, Participant, Gender, Race
 from core.permissions import CASE_MANAGER, FRONT_DESK, ADMIN
-from datetime import datetime, date
-import random, re
+import random
 
 fake = Faker()
 
@@ -148,4 +146,3 @@ def create_uds_results(participant):
 
         uds.full_clean()
         uds.save()
-

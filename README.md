@@ -10,33 +10,64 @@ This project would work to migrate all of the disparate data sources into one sy
 
 ## [Code of Conduct](https://codeforphilly.org/pages/code_of_conduct/)
 
-This is a Code for Philly project operating under their code of conduct. 
+This is a Code for Philly project operating under their code of conduct.
 
 ## Getting Started
-Back-end 
-- Install [Python 3.7](https://www.python.org/downloads/release/python-370/)
-- Install [pipenv](https://github.com/pypa/pipenv), a dependency manager for Python.
-- Install application dependencies:
-    `$ pipenv sync`
-- Source a Python virtualenv with all dependencies loaded:
-    `$ pipenv shell`
-- Seed the database: 
-    `$ python manage.py seed`
+### Back-end
+- Install [docker-compose](https://docs.docker.com/compose/install/)
+- Install [pipenv](https://github.com/pypa/pipenv)
+- Install dependencies
+```bash
+pipenv sync
+```
+- Activate virtualenv
+```bash
+pipenv shell
+```
+- Start the postgres database container
+```bash
+docker-compose up -d db
+```
+- Migrate the database
+```bash
+python manage.py migrate
+```
+- Seed the database:
+ ```bash
+python manage.py seed
+```
 - Create a superuser:
-    `$ python manage.py createsuperuser`
-- Start a local development server on localhost:8000/admin:
-    `$ python manage.py runserver`
-    
-Front-end
- - Make sure you have [`node (>=10.15.3)`](https://nodejs.org/en/) and [`yarn (>=1.15.2)`](https://yarnpkg.com/en/docs/install) installed 
+ ```bash
+ python manage.py createsuperuser
+```
+- Start the app:
+ ```bash
+ python manage.py runserver 0.0.0.0:8000
+```
+- Now you can:
+  - Navigate to the django admin page at localhost:8000/admin
+  - Connect to the running postgres instance
+ ```bash
+ $ docker-compose exec db psql -U postgres
+```
+- Shut down the app:
+```bash
+$ docker-compose down
+```
+
+### Front-end
+ - Make sure you have [`node (>=10.15.3)`](https://nodejs.org/en/) and [`yarn (>=1.15.2)`](https://yarnpkg.com/en/docs/install) installed
  - From the project's root directory, `cd frontend`
  - Run `yarn` to install dependencies
  - Run `yarn dev` and navigate to `localhost:1234`
 
 Other tools
-TODO: move dev to postgres
 ## Links
-[Air Table](https://airtable.com/invite/l?inviteId=invl5OM0ZZXjJQhQo&inviteToken=e57abd5bb2be87cc4156a56a99097db9257ea0c11eb5d737389e71b4239979f7) to track progress
+[Wiki](https://github.com/CodeForPhilly/prevention-point/wiki)
+
+[Milestones](https://github.com/CodeForPhilly/prevention-point/milestones)
+
+[MVP Tracker](https://github.com/CodeForPhilly/prevention-point/projects/1)
 
 [Slack Channel](https://codeforphilly.slack.com/messages/CGHQ130MQ)
 `#preventionpoint`
