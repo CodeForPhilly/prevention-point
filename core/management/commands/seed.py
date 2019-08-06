@@ -124,7 +124,7 @@ def create_participants(uds=True, medication=True):
         participant = Participant(
                 first_name=fake.first_name(),
                 last_name=fake.last_name(),
-                pp_id="todo",
+                pp_id=fake.password(length=5, special_chars=False, digits=True, lower_case=False),
                 gender=gender.value,
                 race=race.value,
                 last_four_ssn=last_four,
