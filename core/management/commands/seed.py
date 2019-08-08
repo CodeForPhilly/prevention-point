@@ -6,7 +6,7 @@ from faker import Faker
 from faker.providers import BaseProvider
 from core.models import UrineDrugScreen, Medication, Participant, Gender, Race, Program, Service, Visit
 from core.permissions import CASE_MANAGER, FRONT_DESK, ADMIN
-
+from core.models.front_desk_event import FrontDeskEventType, FrontDeskEvent
 import random
 import pytz
 
@@ -67,7 +67,7 @@ def run_seed(self):
     call_command('flush')
     create_groups(output=False)
     create_users(output=False)
-    create_participants(uds=False, medication=False)
+    create_participants()
     create_programs(output=False)
     create_visits(output=False)
 
@@ -194,7 +194,7 @@ def create_programs(output=True):
               print("Created {}: '{}'". format(p.name, s.name))
 
 def create_visits(output=True):
-    '''Create fake visits, depending on Participants.  Uses UTC in created_at date_times'''
+    '''Create fake visits and front desk events, depending on Participants and Programs.  Uses UTC in created_at date_times'''
     participants = Participant.objects.all()
     programs = Program.objects.all()
 
@@ -207,6 +207,38 @@ def create_visits(output=True):
         v.full_clean()
         v.save()
 
+        #Create FrontDeskEvents to correspond to the Visit, which always begins with ARRIVED
+        arrived(v)
+
         if output:
             print("Created visit: {} {}, {}, {}, {}". format(v.participant.first_name, v.participant.last_name, v.created_at, v.program.name, v.notes))
+
+def create_event(visit, type):
+    '''Create a FrontDeskEvent for thie visit and of this type, e.g. ARRIVED, STEPPED_OUT'''
+    f = FrontDeskEvent()
+    f.visit = visit
+    f.event_type = type
+    f.full_clean()
+    f.save()
+
+def arrived(visit):
+    '''After ARRIVED, can be either LEFT, SEEN or STEPPED_OUT'''
+    create_event(visit, "ARRIVED")
+    random.choice([left, seen, stepped_out])(visit)
+
+def left(visit):
+    create_event(visit, "LEFT")
+
+def seen(visit):
+    create_event(visit, "SEEN")
+
+def stepped_out(visit):
+    '''After STEPPED_OUT can be either LEFT or CAME_BACK'''
+    create_event(visit, "STEPPED_OUT")
+    random.choice([left, came_back])(visit)
+
+def came_back(visit):
+    '''After CAME_BACK, either LEFT or SEEN'''
+    create_event(visit, "CAME_BACK")
+    random.choice([left, seen])(visit)
 
