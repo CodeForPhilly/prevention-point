@@ -1,25 +1,20 @@
+import random, pytz
+
 from django.core.management.base import BaseCommand
 from django.core.management import call_command
 from django.contrib.auth.models import Group, User
 
 from faker import Faker
 from faker.providers import BaseProvider
+
 from core.models import UrineDrugScreen, Medication, Participant, Gender, Race, Program, Service, Visit
 from core.permissions import CASE_MANAGER, FRONT_DESK, ADMIN
 from core.models.front_desk_event import FrontDeskEventType, FrontDeskEvent
-import random
-import pytz
 
 fake = Faker()
 
 DEFAULT_DEV_ENV_PASS = 'password123'
 DEFAULT_GROUPS = [FRONT_DESK, CASE_MANAGER, ADMIN]
-DEFAULT_USER_IDS = {
-        'front_desk': ['1', '2', '3', '4'],
-        'case_manager': ['5', '6', '7', '8'],
-        'admin': ['9', '10']
-    }
-DEFAULT_DOMAIN = "prevention-point"
 DEFAULT_NUMBER_PARTICIPANTS = 10
 DEFAULT_NUMBER_VISITS = 20
 
@@ -67,39 +62,41 @@ def run_seed(self):
     call_command('flush')
     create_groups(output=False)
     create_users(output=False)
+    add_users_to_groups(output=False)
     create_participants()
     create_programs(output=False)
     create_visits(output=False)
 
 def create_users(output=True):
-    '''Create fake users for each group'''
     for group in DEFAULT_GROUPS:
-        for id in DEFAULT_USER_IDS[group]:
-            user_name = "{}-{}".format(group, id)
-            email = "{}@{}.com".format(user_name, DEFAULT_DOMAIN)
-            user = User.objects.create_user(username=user_name, email=email)
-            user.set_password(DEFAULT_DEV_ENV_PASS)
+        email = "{}@{}.com".format(group, group)
+        u = User.objects.create_user(username=group, email=email)
+        u.set_password(DEFAULT_DEV_ENV_PASS)
 
-            if group == ADMIN:
-                user.is_superuser=True
-                user.is_staff=True
+        if group == ADMIN:
+            u.is_superuser=True
+            u.is_staff=True
 
-            user.full_clean()
-            user.save()
+        u.save()
 
-            #Assign user to group
-            role_title = Group.objects.get(name=group)
-            user.groups.add(role_title)
-
-            if output:
-                print("Created user: {}".format(email))
+        if output:
+            print("Created user: {}".format(email))
 
 def create_groups(output=True):
-    '''Create groups from DEFAULT_GROUPS'''
     for group in DEFAULT_GROUPS:
-        if output == True:
-            print("Group = {}".format(group))
         Group.objects.get_or_create(name=group)
+        if output:
+            print("Created group: {}".format(group))
+
+def add_users_to_groups(output=True):
+    """
+    adds user to group of same name
+    """
+
+    for group in DEFAULT_GROUPS:
+        user = User.objects.get(username=group)
+        role_title = Group.objects.get(name=group)
+        user.groups.add(role_title)
 
 def create_participants(uds=True, medication=True):
     '''Create a fake participant, and optionally associated UDS and meds'''
