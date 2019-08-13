@@ -15,21 +15,34 @@ This is a Code for Philly project operating under their code of conduct.
 ## Getting Started
 ### Back-end
 - Install [docker-compose](https://docs.docker.com/compose/install/)
-- Build the container images and migrate the database
+- Install [pipenv](https://github.com/pypa/pipenv)
+- Install dependencies
 ```bash
-$ docker-compose run app python /app/manage.py migrate --noinput
+pipenv sync
+```
+- Activate virtualenv
+```bash
+pipenv shell
+```
+- Start the postgres database container
+```bash
+docker-compose up -d db
+```
+- Migrate the database
+```bash
+python manage.py migrate
 ```
 - Seed the database:
  ```bash
-$ docker-compose run app python /app/manage.py seed
+python manage.py seed
 ```
 - Create a superuser:
  ```bash
- $ docker-compose run app python /app/manage.py createsuperuser
+ python manage.py createsuperuser
 ```
 - Start the app:
  ```bash
- $ docker-compose up -d
+ python manage.py runserver 0.0.0.0:8000
 ```
 - Now you can:
   - Navigate to the django admin page at localhost:8000/admin
@@ -50,7 +63,11 @@ $ docker-compose down
 
 Other tools
 ## Links
-[Air Table](https://airtable.com/invite/l?inviteId=invl5OM0ZZXjJQhQo&inviteToken=e57abd5bb2be87cc4156a56a99097db9257ea0c11eb5d737389e71b4239979f7) to track progress
+[Wiki](https://github.com/CodeForPhilly/prevention-point/wiki)
+
+[Milestones](https://github.com/CodeForPhilly/prevention-point/milestones)
+
+[MVP Tracker](https://github.com/CodeForPhilly/prevention-point/projects/1)
 
 [Slack Channel](https://codeforphilly.slack.com/messages/CGHQ130MQ)
 `#preventionpoint`
