@@ -9,8 +9,7 @@ export class ParticipantStore {
 
   participants = observable([])
 
-  @action
-  setParticipant(participant, index) {
+  @action setParticipant(participant, index) {
     this.participants[index] = participant
   }
 
@@ -27,5 +26,8 @@ export class ParticipantStore {
     }
   })
 }
+
+// uncomment this line to have the store on the dom and testable
+// var store = (window.store = new ParticipantStore())
 
 export const ParticipantStoreContext = createContext(new ParticipantStore())
