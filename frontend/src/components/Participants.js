@@ -1,17 +1,16 @@
 import React, { useContext } from "react"
 import { participantStoreContext } from "../stores/ParticipantStore"
-import { observer } from "mobx-react-lite"
 
-const Participants = observer(() => {
+const Participants = () => {
   const participants = useContext(participantStoreContext)
 
   return (
     <div className="participants">
       {participants.map(participant => (
-        <li key={participant}>{participant}</li>
+        <p key={participant}>{participant.first_name}</p>
       ))}
     </div>
   )
-})
+}
 
 export default Participants

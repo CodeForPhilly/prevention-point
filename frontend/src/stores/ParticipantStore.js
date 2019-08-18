@@ -16,6 +16,7 @@ export class ParticipantStore {
   getParticipants = flow(function*() {
     try {
       const data = yield participantApi.getParticipants()
+      // console.log(data)
       if (data) {
         data.forEach((datum, index) => {
           this.setParticipant(datum, index)
@@ -30,4 +31,4 @@ export class ParticipantStore {
 // uncomment this line to have the store on the dom and testable
 // var store = (window.store = new ParticipantStore())
 
-export const ParticipantStoreContext = createContext(new ParticipantStore())
+export const participantStoreContext = createContext(new ParticipantStore())
