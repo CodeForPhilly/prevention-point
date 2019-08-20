@@ -26,10 +26,12 @@ class ParticipantStore {
   })
 }
 
+let participantStore = new ParticipantStore()
+export default participantStore
 // uncomment this line to have the store on the dom and testable
-const store = (window.store = new ParticipantStore())
-store.getParticipants()
-export const participantStore = store
+// const store = (window.store = new ParticipantStore())
+// store.getParticipants()
+// export const participantStore = store
 
 //export const participantStoreContext = createContext(new ParticipantStore())
 //export const participantStoreContext = createContext(store)
