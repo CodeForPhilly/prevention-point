@@ -1,8 +1,7 @@
 import { observable, action, flow } from "mobx"
-import { createContext } from "react"
 import participantApi from "../api/participantApi"
 
-export class ParticipantStore {
+class ParticipantStore {
   constructor(rootStore) {
     this.rootStore = rootStore
   }
@@ -16,7 +15,6 @@ export class ParticipantStore {
   getParticipants = flow(function*() {
     try {
       const data = yield participantApi.getParticipants()
-      // console.log(data)
       if (data) {
         data.forEach((datum, index) => {
           this.setParticipant(datum, index)
@@ -29,6 +27,9 @@ export class ParticipantStore {
 }
 
 // uncomment this line to have the store on the dom and testable
-// var store = (window.store = new ParticipantStore())
+const store = (window.store = new ParticipantStore())
+store.getParticipants()
+export const participantStore = store
 
-export const participantStoreContext = createContext(new ParticipantStore())
+//export const participantStoreContext = createContext(new ParticipantStore())
+//export const participantStoreContext = createContext(store)
