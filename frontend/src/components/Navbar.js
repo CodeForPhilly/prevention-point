@@ -13,6 +13,8 @@ import Menu from "@material-ui/core/Menu"
 import MenuItem from "@material-ui/core/MenuItem"
 import AccountCircle from "@material-ui/icons/AccountCircle"
 import NotificationsIcon from "@material-ui/icons/Notifications"
+import Typography from "@material-ui/core/Typography"
+import GsTitle from "./GsTitle"
 
 const NavHeader = observer(() => {
   const rootStore = useContext(rootStoreContext)
@@ -65,6 +67,11 @@ const NavHeader = observer(() => {
           className={"navbar__logo"}
           width="150"
         />
+        <div className={"navbar__header"}>
+          <Typography variant="h6" color="inherit">
+            <GsTitle />
+          </Typography>
+        </div>
         <IconButton color="inherit">
           <Badge badgeContent={11} color="secondary">
             <NotificationsIcon />
