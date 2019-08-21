@@ -7,7 +7,9 @@ export default
 class Participant extends React.Component {
   constructor(props) {
     super(props)
-    participantStore.getParticipants()
+    this.store = participantStore
+    this.store.getParticipants()
+    //participantStore.getParticipants()
   }
 
   render() {
