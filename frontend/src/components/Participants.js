@@ -9,7 +9,6 @@ class Participant extends React.Component {
     super(props)
     this.store = participantStore
     this.store.getParticipants()
-    //participantStore.getParticipants()
   }
 
   render() {
@@ -21,8 +20,13 @@ class Participant extends React.Component {
           {store.participants.map((participant, index) => (
             <p key={index}>
               {participant.first_name} {participant.last_name}
+              {participant.pp_id}
             </p>
           ))}
+        </div>
+        <div>
+          <p>Participant Search by ID</p>
+          <p>{this.store.filter("T9FN3", null, null).first_name}</p>
         </div>
       </div>
     )
