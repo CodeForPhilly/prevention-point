@@ -4,7 +4,6 @@ import participantApi from "../api/participantApi"
 class ParticipantStore {
   constructor(rootStore) {
     this.rootStore = rootStore
-    this.getParticipants()
   }
 
   //participants = observable([])

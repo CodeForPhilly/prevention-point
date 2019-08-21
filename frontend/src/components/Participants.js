@@ -5,6 +5,11 @@ import participantStore from "../stores/ParticipantStore"
 export default
 @observer
 class Participant extends React.Component {
+  constructor(props) {
+    super(props)
+    participantStore.getParticipants()
+  }
+
   render() {
     const store = participantStore
     return (
