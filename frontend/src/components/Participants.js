@@ -15,14 +15,11 @@ class Participant extends React.Component {
     return (
       <div>
         <p>Participants</p>
-        <div>
-          {store.todos.map((todo, index) => (
-            <p key={index}>{todo}</p>
-          ))}
-        </div>
         <div className="participants">
-          {store.participants.map(participant => (
-            <p key={participant}>{participant.first_name}yes</p>
+          {store.participants.map((participant, index) => (
+            <p key={index}>
+              {participant.first_name} {participant.last_name}
+            </p>
           ))}
         </div>
       </div>
