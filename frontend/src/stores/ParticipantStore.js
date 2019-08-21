@@ -7,7 +7,10 @@ class ParticipantStore {
     this.getParticipants()
   }
 
-  participants = observable([])
+  //participants = observable([])
+  @observable participants = []
+
+  @observable todos = ["buy milk", "buy eggs"]
 
   @action setParticipant(participant, index) {
     this.participants[index] = participant
@@ -27,7 +30,7 @@ class ParticipantStore {
   })
 }
 
-let participantStore = new ParticipantStore()
+let participantStore = (window.participantStore = new ParticipantStore())
 export default participantStore
 // uncomment this line to have the store on the dom and testable
 // const store = (window.store = new ParticipantStore())
