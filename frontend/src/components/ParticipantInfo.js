@@ -4,7 +4,6 @@ import FormGroup from "@material-ui/core/FormGroup"
 import FormControl from "@material-ui/core/FormControl"
 import InputLabel from "@material-ui/core/InputLabel"
 import Input from "@material-ui/core/Input"
-import Button from "@material-ui/core/Button"
 import Typography from "@material-ui/core/Typography"
 import Grid from "@material-ui/core/Grid"
 import TextField from "@material-ui/core/TextField"
@@ -46,9 +45,19 @@ const ParticipantInfo = () => {
     setValue(event.target.value)
   }
 
+  const [open, setOpen] = React.useState(false)
+
+  function handleClose() {
+    setOpen(false)
+  }
+
+  function handleOpen() {
+    setOpen(true)
+  }
+
   const classes = useStyles()
   return (
-    <div className="participant-info-component">
+    <div style={{ marginTop: 50 }} className="participant-info-component">
       <Container maxWidth="sm">
         <Typography
           style={{ textAlign: "left" }}
@@ -133,15 +142,15 @@ const ParticipantInfo = () => {
                         Select Race
                       </InputLabel>
                       <Select
-                      // open={open}
-                      // onClose={handleClose}
-                      // onOpen={handleOpen}
-                      // value={age}
-                      // onChange={handleChange}
-                      // inputProps={{
-                      //   name: "age",
-                      //   id: "demo-controlled-open-select",
-                      // }}
+                        open={open}
+                        onClose={handleClose}
+                        onOpen={handleOpen}
+                        value={""}
+                        onChange={handleChange}
+                        inputProps={{
+                          name: "race",
+                          id: "demo-controlled-open-select",
+                        }}
                       >
                         <MenuItem value="">
                           <em>None</em>
@@ -159,15 +168,78 @@ const ParticipantInfo = () => {
                         Select Gender
                       </InputLabel>
                       <Select
-                      // open={open}
-                      // onClose={handleClose}
-                      // onOpen={handleOpen}
-                      // value={age}
-                      // onChange={handleChange}
-                      // inputProps={{
-                      //   name: "age",
-                      //   id: "demo-controlled-open-select",
-                      // }}
+                        open={open}
+                        onClose={handleClose}
+                        onOpen={handleOpen}
+                        value={""}
+                        onChange={handleChange}
+                        inputProps={{
+                          name: "gender",
+                          id: "demo-controlled-open-select",
+                        }}
+                      >
+                        <MenuItem value="">
+                          <em>None</em>
+                        </MenuItem>
+                        <MenuItem value={10}>Male</MenuItem>
+                        <MenuItem value={20}>Female</MenuItem>
+                        <MenuItem value={30}>Trans (M)</MenuItem>
+                        <MenuItem value={30}>Trans (F)</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                </Grid>
+                <br />
+                <br />
+              </FormGroup>
+            </div>
+
+            <div className={classes.root}>
+              <FormGroup className="participant-info">
+                <Grid container>
+                  <Grid item xs>
+                    <FormControl
+                      component="fieldset"
+                      className={classes.formControl}
+                    >
+                      <FormLabel component="legend">Has Insurance?</FormLabel>
+                      <RadioGroup
+                        aria-label="insurance"
+                        name="insurance1"
+                        className={classes.group}
+                        value={value}
+                        onChange={handleChange}
+                        style={{ display: "inline" }}
+                      >
+                        <FormControlLabel
+                          value="yes"
+                          control={<Radio />}
+                          label="Yes"
+                        />
+                        <FormControlLabel
+                          value="no"
+                          control={<Radio />}
+                          label="No"
+                        />
+                      </RadioGroup>
+                    </FormControl>
+                  </Grid>
+
+                  <Grid item xs>
+                    <FormControl className={classes.formControl}>
+                      <InputLabel htmlFor="demo-controlled-open-select">
+                        Select Insurance
+                      </InputLabel>
+                      <Select
+                        open={open}
+                        onClose={handleClose}
+                        onOpen={handleOpen}
+                        value={""}
+                        onChange={handleChange}
+                        inputProps={{
+                          name: "insurance",
+                          id: "demo-controlled-open-select",
+                        }}
                       >
                         <MenuItem value="">
                           <em>None</em>
@@ -181,39 +253,6 @@ const ParticipantInfo = () => {
                 </Grid>
               </FormGroup>
             </div>
-
-            <div className={classes.root}>
-              <FormGroup className="participant-info" component="fieldset">
-                <Grid container>
-                  <Grid item xs>
-                    <FormControl
-                      component="fieldset"
-                      className={classes.formControl}
-                    >
-                      <FormLabel component="legend">Has Insurance?</FormLabel>
-                      <RadioGroup
-                        aria-label="position"
-                        name="position"
-                        value={value}
-                        onChange={handleChange}
-                        row
-                      >
-                        <FormControlLabel
-                          value="top"
-                          control={<Radio color="primary" />}
-                          label="Yes"
-                          labelPlacement="top"
-                        />
-                      </RadioGroup>
-                    </FormControl>
-                  </Grid>
-                </Grid>
-              </FormGroup>
-            </div>
-
-            <Button type="submit" variant="contained" style={{ marginTop: 30 }}>
-              Submit
-            </Button>
           </Grid>
         </form>
       </Container>
