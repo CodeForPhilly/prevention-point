@@ -1,5 +1,5 @@
 import { observable, action, flow } from "mobx"
-//import { createContext } from "react"
+import { createContext } from "react"
 import api from "../api"
 
 export class QueueStore {
@@ -30,6 +30,11 @@ export class QueueStore {
       // TODO: Handle errors
     }
   })
+
+  getQueue = function(queue) {
+    // put the get Queue api call stuff into here
+    console.log(queue)
+  }
 }
-//export const QueueStoreContext = createContext(new QueueStore())
-export const queueStore = new QueueStore()
+export const QueueStoreContext = createContext(new QueueStore())
+//export const queueStore = new QueueStore()

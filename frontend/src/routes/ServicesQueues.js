@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import PropTypes from "prop-types"
 import AllQueues from "../components/AllQueues"
+import ErrorBoundary from "../components/ErrorBoundary"
 import ParticipantSearch from "../components/ParticipantSearch"
 import {
   Grid,
@@ -72,7 +73,9 @@ const ParticipantQueue = () => {
               <SearchIcon />
               <Typography>Participant Search</Typography>
             </IconButton>
-            <AllQueues />
+            <ErrorBoundary>
+              <AllQueues />
+            </ErrorBoundary>
           </Paper>
         </Grid>
       </Grid>

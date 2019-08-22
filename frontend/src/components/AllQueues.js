@@ -10,18 +10,7 @@ import TimelapseIcon from "@material-ui/icons/Timelapse"
 //  legalServicesQueueData,
 //  stepQueueData,
 //} from "../../fixtures/MockQueueData"
-
-import queueStore from "../stores/QueueStore"
-
-//Mismatch with fake data ???
-queueStore.getQueue(1)
-queueStore.getQueue(2)
-queueStore.getQueue(3)
-
-//These do not match ???
-const caseManagementQueueData = queueStore.needleExchangeQueue
-const legalServicesQueueData = queueStore.legalServicesQueue
-const stepQueueData = queueStore.stepQueue
+import { QueueStoreContext } from "../stores/QueueStore"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -93,6 +82,18 @@ function QueueTab(props) {
 }
 
 function AllQueues() {
+  const queueStore = React.useContext(QueueStoreContext)
+
+  //Mismatch with fake data ???
+  queueStore.getQueue(1)
+  queueStore.getQueue(2)
+  queueStore.getQueue(3)
+
+  //These do not match ???
+  const caseManagementQueueData = queueStore.needleExchangeQueue
+  const legalServicesQueueData = queueStore.legalServicesQueue
+  const stepQueueData = queueStore.stepQueue
+
   const classes = useStyles()
   const [value, setValue] = React.useState(0)
   function handleChange(event, newValue) {
