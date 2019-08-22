@@ -11,8 +11,32 @@ import TextField from "@material-ui/core/TextField"
 import Container from "@material-ui/core/Container"
 import MenuItem from "@material-ui/core/MenuItem"
 import Select from "@material-ui/core/Select"
+import { makeStyles } from "@material-ui/core/styles"
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: "flex",
+    flexWrap: "wrap",
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 200,
+    maxWidth: 300,
+  },
+  chips: {
+    display: "flex",
+    flexWrap: "wrap",
+  },
+  chip: {
+    margin: 2,
+  },
+  noLabel: {
+    marginTop: theme.spacing(3),
+  },
+}))
 
 const ParticipantSearch = () => {
+  const classes = useStyles()
   return (
     <div className="participant-search">
       <Container maxWidth="sm">
@@ -26,11 +50,11 @@ const ParticipantSearch = () => {
         </Typography>
 
         <form className="participant-info-form">
-          <Grid container direction="row" justify="left" alignItems="left">
+          <Grid container>
             <FormGroup className="participant-info">
-              <Grid container spacing={6}>
+              <Grid container>
                 <Grid item xs>
-                  <FormControl>
+                  <FormControl className={classes.formControl}>
                     <InputLabel htmlFor="user_id">First name</InputLabel>
                     <Input
                       id="user_first-name"
@@ -41,7 +65,7 @@ const ParticipantSearch = () => {
                   </FormControl>
                 </Grid>
                 <Grid item xs>
-                  <FormControl>
+                  <FormControl className={classes.formControl}>
                     <InputLabel htmlFor="user_id">Last name</InputLabel>
                     <Input
                       id="user_last-name"
@@ -55,10 +79,10 @@ const ParticipantSearch = () => {
             </FormGroup>
             <br />
             <br />
-            <FormGroup className="participant-info" style={{ marginTop: 11 }}>
-              <Grid container spacing={6}>
+            <FormGroup className="participant-info">
+              <Grid container>
                 <Grid item xs>
-                  <FormControl>
+                  <FormControl className={classes.formControl}>
                     <InputLabel htmlFor="user_id">Date of birth</InputLabel>
                     <TextField
                       id="user_birth-date"
@@ -73,7 +97,10 @@ const ParticipantSearch = () => {
                 </Grid>
 
                 <Grid item xs>
-                  <FormControl style={{ marginTop: 24 }}>
+                  <FormControl
+                    className={classes.formControl}
+                    style={{ marginTop: 32 }}
+                  >
                     <InputLabel htmlFor="user_id">UUID</InputLabel>
                     <Input
                       id="user_last-name"
@@ -87,62 +114,63 @@ const ParticipantSearch = () => {
               <br />
               <br />
             </FormGroup>
+            <div className={classes.root}>
+              <FormGroup className="participant-info">
+                <Grid container>
+                  <Grid item xs>
+                    <FormControl className={classes.formControl}>
+                      <InputLabel htmlFor="demo-controlled-open-select">
+                        Select Race
+                      </InputLabel>
+                      <Select
+                      // open={open}
+                      // onClose={handleClose}
+                      // onOpen={handleOpen}
+                      // value={age}
+                      // onChange={handleChange}
+                      // inputProps={{
+                      //   name: "age",
+                      //   id: "demo-controlled-open-select",
+                      // }}
+                      >
+                        <MenuItem value="">
+                          <em>None</em>
+                        </MenuItem>
+                        <MenuItem value={10}>Ten</MenuItem>
+                        <MenuItem value={20}>Twenty</MenuItem>
+                        <MenuItem value={30}>Thirty</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
 
-            <FormGroup className="participant-info">
-              <Grid container spacing={6}>
-                <Grid item xs>
-                  <FormControl>
-                    <InputLabel htmlFor="demo-controlled-open-select">
-                      Select Race
-                    </InputLabel>
-                    <Select
-                    // open={open}
-                    // onClose={handleClose}
-                    // onOpen={handleOpen}
-                    // value={age}
-                    // onChange={handleChange}
-                    // inputProps={{
-                    //   name: "age",
-                    //   id: "demo-controlled-open-select",
-                    // }}
-                    >
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
-                    </Select>
-                  </FormControl>
+                  <Grid item xs>
+                    <FormControl className={classes.formControl}>
+                      <InputLabel htmlFor="demo-controlled-open-select">
+                        Select Gender
+                      </InputLabel>
+                      <Select
+                      // open={open}
+                      // onClose={handleClose}
+                      // onOpen={handleOpen}
+                      // value={age}
+                      // onChange={handleChange}
+                      // inputProps={{
+                      //   name: "age",
+                      //   id: "demo-controlled-open-select",
+                      // }}
+                      >
+                        <MenuItem value="">
+                          <em>None</em>
+                        </MenuItem>
+                        <MenuItem value={10}>Ten</MenuItem>
+                        <MenuItem value={20}>Twenty</MenuItem>
+                        <MenuItem value={30}>Thirty</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
                 </Grid>
-
-                <Grid item xs>
-                  <FormControl>
-                    <InputLabel htmlFor="demo-controlled-open-select">
-                      Select Gender
-                    </InputLabel>
-                    <Select
-                    // open={open}
-                    // onClose={handleClose}
-                    // onOpen={handleOpen}
-                    // value={age}
-                    // onChange={handleChange}
-                    // inputProps={{
-                    //   name: "age",
-                    //   id: "demo-controlled-open-select",
-                    // }}
-                    >
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-              </Grid>
-            </FormGroup>
+              </FormGroup>
+            </div>
           </Grid>
           <Button type="submit" variant="contained" style={{ marginTop: 30 }}>
             Submit
