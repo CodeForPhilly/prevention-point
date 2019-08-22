@@ -11,7 +11,7 @@ import TimelapseIcon from "@material-ui/icons/Timelapse"
 //  stepQueueData,
 //} from "../../fixtures/MockQueueData"
 
-import queueStore from "../QueueStore"
+import queueStore from "../stores/QueueStore"
 
 //Mismatch with fake data ???
 queueStore.getQueue(1)
