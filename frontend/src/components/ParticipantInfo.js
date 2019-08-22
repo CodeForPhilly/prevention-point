@@ -12,6 +12,10 @@ import Container from "@material-ui/core/Container"
 import MenuItem from "@material-ui/core/MenuItem"
 import Select from "@material-ui/core/Select"
 import { makeStyles } from "@material-ui/core/styles"
+import Radio from "@material-ui/core/Radio"
+import RadioGroup from "@material-ui/core/RadioGroup"
+import FormControlLabel from "@material-ui/core/FormControlLabel"
+import FormLabel from "@material-ui/core/FormLabel"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -36,6 +40,12 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const ParticipantInfo = () => {
+  const [value, setValue] = React.useState("female")
+
+  function handleChange(event) {
+    setValue(event.target.value)
+  }
+
   const classes = useStyles()
   return (
     <div className="participant-info-component">
@@ -171,10 +181,40 @@ const ParticipantInfo = () => {
                 </Grid>
               </FormGroup>
             </div>
+
+            <div className={classes.root}>
+              <FormGroup className="participant-info" component="fieldset">
+                <Grid container>
+                  <Grid item xs>
+                    <FormControl
+                      component="fieldset"
+                      className={classes.formControl}
+                    >
+                      <FormLabel component="legend">Has Insurance?</FormLabel>
+                      <RadioGroup
+                        aria-label="position"
+                        name="position"
+                        value={value}
+                        onChange={handleChange}
+                        row
+                      >
+                        <FormControlLabel
+                          value="top"
+                          control={<Radio color="primary" />}
+                          label="Yes"
+                          labelPlacement="top"
+                        />
+                      </RadioGroup>
+                    </FormControl>
+                  </Grid>
+                </Grid>
+              </FormGroup>
+            </div>
+
+            <Button type="submit" variant="contained" style={{ marginTop: 30 }}>
+              Submit
+            </Button>
           </Grid>
-          <Button type="submit" variant="contained" style={{ marginTop: 30 }}>
-            Submit
-          </Button>
         </form>
       </Container>
     </div>
