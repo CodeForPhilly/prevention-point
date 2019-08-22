@@ -76,12 +76,7 @@ const NavHeader = observer(() => {
             <NotificationsIcon />
           </Badge>
         </IconButton>
-        <IconButton
-          aria-owns={isMenuOpen ? "material-appbar" : undefined}
-          aria-haspopup="true"
-          onClick={handleProfileMenuOpen}
-          color="inherit"
-        >
+        <IconButton onClick={handleProfileMenuOpen} color="inherit">
           <AccountCircle />
         </IconButton>
         <AccountMenu />

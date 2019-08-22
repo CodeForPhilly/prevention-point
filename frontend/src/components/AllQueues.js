@@ -1,93 +1,109 @@
-import React, { useState } from "react"
+import React from "react"
 import PropTypes from "prop-types"
+import { makeStyles } from "@material-ui/styles"
+import { Tabs, Tab, Typography, Button } from "@material-ui/core"
 import QueueTable from "./QueueTable"
-import Tabs from "@material-ui/core/Tabs"
-import Tab from "@material-ui/core/Tab"
-import Typography from "@material-ui/core/Typography"
-import { withStyles } from "@material-ui/core/styles"
-import Grid from "@material-ui/core/Grid"
-import "../scss/participant-search.scss"
+import PersonIcon from "@material-ui/icons/Person"
+import TimelapseIcon from "@material-ui/icons/Timelapse"
+import {
+  caseManagementQueueData,
+  legalServicesQueueData,
+  stepQueueData,
+} from "../../fixtures/MockQueueData"
 
-const styles = theme => ({
+const useStyles = makeStyles(theme => ({
   root: {
-    width: "auto",
-    textAlign: "right",
+    width: "100%",
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
     fontWeight: theme.typography.fontWeightRegular,
   },
-  waitTime: {
+  queueTabStat: {
+    margin: theme.typography.pxToRem(5),
+    display: "inline-flex",
+    alignItems: "flex-end",
+  },
+  queueTabStatValue: {
     fontSize: theme.typography.pxToRem(10),
     fontWeight: theme.typography.fontWeightLight,
   },
+  queueTabContent: {
+    display: "flex",
+  },
+  queueTab: {
+    flexGrow: 1,
+  },
+}))
+
+const QueueTabContent = React.forwardRef(({ onClick, queueData }, _ref) => {
+  const classes = useStyles()
+  return (
+    <Button onClick={onClick} className={classes.queueTab}>
+      <div>
+        <Typography className={classes.heading}>{queueData.name}</Typography>
+        <div className={classes.queueTabContent}>
+          <div className={classes.queueTabStat}>
+            <PersonIcon className={classes.queueTabIcon} />
+            <Typography className={classes.queueTabStatValue}>
+              {queueData.length}
+            </Typography>
+          </div>
+          <div className={classes.queueTabStat}>
+            <TimelapseIcon className={classes.queueTabIcon} />
+            <Typography className={classes.queueTabStatValue}>
+              {queueData.waitTime}
+            </Typography>
+          </div>
+        </div>
+      </div>
+    </Button>
+  )
 })
 
-const queueTabText = (name, waitTime) => (
-  <Grid
-    style={{
-      display: "flex-column",
-    }}
-  >
-    <Typography
-      variant="button"
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
-        fontWeight: 900,
-      }}
-    >
-      {name}
-    </Typography>
-    <Typography
-      variant="caption"
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "row",
-        fontWeight: 450,
-      }}
-    >
-      {`Wait Time: ${waitTime}`}
-    </Typography>
-  </Grid>
-)
+QueueTabContent.displayName = "QueueTabContent"
 
-function AllQueues({ queueData, classes }) {
-  const [value, setValue] = useState(queueData[0]["id"])
+QueueTabContent.propTypes = {
+  onClick: PropTypes.func,
+  queueData: PropTypes.object,
+}
+
+function QueueTab(props) {
+  return (
+    <Tab
+      component={QueueTabContent}
+      onClick={event => {
+        event.preventDefault()
+      }}
+      {...props}
+    />
+  )
+}
+
+function AllQueues() {
+  const classes = useStyles()
+  const [value, setValue] = React.useState(0)
   function handleChange(event, newValue) {
     setValue(newValue)
   }
 
   return (
-    <Grid>
-      <div className={classes.root}>
-        <div>
-          <Tabs value={value} onChange={handleChange}>
-            {queueData.map(queue => (
-              <Tab
-                key={queue.id}
-                value={queue.id}
-                label={queueTabText(queue.name, queue.waitTime)}
-              />
-            ))}
-          </Tabs>
-          {queueData.map(
-            queue =>
-              queue.id === value && (
-                <QueueTable
-                  key={queue.id}
-                  rows={queue.rows}
-                  queueName={queue.name}
-                />
-              )
-          )}
-        </div>
-      </div>
-    </Grid>
+    <div className={classes.root}>
+      <Tabs variant="fullWidth" value={value} onChange={handleChange}>
+        <QueueTab
+          className={classes.queueTab}
+          queueData={caseManagementQueueData}
+        />
+        <QueueTab
+          className={classes.queueTab}
+          queueData={legalServicesQueueData}
+        />
+        <QueueTab className={classes.queueTab} queueData={stepQueueData} />
+      </Tabs>
+      {value === 0 && <QueueTable queueData={caseManagementQueueData} />}
+      {value === 1 && <QueueTable queueData={legalServicesQueueData} />}
+      {value === 2 && <QueueTable queueData={stepQueueData} />}
+    </div>
   )
 }
 
@@ -96,4 +112,4 @@ AllQueues.propTypes = {
   classes: PropTypes.object,
 }
 
-export default withStyles(styles)(AllQueues)
+export default AllQueues

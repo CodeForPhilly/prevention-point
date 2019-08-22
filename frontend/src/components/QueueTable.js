@@ -1,78 +1,105 @@
-import React, { useState } from "react"
-import PropTypes from "prop-types"
-import { set, get } from "lodash"
+import React from "react"
+import PropTypes, { shape } from "prop-types"
+import { makeStyles } from "@material-ui/styles"
+import Paper from "@material-ui/core/Paper"
+import EditIcon from "@material-ui/icons/Edit"
+import CheckIcon from "@material-ui/icons/Check"
+import IconButton from "@material-ui/core/IconButton"
 import MaterialTable from "material-table"
-import Grid from "@material-ui/core/Grid"
-import Checkbox from "@material-ui/core/Checkbox"
-import { withStyles } from "@material-ui/core/styles"
-import ParticipantSearch from "../components/ParticipantSearch"
+import QueueTableDropdown from "./QueueTableDropdown"
 
-const styles = theme => ({
+const useStyles = makeStyles(theme => ({
   root: {
     width: "100%",
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing(3),
     overflowX: "auto",
   },
   table: {
     minWidth: 700,
   },
-})
+}))
 
-function QueueTable({ queueName, rows, classes }) {
-  const rowsInitialState = {}
-  rows.forEach(
-    row => (rowsInitialState[row.id] = { seen: row.seen, called: row.called })
-  )
-
-  const [state, setState] = useState(rowsInitialState)
-  const handleCheck = (id, value) => event => {
-    const newState = set(state, [id, value], event.target.checked)
-    setState({
-      ...state,
-      ...newState,
-    })
+function QueueTable({ queueData: { name, rows } }) {
+  const classes = useStyles()
+  const statusOptions = [
+    { value: "checkedIn", name: "Checked In" },
+    { value: "absent", name: "Absent" },
+    { value: "returned", name: "Returned" },
+  ]
+  const urgencyOptions = [
+    { value: 1, name: 1 },
+    { value: 2, name: 2 },
+    { value: 3, name: 3 },
+    { value: 4, name: 4 },
+    { value: 5, name: 5 },
+  ]
+  const NotesButton = () => {
+    return (
+      <IconButton>
+        <EditIcon />
+      </IconButton>
+    )
   }
-
-  const checkbox = (rowData, value) => (
-    <Checkbox
-      checked={get(state, [rowData.id, value])}
-      onChange={handleCheck(rowData.id, value)}
-    />
-  )
-
+  const SeenButton = () => {
+    return (
+      <IconButton>
+        <CheckIcon />
+      </IconButton>
+    )
+  }
   return (
-    <Grid className={classes.root}>
-      <ParticipantSearch />
+    <Paper className={classes.root}>
       <MaterialTable
+        title={name}
         className={classes.table}
+        data={rows}
         columns={[
-          { title: "Urgency", field: "urgency" },
-          { title: "UID", field: "uid" },
-          { title: "First", field: "first" },
+          {
+            title: "Urgency",
+            //eslint-disable-next-line
+            render: ({ id, urgency }) => (
+              <QueueTableDropdown
+                id={id}
+                initialValue={urgency}
+                items={urgencyOptions}
+              />
+            ),
+          },
           { title: "Last", field: "last" },
+          { title: "UID", field: "uid" },
           { title: "Time", field: "timeElapsed" },
           {
-            title: "Called",
-            field: "called",
-            render: rowData => checkbox(rowData, "called"),
+            title: "Status",
+            //eslint-disable-next-line
+            render: ({ id, status }) => (
+              <QueueTableDropdown
+                id={id}
+                initialValue={status}
+                items={statusOptions}
+              />
+            ),
           },
           {
             title: "Seen",
-            field: "seen",
-            render: rowData => checkbox(rowData, "seen"),
+            //eslint-disable-next-line
+            render: ({ id }) => <SeenButton id={id} />,
+          },
+          {
+            title: "Notes",
+            //eslint-disable-next-line
+            render: ({ id }) => <NotesButton id={id} />,
           },
         ]}
-        data={rows}
-        title={queueName}
       />
-    </Grid>
+    </Paper>
   )
 }
 
 QueueTable.propTypes = {
-  rows: PropTypes.array,
-  classes: PropTypes.object,
-  queueName: PropTypes.string,
+  queueData: shape({
+    rows: PropTypes.array,
+    name: PropTypes.string,
+  }),
 }
 
-export default withStyles(styles)(QueueTable)
+export default QueueTable
