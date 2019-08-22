@@ -11,12 +11,12 @@ import TimelapseIcon from "@material-ui/icons/Timelapse"
 //  stepQueueData,
 //} from "../../fixtures/MockQueueData"
 
-import queueStore from "../stores/QueueStore"
+import { queueStore } from "../stores/QueueStore"
 
 //Mismatch with fake data ???
-queueStore.getQueue(1)
-queueStore.getQueue(2)
-queueStore.getQueue(3)
+queueStore.updateQueue(1)
+queueStore.updateQueue(2)
+queueStore.updateQueue(3)
 
 //These do not match ???
 const caseManagementQueueData = queueStore.needleExchangeQueue
