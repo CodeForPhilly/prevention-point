@@ -5,11 +5,23 @@ import { Tabs, Tab, Typography, Button } from "@material-ui/core"
 import QueueTable from "./QueueTable"
 import PersonIcon from "@material-ui/icons/Person"
 import TimelapseIcon from "@material-ui/icons/Timelapse"
-import {
-  caseManagementQueueData,
-  legalServicesQueueData,
-  stepQueueData,
-} from "../../fixtures/MockQueueData"
+//import {
+//  caseManagementQueueData,
+//  legalServicesQueueData,
+//  stepQueueData,
+//} from "../../fixtures/MockQueueData"
+
+import queueStore from "../QueueStore"
+
+//Mismatch with fake data ???
+queueStore.getQueue(1)
+queueStore.getQueue(2)
+queueStore.getQueue(3)
+
+//These do not match ???
+const caseManagementQueueData = queueStore.needleExchangeQueue
+const legalServicesQueueData = queueStore.legalServicesQueue
+const stepQueueData = queueStore.stepQueue
 
 const useStyles = makeStyles(theme => ({
   root: {
