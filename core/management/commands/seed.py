@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 
 
 import random, pytz
+=======
+import random
+>>>>>>> 6f221598814747d70887782a30a01a74620f6651
 from django.utils import timezone
 from django.core.management.base import BaseCommand
 from django.core.management import call_command
@@ -193,14 +197,17 @@ def create_programs(output=True):
               print("Created {}: '{}'". format(p.name, s.name))
 
 def create_visits(output=True):
-    '''Create fake visits and front desk events, depending on Participants and Programs.  Uses UTC in created_at date_times'''
+    '''Create fake visits and front desk events, depending on Participants and Programs. Visits are created using now(), i.e. today'''
     participants = Participant.objects.all()
     programs = Program.objects.all()
 
     for _ in range(DEFAULT_NUMBER_VISITS):
         v = Visit()
         v.participant = random.choice(participants)
+<<<<<<< HEAD
         #v.created_at = pytz.utc.localize(fake.date_time())
+=======
+>>>>>>> 6f221598814747d70887782a30a01a74620f6651
         v.created_at = timezone.now()
         v.program = random.choice(programs)
         v.notes = fake.sentence(nb_words=10, variable_nb_words=True, ext_word_list=None)
@@ -214,7 +221,7 @@ def create_visits(output=True):
             print("Created visit: {} {}, {}, {}, {}". format(v.participant.first_name, v.participant.last_name, v.created_at, v.program.name, v.notes))
 
 def create_event(visit, type):
-    '''Create a FrontDeskEvent for thie visit and of this type, e.g. ARRIVED, STEPPED_OUT'''
+    '''Create a FrontDeskEvent for thie visit and of this type, e.g. ARRIVED, STEPPED_OUT. Events are created now(), i.e. today'''
     f = FrontDeskEvent()
     f.visit = visit
     f.event_type = type
