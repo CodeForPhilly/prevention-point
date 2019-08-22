@@ -2,7 +2,7 @@ import React, { useEffect, useContext } from "react"
 import { rootStoreContext } from "./stores/RootStore"
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
 import RoutesIndex from "./routes"
-import authApi from "./api/authApi"
+import api from "./api"
 import { observer } from "mobx-react-lite"
 
 const theme = createMuiTheme({
@@ -17,7 +17,7 @@ const App = observer(() => {
 
   useEffect(() => {
     async function stillAuthenticated() {
-      const verifyToken = await authApi.verifyToken()
+      const verifyToken = await api.verifyToken()
       if (verifyToken.ok) {
         rootStore.authStore.setIsAuthenticated(true)
       } else {

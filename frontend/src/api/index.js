@@ -2,6 +2,9 @@ import apisauce from "apisauce"
 import createAuthRefreshInterceptor from "axios-auth-refresh"
 import refreshAuthLogic from "./refreshAuthLogic"
 
+import { createToken, verifyToken } from "./authEndpoints"
+import { getQueue } from "./queueEndpoints"
+
 const create = () => {
   const api = apisauce.create({
     baseURL: "/api",
@@ -18,24 +21,10 @@ const create = () => {
     }
   })
 
-  const createToken = async (username, password) => {
-    const response = await api.post("/token/", { username, password })
-    if (response.ok) {
-      localStorage.setItem("JWT_ACCESS", response.data.access)
-      localStorage.setItem("JWT_REFRESH", response.data.refresh)
-    }
-    return response
-  }
-
-  const verifyToken = async () => {
-    const accessToken = localStorage.getItem("JWT_ACCESS")
-    const response = await api.post("/token/verify/", { token: accessToken })
-    return response
-  }
-
   return {
-    createToken,
-    verifyToken,
+    createToken: createToken(api),
+    verifyToken: verifyToken(api),
+    getQueue: getQueue(api),
   }
 }
 
