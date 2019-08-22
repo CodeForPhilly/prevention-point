@@ -35,10 +35,10 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const ParticipantSearch = () => {
+const ParticipantInfo = () => {
   const classes = useStyles()
   return (
-    <div className="participant-search">
+    <div className="participant-info-component">
       <Container maxWidth="sm">
         <Typography
           style={{ textAlign: "left" }}
@@ -80,7 +80,7 @@ const ParticipantSearch = () => {
             <br />
             <br />
             <FormGroup className="participant-info">
-              <Grid container>
+              <Grid container style={{ marginTop: 20 }}>
                 <Grid item xs>
                   <FormControl className={classes.formControl}>
                     <InputLabel htmlFor="user_id">Date of birth</InputLabel>
@@ -181,4 +181,4 @@ const ParticipantSearch = () => {
   )
 }
 
-export default ParticipantSearch
+export default ParticipantInfo
