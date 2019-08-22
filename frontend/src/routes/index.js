@@ -5,6 +5,7 @@ import ParticipantSearch from "../components/ParticipantSearch"
 import Participants from "../components/Participants"
 import { BrowserRouter as Router, Route } from "react-router-dom"
 import PrivateRoute from "../routes/PrivateRoute"
+import ServicesQueues from "./ServicesQueues"
 
 const Routes = () => {
   return (
@@ -12,6 +13,7 @@ const Routes = () => {
       <Navbar />
       <PrivateRoute exact path="/" component={ParticipantSearch} />
       <PrivateRoute exact path="/participants" component={Participants} />
+      <PrivateRoute exact path="/" component={ServicesQueues} />
       <Route path="/login" component={LoginForm} />
     </Router>
   )

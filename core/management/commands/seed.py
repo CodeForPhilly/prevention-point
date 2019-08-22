@@ -1,5 +1,7 @@
-import random, pytz
 
+
+import random, pytz
+from django.utils import timezone
 from django.core.management.base import BaseCommand
 from django.core.management import call_command
 from django.contrib.auth.models import Group, User
@@ -16,7 +18,7 @@ fake = Faker()
 DEFAULT_DEV_ENV_PASS = 'password123'
 DEFAULT_GROUPS = [FRONT_DESK, CASE_MANAGER, ADMIN]
 DEFAULT_NUMBER_PARTICIPANTS = 10
-DEFAULT_NUMBER_VISITS = 20
+DEFAULT_NUMBER_VISITS = 100
 
 #Cribbed from prevpoint-backend 2 July 2019 Marieke
 DEFAULT_PROGRAMS = {
@@ -198,7 +200,8 @@ def create_visits(output=True):
     for _ in range(DEFAULT_NUMBER_VISITS):
         v = Visit()
         v.participant = random.choice(participants)
-        v.created_at = pytz.utc.localize(fake.date_time())
+        #v.created_at = pytz.utc.localize(fake.date_time())
+        v.created_at = timezone.now()
         v.program = random.choice(programs)
         v.notes = fake.sentence(nb_words=10, variable_nb_words=True, ext_word_list=None)
         v.full_clean()
@@ -219,9 +222,9 @@ def create_event(visit, type):
     f.save()
 
 def arrived(visit):
-    '''After ARRIVED, can be either LEFT, SEEN or STEPPED_OUT'''
+    '''After ARRIVED, can be either LEFT, SEEN, STEPPED_OUT or pending (still in ARRIVED status)'''
     create_event(visit, "ARRIVED")
-    random.choice([left, seen, stepped_out])(visit)
+    random.choice([left, seen, stepped_out, pending])(visit)
 
 def left(visit):
     create_event(visit, "LEFT")
@@ -230,12 +233,14 @@ def seen(visit):
     create_event(visit, "SEEN")
 
 def stepped_out(visit):
-    '''After STEPPED_OUT can be either LEFT or CAME_BACK'''
+    '''After STEPPED_OUT can be either LEFT, CAME_BACK or pending (still in STEPPED_OUT status)'''
     create_event(visit, "STEPPED_OUT")
-    random.choice([left, came_back])(visit)
+    random.choice([left, came_back, pending])(visit)
 
 def came_back(visit):
-    '''After CAME_BACK, either LEFT or SEEN'''
+    '''After CAME_BACK, either LEFT, SEEN or pending (still in CAME_BACK status)'''
     create_event(visit, "CAME_BACK")
-    random.choice([left, seen])(visit)
+    random.choice([left, seen, pending])(visit)
 
+def pending(visit):
+    pass
