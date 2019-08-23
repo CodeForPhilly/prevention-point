@@ -27,6 +27,7 @@ from core.front_desk_events import views as front_events_views
 from core.programs import views as programs_views
 from core.services import views as services_views
 from core.queue import views as queues_views
+from core.program_availability import views as program_availability_views
 
 
 admin.site.site_header = 'Prevention Point Philadelphia'
@@ -42,6 +43,7 @@ router.register(r'front-desk-events', front_events_views.FrontDeskEventViewSet)
 router.register(r'programs', programs_views.ProgramViewSet)
 router.register(r'services', services_views.ServiceViewSet)
 
+
 schema_view = get_swagger_view(title='PreventionPoint API')
 
 urlpatterns = [
@@ -49,6 +51,8 @@ urlpatterns = [
     path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
     path('api/token/verify/', jwt_views.TokenVerifyView.as_view(), name='token_verify'),
+    path('api/programs/<int:program_id>/program-availability/', program_availability_views.ProgramAvailabilityViewSet.as_view({'get':'list'})),
+    path('api/programs/<int:program_id>/program-availability/<int:pk>/', program_availability_views.ProgramAvailabilityViewSet.as_view({'put':'update'})),
     path('api/programs/<int:program_id>/queue/', queues_views.QueueViewSet.as_view({'get':'retrieve'})),
     # above only 'registers' the retrieve path. to use other CRUD actions, must pass that explicitly to .as_view in another register
     path('swagger/', schema_view),

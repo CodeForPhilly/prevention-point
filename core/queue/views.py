@@ -12,7 +12,7 @@ class QueueViewSet(viewsets.ViewSet):
   """
   API endpoint that displays the queue
   uses regular ViewSet to be able to display adjacent model responses in one view, 
-  hence the permission classes being repeated here instead of using viewsets.py prototypw
+  hence the permission classes being repeated here instead of using viewsets.py prototype
   """
 
   permission_classes = [HasGroupPermission, IsAuthenticated]
