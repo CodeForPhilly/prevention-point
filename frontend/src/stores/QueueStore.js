@@ -17,9 +17,22 @@ export class QueueStore {
   @observable legalServiceQueue = []
   @observable needleExchangeQueue = []
 
+  // Hack ???
   @action
   setQueue(queue, data) {
-    queue = data
+    //queue = data
+    if (queue === "1") {
+      this.stepQueue = data
+      //console.log(queue, data, this.stepQueue)
+    } else if (queue === "2") {
+      this.legalServiceQueue = data
+      //console.log(queue, data, this.legalServiceQueue)
+    } else if (queue === "3") {
+      this.needleExchangeQueue = data
+      //console.log(queue, data, this.needlwQueue)
+    } else {
+      //console.log("setQueue error")
+    }
   }
 
   updateQueue = flow(function*(queue) {
@@ -27,7 +40,8 @@ export class QueueStore {
     if (ok) {
       this.setQueue(queue, data)
     } else {
-      // TODO: Handle errors
+      // TODO: Handle error
+      //console.log("Error")
     }
   })
 }
