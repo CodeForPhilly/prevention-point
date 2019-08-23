@@ -46,3 +46,4 @@ class QueueTests(BaseTestCase):
             self.assertNotEqual(visit['id'], visit_id)
 
         self.assertEqual(queue_length, (updated_queue_length + 1))    
+
