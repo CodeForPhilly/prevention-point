@@ -23,7 +23,7 @@ export class QueueStore {
   }
 
   updateQueue = flow(function*(queue) {
-    const { ok, data } = yield api.getQueue(this.queueIds["queue"])
+    const { ok, data } = yield api.getQueue(queue)
     if (ok) {
       this.setQueue(queue, data)
     } else {

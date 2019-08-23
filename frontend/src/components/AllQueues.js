@@ -5,23 +5,30 @@ import { Tabs, Tab, Typography, Button } from "@material-ui/core"
 import QueueTable from "./QueueTable"
 import PersonIcon from "@material-ui/icons/Person"
 import TimelapseIcon from "@material-ui/icons/Timelapse"
-//import {
-//  caseManagementQueueData,
-//  legalServicesQueueData,
-//  stepQueueData,
-//} from "../../fixtures/MockQueueData"
+import {
+  caseManagementQueueData,
+  legalServicesQueueData,
+  stepQueueData,
+} from "../../fixtures/MockQueueData"
 
 import { queueStore } from "../stores/QueueStore"
 
 //Mismatch with fake data ???
-queueStore.updateQueue(1)
-queueStore.updateQueue(2)
-queueStore.updateQueue(3)
+//console.log(queueStore)
+queueStore.updateQueue("1")
+queueStore.updateQueue("2")
+queueStore.updateQueue("3")
 
 //These do not match ???
-const caseManagementQueueData = queueStore.needleExchangeQueue
-const legalServicesQueueData = queueStore.legalServicesQueue
-const stepQueueData = queueStore.stepQueue
+//Pull in data from backend
+const caseQueue = queueStore.needleExchangeQueue
+const legalQueue = queueStore.legalServicesQueue
+const stepQueue = queueStore.stepQueue
+
+//Put data into rows of queue data. Massage this!
+caseManagementQueueData.rows = caseQueue
+legalServicesQueueData.rows = legalQueue
+stepQueueData.rows = stepQueue
 
 const useStyles = makeStyles(theme => ({
   root: {
