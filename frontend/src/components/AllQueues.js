@@ -92,12 +92,6 @@ const AllQueues = observer(() => {
   queueStore.updateQueue("2")
   queueStore.updateQueue("3")
 
-  //These do not match ???
-  //Pull in data from backend
-  const caseQueue = queueStore.needleExchangeQueue
-  const legalQueue = queueStore.legalServiceQueue
-  const stepQueue = queueStore.stepQueue
-
   const classes = useStyles()
   const [value, setValue] = React.useState(0)
   function handleChange(event, newValue) {
@@ -109,26 +103,20 @@ const AllQueues = observer(() => {
       <Tabs variant="fullWidth" value={value} onChange={handleChange}>
         <QueueTab
           className={classes.queueTab}
-          queueData={queueStore.mapQueueToData(caseQueue)}
+          queueData={queueStore.mapCaseQueue}
         />
         <QueueTab
           className={classes.queueTab}
-          queueData={queueStore.mapQueueToData(legalQueue)}
+          queueData={queueStore.mapLegalQueue}
         />
         <QueueTab
           className={classes.queueTab}
-          queueData={queueStore.mapQueueToData(stepQueue)}
+          queueData={queueStore.mapStepQueue}
         />
       </Tabs>
-      {value === 0 && (
-        <QueueTable queueData={queueStore.mapQueueToData(caseQueue)} />
-      )}
-      {value === 1 && (
-        <QueueTable queueData={queueStore.mapQueueToData(legalQueue)} />
-      )}
-      {value === 2 && (
-        <QueueTable queueData={queueStore.mapQueueToData(stepQueue)} />
-      )}
+      {value === 0 && <QueueTable queueData={queueStore.mapCaseQueue} />}
+      {value === 1 && <QueueTable queueData={queueStore.mapLegalQueue} />}
+      {value === 2 && <QueueTable queueData={queueStore.mapStepQueue} />}
     </div>
   )
 })

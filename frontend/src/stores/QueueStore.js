@@ -1,5 +1,5 @@
 import { observable, action, flow } from "mobx"
-//import { computed } from "mobx"
+import { computed } from "mobx"
 import { createContext } from "react"
 import api from "../api"
 
@@ -11,14 +11,14 @@ export class QueueStore {
   queueIds = {
     stepQueue: 1,
     legalServiceQueue: 2,
-    needleExchangeQueue: 3,
+    caseQueue: 3,
   }
 
   @observable stepQueue = []
   @observable legalServiceQueue = []
-  @observable needleExchangeQueue = []
+  @observable caseQueue = []
 
-  //@computed
+  //@computed get mapQueueToData(queue) {
   mapQueueToData(queue) {
     const data = []
     if (queue) {
@@ -44,6 +44,18 @@ export class QueueStore {
     return result
   }
 
+  @computed get mapStepQueue() {
+    return this.mapQueueToData(this.stepQueue)
+  }
+
+  @computed get mapLegalQueue() {
+    return this.mapQueueToData(this.legalServiceQueue)
+  }
+
+  @computed get mapCaseQueue() {
+    return this.mapQueueToData(this.caseQueue)
+  }
+
   // Hack ???
   @action
   setQueue(queue, data) {
@@ -55,7 +67,7 @@ export class QueueStore {
       this.legalServiceQueue = data
       //console.log(queue, data, this.legalServiceQueue)
     } else if (queue === "3") {
-      this.needleExchangeQueue = data
+      this.caseQueue = data
       //console.log(queue, data, this.needlwQueue)
     } else {
       //console.log("setQueue error")
