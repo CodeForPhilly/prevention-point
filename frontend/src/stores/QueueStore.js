@@ -1,5 +1,6 @@
 import { observable, action, flow } from "mobx"
-//import { createContext } from "react"
+//import { computed } from "mobx"
+import { createContext } from "react"
 import api from "../api"
 
 export class QueueStore {
@@ -16,6 +17,32 @@ export class QueueStore {
   @observable stepQueue = []
   @observable legalServiceQueue = []
   @observable needleExchangeQueue = []
+
+  //@computed
+  mapQueueToData(queue) {
+    const data = []
+    if (queue) {
+      queue.forEach(element => {
+        const row = [
+          1,
+          element.participant.last_name,
+          element.participant.pp_id,
+          element.status.created_at,
+          element.status.event_type,
+          false,
+        ]
+        data.append(row)
+      })
+    }
+    const result = {
+      id: "Dummy",
+      name: "Dummy",
+      waitTime: "Dummy",
+      length: data.length,
+      rows: data,
+    }
+    return result
+  }
 
   // Hack ???
   @action
@@ -45,5 +72,5 @@ export class QueueStore {
     }
   })
 }
-//export const QueueStoreContext = createContext(new QueueStore())
-export const queueStore = new QueueStore()
+export const QueueStoreContext = createContext(new QueueStore())
+//export const queueStore = new QueueStore()

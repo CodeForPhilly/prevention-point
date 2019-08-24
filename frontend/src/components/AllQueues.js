@@ -1,39 +1,19 @@
-import React from "react"
+import React, { useContext } from "react"
+import { observer } from "mobx-react-lite"
 import PropTypes from "prop-types"
 import { makeStyles } from "@material-ui/styles"
 import { Tabs, Tab, Typography, Button } from "@material-ui/core"
 import QueueTable from "./QueueTable"
 import PersonIcon from "@material-ui/icons/Person"
 import TimelapseIcon from "@material-ui/icons/Timelapse"
+import { QueueStoreContext } from "../stores/QueueStore"
 
 //import { toJS } from "mobx"
-import {
-  caseManagementQueueData,
-  legalServicesQueueData,
-  stepQueueData,
-} from "../../fixtures/MockQueueData"
-
-import { queueStore } from "../stores/QueueStore"
-
-//Mismatch with fake data ???
-queueStore.updateQueue("1")
-queueStore.updateQueue("2")
-queueStore.updateQueue("3")
-
-//These do not match ???
-//Pull in data from backend
-const caseQueue = queueStore.needleExchangeQueue
-const legalQueue = queueStore.legalServiceQueue
-const stepQueue = queueStore.stepQueue
-
-//console.log(caseQueue)
-//console.log(legalQueue)
-//console.log(stepQueue)
-
-//Put data into rows of queue data. Massage this!
-caseManagementQueueData.rows = mapQueueToRows(caseQueue)
-legalServicesQueueData.rows = mapQueueToRows(legalQueue)
-stepQueueData.rows = mapQueueToRows(stepQueue)
+//import {
+//  caseManagementQueueData,
+//  legalServicesQueueData,
+//  stepQueueData,
+//} from "../../fixtures/MockQueueData"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -104,7 +84,20 @@ function QueueTab(props) {
   )
 }
 
-function AllQueues() {
+const AllQueues = observer(() => {
+  const queueStore = useContext(QueueStoreContext)
+
+  //Mismatch with fake data ???
+  queueStore.updateQueue("1")
+  queueStore.updateQueue("2")
+  queueStore.updateQueue("3")
+
+  //These do not match ???
+  //Pull in data from backend
+  const caseQueue = queueStore.needleExchangeQueue
+  const legalQueue = queueStore.legalServiceQueue
+  const stepQueue = queueStore.stepQueue
+
   const classes = useStyles()
   const [value, setValue] = React.useState(0)
   function handleChange(event, newValue) {
@@ -116,38 +109,29 @@ function AllQueues() {
       <Tabs variant="fullWidth" value={value} onChange={handleChange}>
         <QueueTab
           className={classes.queueTab}
-          queueData={caseManagementQueueData}
+          queueData={queueStore.mapQueueToData(caseQueue)}
         />
         <QueueTab
           className={classes.queueTab}
-          queueData={legalServicesQueueData}
+          queueData={queueStore.mapQueueToData(legalQueue)}
         />
-        <QueueTab className={classes.queueTab} queueData={stepQueueData} />
+        <QueueTab
+          className={classes.queueTab}
+          queueData={queueStore.mapQueueToData(stepQueue)}
+        />
       </Tabs>
-      {value === 0 && <QueueTable queueData={caseManagementQueueData} />}
-      {value === 1 && <QueueTable queueData={legalServicesQueueData} />}
-      {value === 2 && <QueueTable queueData={stepQueueData} />}
+      {value === 0 && (
+        <QueueTable queueData={queueStore.mapQueueToData(caseQueue)} />
+      )}
+      {value === 1 && (
+        <QueueTable queueData={queueStore.mapQueueToData(legalQueue)} />
+      )}
+      {value === 2 && (
+        <QueueTable queueData={queueStore.mapQueueToData(stepQueue)} />
+      )}
     </div>
   )
-}
-
-function mapQueueToRows(queue) {
-  const rows = []
-  if (queue) {
-    queue.forEach(element => {
-      const row = [
-        1,
-        element.participant.last_name,
-        element.participant.pp_id,
-        element.status.created_at,
-        element.status.event_type,
-        false,
-      ]
-      rows.append(row)
-    })
-  }
-  return rows
-}
+})
 
 AllQueues.propTypes = {
   queueData: PropTypes.array,
