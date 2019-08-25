@@ -84,5 +84,10 @@ export class QueueStore {
     }
   })
 }
-export const QueueStoreContext = createContext(new QueueStore())
+const queueStore = new QueueStore()
+//queueStore.updateQueue("1")
+//queueStore.updateQueue("2")
+//queueStore.updateQueue("3")
+
+export const QueueStoreContext = createContext(queueStore)
 //export const queueStore = new QueueStore()

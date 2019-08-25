@@ -88,9 +88,9 @@ const AllQueues = observer(() => {
   const queueStore = useContext(QueueStoreContext)
 
   //Mismatch with fake data ???
-  queueStore.updateQueue("1")
-  queueStore.updateQueue("2")
-  queueStore.updateQueue("3")
+  //queueStore.updateQueue("1")
+  //queueStore.updateQueue("2")
+  //queueStore.updateQueue("3")
 
   const classes = useStyles()
   const [value, setValue] = React.useState(0)
