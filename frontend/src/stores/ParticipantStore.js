@@ -1,5 +1,6 @@
 import { observable, action, flow, toJS } from "mobx"
-import participantApi from "../api/participantApi"
+import { createContext } from "react"
+import api from "../api"
 
 class ParticipantStore {
   constructor(rootStore) {
@@ -15,7 +16,7 @@ class ParticipantStore {
 
   getParticipants = flow(function*() {
     try {
-      const results = yield participantApi.getParticipants()
+      const results = yield api.getParticipants()
       if (results) {
         results.data.forEach((datum, index) => {
           this.setParticipant(datum, index)
@@ -45,5 +46,5 @@ class ParticipantStore {
   }
 }
 
-let participantStore = (window.participantStore = new ParticipantStore())
-export default participantStore
+const participantStore = (window.participantStore = new ParticipantStore())
+export const ParticipantStoreContext = createContext(participantStore)
