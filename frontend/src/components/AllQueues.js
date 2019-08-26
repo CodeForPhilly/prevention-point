@@ -86,12 +86,6 @@ function QueueTab(props) {
 
 const AllQueues = observer(() => {
   const queueStore = useContext(QueueStoreContext)
-
-  //Mismatch with fake data ???
-  //queueStore.updateQueue("1")
-  //queueStore.updateQueue("2")
-  //queueStore.updateQueue("3")
-
   const classes = useStyles()
   const [value, setValue] = React.useState(0)
   function handleChange(event, newValue) {

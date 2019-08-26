@@ -18,30 +18,24 @@ export class QueueStore {
   @observable legalServiceQueue = []
   @observable caseQueue = []
 
-  //@computed get mapQueueToData(queue) {
   mapQueueToData(queue) {
-    const data = []
     if (queue) {
-      queue.forEach(element => {
-        const row = [
-          1,
-          element.participant.last_name,
-          element.participant.pp_id,
-          element.status.created_at,
-          element.status.event_type,
-          false,
-        ]
-        data.append(row)
-      })
+      return {
+        id: "Dummy",
+        name: "Dummy",
+        waitTime: "Dummy",
+        length: queue.length,
+        rows: [],
+        //rows: queue.map(x => {1, x.participant.last_name, x.participant.pp_id, x.status.created_at, x.status.event_type, false}),
+      }
     }
-    const result = {
+    return {
       id: "Dummy",
       name: "Dummy",
       waitTime: "Dummy",
-      length: data.length,
-      rows: data,
+      length: 0,
+      rows: [],
     }
-    return result
   }
 
   @computed get mapStepQueue() {
@@ -85,9 +79,9 @@ export class QueueStore {
   })
 }
 const queueStore = new QueueStore()
-//queueStore.updateQueue("1")
-//queueStore.updateQueue("2")
-//queueStore.updateQueue("3")
+queueStore.updateQueue("1")
+queueStore.updateQueue("2")
+queueStore.updateQueue("3")
 
 export const QueueStoreContext = createContext(queueStore)
 //export const queueStore = new QueueStore()
