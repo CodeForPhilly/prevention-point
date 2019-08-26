@@ -46,5 +46,5 @@ class ParticipantStore {
   }
 }
 
-const participantStore = (window.participantStore = new ParticipantStore())
-export const ParticipantStoreContext = createContext(participantStore)
+//const participantStore = (window.participantStore = new ParticipantStore())
+export const ParticipantStoreContext = createContext(new ParticipantStore())
