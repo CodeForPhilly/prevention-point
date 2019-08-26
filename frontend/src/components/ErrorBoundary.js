@@ -3,6 +3,7 @@
  */
 
 import React from "react"
+import PropTypes from "prop-types"
 
 export default class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -32,7 +33,12 @@ export default class ErrorBoundary extends React.Component {
         </div>
       )
     } else {
-      return this.props
+      return this.props.children
     }
   }
+}
+
+// typechecking of children property.  Ensures the children props is of type "node" (any type)
+ErrorBoundary.propTypes = {
+  children: PropTypes.node,
 }
