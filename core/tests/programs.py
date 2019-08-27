@@ -46,3 +46,28 @@ class ProgramsTests(BaseTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 
+    def test_is_closed_is_updated(self):
+        """
+        Ensures that a case manager can update the is_closed property
+        """
+        headers = self.auth_headers_for_user('case_manager')
+        random_pk = random.randint(1, 3)
+        random_program = Program.objects.filter(
+            pk__exact=random_pk
+        ).values()[0]
+        self.assertFalse(random_program['is_closed'])
+
+        # update the program
+        data = {'is_closed': True}
+        response = self.client.put(
+            '/api/programs/{}/'.format(random_program['id']),
+            data, format='json',follow=True, **headers
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # check that the program is marked as closed in the database
+        updated_program = Program.objects.filter(
+            pk__exact=random_program['id']
+        ).values()[0]
+
+        self.assertTrue(updated_program['is_closed'])

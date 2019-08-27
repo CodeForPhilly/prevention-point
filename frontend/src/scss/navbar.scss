@@ -1,8 +1,17 @@
 .navbar{
+	root{
+    flex: 1
+  }
+	//left
+	&__logo{
+        margin-right: auto;
+    }
+    //center
+    &__header{
+        margin-right: auto;
+    }
+    //right
     &__toolbar{
         justify-content: flex-end;
-    }
-    &__logo{
-        margin-right: auto;
     }
 }

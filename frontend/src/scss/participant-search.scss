@@ -1,15 +1,35 @@
 @media all and (min-width: 480px) {
   .participant-search {
     text-align: center;
-    padding: 60px 0;
+    padding: 30px 0;
 
     &__form {
       margin: 0 auto;
-      max-width: 320px;
+      max-width: 270px;
+
     }
 
     &__input {
       margin: 1rem 0rem;
     }
+  }
+
+  .participant-reminder {
+    width: 270px;
+    text-align: left;
+    padding: 2px 0;
+    
+  }
+
+  .participant-head {
+    width: 270px;
+    text-align: left;
+    padding: 2px 0;
+    display: flex;
+    justify-content: left;
+    //align-items: center;
+    color: rgb(51, 109, 124);
+    font-family:  Arial, sans-serif;
+    
   }
 }
