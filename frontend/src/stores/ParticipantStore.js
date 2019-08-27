@@ -2,7 +2,7 @@ import { observable, action, flow, toJS } from "mobx"
 import { createContext } from "react"
 import api from "../api"
 
-class ParticipantStore {
+export class ParticipantStore {
   constructor(rootStore) {
     this.rootStore = rootStore
   }
