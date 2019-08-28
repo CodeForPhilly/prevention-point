@@ -25,9 +25,11 @@ const QueueTable = observer(queueData => {
   const queueStore = useContext(QueueStoreContext)
   const classes = useStyles()
   const statusOptions = [
-    { value: "checkedIn", name: "Checked In" },
-    { value: "absent", name: "Absent" },
-    { value: "returned", name: "Returned" },
+    { value: "ARRIVED", name: "Arrived" },
+    { value: "SEEN", name: "Seen" },
+    { value: "STEPPED_OUT", name: "Stepped Out" },
+    { value: "CAME_BACK", name: "Came Back" },
+    { value: "LEFT", name: "Left" },
   ]
   const urgencyOptions = [
     { value: 1, name: 1 },
@@ -56,11 +58,13 @@ const QueueTable = observer(queueData => {
         title={queueStore.queueStats[queueData["queueData"]].name}
         className={classes.table}
         data={queueStore.queues[queueData["queueData"]].map(x => ({
-          Urgency: 1,
+          urgency: 1,
           last: x.participant.last_name,
           uid: x.participant.pp_id,
           timeElapsed: x.status.created_at,
-          Seen: x.status.event_type,
+          status: x.status.event_type,
+          service: "Dummy",
+          seen: false,
           Notes: false,
         }))}
         columns={[
@@ -89,6 +93,7 @@ const QueueTable = observer(queueData => {
               />
             ),
           },
+          { title: "Service", field: "service" },
           {
             title: "Seen",
             //eslint-disable-next-line
