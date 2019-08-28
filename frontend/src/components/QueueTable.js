@@ -1,5 +1,6 @@
-import React from "react"
-import PropTypes, { shape } from "prop-types"
+import React, { useContext } from "react"
+import { observer } from "mobx-react-lite"
+import PropTypes from "prop-types"
 import { makeStyles } from "@material-ui/styles"
 import Paper from "@material-ui/core/Paper"
 import EditIcon from "@material-ui/icons/Edit"
@@ -7,6 +8,7 @@ import CheckIcon from "@material-ui/icons/Check"
 import IconButton from "@material-ui/core/IconButton"
 import MaterialTable from "material-table"
 import QueueTableDropdown from "./QueueTableDropdown"
+import { QueueStoreContext } from "../stores/QueueStore"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -19,7 +21,8 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-function QueueTable({ queueData: { name, rows } }) {
+const QueueTable = observer(queueData => {
+  const queueStore = useContext(QueueStoreContext)
   const classes = useStyles()
   const statusOptions = [
     { value: "checkedIn", name: "Checked In" },
@@ -50,9 +53,16 @@ function QueueTable({ queueData: { name, rows } }) {
   return (
     <Paper className={classes.root}>
       <MaterialTable
-        title={name}
+        title={queueStore.queueStats[queueData["queueData"]].name}
         className={classes.table}
-        data={rows}
+        data={queueStore.queues[queueData["queueData"]].map(x => ({
+          Urgency: 1,
+          last: x.participant.last_name,
+          uid: x.participant.pp_id,
+          timeElapsed: x.status.created_at,
+          Seen: x.status.event_type,
+          Notes: false,
+        }))}
         columns={[
           {
             title: "Urgency",
@@ -93,13 +103,10 @@ function QueueTable({ queueData: { name, rows } }) {
       />
     </Paper>
   )
-}
+})
 
 QueueTable.propTypes = {
-  queueData: shape({
-    rows: PropTypes.array,
-    name: PropTypes.string,
-  }),
+  queueData: PropTypes.number,
 }
 
 export default QueueTable

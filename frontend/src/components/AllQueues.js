@@ -40,23 +40,27 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
+//There is no observer on this function--throws error if included--but should there be one?
 const QueueTabContent = React.forwardRef(({ onClick, queueData }, _ref) => {
+  const queueStore = useContext(QueueStoreContext)
   const classes = useStyles()
   return (
     <Button onClick={onClick} className={classes.queueTab}>
       <div>
-        <Typography className={classes.heading}>{queueData.name}</Typography>
+        <Typography className={classes.heading}>
+          {queueStore.queueStats[queueData].name}
+        </Typography>
         <div className={classes.queueTabContent}>
           <div className={classes.queueTabStat}>
             <PersonIcon className={classes.queueTabIcon} />
             <Typography className={classes.queueTabStatValue}>
-              {queueData.length}
+              {queueStore.queueStats[queueData].length}
             </Typography>
           </div>
           <div className={classes.queueTabStat}>
             <TimelapseIcon className={classes.queueTabIcon} />
             <Typography className={classes.queueTabStatValue}>
-              {queueData.waitTime}
+              {queueStore.queueStats[queueData].waitTime}
             </Typography>
           </div>
         </div>
@@ -69,7 +73,7 @@ QueueTabContent.displayName = "QueueTabContent"
 
 QueueTabContent.propTypes = {
   onClick: PropTypes.func,
-  queueData: PropTypes.object,
+  queueData: PropTypes.number,
 }
 
 function QueueTab(props) {
@@ -97,26 +101,26 @@ const AllQueues = observer(() => {
       <Tabs variant="fullWidth" value={value} onChange={handleChange}>
         <QueueTab
           className={classes.queueTab}
-          queueData={queueStore.mapCaseQueue}
+          queueData={queueStore.queueIds["CM"]}
         />
         <QueueTab
           className={classes.queueTab}
-          queueData={queueStore.mapLegalQueue}
+          queueData={queueStore.queueIds["LEGAL"]}
         />
         <QueueTab
           className={classes.queueTab}
-          queueData={queueStore.mapStepQueue}
+          queueData={queueStore.queueIds["STEP"]}
         />
       </Tabs>
-      {value === 0 && <QueueTable queueData={queueStore.mapCaseQueue} />}
-      {value === 1 && <QueueTable queueData={queueStore.mapLegalQueue} />}
-      {value === 2 && <QueueTable queueData={queueStore.mapStepQueue} />}
+      {value === 0 && <QueueTable queueData={queueStore.queueIds["CM"]} />}
+      {value === 1 && <QueueTable queueData={queueStore.queueIds["LEGAL"]} />}
+      {value === 2 && <QueueTable queueData={queueStore.queueIds["STEP"]} />}
     </div>
   )
 })
 
 AllQueues.propTypes = {
-  queueData: PropTypes.array,
+  queueData: PropTypes.string,
   classes: PropTypes.object,
 }
 
