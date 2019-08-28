@@ -7,6 +7,7 @@ import EditIcon from "@material-ui/icons/Edit"
 import CheckIcon from "@material-ui/icons/Check"
 import IconButton from "@material-ui/core/IconButton"
 import MaterialTable from "material-table"
+import moment from "moment"
 import QueueTableDropdown from "./QueueTableDropdown"
 import { QueueStoreContext } from "../stores/QueueStore"
 
@@ -61,7 +62,7 @@ const QueueTable = observer(queueData => {
           urgency: 1,
           last: x.participant.last_name,
           uid: x.participant.pp_id,
-          timeElapsed: x.status.created_at,
+          timeElapsed: moment(x.status.created_at).format("LT"),
           status: x.status.event_type,
           service: "Dummy",
           seen: false,
