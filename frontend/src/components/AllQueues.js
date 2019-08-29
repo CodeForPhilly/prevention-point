@@ -102,7 +102,15 @@ const AllQueues = observer(() => {
       <Tabs variant="fullWidth" value={value} onChange={handleChange}>
         <QueueTab
           className={classes.queueTab}
+          queueData={queueStore.queueIds["TESTING"]}
+        />
+        <QueueTab
+          className={classes.queueTab}
           queueData={queueStore.queueIds["CM"]}
+        />
+        <QueueTab
+          className={classes.queueTab}
+          queueData={queueStore.queueIds["SSHP"]}
         />
         <QueueTab
           className={classes.queueTab}
@@ -110,12 +118,36 @@ const AllQueues = observer(() => {
         />
         <QueueTab
           className={classes.queueTab}
+          queueData={queueStore.queueIds["CRAFT"]}
+        />
+        <QueueTab
+          className={classes.queueTab}
+          queueData={queueStore.queueIds["PHAN"]}
+        />
+        <QueueTab
+          className={classes.queueTab}
           queueData={queueStore.queueIds["STEP"]}
         />
+        <QueueTab
+          className={classes.queueTab}
+          queueData={queueStore.queueIds["BIENSTAR"]}
+        />
+        <QueueTab
+          className={classes.queueTab}
+          queueData={queueStore.queueIds["SKWC"]}
+        />
       </Tabs>
-      {value === 0 && <QueueTable queueData={queueStore.queueIds["CM"]} />}
-      {value === 1 && <QueueTable queueData={queueStore.queueIds["LEGAL"]} />}
-      {value === 2 && <QueueTable queueData={queueStore.queueIds["STEP"]} />}
+      {value === 0 && <QueueTable queueData={queueStore.queueIds["TESTING"]} />}
+      {value === 1 && <QueueTable queueData={queueStore.queueIds["CM"]} />}
+      {value === 2 && <QueueTable queueData={queueStore.queueIds["SSHP"]} />}
+      {value === 3 && <QueueTable queueData={queueStore.queueIds["LEGAL"]} />}
+      {value === 4 && <QueueTable queueData={queueStore.queueIds["CRAFT"]} />}
+      {value === 5 && <QueueTable queueData={queueStore.queueIds["PHAN"]} />}
+      {value === 6 && <QueueTable queueData={queueStore.queueIds["STEP"]} />}
+      {value === 7 && (
+        <QueueTable queueData={queueStore.queueIds["BIENSTAR"]} />
+      )}
+      {value === 8 && <QueueTable queueData={queueStore.queueIds["SKWC"]} />}
     </div>
   )
 })
