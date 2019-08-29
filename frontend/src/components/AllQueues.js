@@ -41,8 +41,8 @@ const useStyles = makeStyles(theme => ({
 }))
 
 //There is no observer on this function--throws error if included--but should there be one?
-//const QueueTabContent = React.forwardRef(({ onClick, queueData }, _ref) => {
-const QueueTabContent = observer(({ onClick, queueData }) => {
+//const QueueTabContent = observer(({ onClick, queueData }) => {
+const QueueTabContent = React.forwardRef(({ onClick, queueData }, _ref) => {
   const queueStore = useContext(QueueStoreContext)
   const classes = useStyles()
   return (
