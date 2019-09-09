@@ -8,11 +8,21 @@ import Button from "@material-ui/core/Button"
 import Typography from "@material-ui/core/Typography"
 
 const UserSearch = () => {
-  const inputState = useState({
-    userId: "",
-    firstName: "",
-    lastName: "",
-  })
+  const [userId, setUserId] = useState("")
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
+
+  const handleSubmit = e => {
+    useState()
+    if (e) {
+      e.preventDefault()
+    }
+    // Validate that a user id or a first name last name paring exist on the form
+    // Go to results page
+    // const login = () => {
+    //   rootStore.authStore.login(username, password)
+    // }
+  }
 
   return (
     <div className="participant-search">
@@ -33,7 +43,7 @@ const UserSearch = () => {
           <b>Reminder:</b> Search for participant profile prior to creating a
           new profile
         </Typography>
-        <form className="participant-search__form">
+        <form className="participant-search__form" onSubmit={handleSubmit}>
           <FormGroup className="participant-search__input">
             <FormControl>
               <InputLabel htmlFor="user_id">User ID</InputLabel>
@@ -41,15 +51,8 @@ const UserSearch = () => {
                 id="user_id"
                 name="user_id"
                 required
-                value={inputState[0].userId}
-                onChange={event => {
-                  const newUserId = event.target.value
-                  inputState[1](prevInputState => ({
-                    userId: newUserId,
-                    firstName: prevInputState.firstName,
-                    lastName: prevInputState.lastName,
-                  }))
-                }}
+                value={userId}
+                onChange={e => setUserId(e.target.value)}
               />
             </FormControl>
           </FormGroup>
@@ -68,15 +71,8 @@ const UserSearch = () => {
                 id="first_name"
                 name="first_name"
                 required
-                value={inputState[0].firstName}
-                onChange={event => {
-                  const newFirstName = event.target.value
-                  inputState[1](prevInputState => ({
-                    userId: prevInputState.userId,
-                    firstName: newFirstName,
-                    lastName: prevInputState.lastName,
-                  }))
-                }}
+                value={firstName}
+                onChange={e => setFirstName(e.target.value)}
               />
             </FormControl>
           </FormGroup>
@@ -87,15 +83,8 @@ const UserSearch = () => {
                 id="last_name"
                 name="last_name"
                 required
-                value={inputState[0].lastName}
-                onChange={event => {
-                  const newLastName = event.target.value
-                  inputState[1](prevInputState => ({
-                    userId: prevInputState.userId,
-                    firstName: prevInputState.firstName,
-                    lastName: newLastName,
-                  }))
-                }}
+                value={lastName}
+                onChange={e => setLastName(e.target.value)}
               />
             </FormControl>
           </FormGroup>
