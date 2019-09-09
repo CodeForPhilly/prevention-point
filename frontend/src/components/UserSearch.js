@@ -13,7 +13,6 @@ const UserSearch = () => {
   const [lastName, setLastName] = useState("")
 
   const handleSubmit = e => {
-    useState()
     if (e) {
       e.preventDefault()
     }
