@@ -10,7 +10,7 @@ const Routes = () => {
   return (
     <Router>
       <Navbar />
-      <PrivateRoute exact path="/participants" component={Participant} />
+      <PrivateRoute exact path="/participant" component={Participant} />
       <PrivateRoute exact path="/" component={ServicesQueues} />
       <Route path="/login" component={LoginForm} />
     </Router>

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react"
+import React, { useState } from "react"
 import "../scss/participant-search.scss"
 import FormGroup from "@material-ui/core/FormGroup"
 import FormControl from "@material-ui/core/FormControl"
@@ -6,10 +6,10 @@ import InputLabel from "@material-ui/core/InputLabel"
 import Input from "@material-ui/core/Input"
 import Button from "@material-ui/core/Button"
 import Typography from "@material-ui/core/Typography"
-import { rootStoreContext } from "../stores/RootStore"
+import { Redirect } from "react-router-dom"
 
 const UserSearch = () => {
-  const rootStore = useContext(rootStoreContext)
+  // const rootStore = useContext(rootStoreContext)
   const [userId, setUserId] = useState("")
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
@@ -26,7 +26,15 @@ const UserSearch = () => {
       setErrorState(true)
     } else {
       // Make the call
-      rootStore.participantStore.getParticipants(userId, firstName, lastName)
+      return (
+        <Redirect
+          to={{
+            pathname: "/participant",
+            state: { userId: userId, firstName: firstName, lastName: lastName },
+          }}
+        />
+      )
+      // rootStore.participantStore.getParticipants(userId, firstName, lastName)
     }
   }
 
