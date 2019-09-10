@@ -9,9 +9,21 @@ export class ParticipantStore {
 
   //participants = observable([])
   @observable participants = []
+  @observable userId = null
+  @observable firstName = null
+  @observable lastName = null
 
   @action setParticipant(participant, index) {
     this.participants[index] = participant
+  }
+  @action setUserId(userId) {
+    this.userId = userId
+  }
+  @action setFirstName(firstName) {
+    this.firstName = firstName
+  }
+  @action setLastName(lastName) {
+    this.lastName = lastName
   }
 
   getParticipants = flow(function*() {

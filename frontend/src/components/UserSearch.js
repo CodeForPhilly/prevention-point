@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import "../scss/participant-search.scss"
 import FormGroup from "@material-ui/core/FormGroup"
 import FormControl from "@material-ui/core/FormControl"
@@ -6,8 +6,10 @@ import InputLabel from "@material-ui/core/InputLabel"
 import Input from "@material-ui/core/Input"
 import Button from "@material-ui/core/Button"
 import Typography from "@material-ui/core/Typography"
+import { rootStoreContext } from "../stores/RootStore"
 
 const UserSearch = () => {
+  const rootStore = useContext(rootStoreContext)
   const [userId, setUserId] = useState("")
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
@@ -17,10 +19,9 @@ const UserSearch = () => {
       e.preventDefault()
     }
     // Validate that a user id or a first name last name paring exist on the form
-    // Go to results page
-    // const login = () => {
-    //   rootStore.authStore.login(username, password)
-    // }
+
+    // Make the call
+    rootStore.participantStore.getParticipants(userId, firstName, lastName)
   }
 
   return (
