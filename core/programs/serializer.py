@@ -16,3 +16,11 @@ class ProgramSerializer(serializers.ModelSerializer):
         model = Program
         fields = ('id', 'name', 'is_closed', 'service_set') # backwards nested relationship uses '_set'
 
+class ProgramForMapSerializer(serializers.ModelSerializer):
+    """
+    This is for program service map objects, so you can display Program and service info at the same level in response
+    without redundancy
+    """
+    class Meta:
+        model = Program
+        fields = ('id', 'name', 'is_closed') 
