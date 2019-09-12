@@ -11,9 +11,7 @@ class ServiceSerializer(serializers.ModelSerializer):
       extra_kwargs = {
             'name': {'read_only': True}
       }
-      #TODO: not sure if this is what we want- goal for the read only tag is to only allow
-      # 'available' to be updated.
-
+  
 class ServiceforProgramSerializer(serializers.ModelSerializer):
 
   class Meta:
