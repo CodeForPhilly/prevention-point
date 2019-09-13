@@ -1,6 +1,6 @@
 import { observable, action, flow, toJS } from "mobx"
 import { createContext } from "react"
-import participantApi from "../api/participantEndpoints"
+import api from "../api"
 
 export class ParticipantStore {
   constructor(rootStore) {
@@ -10,27 +10,16 @@ export class ParticipantStore {
   //participants = observable([])
   @observable participants = []
 
-  @action setUserId(userId) {
-    this.userId = userId
-  }
-  @action setFirstName(firstName) {
-    this.firstName = firstName
-  }
-  @action setLastName(lastName) {
-    this.lastName = lastName
+  @action
+  setParticipants(participants, data) {
+    participants = data
   }
 
-  getParticipants = flow(function*() {
-    this.participants = []
-    try {
-      const results = yield participantApi.getParticipants()
-      if (results) {
-        results.data.forEach((datum, index) => {
-          this.participants[index] = datum
-        })
-      }
-      return this.participants
-    } catch (error) {
+  getParticipants = flow(function*(participants) {
+    const { ok, data } = yield api.getParticipants()
+    if (ok) {
+      this.setParticipants(participants, data)
+    } else {
       // TODO: Handle errors
     }
   })
