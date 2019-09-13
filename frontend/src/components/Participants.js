@@ -1,5 +1,5 @@
-import React from "react"
-import { observer } from "mobx-react"
+import React, { useContext, useEffect, useState } from "react"
+import { rootStoreContext } from "../stores/RootStore"
 import ParticipantStore from "../stores/ParticipantStore"
 
 import Breadcrumbs from "@material-ui/core/Breadcrumbs"
@@ -11,61 +11,63 @@ import TableCell from "@material-ui/core/TableCell"
 import TableHead from "@material-ui/core/TableHead"
 import TableRow from "@material-ui/core/TableRow"
 
-export default
-@observer
-class Participant extends React.Component {
-  componentDidMount() {
-    ParticipantStore.getParticipants()
-  }
+const Participants = () => {
+  const rootStore = useContext(rootStoreContext)
+  const [participants, setParticipants] = useState([])
 
-  render() {
-    return (
-      <div>
-        <Breadcrumbs separator="›" aria-label="breadcrumb">
-          <Link color="inherit" href="/">
-            Home
-          </Link>
-          <Typography color="textPrimary">Search Results</Typography>
-        </Breadcrumbs>
-        <Typography variant="h5" color="textPrimary">
-          Participants
-        </Typography>
-        <div className="participants">
-          <Table>
-            <TableHead>
-              <TableRow>
+  // useEffect is a hook that gets called after every render/re-render
+  useEffect(() => {
+    setParticipants(rootStore.ParticipantStore.getParticipants())
+  }, [])
+
+  return (
+    <div>
+      <Breadcrumbs separator="›" aria-label="breadcrumb">
+        <Link color="inherit" href="/">
+          Home
+        </Link>
+        <Typography color="textPrimary">Search Results</Typography>
+      </Breadcrumbs>
+      <Typography variant="h5" color="textPrimary">
+        Participants
+      </Typography>
+      <div className="participants">
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>
+                <Typography>PPID</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography>First Name</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography>Last Name</Typography>
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {participants.map((participant, index) => (
+              <TableRow key={index}>
                 <TableCell>
-                  <Typography>PPID</Typography>
+                  <Typography>{participant.pp_id} </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography>First Name</Typography>
+                  <Typography>{participant.first_name}</Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography>Last Name</Typography>
+                  <Typography>{participant.last_name}</Typography>
                 </TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {ParticipantStore.participants.map((participant, index) => (
-                <TableRow key={index}>
-                  <TableCell>
-                    <Typography>{participant.pp_id} </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography>{participant.first_name}</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography>{participant.last_name}</Typography>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-        <div>
-          <p>{ParticipantStore.filter("T9FN3", null, null).first_name}</p>
-        </div>
+            ))}
+          </TableBody>
+        </Table>
       </div>
-    )
-  }
+      <div>
+        <p>{ParticipantStore.filter("T9FN3", null, null).first_name}</p>
+      </div>
+    </div>
+  )
 }
+
+export default Participants
