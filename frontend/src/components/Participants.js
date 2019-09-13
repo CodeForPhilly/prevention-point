@@ -1,7 +1,6 @@
 import React from "react"
 import { observer } from "mobx-react"
 import ParticipantStore from "../stores/ParticipantStore"
-
 import Breadcrumbs from "@material-ui/core/Breadcrumbs"
 import Typography from "@material-ui/core/Typography"
 import Link from "@material-ui/core/Link"
