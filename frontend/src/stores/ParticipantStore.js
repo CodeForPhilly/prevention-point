@@ -1,7 +1,8 @@
 import { observable, action, flow, toJS } from "mobx"
+import { createContext } from "react"
 import participantApi from "../api/participantEndpoints"
 
-class ParticipantStore {
+export class ParticipantStore {
   constructor(rootStore) {
     this.rootStore = rootStore
   }
@@ -52,5 +53,4 @@ class ParticipantStore {
   }
 }
 
-let participantStore = (window.participantStore = new ParticipantStore())
-export default participantStore
+export const ParticipantStoreContext = createContext(new ParticipantStore())

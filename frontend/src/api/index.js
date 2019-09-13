@@ -1,9 +1,9 @@
 import apisauce from "apisauce"
 import createAuthRefreshInterceptor from "axios-auth-refresh"
 import refreshAuthLogic from "./refreshAuthLogic"
-import { getParticipants } from "./participantEndpoints"
 import { createToken, verifyToken } from "./authEndpoints"
 import { getQueue } from "./queueEndpoints"
+import { getParticipants } from "./participantEndpoints"
 
 const create = () => {
   const api = apisauce.create({
