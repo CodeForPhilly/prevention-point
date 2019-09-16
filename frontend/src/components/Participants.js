@@ -9,6 +9,8 @@ import TableBody from "@material-ui/core/TableBody"
 import TableCell from "@material-ui/core/TableCell"
 import TableHead from "@material-ui/core/TableHead"
 import TableRow from "@material-ui/core/TableRow"
+import Fab from "@material-ui/core/Fab"
+import AddIcon from "@material-ui/icons/Add"
 
 export default
 @observer
@@ -41,6 +43,15 @@ class Participant extends React.Component {
                 </TableCell>
                 <TableCell>
                   <Typography>Last Name</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>Address</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>DOB</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>Add</Typography>
                 </TableCell>
               </TableRow>
             </TableHead>
