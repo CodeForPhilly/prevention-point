@@ -45,4 +45,5 @@ decorate(ParticipantStore, {
   setParticipants: action,
 })
 
+//let participantStore = (window.participantStore = new ParticipantStore())
 export const ParticipantStoreContext = createContext(new ParticipantStore())
