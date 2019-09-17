@@ -8,6 +8,8 @@ import TableBody from "@material-ui/core/TableBody"
 import TableCell from "@material-ui/core/TableCell"
 import TableHead from "@material-ui/core/TableHead"
 import TableRow from "@material-ui/core/TableRow"
+import Fab from "@material-ui/core/Fab"
+import AddIcon from "@material-ui/icons/Add"
 
 const Participants = () => {
   const rootStore = useContext(rootStoreContext)
@@ -38,6 +40,9 @@ const Participants = () => {
           <TableHead>
             <TableRow>
               <TableCell>
+                <Typography>#</Typography>
+              </TableCell>
+              <TableCell>
                 <Typography>PPID</Typography>
               </TableCell>
               <TableCell>
@@ -46,11 +51,23 @@ const Participants = () => {
               <TableCell>
                 <Typography>Last Name</Typography>
               </TableCell>
+              <TableCell>
+                <Typography>Address</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography>DOB</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography>Add</Typography>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {participants.map((participant, index) => (
               <TableRow key={index}>
+                <TableCell>
+                  <Typography>Number</Typography>
+                </TableCell>
                 <TableCell>
                   <Typography>{participant.pp_id} </Typography>
                 </TableCell>
@@ -60,11 +77,25 @@ const Participants = () => {
                 <TableCell>
                   <Typography>{participant.last_name}</Typography>
                 </TableCell>
+                <TableCell>
+                  <Typography>Address</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>DOB</Typography>
+                </TableCell>
+                <TableCell>
+                  <Fab color="primary" size="small" aria-label="add">
+                    <AddIcon />
+                  </Fab>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </div>
+      <Fab color="primary" aria-label="add" size="large">
+        <AddIcon />
+      </Fab>
       <div>
         <p>
           {rootStore.ParticipantStore.filter("T9FN3", null, null).first_name}
