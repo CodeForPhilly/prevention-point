@@ -11,6 +11,15 @@ class VisitSerializer(serializers.ModelSerializer):
         model = Visit
         fields = ('id', 'participant', 'program_service_map', 'created_at')
 
+    # def to_representation(self, obj):
+    #     """
+    #     Move fields from program_service_map to visit representation.
+    #     """
+    #     representation = super().to_representation(obj)
+    #     profile_representation = representation.pop('program_service_map')
+    #     for key in profile_representation:
+    #         representation[key] = profile_representation[key]
+    #     return representation
 
 class VisitForQueueSerializer(serializers.ModelSerializer):
     participant = ParticipantSerializer(read_only=True)
