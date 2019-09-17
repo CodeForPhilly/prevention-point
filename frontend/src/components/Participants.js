@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react"
 import { rootStoreContext } from "../stores/RootStore"
-import ParticipantStore from "../stores/ParticipantStore"
 import Breadcrumbs from "@material-ui/core/Breadcrumbs"
 import Typography from "@material-ui/core/Typography"
 import Link from "@material-ui/core/Link"
@@ -14,9 +13,13 @@ const Participants = () => {
   const rootStore = useContext(rootStoreContext)
   const [participants, setParticipants] = useState([])
 
-  // useEffect is a hook that gets called after every render/re-render
+  // useEffect is a hook that gets called after every render/re-render.  Empty array second argument prevents it from running again.
   useEffect(() => {
-    setParticipants(rootStore.ParticipantStore.getParticipants())
+    const fetchData = async () => {
+      await rootStore.ParticipantStore.getParticipants()
+      setParticipants(rootStore.ParticipantStore.participants)
+    }
+    fetchData()
   }, [])
 
   return (
@@ -63,7 +66,9 @@ const Participants = () => {
         </Table>
       </div>
       <div>
-        <p>{ParticipantStore.filter("T9FN3", null, null).first_name}</p>
+        <p>
+          {rootStore.ParticipantStore.filter("T9FN3", null, null).first_name}
+        </p>
       </div>
     </div>
   )
