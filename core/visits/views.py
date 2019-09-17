@@ -20,11 +20,16 @@ class VisitViewSet(ModelViewSet):
     }
 
     def create(self, req):
-       program_service_map = ProgramServiceMap.objects.get(service=req.data['service'], program=req.data['program'])
-       print(program_service_map)
-       participant = Participant.objects.get(pk=req.data['participant'])
-       visit_data = {"participant": participant, "program_service_map": program_service_map 
-       }
-       new_visit = VisitSerializer(visit_data).data
-       return Response(new_visit)
+        program_service_map = ProgramServiceMap.objects.get(service=req.data['service'], program=req.data['program'])
+
+        participant = Participant.objects.get(pk=req.data['participant'])
+        visit_data = {"participant": req.data['participant'], "program_service_map": program_service_map.pk
+        }
+        new_visit = VisitSerializer(data=visit_data)
+        if new_visit.is_valid():
+            print('hey')
+            new_visit.save()
+            return Response(new_visit.data)
+        else:
+            return Response(new_visit.errors)
 # TODO  can the list function populte
