@@ -45,6 +45,11 @@ const useStyles = makeStyles(theme => ({
 const QueueTabContent = React.forwardRef(({ onClick, queueData }, _ref) => {
   const queueStore = useContext(QueueStoreContext)
   const classes = useStyles()
+
+  // Add state update functionality
+
+  // Add pinging for checking if queues have updated / websockets?
+
   return (
     <Button onClick={onClick} className={classes.queueTab}>
       <div>
