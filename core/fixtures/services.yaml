@@ -1,36 +1,258 @@
 - model: core.service
   pk: 1
   fields:
-    name: UDS
+    name: RAPID
     program: 1
-    available: false
+    available: true
 - model: core.service
   pk: 2
   fields:
-    name: case management
+    name: CONFIRM
     program: 1
     available: true
 - model: core.service
   pk: 3
   fields:
-    name: medical
+    name: NEED RESULTS
     program: 1
-    available: false
+    available: true
 - model: core.service
   pk: 4
   fields:
-    name: document review
-    program: 2
+    name: C-CHANGE
+    program: 1
     available: false
 - model: core.service
   pk: 5
   fields:
-    name: law education
-    program: 2
+    name: SNS
+    program: 1
     available: false
 - model: core.service
   pk: 6
   fields:
-    name: needle exchange
+    name: BENEFITS
+    program: 2
+    available: true
+- model: core.service
+  pk: 7
+  fields:
+    name: MENTAL HEALTH
+    program: 2
+    available: true
+- model: core.service
+  pk: 8
+  fields:
+    name: HOUSING
+    program: 2
+    available: true
+- model: core.service
+  pk: 9
+  fields:
+    name: D&A
+    program: 2
+    available: false
+- model: core.service
+  pk: 10
+  fields:
+    name: APPT
+    program: 2
+    available: false
+- model: core.service
+  pk: 11
+  fields:
+    name: WOUND CARE
     program: 3
+    available: false
+- model: core.service
+  pk: 12
+  fields:
+    name: MEDICAL FORM
+    program: 3
+    available: false
+- model: core.service
+  pk: 13
+  fields:
+    name: PHYSICAL
+    program: 3
+    available: false
+- model: core.service
+  pk: 14
+  fields:
+    name: FOLLOW UP
+    program: 3
+    available: false
+- model: core.service
+  pk: 15
+  fields:
+    name: OTHER:ENTER IN NOTES
+    program: 3
+    available: true
+- model: core.service
+  pk: 16
+  fields:
+    name: BIRTH CERT
+    program: 4
+    available: true
+- model: core.service
+  pk: 17
+  fields:
+    name: CONSULT
+    program: 4
+    available: false
+- model: core.service
+  pk: 18
+  fields:
+    name: APPT
+    program: 4
+    available: true
+- model: core.service
+  pk: 19
+  fields:
+    name: PUBLIC DEF
+    program: 4
+    available: true
+- model: core.service
+  pk: 20
+  fields:
+    name: DETOX
+    program: 5
+    available: true
+- model: core.service
+  pk: 21
+  fields:
+    name: INPATIENT
+    program: 5
+    available: true
+- model: core.service
+  pk: 22
+  fields:
+    name: IOP
+    program: 5
+    available: false
+- model: core.service
+  pk: 23
+  fields:
+    name: SUBOXONE
+    program: 5
+    available: false
+- model: core.service
+  pk: 24
+  fields:
+    name: METHADONE
+    program: 5
+    available: true
+- model: core.service
+  pk: 25
+  fields:
+    name: BENEFITS
+    program: 6
+    available: true
+- model: core.service
+  pk: 26
+  fields:
+    name: FOLLOW UP
+    program: 6
+    available: false
+- model: core.service
+  pk: 27
+  fields:
+    name: APPT
+    program: 6
+    available: true
+- model: core.service
+  pk: 28
+  fields:
+    name: FOUND THEM!
+    program: 6
+    available: true
+- model: core.service
+  pk: 29
+  fields:
+    name: 'OTHER: ENTER IN NOTES'
+    program: 6
+    available: true
+- model: core.service
+  pk: 30
+  fields:
+    name: 'APPT: DR BARCLAY'
+    program: 7
+    available: false
+- model: core.service
+  pk: 31
+  fields:
+    name: 'APPT: DR SERGE'
+    program: 7
+    available: false
+- model: core.service
+  pk: 32
+  fields:
+    name: 'APPT: MOBILE MAT'
+    program: 7
+    available: false
+- model: core.service
+  pk: 33
+  fields:
+    name: PATIENT/ NO APPT
+    program: 7
+    available: true
+- model: core.service
+  pk: 34
+  fields:
+    name: MEDICATION
+    program: 7
+    available: false
+- model: core.service
+  pk: 35
+  fields:
+    name: APPT DR. BAMFORD
+    program: 8
+    available: false
+- model: core.service
+  pk: 36
+  fields:
+    name: LABWORK
+    program: 8
+    available: true
+- model: core.service
+  pk: 37
+  fields:
+    name: FIBROSCAN
+    program: 8
+    available: false
+- model: core.service
+  pk: 38
+  fields:
+    name: MCM
+    program: 8
+    available: false
+- model: core.service
+  pk: 39
+  fields:
+    name: FOUND THEM!
+    program: 8
+    available: false
+- model: core.service
+  pk: 40
+  fields:
+    name: DR. MORALES
+    program: 9
+    available: true
+- model: core.service
+  pk: 41
+  fields:
+    name: NEW PATIENT
+    program: 9
+    available: false
+- model: core.service
+  pk: 42
+  fields:
+    name: SICK VISIT
+    program: 9
+    available: false
+- model: core.service
+  pk: 43
+  fields:
+    name: OTHER
+    program: 9
     available: false
