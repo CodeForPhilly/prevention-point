@@ -19,7 +19,7 @@ class ProgramsTests(BaseTestCase):
         response = self.client.get( '/api/programs/', follow=True, **headers)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(Program.objects.count(), 3)
+        self.assertEqual(Program.objects.count(), 9)
 
     def test_services_populate_on_programs(self):
         """
