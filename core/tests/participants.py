@@ -3,6 +3,7 @@ from core.tests.base import BaseTestCase
 from core.models import Participant
 from core.models.insurer import Insurer
 
+
 class ParticipantsTestCase(BaseTestCase):
     def setUp(self):
         super().setUp()

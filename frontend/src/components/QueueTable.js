@@ -54,7 +54,6 @@ const QueueTable = observer(queueData => {
       </IconButton>
     )
   }
-
   const SeenButton = () => {
     return (
       <IconButton>
