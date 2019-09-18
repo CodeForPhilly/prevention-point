@@ -5,13 +5,12 @@ from core.permissions import FRONT_DESK, ADMIN, CASE_MANAGER
 
 class ProgramServiceMapView(ModelViewSet):
     """
-
+    endpoint for map objects mapping which service belong to what programs
     """
     queryset = ProgramServiceMap.objects.all()
     serializer_class = ProgramServiceMapSerializer
     permission_groups = {
-        'create':[FRONT_DESK, CASE_MANAGER, ADMIN],
+        'create':[CASE_MANAGER, ADMIN],
         'list': [CASE_MANAGER, ADMIN],
         'retrieve': [CASE_MANAGER, ADMIN],
-        'update': [CASE_MANAGER, ADMIN]
     }

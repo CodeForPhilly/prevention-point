@@ -4,6 +4,7 @@ from core.visits.serializer import VisitSerializer, VisitWithPopulationSerialize
 from core.permissions import FRONT_DESK, ADMIN, CASE_MANAGER
 from core.models import ProgramServiceMap , Participant
 from rest_framework.response import Response
+from rest_framework import status
 
 
 class VisitViewSet(ModelViewSet):
@@ -39,8 +40,8 @@ class VisitViewSet(ModelViewSet):
             # get the new pk of the visit instance
             visit_object = Visit.objects.get(pk=v.pk)
             # pass new visit obect to populating serializer to display front end relevant data
-            populated_visit = VisitWithPopulationSerializer(visit_object)
-            return Response(populated_visit.data)
+            populated_visit = VisitWithPopulationSerializer(visit_object).data
+            return Response(populated_visit, status=status.HTTP_201_CREATED)
         else:
             # TODO  better error
             return Response(visit_data.errors)
