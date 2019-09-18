@@ -48,3 +48,7 @@ class QueueTests(BaseTestCase):
 
         self.assertEqual(queue_length, (updated_queue_length + 1))    
 
+    def test_queue_api_when_unauthenticated(self):
+        for program_id in range(1,5):
+            response = self.client.get('/api/programs/{}/queue'.format(program_id), follow=True)
+            self.assertEqual(401, response.status_code)
