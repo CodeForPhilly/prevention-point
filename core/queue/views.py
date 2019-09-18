@@ -1,7 +1,7 @@
 from rest_framework import generics, viewsets, status
 from rest_framework.response import Response
 from core.models import Program, Visit, FrontDeskEvent, FrontDeskEventType
-from core.visits.serializer import VisitForQueueSerializer
+from core.visits.serializer import VisitWithPopulationSerializer
 from core.front_desk_events.serializer import FrontDeskEventForQueueSerializer
 from core.permissions import FRONT_DESK, CASE_MANAGER, ADMIN, HasGroupPermission
 from rest_framework.permissions import IsAuthenticated
@@ -27,10 +27,10 @@ class QueueViewSet(viewsets.ViewSet):
       """
       
       # filter by visits that are happening today in a certain program
-      visits_queryset = Visit.objects.filter(program_id=program_id, created_at__date=datetime.date.today())
+      visits_queryset = Visit.objects.filter(program_service_map__program_id=program_id, created_at__date=datetime.date.today())
      
       if visits_queryset.exists():
-        todays_visit_data = VisitForQueueSerializer(visits_queryset, many=True).data
+        todays_visit_data = VisitWithPopulationSerializer(visits_queryset, many=True).data
       else: 
         return Response(status=status.HTTP_404_NOT_FOUND)
       
