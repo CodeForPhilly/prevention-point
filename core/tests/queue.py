@@ -18,7 +18,6 @@ class QueueTests(BaseTestCase):
         # for program in range(1,4):
         program=1
         response = self.client.get(f'/api/programs/{program}/queue/', **headers)
-        print(response)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         for visit in json.loads(response.content):
           self.assertNotEqual(visit['status']['event_type'], FrontDeskEventType.SEEN.value)
