@@ -1,3 +1,4 @@
+import random, pytz
 import random
 from django.utils import timezone
 from django.core.management.base import BaseCommand
@@ -198,6 +199,7 @@ def create_visits(output=True):
     for _ in range(DEFAULT_NUMBER_VISITS):
         v = Visit()
         v.participant = random.choice(participants)
+        #v.created_at = pytz.utc.localize(fake.date_time())
         v.created_at = timezone.now()
         v.program = random.choice(programs)
         v.notes = fake.sentence(nb_words=10, variable_nb_words=True, ext_word_list=None)

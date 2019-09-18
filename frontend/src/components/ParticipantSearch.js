@@ -1,43 +1,139 @@
 import React from "react"
-import "../scss/participant-search.scss"
-import FormGroup from "@material-ui/core/FormGroup"
-import FormControl from "@material-ui/core/FormControl"
-import InputLabel from "@material-ui/core/InputLabel"
-import Input from "@material-ui/core/Input"
-import Button from "@material-ui/core/Button"
-import Typography from "@material-ui/core/Typography"
+import clsx from "clsx"
+import { makeStyles, useTheme } from "@material-ui/core/styles"
+import Drawer from "@material-ui/core/Drawer"
+import CssBaseline from "@material-ui/core/CssBaseline"
+import AppBar from "@material-ui/core/AppBar"
+import Toolbar from "@material-ui/core/Toolbar"
+import Divider from "@material-ui/core/Divider"
+import IconButton from "@material-ui/core/IconButton"
+import MenuIcon from "@material-ui/icons/Menu"
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
+import ChevronRightIcon from "@material-ui/icons/ChevronRight"
+import UserSearch from "./UserSearch"
+import Navbar from "../components/Navbar"
 
-const ParticipantSearch = () => {
+const drawerWidth = 400
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: "flex",
+  },
+  appBar: {
+    transition: theme.transitions.create(["margin", "width"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  appBarShift: {
+    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: drawerWidth,
+    transition: theme.transitions.create(["margin", "width"], {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  hide: {
+    display: "none",
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+  },
+  drawerPaper: {
+    width: drawerWidth,
+    background: "#F2FCFF",
+  },
+  drawerHeader: {
+    display: "flex",
+    alignItems: "center",
+    padding: "0 8px",
+    ...theme.mixins.toolbar,
+    justifyContent: "flex-end",
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
+    transition: theme.transitions.create("margin", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    marginLeft: -drawerWidth,
+  },
+  contentShift: {
+    transition: theme.transitions.create("margin", {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    marginLeft: 0,
+  },
+}))
+
+export default function PersistentDrawerLeft() {
+  const classes = useStyles()
+  const theme = useTheme()
+  const [open, setOpen] = React.useState(false)
+
+  function handleDrawerOpen() {
+    setOpen(true)
+  }
+
+  function handleDrawerClose() {
+    setOpen(false)
+  }
+
   return (
-    <div className="participant-search">
-      <Typography component="h5" variant="h5" gutterBottom>
-        Participant Search
-      </Typography>
-      <form className="participant-search__form">
-        <FormGroup className="participant-search__input">
-          <FormControl>
-            <InputLabel htmlFor="user_id">User ID</InputLabel>
-            <Input id="user_id" name="user_id" value="" required />
-          </FormControl>
-        </FormGroup>
-        <FormGroup className="participant-search__input">
-          <FormControl>
-            <InputLabel htmlFor="first_name">First Name</InputLabel>
-            <Input id="first_name" name="first_name" value="" required />
-          </FormControl>
-        </FormGroup>
-        <FormGroup className="participant-search__input">
-          <FormControl>
-            <InputLabel htmlFor="last_name">Last Name</InputLabel>
-            <Input id="last_name" name="last_name" value="" required />
-          </FormControl>
-        </FormGroup>
-        <Button type="submit" variant="contained" style={{ marginTop: 30 }}>
-          Submit
-        </Button>
-      </form>
+    <div className={classes.root}>
+      <CssBaseline />
+      <AppBar
+        position="fixed"
+        className={clsx(classes.appBar, {
+          [classes.appBarShift]: open,
+        })}
+      >
+        <Toolbar>
+          <IconButton
+            //color="inherit"  //not necessary
+            aria-label="Open drawer"
+            onClick={handleDrawerOpen}
+            edge="start"
+            className={clsx(classes.menuButton, open && classes.hide)}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Navbar />
+        </Toolbar>
+      </AppBar>
+      <Drawer
+        className={classes.drawer}
+        variant="persistent"
+        anchor="left"
+        open={open}
+        classes={{
+          paper: classes.drawerPaper,
+        }}
+      >
+        <div className={classes.drawerHeader}>
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === "ltr" ? (
+              <ChevronLeftIcon />
+            ) : (
+              <ChevronRightIcon />
+            )}
+          </IconButton>
+        </div>
+        <Divider />
+        <UserSearch />
+        <Divider />
+      </Drawer>
+      <main
+        className={clsx(classes.content, {
+          [classes.contentShift]: open,
+        })}
+      />
     </div>
   )
 }
-
-export default ParticipantSearch

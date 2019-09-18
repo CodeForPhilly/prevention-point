@@ -35,6 +35,7 @@
     "linebreak-style": ["error", "unix"],
     "quotes": ["error", "double"],
     "semi": ["error", "never"],
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_.*" }],
     "camelcase": [
       "error",
       {
