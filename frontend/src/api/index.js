@@ -12,6 +12,9 @@ import {
 } from "./visitEndpoints"
 import { getParticipants } from "./participantEndpoints"
 
+import { createToken, verifyToken } from "./authEndpoints"
+import { getQueue } from "./queueEndpoints"
+
 const create = () => {
   const api = apisauce.create({
     baseURL: "/api",
