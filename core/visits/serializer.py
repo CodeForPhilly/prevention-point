@@ -8,7 +8,7 @@ from core.program_service_map.serializer import ProgramServiceMapSerializer
 class VisitSerializer(serializers.ModelSerializer):
     class Meta:
         model = Visit
-        fields = ('id', 'participant', 'program_service_map', 'created_at', 'notes')
+        fields = ('id', 'participant', 'program_service_map', 'created_at', 'notes', 'urgency')
 
 class VisitWithPopulationSerializer(serializers.ModelSerializer):
     """ 
@@ -19,7 +19,7 @@ class VisitWithPopulationSerializer(serializers.ModelSerializer):
     participant = ParticipantSerializer(read_only=True)
     class Meta:
         model = Visit
-        fields = ('id', 'participant', 'program_service_map', 'created_at', 'notes')
+        fields = ('id', 'participant', 'program_service_map', 'created_at', 'notes', 'urgency')
 
     def to_representation(self, obj):
         """

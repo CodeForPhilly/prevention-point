@@ -209,6 +209,7 @@ def create_visits(output=True):
         #v.created_at = pytz.utc.localize(fake.date_time())
         v.created_at = timezone.now()
         v.program_service_map = random.choice(p_s_maps)
+        v.urgency =random.choice(range(1,6))
         v.notes = fake.sentence(nb_words=10, variable_nb_words=True, ext_word_list=None)
         v.full_clean()
         v.save()
