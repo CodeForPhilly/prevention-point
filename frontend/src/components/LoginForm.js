@@ -17,6 +17,10 @@ const LoginForm = observer(({ location }) => {
   const [password, setPassword] = useState("")
   const { from } = location.state || { from: { pathname: "/" } }
 
+  const changeUsername = e => setUsername(e.target.value)
+
+  const changePassword = e => setPassword(e.target.value)
+
   const login = () => {
     rootStore.authStore.login(username, password)
   }
@@ -33,7 +37,7 @@ const LoginForm = observer(({ location }) => {
               id="username"
               name="username"
               value={username}
-              onChange={e => setUsername(e.target.value)}
+              onChange={changeUsername}
               required
             />
           </FormControl>
@@ -46,7 +50,7 @@ const LoginForm = observer(({ location }) => {
               name="password"
               value={password}
               type="password"
-              onChange={e => setPassword(e.target.value)}
+              onChange={changePassword}
               required
             />
           </FormControl>
