@@ -15,6 +15,7 @@ import Radio from "@material-ui/core/Radio"
 import RadioGroup from "@material-ui/core/RadioGroup"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
 import FormLabel from "@material-ui/core/FormLabel"
+import Button from "@material-ui/core/Button"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -68,7 +69,10 @@ const ParticipantInfo = () => {
 
   const classes = useStyles()
   return (
-    <div style={{ marginTop: 50 }} className="participant-info-component">
+    <div
+      style={{ marginTop: 50, marginBottom: 50 }}
+      className="participant-info-component"
+    >
       <Container maxWidth="sm">
         <Typography
           style={{ textAlign: "left" }}
@@ -265,7 +269,66 @@ const ParticipantInfo = () => {
               </FormGroup>
             </div>
           </Grid>
-          <button type="submit">Submit</button>
+          <Typography
+            style={{ textAlign: "left" }}
+            component="h5"
+            variant="h5"
+            gutterBottom
+          >
+            <br />
+            <br />
+            2. Check In Participant
+          </Typography>
+
+          <Grid container>
+            <FormGroup className="participant-info">
+              <Grid container>
+                <Grid item xs>
+                  <FormControl className={classes.formControl}>
+                    <InputLabel htmlFor="user_id">Choose Program</InputLabel>
+                    <Input
+                      id="user_first-name"
+                      name="user_first-name"
+                      value=""
+                      // required
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs>
+                  <FormControl className={classes.formControl}>
+                    <InputLabel htmlFor="user_id">Select Service</InputLabel>
+                    <Input
+                      id="user_last-name"
+                      name="user_last-name"
+                      value=""
+                      // required
+                    />
+                  </FormControl>
+                </Grid>
+                <br />
+                <TextField
+                  id="standard-full-width"
+                  style={{ margin: 8, marginTop: 40 }}
+                  placeholder="Add a note"
+                  fullWidth
+                  margin="normal"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Grid>
+            </FormGroup>
+          </Grid>
+          <Button
+            style={{ alignSelf: "flex-end" }}
+            variant="outlined"
+            size="large"
+            color="primary"
+            className={classes.margin}
+            type="submit"
+          >
+            Submit
+          </Button>
         </form>
       </Container>
     </div>
