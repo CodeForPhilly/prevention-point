@@ -55,6 +55,17 @@ const ParticipantInfo = () => {
     setOpen(true)
   }
 
+  function handleSubmit(event) {
+    event.preventDefault()
+
+    const data = new FormData(event.target)
+
+    fetch("/api/participants/", {
+      method: "POST",
+      body: data,
+    })
+  }
+
   const classes = useStyles()
   return (
     <div style={{ marginTop: 50 }} className="participant-info-component">
@@ -68,7 +79,7 @@ const ParticipantInfo = () => {
           1. Participant Information
         </Typography>
 
-        <form className="participant-info-form">
+        <form className="participant-info-form" onSubmit={handleSubmit}>
           <Grid container>
             <FormGroup className="participant-info">
               <Grid container>
@@ -79,7 +90,7 @@ const ParticipantInfo = () => {
                       id="user_first-name"
                       name="user_first-name"
                       value=""
-                      required
+                      // required
                     />
                   </FormControl>
                 </Grid>
@@ -90,7 +101,7 @@ const ParticipantInfo = () => {
                       id="user_last-name"
                       name="user_last-name"
                       value=""
-                      required
+                      // required
                     />
                   </FormControl>
                 </Grid>
@@ -107,7 +118,7 @@ const ParticipantInfo = () => {
                       id="user_birth-date"
                       name="user_birth-date"
                       value=""
-                      required
+                      // required
                       style={{ marginTop: 40 }}
                       type="date"
                       defaultValue=""
@@ -125,7 +136,7 @@ const ParticipantInfo = () => {
                       id="user_last-name"
                       name="user_last-name"
                       value=""
-                      required
+                      // required
                     />
                   </FormControl>
                 </Grid>
@@ -254,6 +265,7 @@ const ParticipantInfo = () => {
               </FormGroup>
             </div>
           </Grid>
+          <button type="submit">Submit</button>
         </form>
       </Container>
     </div>
