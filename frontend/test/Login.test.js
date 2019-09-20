@@ -1,17 +1,17 @@
 import React from "react"
-import { shallow, configure } from "enzyme"
+import { shallow, configure, mount } from "enzyme"
 import LoginForm from "../src/components/LoginForm"
 import Button from "@material-ui/core/Button"
 import Adapter from "enzyme-adapter-react-16"
+import { fireEvent, cleanup } from "@testing-library/react"
 
 configure({ adapter: new Adapter() })
 
 describe("<LoginForm />", () => {
   let wrapper
-  // Mock useState call
-  const setState = jest.fn()
-  const useStateSpy = jest.spyOn(React, "useState")
-  useStateSpy.mockImplementation(init => [init, setState])
+  let usernameInput
+  let passwordInput
+  let signInButton
 
   // Create initial props that get passed into the component
   const initialProps = {
@@ -24,19 +24,22 @@ describe("<LoginForm />", () => {
     },
   }
 
-  // what to do before each test
-  beforeEach(() => {
-    // Render the login form component, pass in props. (Shallow method renders the component without its children.)
-    wrapper = shallow(<LoginForm {...initialProps} />)
-  })
-
-  // what to do after each test
-  afterEach(() => {
-    jest.clearAllMocks()
-  })
-
   // Unit testing
   describe("Unit tests", () => {
+    // what to do before each test
+    beforeEach(() => {
+      // Render the login form component, pass in props. (Shallow method renders the component without its children, good for unit tests.)
+      wrapper = shallow(<LoginForm {...initialProps} />)
+      usernameInput = wrapper.find("#username")
+      passwordInput = wrapper.find("#password")
+      signInButton = wrapper.find(Button)
+    })
+
+    // what to do after each test
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
+
     // UI Integrity test
     it("should match the snapshot", () => {
       // snapshots are text references of the html of the rendered component.
@@ -44,12 +47,10 @@ describe("<LoginForm />", () => {
     })
 
     it("should have a username inputs", () => {
-      const usernameInput = wrapper.find("#username")
       expect(usernameInput.length).toEqual(1)
     })
 
     it("should have the expected props on the username field", () => {
-      const usernameInput = wrapper.find("#username")
       expect(usernameInput.props()).toEqual({
         id: "username",
         name: "username",
@@ -60,12 +61,10 @@ describe("<LoginForm />", () => {
     })
 
     it("should have a password field", () => {
-      const passwordInput = wrapper.find("#password")
       expect(passwordInput.length).toEqual(1)
     })
 
     it("should have the expected props on the password field", () => {
-      const passwordInput = wrapper.find("#password")
       expect(passwordInput.props()).toEqual({
         id: "password",
         name: "password",
@@ -77,12 +76,10 @@ describe("<LoginForm />", () => {
     })
 
     it("should have a submit button", () => {
-      const signInButton = wrapper.find(Button)
       expect(signInButton.length).toEqual(1)
     })
 
     it("should have the expected props on the button", () => {
-      const signInButton = wrapper.find(Button)
       expect(signInButton.props()).toEqual({
         type: "button",
         variant: "contained",
@@ -97,26 +94,51 @@ describe("<LoginForm />", () => {
 
   // Integrations Testing
   describe("Integrations tests", () => {
-    it("should update the username state onChange of username input", () => {
-      const usernameInput = wrapper.find("#username")
-      usernameInput.simulate("change", {
+    beforeEach(() => {
+      // Render the login form component, pass in props. (Mount method renders the component with its children, good for integrations tests.)
+      wrapper = mount(<LoginForm {...initialProps} />)
+      usernameInput = wrapper.find("#username")
+      // console.log(usernameInput.debug())
+      passwordInput = wrapper.find("#password")
+      signInButton = wrapper.find(Button)
+    })
+
+    afterEach(cleanup)
+
+    it("Text in state is changed when button clicked", () => {
+      expect(usernameInput.textContent).toBe(undefined)
+
+      fireEvent.change(usernameInput, {
         target: {
           value: "admin",
         },
       })
-      expect(setState).toHaveBeenCalledWith("admin")
-      expect(usernameInput.value).toEqual("admin")
+
+      fireEvent.click(signInButton)
+
+      expect(usernameInput.textContent).toBe("admin")
     })
 
-    it("should update the password state onChange of password input", () => {
-      const passwordInput = wrapper.find("#password")
-      passwordInput.simulate("change", {
-        target: {
-          value: "passsword123",
-        },
-      })
-      expect(setState).toHaveBeenCalledWith("passsword123")
-    })
+    // it("should update the username state onChange of username input", () => {
+    //   const usernameInput = wrapper.find("#username")
+    //   usernameInput.simulate("change", {
+    //     target: {
+    //       value: "admin",
+    //     },
+    //   })
+    //   expect(setState).toHaveBeenCalledWith("admin")
+    //   expect(usernameInput.value).toEqual("admin")
+    // })
+
+    // it("should update the password state onChange of password input", () => {
+    //   const passwordInput = wrapper.find("#password")
+    //   passwordInput.simulate("change", {
+    //     target: {
+    //       value: "passsword123",
+    //     },
+    //   })
+    //   expect(setState).toHaveBeenCalledWith("passsword123")
+    // })
 
     // it("should call the login functionwhen sign in button is clicked", () => {
     //   signInButton.simulate("click")
