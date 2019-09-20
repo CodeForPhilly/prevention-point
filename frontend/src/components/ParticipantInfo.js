@@ -40,12 +40,6 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const ParticipantInfo = () => {
-  const [value, setValue] = React.useState("female")
-
-  function handleChange(event) {
-    setValue(event.target.value)
-  }
-
   const [open, setOpen] = React.useState(false)
 
   function handleClose() {
@@ -65,6 +59,23 @@ const ParticipantInfo = () => {
       method: "POST",
       body: data,
     })
+  }
+
+  const [values, setValues] = React.useState({
+    firstName: "",
+    lastName: "",
+    birthDate: "",
+    uuId: "",
+  })
+
+  const handleChange = name => event => {
+    setValues({ ...values, [name]: event.target.value })
+    // console.log("...values: " + JSON.stringify(values))
+    // console.log("event.target.value: " + event.target.value)
+    // console.log(
+    //   "Participant's name is: " + values.firstName + " " + values.lastName
+    // )
+    // console.log("Birthdate is: " + values.birthDate)
   }
 
   const classes = useStyles()
@@ -93,8 +104,9 @@ const ParticipantInfo = () => {
                     <Input
                       id="user_first-name"
                       name="user_first-name"
-                      value=""
-                      // required
+                      value={values.firstName}
+                      onChange={handleChange("firstName")}
+                      required
                     />
                   </FormControl>
                 </Grid>
@@ -104,8 +116,9 @@ const ParticipantInfo = () => {
                     <Input
                       id="user_last-name"
                       name="user_last-name"
-                      value=""
-                      // required
+                      value={values.lastName}
+                      onChange={handleChange("lastName")}
+                      required
                     />
                   </FormControl>
                 </Grid>
@@ -121,11 +134,11 @@ const ParticipantInfo = () => {
                     <TextField
                       id="user_birth-date"
                       name="user_birth-date"
-                      value=""
-                      // required
+                      value={values.birthDate}
+                      onChange={handleChange("birthDate")}
+                      required
                       style={{ marginTop: 40 }}
                       type="date"
-                      defaultValue=""
                     />
                   </FormControl>
                 </Grid>
@@ -137,10 +150,11 @@ const ParticipantInfo = () => {
                   >
                     <InputLabel htmlFor="user_id">UUID</InputLabel>
                     <Input
-                      id="user_last-name"
-                      name="user_last-name"
-                      value=""
-                      // required
+                      id="uuid"
+                      name="uuid"
+                      value={values.uuId}
+                      onChange={handleChange("uuId")}
+                      required
                     />
                   </FormControl>
                 </Grid>
@@ -222,7 +236,7 @@ const ParticipantInfo = () => {
                         aria-label="insurance"
                         name="insurance1"
                         className={classes.group}
-                        value={value}
+                        // value={value}
                         onChange={handleChange}
                         style={{ display: "inline" }}
                       >
@@ -310,6 +324,7 @@ const ParticipantInfo = () => {
                   id="standard-full-width"
                   style={{ margin: 8, marginTop: 40 }}
                   placeholder="Add a note"
+                  // onChange={handleChange('name')}
                   fullWidth
                   margin="normal"
                   InputLabelProps={{
