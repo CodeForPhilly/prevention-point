@@ -66,6 +66,13 @@ const ParticipantInfo = () => {
     lastName: "",
     birthDate: "",
     uuId: "",
+    race: "",
+    gender: "",
+    hasInsurance: "",
+    insuranceType: "",
+    program: "",
+    service: "",
+    note: "",
   })
 
   const handleChange = name => event => {
@@ -73,9 +80,16 @@ const ParticipantInfo = () => {
     // console.log("...values: " + JSON.stringify(values))
     // console.log("event.target.value: " + event.target.value)
     // console.log(
-    //   "Participant's name is: " + values.firstName + " " + values.lastName
+    //   "Participant's name: " + values.firstName + " " + values.lastName
     // )
-    // console.log("Birthdate is: " + values.birthDate)
+    // console.log("Birthdate: " + values.birthDate)
+    // console.log("Race: " + values.race)
+    // console.log("Gender: " + values.gender)
+    // console.log("Has insurance?: " + values.hasInsurance)
+    // console.log("Insurance type: " + values.insuranceType)
+    // console.log("Program: " + values.program)
+    // console.log("Service: " + values.service)
+    // console.log("Participant note: " + values.note)
   }
 
   const classes = useStyles()
@@ -171,11 +185,11 @@ const ParticipantInfo = () => {
                         Select Race
                       </InputLabel>
                       <Select
-                        open={open}
-                        onClose={handleClose}
-                        onOpen={handleOpen}
-                        value={""}
-                        onChange={handleChange}
+                        open={open.race}
+                        onClose={handleClose.race}
+                        onOpen={handleOpen.race}
+                        value={values.race}
+                        onChange={handleChange("race")}
                         inputProps={{
                           name: "race",
                           id: "demo-controlled-open-select",
@@ -184,9 +198,27 @@ const ParticipantInfo = () => {
                         <MenuItem value="">
                           <em>None</em>
                         </MenuItem>
-                        <MenuItem value={10}>Ten</MenuItem>
-                        <MenuItem value={20}>Twenty</MenuItem>
-                        <MenuItem value={30}>Thirty</MenuItem>
+                        <MenuItem value={"American Indian or Alaska Native"}>
+                          American Indian or Alaska Native
+                        </MenuItem>
+                        <MenuItem value={"Asian"}>Asian</MenuItem>
+                        <MenuItem value={"Black or African American"}>
+                          Black or African American
+                        </MenuItem>
+                        <MenuItem value={"Hispanic or Latino"}>
+                          Hispanic or Latino
+                        </MenuItem>
+                        <MenuItem
+                          value={"Native Hawaiian or Other Pacific Islander"}
+                        >
+                          Native Hawaiian or Other Pacific Islander
+                        </MenuItem>
+                        <MenuItem value={"Two or More Races"}>
+                          Two or More Races
+                        </MenuItem>
+                        <MenuItem value={"White or Caucasian"}>
+                          White or Caucasian
+                        </MenuItem>
                       </Select>
                     </FormControl>
                   </Grid>
@@ -197,11 +229,11 @@ const ParticipantInfo = () => {
                         Select Gender
                       </InputLabel>
                       <Select
-                        open={open}
-                        onClose={handleClose}
-                        onOpen={handleOpen}
-                        value={""}
-                        onChange={handleChange}
+                        open={open.gender}
+                        onClose={handleClose.gender}
+                        onOpen={handleOpen.gender}
+                        value={values.gender}
+                        onChange={handleChange("gender")}
                         inputProps={{
                           name: "gender",
                           id: "demo-controlled-open-select",
@@ -210,10 +242,10 @@ const ParticipantInfo = () => {
                         <MenuItem value="">
                           <em>None</em>
                         </MenuItem>
-                        <MenuItem value={10}>Male</MenuItem>
-                        <MenuItem value={20}>Female</MenuItem>
-                        <MenuItem value={30}>Trans (M)</MenuItem>
-                        <MenuItem value={30}>Trans (F)</MenuItem>
+                        <MenuItem value={"Male"}>Male</MenuItem>
+                        <MenuItem value={"Female"}>Female</MenuItem>
+                        <MenuItem value={"Trans (M)"}>Trans (M)</MenuItem>
+                        <MenuItem value={"Trans (F)"}>Trans (F)</MenuItem>
                       </Select>
                     </FormControl>
                   </Grid>
@@ -234,10 +266,10 @@ const ParticipantInfo = () => {
                       <FormLabel component="legend">Has Insurance?</FormLabel>
                       <RadioGroup
                         aria-label="insurance"
-                        name="insurance1"
+                        name="hasInsurance"
                         className={classes.group}
-                        // value={value}
-                        onChange={handleChange}
+                        value={values.hasInsurance}
+                        onChange={handleChange("hasInsurance")}
                         style={{ display: "inline" }}
                       >
                         <FormControlLabel
@@ -260,22 +292,28 @@ const ParticipantInfo = () => {
                         Select Insurance
                       </InputLabel>
                       <Select
-                        open={open}
-                        onClose={handleClose}
-                        onOpen={handleOpen}
-                        value={""}
-                        onChange={handleChange}
+                        open={open.insuranceType}
+                        onClose={handleClose.insuranceType}
+                        onOpen={handleOpen.insuranceType}
+                        value={values.insuranceType}
+                        onChange={handleChange("insuranceType")}
                         inputProps={{
-                          name: "insurance",
+                          name: "insuranceType",
                           id: "demo-controlled-open-select",
                         }}
                       >
                         <MenuItem value="">
                           <em>None</em>
                         </MenuItem>
-                        <MenuItem value={10}>Ten</MenuItem>
-                        <MenuItem value={20}>Twenty</MenuItem>
-                        <MenuItem value={30}>Thirty</MenuItem>
+                        <MenuItem value={"Insurance Plan 1"}>
+                          Insurance Plan 1
+                        </MenuItem>
+                        <MenuItem value={"Insurance Plan 2"}>
+                          Insurance Plan 2
+                        </MenuItem>
+                        <MenuItem value={"Insurance Plan 3"}>
+                          Insurance Plan 3
+                        </MenuItem>
                       </Select>
                     </FormControl>
                   </Grid>
@@ -299,24 +337,46 @@ const ParticipantInfo = () => {
               <Grid container>
                 <Grid item xs>
                   <FormControl className={classes.formControl}>
-                    <InputLabel htmlFor="user_id">Choose Program</InputLabel>
-                    <Input
-                      id="user_first-name"
-                      name="user_first-name"
-                      value=""
-                      // required
-                    />
+                    <InputLabel htmlFor="demo-controlled-open-select">
+                      Choose Program
+                    </InputLabel>
+                    <Select
+                      open={open.program}
+                      onClose={handleClose.program}
+                      onOpen={handleOpen.program}
+                      value={values.program}
+                      onChange={handleChange("program")}
+                      inputProps={{
+                        name: "program",
+                        id: "demo-controlled-open-select",
+                      }}
+                    >
+                      <MenuItem value={"Program 1"}>Program 1</MenuItem>
+                      <MenuItem value={"Program 2"}>Program 2</MenuItem>
+                      <MenuItem value={"Program 3"}>Program 3</MenuItem>
+                    </Select>
                   </FormControl>
                 </Grid>
                 <Grid item xs>
                   <FormControl className={classes.formControl}>
-                    <InputLabel htmlFor="user_id">Select Service</InputLabel>
-                    <Input
-                      id="user_last-name"
-                      name="user_last-name"
-                      value=""
-                      // required
-                    />
+                    <InputLabel htmlFor="demo-controlled-open-select">
+                      Select Service
+                    </InputLabel>
+                    <Select
+                      open={open.service}
+                      onClose={handleClose.service}
+                      onOpen={handleOpen.service}
+                      value={values.service}
+                      onChange={handleChange("service")}
+                      inputProps={{
+                        name: "service",
+                        id: "demo-controlled-open-select",
+                      }}
+                    >
+                      <MenuItem value={"Service 1"}>Service 1</MenuItem>
+                      <MenuItem value={"Service 2"}>Service 2</MenuItem>
+                      <MenuItem value={"Service 3"}>Service 3</MenuItem>
+                    </Select>
                   </FormControl>
                 </Grid>
                 <br />
@@ -324,7 +384,8 @@ const ParticipantInfo = () => {
                   id="standard-full-width"
                   style={{ margin: 8, marginTop: 40 }}
                   placeholder="Add a note"
-                  // onChange={handleChange('name')}
+                  onChange={handleChange("note")}
+                  value={values.note}
                   fullWidth
                   margin="normal"
                   InputLabelProps={{
@@ -335,7 +396,12 @@ const ParticipantInfo = () => {
             </FormGroup>
           </Grid>
           <Button
-            style={{ alignSelf: "flex-end" }}
+            style={{
+              alignSelf: "flex-end",
+              marginTop: 20,
+              float: "right",
+              marginBottom: 100,
+            }}
             variant="outlined"
             size="large"
             color="primary"
