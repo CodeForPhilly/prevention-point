@@ -1,9 +1,10 @@
+/* eslint-disable quotes */
 import React from "react"
-import { shallow, configure, mount } from "enzyme"
+import { shallow, configure } from "enzyme"
 import LoginForm from "../src/components/LoginForm"
 import Button from "@material-ui/core/Button"
 import Adapter from "enzyme-adapter-react-16"
-import { fireEvent, cleanup } from "@testing-library/react"
+import { render, fireEvent, cleanup } from "@testing-library/react"
 
 configure({ adapter: new Adapter() })
 
@@ -55,6 +56,7 @@ describe("<LoginForm />", () => {
         id: "username",
         name: "username",
         value: "",
+        type: "username",
         onChange: expect.any(Function),
         required: true,
       })
@@ -95,53 +97,41 @@ describe("<LoginForm />", () => {
   // Integrations Testing
   describe("Integrations tests", () => {
     beforeEach(() => {
-      // Render the login form component, pass in props. (Mount method renders the component with its children, good for integrations tests.)
-      wrapper = mount(<LoginForm {...initialProps} />)
-      usernameInput = wrapper.find("#username")
-      // console.log(usernameInput.debug())
-      passwordInput = wrapper.find("#password")
-      signInButton = wrapper.find(Button)
+      // Render the login form component, pass in props. (render method renders the component with its children, good for integrations tests, uses react-test-library.)
+      const { getByLabelText, getByText } = render(
+        <LoginForm {...initialProps} />
+      )
+      usernameInput = getByLabelText(/Username/i)
+      passwordInput = getByLabelText(/Password/i)
+      signInButton = getByText("Sign In")
     })
 
     afterEach(cleanup)
 
-    it("Text in state is changed when button clicked", () => {
-      expect(usernameInput.textContent).toBe(undefined)
+    it("Username text change in onChange event", () => {
+      expect(usernameInput.value).toBe("")
 
-      fireEvent.change(usernameInput, {
-        target: {
-          value: "admin",
-        },
-      })
+      fireEvent.change(usernameInput, { target: { value: "James" } })
 
-      fireEvent.click(signInButton)
-
-      expect(usernameInput.textContent).toBe("admin")
+      expect(usernameInput.value).toBe("James")
     })
 
-    // it("should update the username state onChange of username input", () => {
-    //   const usernameInput = wrapper.find("#username")
-    //   usernameInput.simulate("change", {
-    //     target: {
-    //       value: "admin",
-    //     },
-    //   })
-    //   expect(setState).toHaveBeenCalledWith("admin")
-    //   expect(usernameInput.value).toEqual("admin")
-    // })
+    it("Password text change in onChange event", () => {
+      expect(passwordInput.value).toBe("")
 
-    // it("should update the password state onChange of password input", () => {
-    //   const passwordInput = wrapper.find("#password")
-    //   passwordInput.simulate("change", {
-    //     target: {
-    //       value: "passsword123",
-    //     },
-    //   })
-    //   expect(setState).toHaveBeenCalledWith("passsword123")
-    // })
+      fireEvent.change(passwordInput, { target: { value: "mypassword" } })
 
-    // it("should call the login functionwhen sign in button is clicked", () => {
-    //   signInButton.simulate("click")
-    // })
+      expect(passwordInput.value).toBe("mypassword")
+    })
+
+    it("Test button submit", () => {
+      const mockLogin = jest.fn()
+
+      const button = shallow(<Button onClick={mockLogin} />)
+
+      button.simulate("click")
+
+      expect(mockLogin.mock.calls.length).toEqual(1)
+    })
   })
 })

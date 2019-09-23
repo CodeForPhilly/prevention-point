@@ -36,6 +36,7 @@ const LoginForm = observer(({ location }) => {
             <Input
               id="username"
               name="username"
+              type="username"
               value={username}
               onChange={changeUsername}
               required
