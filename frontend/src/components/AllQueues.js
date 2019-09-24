@@ -7,6 +7,7 @@ import QueueTable from "./QueueTable"
 import PersonIcon from "@material-ui/icons/Person"
 import TimelapseIcon from "@material-ui/icons/Timelapse"
 import { QueueStoreContext } from "../stores/QueueStore"
+import AppBar from "@material-ui/core/AppBar"
 
 //import { toJS } from "mobx"
 //import {
@@ -17,6 +18,7 @@ import { QueueStoreContext } from "../stores/QueueStore"
 
 const useStyles = makeStyles(theme => ({
   root: {
+    flexGrow: 1,
     width: "100%",
   },
   heading: {
@@ -99,44 +101,54 @@ const AllQueues = observer(() => {
 
   return (
     <div className={classes.root}>
-      <Tabs variant="fullWidth" value={value} onChange={handleChange}>
-        <QueueTab
-          className={classes.queueTab}
-          queueData={queueStore.queueIds["TESTING"]}
-        />
-        <QueueTab
-          className={classes.queueTab}
-          queueData={queueStore.queueIds["CM"]}
-        />
-        <QueueTab
-          className={classes.queueTab}
-          queueData={queueStore.queueIds["SSHP"]}
-        />
-        <QueueTab
-          className={classes.queueTab}
-          queueData={queueStore.queueIds["LEGAL"]}
-        />
-        <QueueTab
-          className={classes.queueTab}
-          queueData={queueStore.queueIds["CRAFT"]}
-        />
-        <QueueTab
-          className={classes.queueTab}
-          queueData={queueStore.queueIds["PHAN"]}
-        />
-        <QueueTab
-          className={classes.queueTab}
-          queueData={queueStore.queueIds["STEP"]}
-        />
-        <QueueTab
-          className={classes.queueTab}
-          queueData={queueStore.queueIds["BIENSTAR"]}
-        />
-        <QueueTab
-          className={classes.queueTab}
-          queueData={queueStore.queueIds["SKWC"]}
-        />
-      </Tabs>
+      <AppBar position="static" color="default">
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          variant="scrollable"
+          scrollButtons="on"
+          indicatorColor="primary"
+          textColor="primary"
+          aria-label="scrollable force tabs example"
+        >
+          <QueueTab
+            className={classes.queueTab}
+            queueData={queueStore.queueIds["TESTING"]}
+          />
+          <QueueTab
+            className={classes.queueTab}
+            queueData={queueStore.queueIds["CM"]}
+          />
+          <QueueTab
+            className={classes.queueTab}
+            queueData={queueStore.queueIds["SSHP"]}
+          />
+          <QueueTab
+            className={classes.queueTab}
+            queueData={queueStore.queueIds["LEGAL"]}
+          />
+          <QueueTab
+            className={classes.queueTab}
+            queueData={queueStore.queueIds["CRAFT"]}
+          />
+          <QueueTab
+            className={classes.queueTab}
+            queueData={queueStore.queueIds["PHAN"]}
+          />
+          <QueueTab
+            className={classes.queueTab}
+            queueData={queueStore.queueIds["STEP"]}
+          />
+          <QueueTab
+            className={classes.queueTab}
+            queueData={queueStore.queueIds["BIENSTAR"]}
+          />
+          <QueueTab
+            className={classes.queueTab}
+            queueData={queueStore.queueIds["SKWC"]}
+          />
+        </Tabs>
+      </AppBar>
       {value === 0 && <QueueTable queueData={queueStore.queueIds["TESTING"]} />}
       {value === 1 && <QueueTable queueData={queueStore.queueIds["CM"]} />}
       {value === 2 && <QueueTable queueData={queueStore.queueIds["SSHP"]} />}
