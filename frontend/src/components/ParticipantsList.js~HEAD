@@ -1,6 +1,5 @@
-import React from "react"
-import { observer } from "mobx-react"
-import ParticipantStore from "../stores/ParticipantStore"
+import React, { Fragment, useContext, useEffect, useState } from "react"
+import { rootStoreContext } from "../stores/RootStore"
 import Breadcrumbs from "@material-ui/core/Breadcrumbs"
 import Typography from "@material-ui/core/Typography"
 import Link from "@material-ui/core/Link"
@@ -11,20 +10,18 @@ import TableHead from "@material-ui/core/TableHead"
 import TableRow from "@material-ui/core/TableRow"
 import Fab from "@material-ui/core/Fab"
 import AddIcon from "@material-ui/icons/Add"
-import AssignmentIcon from "@material-ui/icons/Assignment"
 import { observer } from "mobx-react-lite"
 
 const ParticipantsList = observer(() => {
   const rootStore = useContext(rootStoreContext)
-  const [participants, setParticipants] = useState([])
+  const participantsStore = rootStore.ParticipantStore
+  const [isLoading, setIsLoading] = useState(false)
 
   // useEffect is a hook that gets called after every render/re-render.  Empty array second argument prevents it from running again.
   useEffect(() => {
     setIsLoading(true)
     participantsStore.getParticipants()
     setIsLoading(false)
-    //Suppress eslint error for []
-    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -53,10 +50,13 @@ const ParticipantsList = observer(() => {
                     <Typography>PPID</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography>{participant.pp_id} </Typography>
+                    <Typography>First Name</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography>{participant.first_name}</Typography>
+                    <Typography>Last Name</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography>Gender</Typography>
                   </TableCell>
                   <TableCell>
                     <Typography>DOB</Typography>
@@ -65,7 +65,7 @@ const ParticipantsList = observer(() => {
                     <Typography>Race</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography>Participant Details</Typography>
+                    <Typography>Add</Typography>
                   </TableCell>
                 </TableRow>
               </TableHead>
@@ -94,11 +94,9 @@ const ParticipantsList = observer(() => {
                       <Typography>Race</Typography>
                     </TableCell>
                     <TableCell>
-                      <Link to="/participantInfo">
-                        <Fab color="primary" size="small" aria-label="add">
-                          <AssignmentIcon />
-                        </Fab>
-                      </Link>
+                      <Fab color="primary" size="small" aria-label="add">
+                        <AddIcon />
+                      </Fab>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -109,10 +107,9 @@ const ParticipantsList = observer(() => {
             <AddIcon />
           </Fab>
         </div>
-        <div>
-          <p>{ParticipantStore.filter("T9FN3", null, null).first_name}</p>
-        </div>
-      </div>
-    )
-  }
-}
+      )}
+    </Fragment>
+  )
+})
+
+export default ParticipantsList
