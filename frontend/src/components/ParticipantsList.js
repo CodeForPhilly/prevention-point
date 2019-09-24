@@ -12,7 +12,7 @@ import Fab from "@material-ui/core/Fab"
 import AddIcon from "@material-ui/icons/Add"
 import { observer } from "mobx-react-lite"
 
-const Participants = observer(() => {
+const ParticipantsList = observer(() => {
   const rootStore = useContext(rootStoreContext)
   const [participants, setParticipants] = useState([])
 
@@ -86,4 +86,4 @@ const Participants = observer(() => {
   )
 })
 
-export default Participants
+export default ParticipantsList
