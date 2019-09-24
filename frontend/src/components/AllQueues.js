@@ -5,6 +5,7 @@ import { Tabs, Tab, Typography, Button } from "@material-ui/core"
 import QueueTable from "./QueueTable"
 import PersonIcon from "@material-ui/icons/Person"
 import TimelapseIcon from "@material-ui/icons/Timelapse"
+import AppBar from "@material-ui/core/AppBar"
 import {
   caseManagementQueueData,
   legalServicesQueueData,
@@ -13,6 +14,7 @@ import {
 
 const useStyles = makeStyles(theme => ({
   root: {
+    flexGrow: 1,
     width: "100%",
   },
   heading: {
@@ -89,17 +91,27 @@ function AllQueues() {
 
   return (
     <div className={classes.root}>
-      <Tabs variant="fullWidth" value={value} onChange={handleChange}>
-        <QueueTab
-          className={classes.queueTab}
-          queueData={caseManagementQueueData}
-        />
-        <QueueTab
-          className={classes.queueTab}
-          queueData={legalServicesQueueData}
-        />
-        <QueueTab className={classes.queueTab} queueData={stepQueueData} />
-      </Tabs>
+      <AppBar position="static" color="default">
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          variant="scrollable"
+          scrollButtons="on"
+          indicatorColor="primary"
+          textColor="primary"
+          aria-label="scrollable force tabs example"
+        >
+          <QueueTab
+            className={classes.queueTab}
+            queueData={caseManagementQueueData}
+          />
+          <QueueTab
+            className={classes.queueTab}
+            queueData={legalServicesQueueData}
+          />
+          <QueueTab className={classes.queueTab} queueData={stepQueueData} />
+        </Tabs>
+      </AppBar>
       {value === 0 && <QueueTable queueData={caseManagementQueueData} />}
       {value === 1 && <QueueTable queueData={legalServicesQueueData} />}
       {value === 2 && <QueueTable queueData={stepQueueData} />}
