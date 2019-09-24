@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext, useEffect } from "react"
 import { rootStoreContext } from "../stores/RootStore"
 import Breadcrumbs from "@material-ui/core/Breadcrumbs"
 import Typography from "@material-ui/core/Typography"
@@ -14,13 +14,12 @@ import { observer } from "mobx-react-lite"
 
 const ParticipantsList = observer(() => {
   const rootStore = useContext(rootStoreContext)
-  const [participants, setParticipants] = useState([])
+  const participantsStore = rootStore.ParticipantStore
 
   // useEffect is a hook that gets called after every render/re-render.  Empty array second argument prevents it from running again.
   useEffect(() => {
     const fetchData = async () => {
-      await rootStore.ParticipantStore.getParticipants()
-      setParticipants(rootStore.ParticipantStore.participants)
+      await participantsStore.getParticipants()
     }
     fetchData()
   }, [])
@@ -52,7 +51,7 @@ const ParticipantsList = observer(() => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {participants.map((participant, index) => (
+            {participantsStore.participants.map((participant, index) => (
               <TableRow key={index}>
                 <TableCell>
                   <Typography>{participant.pp_id} </Typography>
@@ -78,9 +77,7 @@ const ParticipantsList = observer(() => {
         </Table>
       </div>
       <div>
-        <p>
-          {rootStore.ParticipantStore.filter("T9FN3", null, null).first_name}
-        </p>
+        <p>{participantsStore.filter("T9FN3", null, null).first_name}</p>
       </div>
     </div>
   )
