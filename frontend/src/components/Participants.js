@@ -52,10 +52,13 @@ const Participants = () => {
                 <Typography>Last Name</Typography>
               </TableCell>
               <TableCell>
-                <Typography>Address</Typography>
+                <Typography>Gender</Typography>
               </TableCell>
               <TableCell>
                 <Typography>DOB</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography>Race</Typography>
               </TableCell>
               <TableCell>
                 <Typography>Add</Typography>
@@ -78,10 +81,13 @@ const Participants = () => {
                   <Typography>{participant.last_name}</Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography>Address</Typography>
+                  <Typography>Gender</Typography>
                 </TableCell>
                 <TableCell>
                   <Typography>DOB</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>Race</Typography>
                 </TableCell>
                 <TableCell>
                   <Fab color="primary" size="small" aria-label="add">
