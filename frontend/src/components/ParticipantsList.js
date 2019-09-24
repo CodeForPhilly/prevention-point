@@ -1,6 +1,5 @@
-import React from "react"
-import { observer } from "mobx-react"
-import ParticipantStore from "../stores/ParticipantStore"
+import React, { useContext, useEffect } from "react"
+import { rootStoreContext } from "../stores/RootStore"
 import Breadcrumbs from "@material-ui/core/Breadcrumbs"
 import Typography from "@material-ui/core/Typography"
 import Link from "@material-ui/core/Link"
@@ -16,7 +15,7 @@ import { observer } from "mobx-react-lite"
 
 const ParticipantsList = observer(() => {
   const rootStore = useContext(rootStoreContext)
-  const [participants, setParticipants] = useState([])
+  const participantsStore = rootStore.ParticipantStore
 
   // useEffect is a hook that gets called after every render/re-render.  Empty array second argument prevents it from running again.
   useEffect(() => {
