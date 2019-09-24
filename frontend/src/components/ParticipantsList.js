@@ -63,7 +63,7 @@ const ParticipantsList = observer(() => {
                   <Typography>{participant.last_name}</Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography>Address</Typography>
+                  <Typography>Gender</Typography>
                 </TableCell>
                 <TableCell>
                   <Typography>DOB</Typography>
