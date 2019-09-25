@@ -61,19 +61,30 @@ const ParticipantInfo = () => {
     })
   }
 
-  const [values, setValues] = React.useState({
-    firstName: "",
-    lastName: "",
-    birthDate: "",
-    uuId: "",
-    race: "",
-    gender: "",
-    hasInsurance: "",
-    insuranceType: "",
-    program: "",
-    service: "",
-    note: "",
-  })
+  // function handleSubmit(event) {
+  //   event.preventDefault()
+  //   // Todo we need to change this so that it works with the api endpoint to post with ppId and not id
+  //   participantStore.postParticipant(
+  //     participantStore.participant.uuId,
+  //     participantStore.participant
+  //   )
+  // }
+
+  // const [values, setValues] = React.useState({
+  //   date_of_birth: "",
+  //   first_name: "",
+  //   gender: "",
+  //   last_four_ssn: "1234",
+  //   last_name: "",
+  //   pp_id: "",
+  //   race: "",
+  //   start_date: "2019-09-25",
+  //   has_insurance: "",
+  //   insurance_type: "",
+  //   program: "",
+  //   service: "",
+  //   note: "",
+  // })
 
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value })
@@ -91,6 +102,11 @@ const ParticipantInfo = () => {
     // console.log("Service: " + values.service)
     // console.log("Participant note: " + values.note)
   }
+
+  // const handleChange = name => event => {
+  // participantStore.participant.firstName = event.target.value
+  // setValues({ ...values, [name]: event.target.value })
+  // }
 
   const classes = useStyles()
   return (
@@ -188,37 +204,31 @@ const ParticipantInfo = () => {
                         open={open.race}
                         onClose={handleClose.race}
                         onOpen={handleOpen.race}
-                        value={values.race}
-                        onChange={handleChange("race")}
+                        value={participantStore.participant.race}
+                        onChange={handleRaceChange()}
                         inputProps={{
                           name: "race",
                           id: "demo-controlled-open-select",
                         }}
                       >
-                        <MenuItem value="">
-                          <em>None</em>
-                        </MenuItem>
-                        <MenuItem value={"American Indian or Alaska Native"}>
+                        {/* <MenuItem value={"American Indian or Alaska Native"}>
                           American Indian or Alaska Native
-                        </MenuItem>
-                        <MenuItem value={"Asian"}>Asian</MenuItem>
-                        <MenuItem value={"Black or African American"}>
+                        </MenuItem> */}
+                        <MenuItem value={"asian pi"}>Asian</MenuItem>
+                        <MenuItem value={"black (african american)"}>
                           Black or African American
                         </MenuItem>
-                        <MenuItem value={"Hispanic or Latino"}>
-                          Hispanic or Latino
+                        <MenuItem value={"latino"}>Hispanic or Latino</MenuItem>
+                        <MenuItem value={"native american"}>
+                          Native American
                         </MenuItem>
-                        <MenuItem
-                          value={"Native Hawaiian or Other Pacific Islander"}
-                        >
-                          Native Hawaiian or Other Pacific Islander
-                        </MenuItem>
-                        <MenuItem value={"Two or More Races"}>
+                        {/* <MenuItem value={"Two or More Races"}>
                           Two or More Races
-                        </MenuItem>
-                        <MenuItem value={"White or Caucasian"}>
+                        </MenuItem> */}
+                        <MenuItem value={"white (caucasian)"}>
                           White or Caucasian
                         </MenuItem>
+                        <MenuItem value={"other"}>Other</MenuItem>
                       </Select>
                     </FormControl>
                   </Grid>
@@ -232,8 +242,8 @@ const ParticipantInfo = () => {
                         open={open.gender}
                         onClose={handleClose.gender}
                         onOpen={handleOpen.gender}
-                        value={values.gender}
-                        onChange={handleChange("gender")}
+                        value={participantStore.participant.gender}
+                        onChange={handleGenderChange()}
                         inputProps={{
                           name: "gender",
                           id: "demo-controlled-open-select",
@@ -242,10 +252,12 @@ const ParticipantInfo = () => {
                         <MenuItem value="">
                           <em>None</em>
                         </MenuItem>
-                        <MenuItem value={"Male"}>Male</MenuItem>
-                        <MenuItem value={"Female"}>Female</MenuItem>
-                        <MenuItem value={"Trans (M)"}>Trans (M)</MenuItem>
-                        <MenuItem value={"Trans (F)"}>Trans (F)</MenuItem>
+                        <MenuItem value={"male"}>Male</MenuItem>
+                        <MenuItem value={"female"}>Female</MenuItem>
+                        <MenuItem value={"mtf"}>Male to Female</MenuItem>
+                        <MenuItem value={"ftm"}>Female to Male</MenuItem>
+                        <MenuItem value={"gender queer"}>Gender Queer</MenuItem>
+                        <MenuItem value={"other"}>Other</MenuItem>
                       </Select>
                     </FormControl>
                   </Grid>
@@ -268,8 +280,8 @@ const ParticipantInfo = () => {
                         aria-label="insurance"
                         name="hasInsurance"
                         className={classes.group}
-                        value={values.hasInsurance}
-                        onChange={handleChange("hasInsurance")}
+                        value={participantStore.participant.has_insurance}
+                        onChange={handleHasInsuranceChange()}
                         style={{ display: "inline" }}
                       >
                         <FormControlLabel
@@ -295,8 +307,8 @@ const ParticipantInfo = () => {
                         open={open.insuranceType}
                         onClose={handleClose.insuranceType}
                         onOpen={handleOpen.insuranceType}
-                        value={values.insuranceType}
-                        onChange={handleChange("insuranceType")}
+                        value={participantStore.participant.insurance_type}
+                        onChange={handleInsuranceTypeChange()}
                         inputProps={{
                           name: "insuranceType",
                           id: "demo-controlled-open-select",
@@ -344,8 +356,8 @@ const ParticipantInfo = () => {
                       open={open.program}
                       onClose={handleClose.program}
                       onOpen={handleOpen.program}
-                      value={values.program}
-                      onChange={handleChange("program")}
+                      value={participantStore.participant.program}
+                      onChange={handleProgramChange()}
                       inputProps={{
                         name: "program",
                         id: "demo-controlled-open-select",
@@ -366,8 +378,8 @@ const ParticipantInfo = () => {
                       open={open.service}
                       onClose={handleClose.service}
                       onOpen={handleOpen.service}
-                      value={values.service}
-                      onChange={handleChange("service")}
+                      value={participantStore.participant.service}
+                      onChange={handleServiceChange()}
                       inputProps={{
                         name: "service",
                         id: "demo-controlled-open-select",
@@ -384,8 +396,8 @@ const ParticipantInfo = () => {
                   id="standard-full-width"
                   style={{ margin: 8, marginTop: 40 }}
                   placeholder="Add a note"
-                  onChange={handleChange("note")}
-                  value={values.note}
+                  onChange={handleNoteChange()}
+                  value={participantStore.participant.note}
                   fullWidth
                   margin="normal"
                   InputLabelProps={{
