@@ -1,12 +1,12 @@
 from rest_framework import serializers
 from django.utils import timezone
 from core.models import ProgramServiceMap
-from core.services.serializers import ServiceforProgramSerializer
-from core.programs.serializer import ProgramForMapSerializer
+from core.services.serializers import ServiceSerializer
+from core.programs.serializer import ProgramSerializer
 
 class ProgramServiceMapSerializer(serializers.ModelSerializer):
-    service = ServiceforProgramSerializer(read_only=True)
-    program = ProgramForMapSerializer(read_only=True)
+    service = ServiceSerializer(read_only=True)
+    program = ProgramSerializer(read_only=True)
     class Meta:
         model = ProgramServiceMap
         fields = ('program', 'service') 
