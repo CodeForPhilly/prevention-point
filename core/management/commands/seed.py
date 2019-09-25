@@ -186,7 +186,6 @@ def create_programs(output=True):
       for service in services:
           s = Service()
           s.name = service
-          s.program = p
           s.available = random_bool()
           s.full_clean()
           s.save()
