@@ -7490,6 +7490,11 @@ material-table@^1.39.2:
     react-beautiful-dnd "11.0.3"
     react-double-scrollbar "0.0.15"
 
+material@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/material/-/material-0.4.1.tgz#c039569fe63738241da854e6f481e841ab171d65"
+  integrity sha512-Ll/q/JE0wOP3bhh77XEryfXxsT8qinqB62wdR0N8lnLLbdHNuxd2XuqvlCxWoWw4O5K14AefEHaDgKgx5DT2RA==
+
 mathml-tag-names@^2.0.1:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/mathml-tag-names/-/mathml-tag-names-2.1.0.tgz#490b70e062ee24636536e3d9481e333733d00f2c"

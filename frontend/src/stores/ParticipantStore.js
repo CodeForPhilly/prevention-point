@@ -1,29 +1,60 @@
-import { observable, action, flow, toJS } from "mobx"
-import participantApi from "../api/participantApi"
+import { observable, action, flow, toJS, decorate } from "mobx"
+import { createContext } from "react"
+import api from "../api"
 
-class ParticipantStore {
+export class ParticipantStore {
   constructor(rootStore) {
     this.rootStore = rootStore
   }
 
-  //participants = observable([])
-  @observable participants = []
+  participants = []
 
-  @action setParticipant(participant, index) {
-    this.participants[index] = participant
+  setParticipants = data => {
+    this.participants = data
   }
 
   getParticipants = flow(function*() {
-    try {
-      const results = yield participantApi.getParticipants()
-      if (results) {
-        results.data.forEach((datum, index) => {
-          this.setParticipant(datum, index)
-        })
-      }
-    } catch (error) {
+    const { ok, data } = yield api.getParticipants()
+    if (ok) {
+      this.setParticipants(data)
+    } else {
       // TODO: Handle errors
-      //console.log(error)
+    }
+  })
+
+  participant = toJS({
+    firstName: "",
+    lastName: "",
+    birthDate: "",
+    uuId: "",
+    race: "",
+    gender: "",
+    hasInsurance: "",
+    insuranceType: "",
+    program: "",
+    service: "",
+    note: "",
+  })
+
+  setParticipant = data => {
+    this.participant = data
+  }
+
+  getParticipant = flow(function*(id) {
+    const { ok, data } = yield api.getParticipant(id)
+    if (ok) {
+      this.setParticipant(data)
+    } else {
+      // TODO: Handle errors
+    }
+  })
+
+  postParticipant = flow(function*(id, data) {
+    const { ok } = yield api.postParticipant(id, data)
+    if (ok) {
+      this.setParticipant(data)
+    } else {
+      // TODO: Handle errors
     }
   })
 
@@ -45,5 +76,11 @@ class ParticipantStore {
   }
 }
 
-let participantStore = (window.participantStore = new ParticipantStore())
-export default participantStore
+decorate(ParticipantStore, {
+  participants: observable,
+  participant: observable,
+  setParticipants: action,
+})
+
+// let participantStore = (window.participantStore = new ParticipantStore())
+export const ParticipantStoreContext = createContext(new ParticipantStore())

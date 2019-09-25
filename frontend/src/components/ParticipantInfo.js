@@ -1,4 +1,5 @@
-import React from "react"
+import React, { useContext } from "react"
+import { rootStoreContext } from "../stores/RootStore"
 import "../scss/participant-search.scss"
 import FormGroup from "@material-ui/core/FormGroup"
 import FormControl from "@material-ui/core/FormControl"
@@ -16,6 +17,7 @@ import RadioGroup from "@material-ui/core/RadioGroup"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
 import FormLabel from "@material-ui/core/FormLabel"
 import Button from "@material-ui/core/Button"
+import { observer } from "mobx-react-lite"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -39,8 +41,18 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const ParticipantInfo = () => {
+const ParticipantInfo = observer(() => {
   const [open, setOpen] = React.useState(false)
+
+  const rootStore = useContext(rootStoreContext)
+  const participantStore = rootStore.ParticipantStore
+
+  // useEffect(() => {
+  //   const fetchData = async (id) => {
+  //     await participantStore.getParticipant(id)
+  //   }
+  //   fetchData(id)
+  // }, [])
 
   function handleClose() {
     setOpen(false)
@@ -52,13 +64,11 @@ const ParticipantInfo = () => {
 
   function handleSubmit(event) {
     event.preventDefault()
-
-    const data = new FormData(event.target)
-
-    fetch("/api/participants/", {
-      method: "POST",
-      body: data,
-    })
+    // Todo we need to change this so that it works with the api endpoint to post with ppId and not id
+    participantStore.postParticipant(
+      participantStore.participant.uuId,
+      participantStore.participant
+    )
   }
 
   const [values, setValues] = React.useState({
@@ -75,7 +85,24 @@ const ParticipantInfo = () => {
     note: "",
   })
 
+  const handleFNameChange = () => event => {
+    participantStore.participant.firstName = event.target.value
+  }
+
+  const handleLNameChange = () => event => {
+    participantStore.participant.lastName = event.target.value
+  }
+
+  const handleDOBChange = () => event => {
+    participantStore.participant.birthDate = event.target.value
+  }
+
+  const handleUUIDChange = () => event => {
+    participantStore.participant.uuId = event.target.value
+  }
+
   const handleChange = name => event => {
+    participantStore.participant.firstName = event.target.value
     setValues({ ...values, [name]: event.target.value })
     // console.log("...values: " + JSON.stringify(values))
     // console.log("event.target.value: " + event.target.value)
@@ -118,8 +145,10 @@ const ParticipantInfo = () => {
                     <Input
                       id="user_first-name"
                       name="user_first-name"
-                      value={values.firstName}
-                      onChange={handleChange("firstName")}
+                      // value={values.firstName}
+                      value={participantStore.participant.firstName}
+                      // onChange={handleChange("firstName")}
+                      onChange={handleFNameChange()}
                       required
                     />
                   </FormControl>
@@ -130,8 +159,8 @@ const ParticipantInfo = () => {
                     <Input
                       id="user_last-name"
                       name="user_last-name"
-                      value={values.lastName}
-                      onChange={handleChange("lastName")}
+                      value={participantStore.participant.lastName}
+                      onChange={handleLNameChange()}
                       required
                     />
                   </FormControl>
@@ -148,8 +177,8 @@ const ParticipantInfo = () => {
                     <TextField
                       id="user_birth-date"
                       name="user_birth-date"
-                      value={values.birthDate}
-                      onChange={handleChange("birthDate")}
+                      value={participantStore.participant.birthDate}
+                      onChange={handleDOBChange()}
                       required
                       style={{ marginTop: 40 }}
                       type="date"
@@ -166,8 +195,8 @@ const ParticipantInfo = () => {
                     <Input
                       id="uuid"
                       name="uuid"
-                      value={values.uuId}
-                      onChange={handleChange("uuId")}
+                      value={participantStore.participant.uuId}
+                      onChange={handleUUIDChange()}
                       required
                     />
                   </FormControl>
@@ -414,6 +443,6 @@ const ParticipantInfo = () => {
       </Container>
     </div>
   )
-}
+})
 
 export default ParticipantInfo
