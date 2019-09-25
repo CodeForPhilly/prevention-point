@@ -13,7 +13,7 @@ function NotesDialog({ visibleDialog, toggleVisibleDialog }) {
 
   const handleSubmit = () => {
     // Make POST request to API here to submit data
-    // Need to pass in participant ID to this component (most likely) for API
+    // Need to pass in visit ID to this component (most likely) for API
     toggleVisibleDialog()
   }
 
