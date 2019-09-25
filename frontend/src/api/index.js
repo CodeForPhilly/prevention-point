@@ -6,7 +6,8 @@ import { getQueue } from "./queueEndpoints"
 import {
   getParticipants,
   getParticipant,
-  postParticipant,
+  updateParticipant,
+  createParticipant,
 } from "./participantEndpoints"
 
 const create = () => {
@@ -31,7 +32,8 @@ const create = () => {
     getQueue: getQueue(api),
     getParticipants: getParticipants(api),
     getParticipant: getParticipant(api),
-    postParticipant: postParticipant(api),
+    updateParticipant: updateParticipant(api),
+    createParticipant: createParticipant(api),
   }
 }
 

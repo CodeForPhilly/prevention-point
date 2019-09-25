@@ -65,59 +65,82 @@ const ParticipantInfo = observer(() => {
   function handleSubmit(event) {
     event.preventDefault()
     // Todo we need to change this so that it works with the api endpoint to post with ppId and not id
-    participantStore.postParticipant(
-      participantStore.participant.uuId,
-      participantStore.participant
-    )
+    participantStore.createParticipant(participantStore.participant)
   }
 
-  const [values, setValues] = React.useState({
-    firstName: "",
-    lastName: "",
-    birthDate: "",
-    uuId: "",
-    race: "",
-    gender: "",
-    hasInsurance: "",
-    insuranceType: "",
-    program: "",
-    service: "",
-    note: "",
-  })
+  // function handleSubmit(event) {
+  //   event.preventDefault()
+  //   // Todo we need to change this so that it works with the api endpoint to post with ppId and not id
+  //   participantStore.postParticipant(
+  //     participantStore.participant.uuId,
+  //     participantStore.participant
+  //   )
+  // }
+
+  // const [values, setValues] = React.useState({
+  //   date_of_birth: "",
+  //   first_name: "",
+  //   gender: "",
+  //   last_four_ssn: "1234",
+  //   last_name: "",
+  //   pp_id: "",
+  //   race: "",
+  //   start_date: "2019-09-25",
+  //   has_insurance: "",
+  //   insurance_type: "",
+  //   program: "",
+  //   service: "",
+  //   note: "",
+  // })
 
   const handleFNameChange = () => event => {
-    participantStore.participant.firstName = event.target.value
+    participantStore.participant.first_name = event.target.value
   }
 
   const handleLNameChange = () => event => {
-    participantStore.participant.lastName = event.target.value
+    participantStore.participant.last_name = event.target.value
   }
 
   const handleDOBChange = () => event => {
-    participantStore.participant.birthDate = event.target.value
+    participantStore.participant.date_of_birth = event.target.value
   }
 
   const handleUUIDChange = () => event => {
-    participantStore.participant.uuId = event.target.value
+    participantStore.participant.pp_id = event.target.value
   }
 
-  const handleChange = name => event => {
-    participantStore.participant.firstName = event.target.value
-    setValues({ ...values, [name]: event.target.value })
-    // console.log("...values: " + JSON.stringify(values))
-    // console.log("event.target.value: " + event.target.value)
-    // console.log(
-    //   "Participant's name: " + values.firstName + " " + values.lastName
-    // )
-    // console.log("Birthdate: " + values.birthDate)
-    // console.log("Race: " + values.race)
-    // console.log("Gender: " + values.gender)
-    // console.log("Has insurance?: " + values.hasInsurance)
-    // console.log("Insurance type: " + values.insuranceType)
-    // console.log("Program: " + values.program)
-    // console.log("Service: " + values.service)
-    // console.log("Participant note: " + values.note)
+  const handleRaceChange = () => event => {
+    participantStore.participant.race = event.target.value
   }
+
+  const handleGenderChange = () => event => {
+    participantStore.participant.gender = event.target.value
+  }
+
+  const handleHasInsuranceChange = () => event => {
+    participantStore.participant.has_insurance = event.target.value
+  }
+
+  const handleInsuranceTypeChange = () => event => {
+    participantStore.participant.insurance_type = event.target.value
+  }
+
+  const handleProgramChange = () => event => {
+    participantStore.participant.program = event.target.value
+  }
+
+  const handleServiceChange = () => event => {
+    participantStore.participant.service = event.target.value
+  }
+
+  const handleNoteChange = () => event => {
+    participantStore.participant.note = event.target.value
+  }
+
+  // const handleChange = name => event => {
+  // participantStore.participant.firstName = event.target.value
+  // setValues({ ...values, [name]: event.target.value })
+  // }
 
   const classes = useStyles()
   return (
@@ -146,7 +169,7 @@ const ParticipantInfo = observer(() => {
                       id="user_first-name"
                       name="user_first-name"
                       // value={values.firstName}
-                      value={participantStore.participant.firstName}
+                      value={participantStore.participant.first_name}
                       // onChange={handleChange("firstName")}
                       onChange={handleFNameChange()}
                       required
@@ -159,7 +182,7 @@ const ParticipantInfo = observer(() => {
                     <Input
                       id="user_last-name"
                       name="user_last-name"
-                      value={participantStore.participant.lastName}
+                      value={participantStore.participant.last_name}
                       onChange={handleLNameChange()}
                       required
                     />
@@ -177,7 +200,7 @@ const ParticipantInfo = observer(() => {
                     <TextField
                       id="user_birth-date"
                       name="user_birth-date"
-                      value={participantStore.participant.birthDate}
+                      value={participantStore.participant.date_of_birth}
                       onChange={handleDOBChange()}
                       required
                       style={{ marginTop: 40 }}
@@ -195,7 +218,7 @@ const ParticipantInfo = observer(() => {
                     <Input
                       id="uuid"
                       name="uuid"
-                      value={participantStore.participant.uuId}
+                      value={participantStore.participant.pp_id}
                       onChange={handleUUIDChange()}
                       required
                     />
@@ -217,37 +240,31 @@ const ParticipantInfo = observer(() => {
                         open={open.race}
                         onClose={handleClose.race}
                         onOpen={handleOpen.race}
-                        value={values.race}
-                        onChange={handleChange("race")}
+                        value={participantStore.participant.race}
+                        onChange={handleRaceChange()}
                         inputProps={{
                           name: "race",
                           id: "demo-controlled-open-select",
                         }}
                       >
-                        <MenuItem value="">
-                          <em>None</em>
-                        </MenuItem>
-                        <MenuItem value={"American Indian or Alaska Native"}>
+                        {/* <MenuItem value={"American Indian or Alaska Native"}>
                           American Indian or Alaska Native
-                        </MenuItem>
-                        <MenuItem value={"Asian"}>Asian</MenuItem>
-                        <MenuItem value={"Black or African American"}>
+                        </MenuItem> */}
+                        <MenuItem value={"asian pi"}>Asian</MenuItem>
+                        <MenuItem value={"black (african american)"}>
                           Black or African American
                         </MenuItem>
-                        <MenuItem value={"Hispanic or Latino"}>
-                          Hispanic or Latino
+                        <MenuItem value={"latino"}>Hispanic or Latino</MenuItem>
+                        <MenuItem value={"native american"}>
+                          Native American
                         </MenuItem>
-                        <MenuItem
-                          value={"Native Hawaiian or Other Pacific Islander"}
-                        >
-                          Native Hawaiian or Other Pacific Islander
-                        </MenuItem>
-                        <MenuItem value={"Two or More Races"}>
+                        {/* <MenuItem value={"Two or More Races"}>
                           Two or More Races
-                        </MenuItem>
-                        <MenuItem value={"White or Caucasian"}>
+                        </MenuItem> */}
+                        <MenuItem value={"white (caucasian)"}>
                           White or Caucasian
                         </MenuItem>
+                        <MenuItem value={"other"}>Other</MenuItem>
                       </Select>
                     </FormControl>
                   </Grid>
@@ -261,8 +278,8 @@ const ParticipantInfo = observer(() => {
                         open={open.gender}
                         onClose={handleClose.gender}
                         onOpen={handleOpen.gender}
-                        value={values.gender}
-                        onChange={handleChange("gender")}
+                        value={participantStore.participant.gender}
+                        onChange={handleGenderChange()}
                         inputProps={{
                           name: "gender",
                           id: "demo-controlled-open-select",
@@ -271,10 +288,12 @@ const ParticipantInfo = observer(() => {
                         <MenuItem value="">
                           <em>None</em>
                         </MenuItem>
-                        <MenuItem value={"Male"}>Male</MenuItem>
-                        <MenuItem value={"Female"}>Female</MenuItem>
-                        <MenuItem value={"Trans (M)"}>Trans (M)</MenuItem>
-                        <MenuItem value={"Trans (F)"}>Trans (F)</MenuItem>
+                        <MenuItem value={"male"}>Male</MenuItem>
+                        <MenuItem value={"female"}>Female</MenuItem>
+                        <MenuItem value={"mtf"}>Male to Female</MenuItem>
+                        <MenuItem value={"ftm"}>Female to Male</MenuItem>
+                        <MenuItem value={"gender queer"}>Gender Queer</MenuItem>
+                        <MenuItem value={"other"}>Other</MenuItem>
                       </Select>
                     </FormControl>
                   </Grid>
@@ -297,8 +316,8 @@ const ParticipantInfo = observer(() => {
                         aria-label="insurance"
                         name="hasInsurance"
                         className={classes.group}
-                        value={values.hasInsurance}
-                        onChange={handleChange("hasInsurance")}
+                        value={participantStore.participant.has_insurance}
+                        onChange={handleHasInsuranceChange()}
                         style={{ display: "inline" }}
                       >
                         <FormControlLabel
@@ -324,8 +343,8 @@ const ParticipantInfo = observer(() => {
                         open={open.insuranceType}
                         onClose={handleClose.insuranceType}
                         onOpen={handleOpen.insuranceType}
-                        value={values.insuranceType}
-                        onChange={handleChange("insuranceType")}
+                        value={participantStore.participant.insurance_type}
+                        onChange={handleInsuranceTypeChange()}
                         inputProps={{
                           name: "insuranceType",
                           id: "demo-controlled-open-select",
@@ -373,8 +392,8 @@ const ParticipantInfo = observer(() => {
                       open={open.program}
                       onClose={handleClose.program}
                       onOpen={handleOpen.program}
-                      value={values.program}
-                      onChange={handleChange("program")}
+                      value={participantStore.participant.program}
+                      onChange={handleProgramChange()}
                       inputProps={{
                         name: "program",
                         id: "demo-controlled-open-select",
@@ -395,8 +414,8 @@ const ParticipantInfo = observer(() => {
                       open={open.service}
                       onClose={handleClose.service}
                       onOpen={handleOpen.service}
-                      value={values.service}
-                      onChange={handleChange("service")}
+                      value={participantStore.participant.service}
+                      onChange={handleServiceChange()}
                       inputProps={{
                         name: "service",
                         id: "demo-controlled-open-select",
@@ -413,8 +432,8 @@ const ParticipantInfo = observer(() => {
                   id="standard-full-width"
                   style={{ margin: 8, marginTop: 40 }}
                   placeholder="Add a note"
-                  onChange={handleChange("note")}
-                  value={values.note}
+                  onChange={handleNoteChange()}
+                  value={participantStore.participant.note}
                   fullWidth
                   margin="normal"
                   InputLabelProps={{

@@ -23,14 +23,16 @@ export class ParticipantStore {
   })
 
   participant = toJS({
-    firstName: "",
-    lastName: "",
-    birthDate: "",
-    uuId: "",
-    race: "",
+    date_of_birth: "",
+    first_name: "",
     gender: "",
-    hasInsurance: "",
-    insuranceType: "",
+    last_four_ssn: "1234",
+    last_name: "",
+    pp_id: "",
+    race: "",
+    start_date: "2019-09-25",
+    has_insurance: "",
+    insurance_type: "",
     program: "",
     service: "",
     note: "",
@@ -49,14 +51,32 @@ export class ParticipantStore {
     }
   })
 
-  postParticipant = flow(function*(id, data) {
-    const { ok } = yield api.postParticipant(id, data)
+  updateParticipant = flow(function*(id, data) {
+    const { ok } = yield api.updateParticipant(id, data)
     if (ok) {
       this.setParticipant(data)
     } else {
       // TODO: Handle errors
     }
   })
+
+  createParticipant = flow(function*(data) {
+    const { ok } = yield api.createParticipant(data)
+    if (ok) {
+      this.setParticipant(data)
+    } else {
+      // TODO: Handle errors
+    }
+  })
+
+  // postParticipant = flow(function*(id, data) {
+  //   const { ok } = yield api.postParticipant(id, data)
+  //   if (ok) {
+  //     this.setParticipant(data)
+  //   } else {
+  //     // TODO: Handle errors
+  //   }
+  // })
 
   filter(id, first, last) {
     //Filter on ID first, then name. Return a Participant or null
