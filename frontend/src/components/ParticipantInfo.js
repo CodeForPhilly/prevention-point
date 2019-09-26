@@ -18,8 +18,38 @@ import FormControlLabel from "@material-ui/core/FormControlLabel"
 import FormLabel from "@material-ui/core/FormLabel"
 import Button from "@material-ui/core/Button"
 import { observer } from "mobx-react-lite"
+import Card from "@material-ui/core/Card"
+import CardContent from "@material-ui/core/CardContent"
+import Modal from "@material-ui/core/Modal"
 
 const useStyles = makeStyles(theme => ({
+  paper: {
+    position: "absolute",
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: "2px solid #000",
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+  card: {
+    float: "right",
+    width: "25%",
+    marginRight: "35px",
+  },
+  hidden: {
+    display: "none",
+  },
+  bullet: {
+    display: "inline-block",
+    margin: "0 2px",
+    transform: "scale(0.8)",
+  },
+  title: {
+    fontSize: 14,
+  },
+  pos: {
+    marginBottom: 12,
+  },
   root: {
     display: "flex",
     flexWrap: "wrap",
@@ -43,16 +73,36 @@ const useStyles = makeStyles(theme => ({
 
 const ParticipantInfo = observer(() => {
   const [open, setOpen] = React.useState(false)
+  const [hideCard, setHideCard] = React.useState(true)
 
   const rootStore = useContext(rootStoreContext)
   const participantStore = rootStore.ParticipantStore
 
-  // useEffect(() => {
-  //   const fetchData = async (id) => {
-  //     await participantStore.getParticipant(id)
-  //   }
-  //   fetchData(id)
-  // }, [])
+  const [openModal, setOpenModal] = React.useState(false)
+  function rand() {
+    return Math.round(Math.random() * 20) - 10
+  }
+
+  function getModalStyle() {
+    const top = 50 + rand()
+    const left = 50 + rand()
+
+    return {
+      top: `${top}%`,
+      left: `${left}%`,
+      transform: `translate(-${top}%, -${left}%)`,
+    }
+  }
+
+  const [modalStyle] = React.useState(getModalStyle)
+
+  const handleOpenModal = () => {
+    setOpenModal(true)
+  }
+
+  const handleCloseModal = () => {
+    setOpenModal(false)
+  }
 
   function handleClose() {
     setOpen(false)
@@ -62,36 +112,15 @@ const ParticipantInfo = observer(() => {
     setOpen(true)
   }
 
+  function openCard() {
+    setHideCard(false)
+  }
+
   function handleSubmit(event) {
     event.preventDefault()
     // Todo we need to change this so that it works with the api endpoint to post with ppId and not id
     participantStore.createParticipant(participantStore.participant)
   }
-
-  // function handleSubmit(event) {
-  //   event.preventDefault()
-  //   // Todo we need to change this so that it works with the api endpoint to post with ppId and not id
-  //   participantStore.postParticipant(
-  //     participantStore.participant.uuId,
-  //     participantStore.participant
-  //   )
-  // }
-
-  // const [values, setValues] = React.useState({
-  //   date_of_birth: "",
-  //   first_name: "",
-  //   gender: "",
-  //   last_four_ssn: "1234",
-  //   last_name: "",
-  //   pp_id: "",
-  //   race: "",
-  //   start_date: "2019-09-25",
-  //   has_insurance: "",
-  //   insurance_type: "",
-  //   program: "",
-  //   service: "",
-  //   note: "",
-  // })
 
   const handleFNameChange = () => event => {
     participantStore.participant.first_name = event.target.value
@@ -133,14 +162,13 @@ const ParticipantInfo = observer(() => {
     participantStore.participant.service = event.target.value
   }
 
+  const handlePriorityLevelChange = () => event => {
+    participantStore.participant.priority_level = event.target.value
+  }
+
   const handleNoteChange = () => event => {
     participantStore.participant.note = event.target.value
   }
-
-  // const handleChange = name => event => {
-  // participantStore.participant.firstName = event.target.value
-  // setValues({ ...values, [name]: event.target.value })
-  // }
 
   const classes = useStyles()
   return (
@@ -148,6 +176,40 @@ const ParticipantInfo = observer(() => {
       style={{ marginTop: 50, marginBottom: 50 }}
       className="participant-info-component"
     >
+      {/* className={this.props.shouldHide ? 'hidden' : '' */}
+      <Card
+        onClick={handleOpenModal}
+        className={
+          hideCard
+            ? classes.hidden + " " + classes.card
+            : "show " + classes.card
+        }
+      >
+        <CardContent>
+          <Typography className={classes.title} gutterBottom>
+            <strong>Date: </strong> {participantStore.participant.start_date}
+            <br />
+            <strong>Program: </strong> {participantStore.participant.program}
+          </Typography>
+          <Typography variant="h5" component="h2" />
+          <Typography variant="body2" component="p">
+            <strong>Note: </strong>
+            {participantStore.participant.note}
+            <br />
+          </Typography>
+        </CardContent>
+      </Card>
+      <Modal
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+        open={openModal}
+        onClose={handleCloseModal}
+      >
+        <div style={modalStyle} className={classes.paper}>
+          <h2 id="simple-modal-title">Text in a modal</h2>
+          {participantStore.participant.note}
+        </div>
+      </Modal>
       <Container maxWidth="sm">
         <Typography
           style={{ textAlign: "left" }}
@@ -190,10 +252,8 @@ const ParticipantInfo = observer(() => {
                 </Grid>
               </Grid>
             </FormGroup>
-            <br />
-            <br />
             <FormGroup className="participant-info">
-              <Grid container style={{ marginTop: 20 }}>
+              <Grid container>
                 <Grid item xs>
                   <FormControl className={classes.formControl}>
                     <InputLabel htmlFor="user_id">Date of birth</InputLabel>
@@ -225,7 +285,6 @@ const ParticipantInfo = observer(() => {
                   </FormControl>
                 </Grid>
               </Grid>
-              <br />
               <br />
             </FormGroup>
             <div className={classes.root}>
@@ -285,9 +344,6 @@ const ParticipantInfo = observer(() => {
                           id: "demo-controlled-open-select",
                         }}
                       >
-                        <MenuItem value="">
-                          <em>None</em>
-                        </MenuItem>
                         <MenuItem value={"male"}>Male</MenuItem>
                         <MenuItem value={"female"}>Female</MenuItem>
                         <MenuItem value={"mtf"}>Male to Female</MenuItem>
@@ -298,7 +354,6 @@ const ParticipantInfo = observer(() => {
                     </FormControl>
                   </Grid>
                 </Grid>
-                <br />
                 <br />
               </FormGroup>
             </div>
@@ -428,6 +483,31 @@ const ParticipantInfo = observer(() => {
                   </FormControl>
                 </Grid>
                 <br />
+                <Grid item xs>
+                  <FormControl className={classes.formControl}>
+                    <InputLabel htmlFor="demo-controlled-open-select">
+                      Select Priority Level
+                    </InputLabel>
+                    <Select
+                      open={open.priorityLevel}
+                      onClose={handleClose.priorityLevel}
+                      onOpen={handleOpen.priorityLevel}
+                      value={participantStore.participant.priority_level}
+                      onChange={handlePriorityLevelChange()}
+                      inputProps={{
+                        name: "priorityLevel",
+                        id: "demo-controlled-open-select",
+                      }}
+                    >
+                      <MenuItem value={"1"}>1 (Lowest)</MenuItem>
+                      <MenuItem value={"2"}>2</MenuItem>
+                      <MenuItem value={"3"}>3</MenuItem>
+                      <MenuItem value={"4"}>4</MenuItem>
+                      <MenuItem value={"5"}>5 (Highest)</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <br />
                 <TextField
                   id="standard-full-width"
                   style={{ margin: 8, marginTop: 40 }}
@@ -454,9 +534,10 @@ const ParticipantInfo = observer(() => {
             size="large"
             color="primary"
             className={classes.margin}
+            onClick={openCard}
             type="submit"
           >
-            Submit
+            Add to Queue
           </Button>
         </form>
       </Container>

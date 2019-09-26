@@ -35,6 +35,7 @@ export class ParticipantStore {
     insurance_type: "",
     program: "",
     service: "",
+    priority_level: "",
     note: "",
   })
 
