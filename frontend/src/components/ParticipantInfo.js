@@ -18,6 +18,33 @@ import FormLabel from "@material-ui/core/FormLabel"
 import Button from "@material-ui/core/Button"
 
 const useStyles = makeStyles(theme => ({
+  paper: {
+    position: "absolute",
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: "2px solid #000",
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+  card: {
+    float: "right",
+    width: "25%",
+    marginRight: "35px",
+  },
+  hidden: {
+    display: "none",
+  },
+  bullet: {
+    display: "inline-block",
+    margin: "0 2px",
+    transform: "scale(0.8)",
+  },
+  title: {
+    fontSize: 14,
+  },
+  pos: {
+    marginBottom: 12,
+  },
   root: {
     display: "flex",
     flexWrap: "wrap",
@@ -41,6 +68,7 @@ const useStyles = makeStyles(theme => ({
 
 const ParticipantInfo = () => {
   const [open, setOpen] = React.useState(false)
+  const [hideCard, setHideCard] = React.useState(true)
 
   function handleClose() {
     setOpen(false)
@@ -48,6 +76,10 @@ const ParticipantInfo = () => {
 
   function handleOpen() {
     setOpen(true)
+  }
+
+  function openCard() {
+    setHideCard(false)
   }
 
   function handleSubmit(event) {
@@ -103,17 +135,46 @@ const ParticipantInfo = () => {
     // console.log("Participant note: " + values.note)
   }
 
-  // const handleChange = name => event => {
-  // participantStore.participant.firstName = event.target.value
-  // setValues({ ...values, [name]: event.target.value })
-  // }
-
   const classes = useStyles()
   return (
     <div
       style={{ marginTop: 50, marginBottom: 50 }}
       className="participant-info-component"
     >
+      {/* className={this.props.shouldHide ? 'hidden' : '' */}
+      <Card
+        onClick={handleOpenModal}
+        className={
+          hideCard
+            ? classes.hidden + " " + classes.card
+            : "show " + classes.card
+        }
+      >
+        <CardContent>
+          <Typography className={classes.title} gutterBottom>
+            <strong>Date: </strong> {participantStore.participant.start_date}
+            <br />
+            <strong>Program: </strong> {participantStore.participant.program}
+          </Typography>
+          <Typography variant="h5" component="h2" />
+          <Typography variant="body2" component="p">
+            <strong>Note: </strong>
+            {participantStore.participant.note}
+            <br />
+          </Typography>
+        </CardContent>
+      </Card>
+      <Modal
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+        open={openModal}
+        onClose={handleCloseModal}
+      >
+        <div style={modalStyle} className={classes.paper}>
+          <h2 id="simple-modal-title">Text in a modal</h2>
+          {participantStore.participant.note}
+        </div>
+      </Modal>
       <Container maxWidth="sm">
         <Typography
           style={{ textAlign: "left" }}
@@ -154,10 +215,8 @@ const ParticipantInfo = () => {
                 </Grid>
               </Grid>
             </FormGroup>
-            <br />
-            <br />
             <FormGroup className="participant-info">
-              <Grid container style={{ marginTop: 20 }}>
+              <Grid container>
                 <Grid item xs>
                   <FormControl className={classes.formControl}>
                     <InputLabel htmlFor="user_id">Date of birth</InputLabel>
@@ -189,7 +248,6 @@ const ParticipantInfo = () => {
                   </FormControl>
                 </Grid>
               </Grid>
-              <br />
               <br />
             </FormGroup>
             <div className={classes.root}>
@@ -249,9 +307,6 @@ const ParticipantInfo = () => {
                           id: "demo-controlled-open-select",
                         }}
                       >
-                        <MenuItem value="">
-                          <em>None</em>
-                        </MenuItem>
                         <MenuItem value={"male"}>Male</MenuItem>
                         <MenuItem value={"female"}>Female</MenuItem>
                         <MenuItem value={"mtf"}>Male to Female</MenuItem>
@@ -262,7 +317,6 @@ const ParticipantInfo = () => {
                     </FormControl>
                   </Grid>
                 </Grid>
-                <br />
                 <br />
               </FormGroup>
             </div>
@@ -392,6 +446,31 @@ const ParticipantInfo = () => {
                   </FormControl>
                 </Grid>
                 <br />
+                <Grid item xs>
+                  <FormControl className={classes.formControl}>
+                    <InputLabel htmlFor="demo-controlled-open-select">
+                      Select Priority Level
+                    </InputLabel>
+                    <Select
+                      open={open.priorityLevel}
+                      onClose={handleClose.priorityLevel}
+                      onOpen={handleOpen.priorityLevel}
+                      value={participantStore.participant.priority_level}
+                      onChange={handlePriorityLevelChange()}
+                      inputProps={{
+                        name: "priorityLevel",
+                        id: "demo-controlled-open-select",
+                      }}
+                    >
+                      <MenuItem value={"1"}>1 (Lowest)</MenuItem>
+                      <MenuItem value={"2"}>2</MenuItem>
+                      <MenuItem value={"3"}>3</MenuItem>
+                      <MenuItem value={"4"}>4</MenuItem>
+                      <MenuItem value={"5"}>5 (Highest)</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <br />
                 <TextField
                   id="standard-full-width"
                   style={{ margin: 8, marginTop: 40 }}
@@ -418,9 +497,10 @@ const ParticipantInfo = () => {
             size="large"
             color="primary"
             className={classes.margin}
+            onClick={openCard}
             type="submit"
           >
-            Submit
+            Add to Queue
           </Button>
         </form>
       </Container>
