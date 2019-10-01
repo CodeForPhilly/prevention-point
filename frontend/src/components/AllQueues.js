@@ -6,6 +6,7 @@ import QueueTable from "./QueueTable"
 import PersonIcon from "@material-ui/icons/Person"
 import TimelapseIcon from "@material-ui/icons/Timelapse"
 import AppBar from "@material-ui/core/AppBar"
+import Box from "@material-ui/core/Box"
 import {
   caseManagementQueueData,
   legalServicesQueueData,
@@ -41,25 +42,33 @@ const useStyles = makeStyles(theme => ({
 const QueueTabContent = React.forwardRef(({ onClick, queueData }, _ref) => {
   const classes = useStyles()
   return (
-    <Button onClick={onClick} className={classes.queueTab}>
-      <div>
-        <Typography className={classes.heading}>{queueData.name}</Typography>
-        <div className={classes.queueTabContent}>
-          <div className={classes.queueTabStat}>
-            <PersonIcon className={classes.queueTabIcon} />
-            <Typography className={classes.queueTabStatValue}>
-              {queueData.length}
-            </Typography>
-          </div>
-          <div className={classes.queueTabStat}>
-            <TimelapseIcon className={classes.queueTabIcon} />
-            <Typography className={classes.queueTabStatValue}>
-              {queueData.waitTime}
-            </Typography>
+    <Box
+      display="flex"
+      justifyContent="center"
+      border={1}
+      component="span"
+      m={1}
+    >
+      <Button onClick={onClick} className={classes.queueTab}>
+        <div>
+          <Typography className={classes.heading}>{queueData.name}</Typography>
+          <div className={classes.queueTabContent}>
+            <div className={classes.queueTabStat}>
+              <PersonIcon className={classes.queueTabIcon} />
+              <Typography className={classes.queueTabStatValue}>
+                {queueData.length}
+              </Typography>
+            </div>
+            <div className={classes.queueTabStat}>
+              <TimelapseIcon className={classes.queueTabIcon} />
+              <Typography className={classes.queueTabStatValue}>
+                {queueData.waitTime}
+              </Typography>
+            </div>
           </div>
         </div>
-      </div>
-    </Button>
+      </Button>
+    </Box>
   )
 })
 
@@ -101,6 +110,7 @@ function AllQueues() {
           textColor="primary"
           aria-label="scrollable force tabs example"
         >
+          <QueueTab className={classes.queueTab} queueData={stepQueueData} />
           <QueueTab
             className={classes.queueTab}
             queueData={caseManagementQueueData}
@@ -109,12 +119,11 @@ function AllQueues() {
             className={classes.queueTab}
             queueData={legalServicesQueueData}
           />
-          <QueueTab className={classes.queueTab} queueData={stepQueueData} />
         </Tabs>
       </AppBar>
-      {value === 0 && <QueueTable queueData={caseManagementQueueData} />}
-      {value === 1 && <QueueTable queueData={legalServicesQueueData} />}
-      {value === 2 && <QueueTable queueData={stepQueueData} />}
+      {value === 0 && <QueueTable queueData={stepQueueData} />}
+      {value === 1 && <QueueTable queueData={caseManagementQueueData} />}
+      {value === 2 && <QueueTable queueData={legalServicesQueueData} />}
     </div>
   )
 }
