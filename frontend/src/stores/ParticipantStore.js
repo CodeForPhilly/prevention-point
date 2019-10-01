@@ -9,9 +9,9 @@ export class ParticipantStore {
 
   //participants = observable([])
   @observable participants = []
-  @observable userId = null
-  @observable firstName = null
-  @observable lastName = null
+  @observable userId = ""
+  @observable firstName = ""
+  @observable lastName = ""
 
   @action setParticipant(participant, index) {
     this.participants[index] = participant
