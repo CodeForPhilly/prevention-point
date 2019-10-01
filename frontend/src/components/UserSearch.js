@@ -35,7 +35,7 @@ const UserSearch = observer(() => {
     }
   }
 
-  if (redirectState) return <Redirect to={{ pathname: "/participant" }} />
+  if (redirectState) return <Redirect to={{ pathname: "/participants" }} />
 
   return (
     <div className="participant-search">
