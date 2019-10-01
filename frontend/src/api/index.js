@@ -4,6 +4,7 @@ import refreshAuthLogic from "./refreshAuthLogic"
 import {
   getParticipantById,
   getParticipantByName,
+  getParticipants,
 } from "./participantEndpoints"
 import { createToken, verifyToken } from "./authEndpoints"
 import { getQueue } from "./queueEndpoints"
@@ -30,6 +31,7 @@ const create = () => {
     getQueue: getQueue(api),
     getParticipantById: getParticipantById(api),
     getParticipantByName: getParticipantByName(api),
+    getParticipants: getParticipants(api),
   }
 }
 
