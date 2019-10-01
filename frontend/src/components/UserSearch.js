@@ -8,12 +8,12 @@ import Input from "@material-ui/core/Input"
 import Button from "@material-ui/core/Button"
 import Typography from "@material-ui/core/Typography"
 import { Redirect } from "react-router-dom"
+import { observer } from "mobx-react-lite"
 
-const UserSearch = () => {
+const UserSearch = observer(() => {
   const rootStore = useContext(rootStoreContext)
-  const [userId, setUserId] = useState("")
-  const [firstName, setFirstName] = useState("")
-  const [lastName, setLastName] = useState("")
+  const participantsStore = rootStore.ParticipantStore
+
   const [errorState, setErrorState] = useState(false)
   const [errorMessage, setErrorMessage] = useState("")
   const [redirectState, setRedirectState] = useState(false)
@@ -23,11 +23,14 @@ const UserSearch = () => {
       e.preventDefault()
     }
     // Validate that a user id or a first name last name paring exist on the form
-    if ("" === userId && "" === firstName && "" === lastName) {
+    if (
+      "" === participantsStore.userId &&
+      "" === participantsStore.firstName &&
+      "" === participantsStore.lastName
+    ) {
       setErrorMessage("Need to enter a user id or a name")
       setErrorState(true)
     } else {
-      rootStore.participantStore.setUserId(userId)
       setRedirectState(true)
     }
   }
@@ -60,8 +63,8 @@ const UserSearch = () => {
               <Input
                 id="user_id"
                 name="user_id"
-                value={userId}
-                onChange={e => setUserId(e.target.value)}
+                value={participantsStore.userId}
+                onChange={e => participantsStore.setUserId(e.target.value)}
                 className={errorState ? "error" : ""}
               />
             </FormControl>
@@ -80,8 +83,8 @@ const UserSearch = () => {
               <Input
                 id="first_name"
                 name="first_name"
-                value={firstName}
-                onChange={e => setFirstName(e.target.value)}
+                value={participantsStore.firstName}
+                onChange={e => participantsStore.setFirstName(e.target.value)}
                 className={errorState ? "error" : ""}
               />
             </FormControl>
@@ -92,8 +95,8 @@ const UserSearch = () => {
               <Input
                 id="last_name"
                 name="last_name"
-                value={lastName}
-                onChange={e => setLastName(e.target.value)}
+                value={participantsStore.lastName}
+                onChange={e => participantsStore.setLastName(e.target.value)}
                 className={errorState ? "error" : ""}
               />
             </FormControl>
@@ -106,6 +109,6 @@ const UserSearch = () => {
       </div>
     </div>
   )
-}
+})
 
 export default UserSearch
