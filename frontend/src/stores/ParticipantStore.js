@@ -8,9 +8,9 @@ export class ParticipantStore {
   }
 
   participants = []
-  userId = null
-  firstName = null
-  lastName = null
+  userId = ""
+  firstName = ""
+  lastName = ""
 
   setParticipants = data => {
     this.participants = data
