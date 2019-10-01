@@ -5,7 +5,6 @@ import Participant from "../components/Participants"
 import { BrowserRouter as Router, Route } from "react-router-dom"
 import PrivateRoute from "../routes/PrivateRoute"
 import ServicesQueues from "./ServicesQueues"
-import PerDrawer from "../components/PerDrawer"
 
 const Routes = () => {
   return (
@@ -13,7 +12,6 @@ const Routes = () => {
       <Navbar />
       <PrivateRoute exact path="/participant" component={Participant} />
       <PrivateRoute exact path="/" component={ServicesQueues} />
-      <PrivateRoute exact path="/perdrawer" component={PerDrawer} />
       <Route path="/login" component={LoginForm} />
     </Router>
   )
