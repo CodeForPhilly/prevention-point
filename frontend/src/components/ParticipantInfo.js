@@ -21,6 +21,7 @@ import { observer } from "mobx-react-lite"
 import Card from "@material-ui/core/Card"
 import CardContent from "@material-ui/core/CardContent"
 import Modal from "@material-ui/core/Modal"
+// import { toJS } from "mobx"
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -118,8 +119,16 @@ const ParticipantInfo = observer(() => {
 
   function handleSubmit(event) {
     event.preventDefault()
-    // Todo we need to change this so that it works with the api endpoint to post with ppId and not id
-    participantStore.createParticipant(participantStore.participant)
+    // console.log(toJS(participantStore.participant))
+    if ("" === participantStore.participant.id) {
+      participantStore.createParticipant(participantStore.participant)
+    } else {
+      participantStore.updateParticipant(participantStore.participant)
+    }
+    // Want to ask "Does this participant already have a database ID"
+    // need if statement on which function to call. Need to look at the participant that's in the store
+    // Is there an ID already?
+    // If so, update.. if not, create new
   }
 
   const handleFNameChange = () => event => {

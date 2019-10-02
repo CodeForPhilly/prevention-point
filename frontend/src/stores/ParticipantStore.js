@@ -23,6 +23,7 @@ export class ParticipantStore {
   })
 
   participant = toJS({
+    id: "",
     date_of_birth: "",
     first_name: "",
     gender: "",
@@ -40,7 +41,7 @@ export class ParticipantStore {
   })
 
   setParticipant = data => {
-    this.participant = data
+    this.participant = toJS(data)
   }
 
   getParticipant = flow(function*(id) {
@@ -52,8 +53,8 @@ export class ParticipantStore {
     }
   })
 
-  updateParticipant = flow(function*(id, data) {
-    const { ok } = yield api.updateParticipant(id, data)
+  updateParticipant = flow(function*(data) {
+    const { ok } = yield api.updateParticipant(data.id, data)
     if (ok) {
       this.setParticipant(data)
     } else {
@@ -61,8 +62,8 @@ export class ParticipantStore {
     }
   })
 
-  createParticipant = flow(function*(data) {
-    const { ok } = yield api.createParticipant(data)
+  createParticipant = flow(function*(participant) {
+    const { ok, data } = yield api.createParticipant(participant)
     if (ok) {
       this.setParticipant(data)
     } else {
