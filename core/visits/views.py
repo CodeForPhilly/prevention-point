@@ -31,7 +31,8 @@ class VisitViewSet(ModelViewSet):
         request_data = {
             "participant": req.data['participant'],
             "program_service_map": program_service_map.pk,
-            "notes": req.data['notes']
+            "notes": req.data['notes'],
+            "urgency": req.data["urgency"]
         }
         # create visit using the un-populated serializer 
         visit_data = VisitSerializer(data=request_data)
