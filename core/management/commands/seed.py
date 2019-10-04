@@ -11,7 +11,7 @@ from django.contrib.auth.models import Group, User
 from faker import Faker
 from faker.providers import BaseProvider
 
-from core.models import UrineDrugScreen, Medication, Participant, Gender, Race, Program, Service, Visit
+from core.models import UrineDrugScreen, Medication, Participant, Gender, Race, Program, Service, Visit, ProgramServiceMap
 from core.permissions import CASE_MANAGER, FRONT_DESK, ADMIN
 from core.models.front_desk_event import FrontDeskEventType, FrontDeskEvent
 
@@ -186,10 +186,13 @@ def create_programs(output=True):
       for service in services:
           s = Service()
           s.name = service
-          s.program = p
           s.available = random_bool()
           s.full_clean()
           s.save()
+          psm = ProgramServiceMap()
+          psm.service = s
+          psm.program = p 
+          psm.save()
 
           if output:
               print("Created {}: '{}'". format(p.name, s.name))
@@ -197,14 +200,15 @@ def create_programs(output=True):
 def create_visits(output=True):
     '''Create fake visits and front desk events, depending on Participants and Programs. Visits are created using now(), i.e. today'''
     participants = Participant.objects.all()
-    programs = Program.objects.all()
+    p_s_maps = ProgramServiceMap.objects.all()
 
     for _ in range(DEFAULT_NUMBER_VISITS):
         v = Visit()
         v.participant = random.choice(participants)
         #v.created_at = pytz.utc.localize(fake.date_time())
         v.created_at = timezone.now()
-        v.program = random.choice(programs)
+        v.program_service_map = random.choice(p_s_maps)
+        v.urgency =random.choice(range(1,6))
         v.notes = fake.sentence(nb_words=10, variable_nb_words=True, ext_word_list=None)
         v.full_clean()
         v.save()

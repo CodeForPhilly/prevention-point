@@ -28,6 +28,7 @@ from core.programs import views as programs_views
 from core.services import views as services_views
 from core.queue import views as queues_views
 from core.program_availability import views as program_availability_views
+from core.program_service_map import views as program_service_map_views
 
 
 admin.site.site_header = 'Prevention Point Philadelphia'
@@ -41,6 +42,7 @@ router.register(r'participants', participant_views.ParticipantViewSet)
 router.register(r'visits', visits_views.VisitViewSet)
 router.register(r'front-desk-events', front_events_views.FrontDeskEventViewSet)
 router.register(r'programs', programs_views.ProgramViewSet)
+router.register(r'program-service-map', program_service_map_views.ProgramServiceMapView)
 router.register(r'services', services_views.ServiceViewSet)
 
 

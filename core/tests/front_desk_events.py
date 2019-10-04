@@ -6,7 +6,7 @@ from core.models import FrontDeskEvent, FrontDeskEventType
 
 
 class FrontDeskEventTests(BaseTestCase):
-    fixtures = ['participants.yaml', 'visits.yaml', 'groups.yaml', 'programs.yaml', 'users.yaml']
+    fixtures = ['participants.yaml', 'groups.yaml','services.yaml', 'programs.yaml','program_service_map.yaml','visits.yaml', 'users.yaml']
 
     def test_create_front_desk_event(self):
         """
