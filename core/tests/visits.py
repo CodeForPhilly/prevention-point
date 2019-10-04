@@ -20,7 +20,7 @@ class VisitTests(BaseTestCase):
         """
         headers = self.auth_headers_for_user('front_desk')
         url = reverse('visit-list')
-        data = {'participant': 1, 'program': 1, 'service': 1, 'notes': "hello prevention point"}
+        data = {'participant': 1, 'program': 1, 'service': 1, 'notes': "hello prevention point", 'urgency': 2}
         response = self.client.post(url, data, format='json',follow=True, **headers)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -38,7 +38,7 @@ class VisitTests(BaseTestCase):
 
         # create 3 visits for each participant
         for participant in range(1, 4):
-            data = {'participant': participant, 'program': 1, 'service': 2, 'notes': "hello prevention point"}
+            data = {'participant': participant, 'program': 1, 'service': 2, 'notes': "hello prevention point", 'urgency': 2}
             post_response = self.client.post(url, data , format='json', **headers)
             self.assertEqual(post_response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Visit.objects.count(), 3)
