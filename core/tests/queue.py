@@ -25,7 +25,7 @@ class QueueTests(BaseTestCase):
     def test_participant_removed_from_queue(self):
         """
         Ensure queue gets updated
-        """      
+        """
         headers = self.auth_headers_for_user('case_manager')
         headers['format'] = 'json'
 
@@ -37,7 +37,7 @@ class QueueTests(BaseTestCase):
         url = reverse('frontdeskevent-list')
         data = {'visit': visit_id, 'event_type': FrontDeskEventType.SEEN.name}
         self.client.post(url, data, **headers)
-        
+
         updated_response = self.client.get('/api/programs/1/queue/', **headers)
         updated_queue_length = len(json.loads(updated_response.content))
         self.assertEqual(updated_response.status_code, status.HTTP_200_OK)
@@ -45,4 +45,19 @@ class QueueTests(BaseTestCase):
         for visit in json.loads(updated_response.content):
             self.assertNotEqual(visit['id'], visit_id)
 
-        self.assertEqual(queue_length, (updated_queue_length + 1))    
+        self.assertEqual(queue_length, (updated_queue_length + 1))
+
+
+class EmptyQueueTests(BaseTestCase):
+    fixtures = ["participants.yaml", "groups.yaml", "programs.yaml", "users.yaml"]
+
+    def test_get_empty_queue(self):
+        """
+        Ensure we can get an empty queue
+        """
+        headers = self.auth_headers_for_user("case_manager")
+        headers["format"] = "json"
+
+        response = self.client.get(f"/api/programs/1/queue/", **headers)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(json.loads(response.content), [])
