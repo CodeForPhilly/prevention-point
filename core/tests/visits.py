@@ -44,7 +44,7 @@ class VisitTests(BaseTestCase):
 
         data = {"notes": new_note}
         update_response = self.client.patch(
-            "/api/visits/{}/".format(visit_id), data, format="json", **headers
+            f"/api/visits/{visit_id}/", data, format="json", **headers
         )
 
         self.assertEqual(update_response.status_code, status.HTTP_200_OK)
