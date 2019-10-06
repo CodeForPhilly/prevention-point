@@ -7,10 +7,12 @@ from core.participants.serializers import ParticipantSerializer
 class VisitSerializer(serializers.ModelSerializer):
     class Meta:
         model = Visit
-        fields = ('id', 'participant', 'program', 'created_at')
+        fields = ("id", "participant", "program", "notes", "created_at")
+
 
 class VisitForQueueSerializer(serializers.ModelSerializer):
     participant = ParticipantSerializer(read_only=True)
+
     class Meta:
         model = Visit
-        fields = ('id', 'participant', 'program', 'created_at')
+        fields = ("id", "participant", "program", "notes", "created_at")

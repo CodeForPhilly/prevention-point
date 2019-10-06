@@ -8,6 +8,3 @@ class Visit(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     program = models.ForeignKey(Program, on_delete=models.CASCADE)
     notes = models.TextField("Visit Notes", null= True, blank=True)
-
-
-
