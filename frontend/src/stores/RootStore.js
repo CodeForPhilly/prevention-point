@@ -2,10 +2,12 @@ import { createContext } from "react"
 import { AuthStore } from "./AuthStore"
 import { ParticipantStore } from "./ParticipantStore"
 import { QueueStore } from "./QueueStore"
+import { SidebarStore } from "./SidebarStore"
 
 export class RootStore {
   // If creating a new store dont forget to add it here.
   authStore = new AuthStore(this)
+  SidebarStore = new SidebarStore(this)
   ParticipantStore = new ParticipantStore(this)
   QueueStore = new QueueStore(this)
 }

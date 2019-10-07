@@ -5,11 +5,13 @@ import Navbar from "../components/Navbar"
 import LoginForm from "../components/LoginForm"
 import ServicesQueues from "./ServicesQueues"
 import ParticipantsResults from "./ParticipantsResults"
+import Sidebar from "../components/Sidebar"
 
 const Routes = () => {
   return (
     <Router>
       <Navbar />
+      <Sidebar />
       <Route path="/login" component={LoginForm} />
       <PrivateRoute exact path="/" component={ServicesQueues} />
       <PrivateRoute
