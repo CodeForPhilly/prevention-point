@@ -31,9 +31,9 @@ function NotesDialog({ visibleDialog, toggleVisibleDialog }) {
           Enter a note about this participant.
         </DialogContentText>
         <TextField
-          id="name"
+          id="notes"
           type="text"
-          placeholder="Enter a note about this program, participant"
+          placeholder="Enter a note about this participant"
           margin="dense"
           autoFocus
           fullWidth
@@ -42,8 +42,10 @@ function NotesDialog({ visibleDialog, toggleVisibleDialog }) {
           value={participantNotes}
         />
         <DialogActions>
-          <Button onClick={toggleVisibleDialog}>Cancel</Button>
-          <Button onClick={handleSubmit} color="primary">
+          <Button id="cancel" onClick={toggleVisibleDialog}>
+            Cancel
+          </Button>
+          <Button id="submit" onClick={handleSubmit} color="primary">
             Submit
           </Button>
         </DialogActions>
