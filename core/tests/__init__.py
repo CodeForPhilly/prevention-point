@@ -6,3 +6,5 @@ from core.tests.groups import *
 from core.tests.services import *
 from core.tests.programs import *
 from core.tests.queue import *
+from core.tests.program_availability  import *
+from core.tests.program_service_map import *
