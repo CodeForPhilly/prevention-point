@@ -16,6 +16,8 @@ import RadioGroup from "@material-ui/core/RadioGroup"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
 import FormLabel from "@material-ui/core/FormLabel"
 import Button from "@material-ui/core/Button"
+import { observer } from "mobx-react-lite"
+// import { toJS } from "mobx"
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -68,7 +70,9 @@ const useStyles = makeStyles(theme => ({
 
 const ParticipantInfo = () => {
   const [open, setOpen] = React.useState(false)
-  const [hideCard, setHideCard] = React.useState(true)
+
+  const rootStore = useContext(rootStoreContext)
+  const participantStore = rootStore.ParticipantStore
 
   function handleClose() {
     setOpen(false)
@@ -76,10 +80,6 @@ const ParticipantInfo = () => {
 
   function handleOpen() {
     setOpen(true)
-  }
-
-  function openCard() {
-    setHideCard(false)
   }
 
   function handleSubmit(event) {
@@ -141,40 +141,6 @@ const ParticipantInfo = () => {
       style={{ marginTop: 50, marginBottom: 50 }}
       className="participant-info-component"
     >
-      {/* className={this.props.shouldHide ? 'hidden' : '' */}
-      <Card
-        onClick={handleOpenModal}
-        className={
-          hideCard
-            ? classes.hidden + " " + classes.card
-            : "show " + classes.card
-        }
-      >
-        <CardContent>
-          <Typography className={classes.title} gutterBottom>
-            <strong>Date: </strong> {participantStore.participant.start_date}
-            <br />
-            <strong>Program: </strong> {participantStore.participant.program}
-          </Typography>
-          <Typography variant="h5" component="h2" />
-          <Typography variant="body2" component="p">
-            <strong>Note: </strong>
-            {participantStore.participant.note}
-            <br />
-          </Typography>
-        </CardContent>
-      </Card>
-      <Modal
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-        open={openModal}
-        onClose={handleCloseModal}
-      >
-        <div style={modalStyle} className={classes.paper}>
-          <h2 id="simple-modal-title">Text in a modal</h2>
-          {participantStore.participant.note}
-        </div>
-      </Modal>
       <Container maxWidth="sm">
         <Typography
           style={{ textAlign: "left" }}
@@ -262,6 +228,7 @@ const ParticipantInfo = () => {
                         open={open.race}
                         onClose={handleClose.race}
                         onOpen={handleOpen.race}
+                        required
                         value={participantStore.participant.race}
                         onChange={handleRaceChange()}
                         inputProps={{
@@ -280,9 +247,6 @@ const ParticipantInfo = () => {
                         <MenuItem value={"native american"}>
                           Native American
                         </MenuItem>
-                        {/* <MenuItem value={"Two or More Races"}>
-                          Two or More Races
-                        </MenuItem> */}
                         <MenuItem value={"white (caucasian)"}>
                           White or Caucasian
                         </MenuItem>
@@ -300,6 +264,7 @@ const ParticipantInfo = () => {
                         open={open.gender}
                         onClose={handleClose.gender}
                         onOpen={handleOpen.gender}
+                        required
                         value={participantStore.participant.gender}
                         onChange={handleGenderChange()}
                         inputProps={{
@@ -410,6 +375,7 @@ const ParticipantInfo = () => {
                       open={open.program}
                       onClose={handleClose.program}
                       onOpen={handleOpen.program}
+                      required
                       value={participantStore.participant.program}
                       onChange={handleProgramChange()}
                       inputProps={{
@@ -432,6 +398,7 @@ const ParticipantInfo = () => {
                       open={open.service}
                       onClose={handleClose.service}
                       onOpen={handleOpen.service}
+                      required
                       value={participantStore.participant.service}
                       onChange={handleServiceChange()}
                       inputProps={{
@@ -497,7 +464,6 @@ const ParticipantInfo = () => {
             size="large"
             color="primary"
             className={classes.margin}
-            onClick={openCard}
             type="submit"
           >
             Add to Queue
