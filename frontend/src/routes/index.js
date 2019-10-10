@@ -18,7 +18,7 @@ const Routes = () => {
         path="/participants"
         component={ParticipantsResults}
       />
-      <ParticipantInformation exact path="/info" />
+      <PrivateRoute exact path="/info" component={ParticipantInformation} />
     </Router>
   )
 }

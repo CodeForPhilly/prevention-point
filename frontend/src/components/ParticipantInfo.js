@@ -18,9 +18,6 @@ import FormControlLabel from "@material-ui/core/FormControlLabel"
 import FormLabel from "@material-ui/core/FormLabel"
 import Button from "@material-ui/core/Button"
 import { observer } from "mobx-react-lite"
-import Card from "@material-ui/core/Card"
-import CardContent from "@material-ui/core/CardContent"
-import Modal from "@material-ui/core/Modal"
 // import { toJS } from "mobx"
 
 const useStyles = makeStyles(theme => ({
@@ -74,36 +71,9 @@ const useStyles = makeStyles(theme => ({
 
 const ParticipantInfo = observer(() => {
   const [open, setOpen] = React.useState(false)
-  const [hideCard, setHideCard] = React.useState(true)
 
   const rootStore = useContext(rootStoreContext)
   const participantStore = rootStore.ParticipantStore
-
-  const [openModal, setOpenModal] = React.useState(false)
-  function rand() {
-    return Math.round(Math.random() * 20) - 10
-  }
-
-  function getModalStyle() {
-    const top = 50 + rand()
-    const left = 50 + rand()
-
-    return {
-      top: `${top}%`,
-      left: `${left}%`,
-      transform: `translate(-${top}%, -${left}%)`,
-    }
-  }
-
-  const [modalStyle] = React.useState(getModalStyle)
-
-  const handleOpenModal = () => {
-    setOpenModal(true)
-  }
-
-  const handleCloseModal = () => {
-    setOpenModal(false)
-  }
 
   function handleClose() {
     setOpen(false)
@@ -111,10 +81,6 @@ const ParticipantInfo = observer(() => {
 
   function handleOpen() {
     setOpen(true)
-  }
-
-  function openCard() {
-    setHideCard(false)
   }
 
   function handleSubmit(event) {
@@ -185,40 +151,6 @@ const ParticipantInfo = observer(() => {
       style={{ marginTop: 50, marginBottom: 50 }}
       className="participant-info-component"
     >
-      {/* className={this.props.shouldHide ? 'hidden' : '' */}
-      <Card
-        onClick={handleOpenModal}
-        className={
-          hideCard
-            ? classes.hidden + " " + classes.card
-            : "show " + classes.card
-        }
-      >
-        <CardContent>
-          <Typography className={classes.title} gutterBottom>
-            <strong>Date: </strong> {participantStore.participant.start_date}
-            <br />
-            <strong>Program: </strong> {participantStore.participant.program}
-          </Typography>
-          <Typography variant="h5" component="h2" />
-          <Typography variant="body2" component="p">
-            <strong>Note: </strong>
-            {participantStore.participant.note}
-            <br />
-          </Typography>
-        </CardContent>
-      </Card>
-      <Modal
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-        open={openModal}
-        onClose={handleCloseModal}
-      >
-        <div style={modalStyle} className={classes.paper}>
-          <h2 id="simple-modal-title">Text in a modal</h2>
-          {participantStore.participant.note}
-        </div>
-      </Modal>
       <Container maxWidth="sm">
         <Typography
           style={{ textAlign: "left" }}
@@ -308,6 +240,7 @@ const ParticipantInfo = observer(() => {
                         open={open.race}
                         onClose={handleClose.race}
                         onOpen={handleOpen.race}
+                        required
                         value={participantStore.participant.race}
                         onChange={handleRaceChange()}
                         inputProps={{
@@ -326,9 +259,6 @@ const ParticipantInfo = observer(() => {
                         <MenuItem value={"native american"}>
                           Native American
                         </MenuItem>
-                        {/* <MenuItem value={"Two or More Races"}>
-                          Two or More Races
-                        </MenuItem> */}
                         <MenuItem value={"white (caucasian)"}>
                           White or Caucasian
                         </MenuItem>
@@ -346,6 +276,7 @@ const ParticipantInfo = observer(() => {
                         open={open.gender}
                         onClose={handleClose.gender}
                         onOpen={handleOpen.gender}
+                        required
                         value={participantStore.participant.gender}
                         onChange={handleGenderChange()}
                         inputProps={{
@@ -456,6 +387,7 @@ const ParticipantInfo = observer(() => {
                       open={open.program}
                       onClose={handleClose.program}
                       onOpen={handleOpen.program}
+                      required
                       value={participantStore.participant.program}
                       onChange={handleProgramChange()}
                       inputProps={{
@@ -478,6 +410,7 @@ const ParticipantInfo = observer(() => {
                       open={open.service}
                       onClose={handleClose.service}
                       onOpen={handleOpen.service}
+                      required
                       value={participantStore.participant.service}
                       onChange={handleServiceChange()}
                       inputProps={{
@@ -543,7 +476,6 @@ const ParticipantInfo = observer(() => {
             size="large"
             color="primary"
             className={classes.margin}
-            onClick={openCard}
             type="submit"
           >
             Add to Queue

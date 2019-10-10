@@ -10,7 +10,7 @@ export const getParticipant = api => async id =>
   await api.get(`/participants/${id}`)
 
 export const updateParticipant = api => async (id, body) =>
-  await api.post(`/participants/${id}/`, body)
+  await api.put(`/participants/${id}/`, body)
 
 export const createParticipant = api => async body =>
   await api.post("/participants/", body)
