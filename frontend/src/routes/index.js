@@ -11,7 +11,13 @@ const Routes = () => {
     <Router>
       <Navbar />
       <Route path="/login" component={LoginForm} />
-      <Route path="/main" component={ParticipantInfo} />
+      <PrivateRoute exact path="/" component={ServicesQueues} />
+      <PrivateRoute
+        exact
+        path="/participants"
+        component={ParticipantsResults}
+      />
+      <PrivateRoute exact path="/info" component={ParticipantInformation} />
     </Router>
   )
 }
