@@ -7,6 +7,7 @@ admin.site.register(UrineDrugScreen)
 admin.site.register(CaseManagement)
 admin.site.register(Appointment)
 admin.site.register(BehavioralHealthNotes)
+admin.site.register(Visit)
 
 class BaseInline(admin.StackedInline):
     extra = 0
