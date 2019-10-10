@@ -1,4 +1,7 @@
 import React from "react"
+import Navbar from "../components/Navbar"
+import LoginForm from "../components/LoginForm"
+import ParticipantInformation from "../components/ParticipantInfo"
 import { BrowserRouter as Router, Route } from "react-router-dom"
 import PrivateRoute from "../routes/PrivateRoute"
 import Navbar from "../components/Navbar"
