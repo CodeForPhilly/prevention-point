@@ -1,4 +1,5 @@
-import React from "react"
+import React, { useContext } from "react"
+import { rootStoreContext } from "../stores/RootStore"
 import "../scss/participant-search.scss"
 import FormGroup from "@material-ui/core/FormGroup"
 import FormControl from "@material-ui/core/FormControl"
@@ -68,7 +69,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const ParticipantInfo = () => {
+const ParticipantInfo = observer(() => {
   const [open, setOpen] = React.useState(false)
 
   const rootStore = useContext(rootStoreContext)
@@ -84,55 +85,64 @@ const ParticipantInfo = () => {
 
   function handleSubmit(event) {
     event.preventDefault()
-
-    const data = new FormData(event.target)
-
-    fetch("/api/participants/", {
-      method: "POST",
-      body: data,
-    })
+    // console.log(toJS(participantStore.participant))
+    if ("" === participantStore.participant.id) {
+      participantStore.createParticipant(participantStore.participant)
+    } else {
+      participantStore.updateParticipant(participantStore.participant)
+    }
+    // Want to ask "Does this participant already have a database ID"
+    // need if statement on which function to call. Need to look at the participant that's in the store
+    // Is there an ID already?
+    // If so, update.. if not, create new
   }
 
-  // function handleSubmit(event) {
-  //   event.preventDefault()
-  //   // Todo we need to change this so that it works with the api endpoint to post with ppId and not id
-  //   participantStore.postParticipant(
-  //     participantStore.participant.uuId,
-  //     participantStore.participant
-  //   )
-  // }
+  const handleFNameChange = () => event => {
+    participantStore.participant.first_name = event.target.value
+  }
 
-  // const [values, setValues] = React.useState({
-  //   date_of_birth: "",
-  //   first_name: "",
-  //   gender: "",
-  //   last_four_ssn: "1234",
-  //   last_name: "",
-  //   pp_id: "",
-  //   race: "",
-  //   start_date: "2019-09-25",
-  //   has_insurance: "",
-  //   insurance_type: "",
-  //   program: "",
-  //   service: "",
-  //   note: "",
-  // })
+  const handleLNameChange = () => event => {
+    participantStore.participant.last_name = event.target.value
+  }
 
-  const handleChange = name => event => {
-    setValues({ ...values, [name]: event.target.value })
-    // console.log("...values: " + JSON.stringify(values))
-    // console.log("event.target.value: " + event.target.value)
-    // console.log(
-    //   "Participant's name: " + values.firstName + " " + values.lastName
-    // )
-    // console.log("Birthdate: " + values.birthDate)
-    // console.log("Race: " + values.race)
-    // console.log("Gender: " + values.gender)
-    // console.log("Has insurance?: " + values.hasInsurance)
-    // console.log("Insurance type: " + values.insuranceType)
-    // console.log("Program: " + values.program)
-    // console.log("Service: " + values.service)
-    // console.log("Participant note: " + values.note)
+  const handleDOBChange = () => event => {
+    participantStore.participant.date_of_birth = event.target.value
+  }
+
+  const handleUUIDChange = () => event => {
+    participantStore.participant.pp_id = event.target.value
+  }
+
+  const handleRaceChange = () => event => {
+    participantStore.participant.race = event.target.value
+  }
+
+  const handleGenderChange = () => event => {
+    participantStore.participant.gender = event.target.value
+  }
+
+  const handleHasInsuranceChange = () => event => {
+    participantStore.participant.has_insurance = event.target.value
+  }
+
+  const handleInsuranceTypeChange = () => event => {
+    participantStore.participant.insurance_type = event.target.value
+  }
+
+  const handleProgramChange = () => event => {
+    participantStore.participant.program = event.target.value
+  }
+
+  const handleServiceChange = () => event => {
+    participantStore.participant.service = event.target.value
+  }
+
+  const handlePriorityLevelChange = () => event => {
+    participantStore.participant.priority_level = event.target.value
+  }
+
+  const handleNoteChange = () => event => {
+    participantStore.participant.note = event.target.value
   }
 
   const classes = useStyles()
@@ -161,8 +171,10 @@ const ParticipantInfo = () => {
                     <Input
                       id="user_first-name"
                       name="user_first-name"
-                      value={values.firstName}
-                      onChange={handleChange("firstName")}
+                      // value={values.firstName}
+                      value={participantStore.participant.first_name}
+                      // onChange={handleChange("firstName")}
+                      onChange={handleFNameChange()}
                       required
                     />
                   </FormControl>
@@ -173,8 +185,8 @@ const ParticipantInfo = () => {
                     <Input
                       id="user_last-name"
                       name="user_last-name"
-                      value={values.lastName}
-                      onChange={handleChange("lastName")}
+                      value={participantStore.participant.last_name}
+                      onChange={handleLNameChange()}
                       required
                     />
                   </FormControl>
@@ -189,8 +201,8 @@ const ParticipantInfo = () => {
                     <TextField
                       id="user_birth-date"
                       name="user_birth-date"
-                      value={values.birthDate}
-                      onChange={handleChange("birthDate")}
+                      value={participantStore.participant.date_of_birth}
+                      onChange={handleDOBChange()}
                       required
                       style={{ marginTop: 40 }}
                       type="date"
@@ -207,8 +219,8 @@ const ParticipantInfo = () => {
                     <Input
                       id="uuid"
                       name="uuid"
-                      value={values.uuId}
-                      onChange={handleChange("uuId")}
+                      value={participantStore.participant.pp_id}
+                      onChange={handleUUIDChange()}
                       required
                     />
                   </FormControl>
@@ -472,6 +484,6 @@ const ParticipantInfo = () => {
       </Container>
     </div>
   )
-}
+})
 
 export default ParticipantInfo
