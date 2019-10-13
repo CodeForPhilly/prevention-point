@@ -1,8 +1,8 @@
 from django.db import models
-from .participant import Participant
+from core.models import Visit
 
 class UrineDrugScreen(models.Model):
-    participant = models.ForeignKey(Participant, on_delete=models.CASCADE)
+    visit = models.ForeignKey(Visit, on_delete=models.CASCADE)
     date_of_test = models.DateField()
     uds_temp = models.CharField(max_length=100, verbose_name="Urine Temperature")
     # TODO: does this belong here? if so, is it a Bool for if a PT was taken, or Bool for if pregnant?
