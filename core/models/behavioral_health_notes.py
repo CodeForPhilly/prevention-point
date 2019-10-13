@@ -1,7 +1,7 @@
 from django.db import models
-from core.models import Participant
+from core.models import Visit
 
 class BehavioralHealthNotes(models.Model):
-    participant = models.ForeignKey(Participant, on_delete=models.CASCADE)
+    visit = models.ForeignKey(Visit, on_delete=models.CASCADE)
     note_timestamp = models.DateTimeField()
     behavior_note = models.TextField()
