@@ -106,6 +106,10 @@ const QueueTable = observer(queueData => {
             render: ({ id }) => <NotesButton id={id} />,
           },
         ]}
+        //turn table search on/off with true/false
+        options={{
+          search: false,
+        }}
       />
     </Paper>
   )
