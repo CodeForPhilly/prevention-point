@@ -55,8 +55,8 @@ function NotesDialog({ visibleDialog, toggleVisibleDialog }) {
 }
 
 NotesDialog.propTypes = {
-  visibleDialog: PropTypes.boolean,
-  toggleVisibleDialog: PropTypes.function,
+  visibleDialog: PropTypes.bool,
+  toggleVisibleDialog: PropTypes.func,
 }
 
 export default NotesDialog
