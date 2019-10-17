@@ -1,4 +1,4 @@
-import { observable, action, flow, toJS } from "mobx"
+import { observable, action, flow, toJS, decorate } from "mobx"
 import { createContext } from "react"
 import api from "../api"
 
@@ -7,36 +7,18 @@ export class ParticipantStore {
     this.rootStore = rootStore
   }
 
-  //participants = observable([])
-  @observable participants = []
-  @observable userId = ""
-  @observable firstName = ""
-  @observable lastName = ""
+  participants = []
 
-  @action setParticipant(participant, index) {
-    this.participants[index] = participant
-  }
-  @action setUserId(userId) {
-    this.userId = userId
-  }
-  @action setFirstName(firstName) {
-    this.firstName = firstName
-  }
-  @action setLastName(lastName) {
-    this.lastName = lastName
+  setParticipants = data => {
+    this.participants = data
   }
 
   getParticipants = flow(function*() {
-    try {
-      const results = yield api.getParticipants()
-      if (results) {
-        results.data.forEach((datum, index) => {
-          this.setParticipant(datum, index)
-        })
-      }
-    } catch (error) {
+    const { ok, data } = yield api.getParticipants()
+    if (ok) {
+      this.setParticipants(data)
+    } else {
       // TODO: Handle errors
-      //console.log(error)
     }
   })
 
@@ -58,5 +40,10 @@ export class ParticipantStore {
   }
 }
 
-//const participantStore = (window.participantStore = new ParticipantStore())
+decorate(ParticipantStore, {
+  participants: observable,
+  setParticipants: action,
+})
+
+//let participantStore = (window.participantStore = new ParticipantStore())
 export const ParticipantStoreContext = createContext(new ParticipantStore())
