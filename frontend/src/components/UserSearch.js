@@ -12,7 +12,7 @@ import { observer } from "mobx-react-lite"
 
 const UserSearch = observer(() => {
   const rootStore = useContext(rootStoreContext)
-  const participantsStore = rootStore.participantStore
+  const participantsStore = rootStore.ParticipantStore
 
   const [errorState, setErrorState] = useState(false)
   const [errorMessage, setErrorMessage] = useState("")

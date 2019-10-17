@@ -7,10 +7,24 @@ export class ParticipantStore {
     this.rootStore = rootStore
   }
 
+  participant = {
+    userId: null,
+    firstName: "",
+    lastName: "",
+  }
   participants = []
 
   setParticipants = data => {
     this.participants = data
+  }
+  setUserId = data => {
+    this.participant.userId = data
+  }
+  setFirstName = data => {
+    this.participant.firstName = data
+  }
+  setLastName = data => {
+    this.participant.lastName = data
   }
 
   getParticipants = flow(function*() {
@@ -42,7 +56,11 @@ export class ParticipantStore {
 
 decorate(ParticipantStore, {
   participants: observable,
+  participant: observable,
   setParticipants: action,
+  setUserId: action,
+  setFirstName: action,
+  setLastName: action,
 })
 
 //let participantStore = (window.participantStore = new ParticipantStore())
