@@ -9,13 +9,6 @@ import TimelapseIcon from "@material-ui/icons/Timelapse"
 import { QueueStoreContext } from "../stores/QueueStore"
 import AppBar from "@material-ui/core/AppBar"
 
-//import { toJS } from "mobx"
-//import {
-//  caseManagementQueueData,
-//  legalServicesQueueData,
-//  stepQueueData,
-//} from "../../fixtures/MockQueueData"
-
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -42,8 +35,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-//There is no observer on this function--throws error if included--but should there be one?
-//const QueueTabContent = observer(({ onClick, queueData }) => {
+//Forward ref used with MUI BaseButton. Does not allow observer.
 const QueueTabContent = React.forwardRef(({ onClick, queueData }, _ref) => {
   const queueStore = useContext(QueueStoreContext)
   const classes = useStyles()
