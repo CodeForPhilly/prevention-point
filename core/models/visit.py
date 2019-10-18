@@ -6,6 +6,7 @@ from enum import Enum
 
 
 class UrgencyLevel(Enum):
+<<<<<<< HEAD
     ONE = 1
     TWO = 2
     THREE = 3
@@ -22,3 +23,20 @@ class Visit(models.Model):
     )
     notes = models.TextField("Visit Notes", null=True, blank=True)
     urgency = models.CharField(max_length=20, default=1)
+=======
+   ONE = 1
+   TWO = 2
+   THREE = 3
+   FOUR = 4
+   FIVE = 5
+
+class Visit(models.Model):
+   URGENCY_LEVEL = [(key.name, key.value) for key in UrgencyLevel]
+   participant = models.ForeignKey(Participant, on_delete=models.CASCADE)
+   created_at = models.DateTimeField(default=timezone.now)
+   program_service_map = models.ForeignKey( ProgramServiceMap, on_delete=models.CASCADE)
+   notes = models.TextField("Visit Notes", null= True, blank=True)
+   urgency = models.CharField(choices=URGENCY_LEVEL, max_length=20)
+
+
+>>>>>>> deleted all migrations to avoid needing default values
