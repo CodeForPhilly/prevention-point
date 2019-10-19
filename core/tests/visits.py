@@ -37,28 +37,17 @@ class VisitTests(BaseTestCase):
         self.assertEqual(json.loads(response.content)["participant"]["id"], 1)
         self.assertEqual(json.loads(response.content)["program"]["id"], 1)
 
-        # create a visit
-        data = {"participant": 1, "program": 1}
-        create_response = self.client.post(
-            "/api/visits/", data, format="json", **headers
-        )
-        self.assertEqual(create_response.status_code, status.HTTP_201_CREATED)
-
     def test_update_visit_notes(self):
         """
         Ensure we can update notes on a visit
         """
+        # create a visit
         headers = self.auth_headers_for_user("front_desk")
-        data = {
-            "participant": 1,
-            "program": 1,
-            "service": 1,
-            "notes": "hello prevention point",
-            "urgency": 2,
-        }
+        data = {"participant": 1, "program": 1, "service": 1, "urgency": 1}
         create_response = self.client.post(
-            reverse("visit-list"), data, format="json", follow=True, **headers
+            "/api/visits/", data, format="json", **headers
         )
+        self.assertEqual(create_response.status_code, status.HTTP_201_CREATED)
 
         headers = self.auth_headers_for_user("case_manager")
         new_note = "I forgot to add notes the first time!"

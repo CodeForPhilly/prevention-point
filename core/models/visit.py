@@ -14,7 +14,7 @@ class UrgencyLevel(Enum):
 
 
 class Visit(models.Model):
-    urgency_level = [(key.name, key.value) for key in UrgencyLevel]
+    URGENCY_LEVEL = [(key.name, key.value) for key in UrgencyLevel]
     participant = models.ForeignKey(Participant, on_delete=models.CASCADE)
     created_at = models.DateTimeField(default=timezone.now)
     program_service_map = models.ForeignKey(
