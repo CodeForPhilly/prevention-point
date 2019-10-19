@@ -1,7 +1,7 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from core.models import Visit, FrontDeskEvent, FrontDeskEventType
-from core.visits.serializer import VisitForQueueSerializer
+from core.visits.serializer import VisitWithPopulationSerializer
 from core.front_desk_events.serializer import FrontDeskEventForQueueSerializer
 from core.permissions import FRONT_DESK, CASE_MANAGER, ADMIN, HasGroupPermission
 from rest_framework.permissions import IsAuthenticated
@@ -10,26 +10,29 @@ import datetime
 
 class QueueViewSet(viewsets.ViewSet):
     """
-    API endpoint that displays the queue
-    uses regular ViewSet to be able to display adjacent model responses in one view,
-    hence the permission classes being repeated here instead of using viewsets.py prototypw
-    """
+  API endpoint that displays the queue
+  uses regular ViewSet to be able to display adjacent model responses in one view,
+  hence the permission classes being repeated here instead of using viewsets.py prototype
+  """
 
     permission_classes = [HasGroupPermission, IsAuthenticated]
     permission_groups = {"retrieve": [FRONT_DESK, CASE_MANAGER, ADMIN]}
 
     def retrieve(self, request, program_id=None):
         """
-        retrieve most recent front desk event for each
-        visit that is happening today, filtered by program
-        """
+      retrieve most recent front desk event for each
+      visit that is happening today, filtered by program
+      """
 
         # filter by visits that are happening today in a certain program
         visits_queryset = Visit.objects.filter(
-            program_id=program_id, created_at__date=datetime.date.today()
+            program_service_map__program_id=program_id,
+            created_at__date=datetime.date.today(),
         )
 
-        todays_visit_data = VisitForQueueSerializer(visits_queryset, many=True).data
+        todays_visit_data = VisitWithPopulationSerializer(
+            visits_queryset, many=True
+        ).data
         active_visits_queue = []
 
         # for each visit, get the most recent front desk event, to glean current visit status

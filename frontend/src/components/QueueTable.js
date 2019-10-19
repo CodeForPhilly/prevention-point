@@ -7,6 +7,7 @@ import CheckIcon from "@material-ui/icons/Check"
 import IconButton from "@material-ui/core/IconButton"
 import MaterialTable from "material-table"
 import QueueTableDropdown from "./QueueTableDropdown"
+import NotesDialog from "./NotesDialog"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -20,6 +21,12 @@ const useStyles = makeStyles(theme => ({
 }))
 
 function QueueTable({ queueData: { name, rows } }) {
+  const [visibleDialog, setVisibleDialog] = React.useState(false)
+
+  const toggleVisibleDialog = () => {
+    setVisibleDialog(!visibleDialog)
+  }
+
   const classes = useStyles()
   const statusOptions = [
     { value: "checkedIn", name: "Checked In" },
@@ -33,9 +40,10 @@ function QueueTable({ queueData: { name, rows } }) {
     { value: 4, name: 4 },
     { value: 5, name: 5 },
   ]
+
   const NotesButton = () => {
     return (
-      <IconButton>
+      <IconButton onClick={toggleVisibleDialog}>
         <EditIcon />
       </IconButton>
     )
@@ -90,6 +98,10 @@ function QueueTable({ queueData: { name, rows } }) {
             render: ({ id }) => <NotesButton id={id} />,
           },
         ]}
+      />
+      <NotesDialog
+        visibleDialog={visibleDialog}
+        toggleVisibleDialog={toggleVisibleDialog}
       />
     </Paper>
   )
