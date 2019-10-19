@@ -27,6 +27,8 @@ from core.front_desk_events import views as front_events_views
 from core.programs import views as programs_views
 from core.services import views as services_views
 from core.queue import views as queues_views
+from core.program_availability import views as program_availability_views
+from core.program_service_map import views as program_service_map_views
 
 
 admin.site.site_header = "Prevention Point Philadelphia"
@@ -39,7 +41,9 @@ router.register(r"uds", uds_views.UrineDrugScreenViewSet)
 router.register(r"participants", participant_views.ParticipantViewSet)
 router.register(r"front-desk-events", front_events_views.FrontDeskEventViewSet)
 router.register(r"programs", programs_views.ProgramViewSet)
+router.register(r"program-service-map", program_service_map_views.ProgramServiceMapView)
 router.register(r"services", services_views.ServiceViewSet)
+
 
 schema_view = get_swagger_view(title="PreventionPoint API")
 
@@ -52,6 +56,16 @@ urlpatterns = [
         "api/token/refresh/", jwt_views.TokenRefreshView.as_view(), name="token_refresh"
     ),
     path("api/token/verify/", jwt_views.TokenVerifyView.as_view(), name="token_verify"),
+    path(
+        "api/programs/<int:program_id>/program-availability/",
+        program_availability_views.ProgramAvailabilityViewSet.as_view({"get": "list"}),
+    ),
+    path(
+        "api/programs/<int:program_id>/program-availability/<int:pk>/",
+        program_availability_views.ProgramAvailabilityViewSet.as_view(
+            {"put": "update"}
+        ),
+    ),
     path(
         "api/programs/<int:program_id>/queue/",
         queues_views.QueueViewSet.as_view({"get": "retrieve"}),

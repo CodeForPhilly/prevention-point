@@ -6,7 +6,12 @@ from core.tests.base import BaseTestCase
 
 
 class VisitTests(BaseTestCase):
-    fixtures = ["participants.yaml", "programs.yaml"]
+    fixtures = [
+        "participants.yaml",
+        "programs.yaml",
+        "services.yaml",
+        "program_service_map.yaml",
+    ]
 
     def setUp(self):
         super().setUp()
@@ -18,20 +23,19 @@ class VisitTests(BaseTestCase):
         """
         headers = self.auth_headers_for_user("front_desk")
         url = reverse("visit-list")
-        data = {"participant": 1, "program": 1}
+        data = {
+            "participant": 1,
+            "program": 1,
+            "service": 1,
+            "notes": "hello prevention point",
+            "urgency": 2,
+        }
         response = self.client.post(url, data, format="json", follow=True, **headers)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Visit.objects.count(), 1)
-        self.assertEqual(json.loads(response.content)["participant"], 1)
-        self.assertEqual(json.loads(response.content)["program"], 1)
-
-    def test_update_visit_notes(self):
-        """
-        Ensure we can update notes on a visit
-        """
-        headers = self.auth_headers_for_user("case_manager")
-        new_note = "I forgot to add notes the first time!"
+        self.assertEqual(json.loads(response.content)["participant"]["id"], 1)
+        self.assertEqual(json.loads(response.content)["program"]["id"], 1)
 
         # create a visit
         data = {"participant": 1, "program": 1}
@@ -39,6 +43,25 @@ class VisitTests(BaseTestCase):
             "/api/visits/", data, format="json", **headers
         )
         self.assertEqual(create_response.status_code, status.HTTP_201_CREATED)
+
+    def test_update_visit_notes(self):
+        """
+        Ensure we can update notes on a visit
+        """
+        headers = self.auth_headers_for_user("front_desk")
+        data = {
+            "participant": 1,
+            "program": 1,
+            "service": 1,
+            "notes": "hello prevention point",
+            "urgency": 2,
+        }
+        create_response = self.client.post(
+            reverse("visit-list"), data, format="json", follow=True, **headers
+        )
+
+        headers = self.auth_headers_for_user("case_manager")
+        new_note = "I forgot to add notes the first time!"
 
         visit_id = json.loads(create_response.content)["id"]
 
@@ -60,7 +83,13 @@ class VisitTests(BaseTestCase):
 
         # create 3 visits for each participant
         for participant in range(1, 4):
-            data = {"participant": participant, "program": 1}
+            data = {
+                "participant": participant,
+                "program": 1,
+                "service": 2,
+                "notes": "hello prevention point",
+                "urgency": 2,
+            }
             post_response = self.client.post(url, data, format="json", **headers)
             self.assertEqual(post_response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Visit.objects.count(), 3)

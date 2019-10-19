@@ -1,36 +1,215 @@
 - model: core.service
   pk: 1
   fields:
-    name: UDS
-    program: 1
-    available: false
+    name: RAPID
+    available: true
 - model: core.service
   pk: 2
   fields:
-    name: case management
-    program: 1
+    name: CONFIRM
     available: true
 - model: core.service
   pk: 3
   fields:
-    name: medical
-    program: 1
-    available: false
+    name: NEED RESULTS
+    available: true
 - model: core.service
   pk: 4
   fields:
-    name: document review
-    program: 2
+    name: C-CHANGE
     available: false
 - model: core.service
   pk: 5
   fields:
-    name: law education
-    program: 2
+    name: SNS
     available: false
 - model: core.service
   pk: 6
   fields:
-    name: needle exchange
-    program: 3
+    name: BENEFITS
+    available: true
+- model: core.service
+  pk: 7
+  fields:
+    name: MENTAL HEALTH
+    available: true
+- model: core.service
+  pk: 8
+  fields:
+    name: HOUSING
+    available: true
+- model: core.service
+  pk: 9
+  fields:
+    name: D&A
+    available: false
+- model: core.service
+  pk: 10
+  fields:
+    name: APPT
+    available: false
+- model: core.service
+  pk: 11
+  fields:
+    name: WOUND CARE
+    available: false
+- model: core.service
+  pk: 12
+  fields:
+    name: MEDICAL FORM
+    available: false
+- model: core.service
+  pk: 13
+  fields:
+    name: PHYSICAL
+    available: false
+- model: core.service
+  pk: 14
+  fields:
+    name: FOLLOW UP
+    available: false
+- model: core.service
+  pk: 15
+  fields:
+    name: OTHER:ENTER IN NOTES
+    available: true
+- model: core.service
+  pk: 16
+  fields:
+    name: BIRTH CERT
+    available: true
+- model: core.service
+  pk: 17
+  fields:
+    name: CONSULT
+    available: false
+- model: core.service
+  pk: 18
+  fields:
+    name: APPT
+    available: true
+- model: core.service
+  pk: 19
+  fields:
+    name: PUBLIC DEF
+    available: true
+- model: core.service
+  pk: 20
+  fields:
+    name: DETOX
+    available: true
+- model: core.service
+  pk: 21
+  fields:
+    name: INPATIENT
+    available: true
+- model: core.service
+  pk: 22
+  fields:
+    name: IOP
+    available: false
+- model: core.service
+  pk: 23
+  fields:
+    name: SUBOXONE
+    available: false
+- model: core.service
+  pk: 24
+  fields:
+    name: METHADONE
+    available: true
+- model: core.service
+  pk: 25
+  fields:
+    name: BENEFITS
+    available: true
+- model: core.service
+  pk: 26
+  fields:
+    name: FOLLOW UP
+    available: false
+- model: core.service
+  pk: 27
+  fields:
+    name: APPT
+    available: true
+- model: core.service
+  pk: 28
+  fields:
+    name: FOUND THEM!
+    available: true
+- model: core.service
+  pk: 29
+  fields:
+    name: 'OTHER: ENTER IN NOTES'
+    available: true
+- model: core.service
+  pk: 30
+  fields:
+    name: 'APPT: DR BARCLAY'
+    available: false
+- model: core.service
+  pk: 31
+  fields:
+    name: 'APPT: DR SERGE'
+    available: false
+- model: core.service
+  pk: 32
+  fields:
+    name: 'APPT: MOBILE MAT'
+    available: false
+- model: core.service
+  pk: 33
+  fields:
+    name: PATIENT/ NO APPT
+    available: true
+- model: core.service
+  pk: 34
+  fields:
+    name: MEDICATION
+    available: false
+- model: core.service
+  pk: 35
+  fields:
+    name: APPT DR. BAMFORD
+    available: false
+- model: core.service
+  pk: 36
+  fields:
+    name: LABWORK
+    available: true
+- model: core.service
+  pk: 37
+  fields:
+    name: FIBROSCAN
+    available: false
+- model: core.service
+  pk: 38
+  fields:
+    name: MCM
+    available: false
+- model: core.service
+  pk: 39
+  fields:
+    name: FOUND THEM!
+    available: false
+- model: core.service
+  pk: 40
+  fields:
+    name: DR. MORALES
+    available: true
+- model: core.service
+  pk: 41
+  fields:
+    name: NEW PATIENT
+    available: false
+- model: core.service
+  pk: 42
+  fields:
+    name: SICK VISIT
+    available: false
+- model: core.service
+  pk: 43
+  fields:
+    name: OTHER
     available: false
