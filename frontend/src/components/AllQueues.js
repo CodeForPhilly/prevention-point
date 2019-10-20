@@ -39,6 +39,8 @@ const useStyles = makeStyles(theme => ({
 const QueueTabContent = React.forwardRef(({ onClick, queueData }, _ref) => {
   const queueStore = useContext(QueueStoreContext)
   const classes = useStyles()
+  //Inserting here
+  //const theme = useTheme()
   return (
     <Button onClick={onClick} className={classes.queueTab}>
       <div>
@@ -86,6 +88,8 @@ function QueueTab(props) {
 const AllQueues = observer(() => {
   const queueStore = useContext(QueueStoreContext)
   const classes = useStyles()
+  //Inserting here
+  //const theme = useTheme()
   const [value, setValue] = React.useState(0)
   function handleChange(event, newValue) {
     setValue(newValue)
