@@ -85,7 +85,8 @@ function QueueTab(props) {
 
 const AllQueues = observer(() => {
   const queueStore = useContext(QueueStoreContext)
-  for (let i = 1; i < 10; i++) queueStore.updateQueue(i)
+  const queueSize = Object.keys(queueStore.queueIds).length
+  for (let i = 1; i < queueSize; i++) queueStore.updateQueue(i)
 
   const classes = useStyles()
   const [value, setValue] = React.useState(0)
