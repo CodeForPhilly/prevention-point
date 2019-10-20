@@ -112,7 +112,6 @@ export class QueueStore {
 }
 
 const queueStore = new QueueStore()
-for (let i = 1; i < 10; i++) queueStore.updateQueue(i)
+//for (let i = 1; i < 10; i++) queueStore.updateQueue(i)
 
 export const QueueStoreContext = createContext(queueStore)
-//export const queueStore = new QueueStore()
