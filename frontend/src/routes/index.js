@@ -1,23 +1,24 @@
 import React from "react"
-import { BrowserRouter as Router, Route } from "react-router-dom"
-import PrivateRoute from "../routes/PrivateRoute"
+import { BrowserRouter, Route, Switch } from "react-router-dom"
+// import PrivateRoute from "../routes/PrivateRoute"
 import Navbar from "../components/Navbar"
 import LoginForm from "../components/LoginForm"
-import ServicesQueues from "./ServicesQueues"
-import ParticipantsResults from "./ParticipantsResults"
+import MainLayout from "../layouts/MainLayout"
+import ParticipantsList from "../components/ParticipantsList"
+import AllQueues from "../components/AllQueues"
 
 const Routes = () => {
   return (
-    <Router>
+    <BrowserRouter>
       <Navbar />
       <Route path="/login" component={LoginForm} />
-      <PrivateRoute exact path="/" component={ServicesQueues} />
-      <PrivateRoute
-        exact
-        path="/participants"
-        component={ParticipantsResults}
-      />
-    </Router>
+      <MainLayout>
+        <Switch>
+          <Route exact path="/" component={AllQueues} />
+          <Route exact path="/participants" component={ParticipantsList} />
+        </Switch>
+      </MainLayout>
+    </BrowserRouter>
   )
 }
 

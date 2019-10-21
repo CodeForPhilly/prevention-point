@@ -12,7 +12,7 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
 import ChevronRightIcon from "@material-ui/icons/ChevronRight"
 import Navbar from "../components/Navbar"
 import UserSearch from "../components/UserSearch"
-import AllQueues from "../components/AllQueues"
+import PropTypes from "prop-types"
 
 const drawerWidth = 300
 
@@ -73,7 +73,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default function PersistentDrawerLeft() {
+const PersistentDrawerLeft = props => {
   const classes = useStyles()
   const theme = useTheme()
   const [open, setOpen] = React.useState(false)
@@ -134,8 +134,14 @@ export default function PersistentDrawerLeft() {
           [classes.contentShift]: open,
         })}
       >
-        <AllQueues />
+        {props.children}
       </main>
     </div>
   )
 }
+
+PersistentDrawerLeft.propTypes = {
+  children: PropTypes.element.isRequired,
+}
+
+export default PersistentDrawerLeft

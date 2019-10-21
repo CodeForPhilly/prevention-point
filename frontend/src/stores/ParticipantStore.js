@@ -26,6 +26,9 @@ export class ParticipantStore {
   setLastName = data => {
     this.participant.lastName = data
   }
+  getParticipant = () => {
+    return toJS(this.participant)
+  }
 
   getParticipants = flow(function*() {
     const { ok, data } = yield api.getParticipants()
@@ -61,6 +64,7 @@ decorate(ParticipantStore, {
   setUserId: action,
   setFirstName: action,
   setLastName: action,
+  getParticipant: action,
 })
 
 //let participantStore = (window.participantStore = new ParticipantStore())
