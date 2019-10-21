@@ -39,6 +39,26 @@ export class ParticipantStore {
     }
   })
 
+  getParticipantById = flow(function*(id) {
+    const { ok, data } = yield api.getParticipantById(id)
+    if (ok) {
+      // console.log(data)
+      this.setParticipant(data)
+    } else {
+      // TODO: Handle errors
+    }
+  })
+
+  getParticipantByName = flow(function*({ firstName, lastName }) {
+    const { ok, data } = yield api.getParticipantById(firstName, lastName)
+    if (ok) {
+      // console.log(data)
+      this.setParticipant(data)
+    } else {
+      // TODO: Handle errors
+    }
+  })
+
   filter(id, first, last) {
     //Filter on ID first, then name. Return a Participant or null
     const arr = toJS(this.participants)
@@ -61,6 +81,7 @@ decorate(ParticipantStore, {
   participants: observable,
   participant: observable,
   setParticipants: action,
+  setParticipant: action,
   setUserId: action,
   setFirstName: action,
   setLastName: action,
