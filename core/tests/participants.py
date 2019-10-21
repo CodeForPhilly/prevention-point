@@ -1,12 +1,16 @@
 from django.contrib.auth.models import Group, User
 from core.tests.base import BaseTestCase
 from core.models import Participant
-
+from core.models.insurer import Insurer
 
 class ParticipantsTestCase(BaseTestCase):
     def setUp(self):
         super().setUp()
         self.seed_fake_users()
+        self.insurer = Insurer.objects.create(
+            name="InsureCo",
+            is_active=True,
+        )
         self.participant = Participant.objects.create(
             first_name="Foo",
             last_name="Bar",
@@ -15,7 +19,9 @@ class ParticipantsTestCase(BaseTestCase):
             race="other",
             last_four_ssn="1234",
             date_of_birth="1949-08-23",
-            start_date="2019-01-01"
+            start_date="2019-01-01",
+            is_insured=True,
+            insurer=self.insurer, 
         )
 
     def test_participants_api_when_authed_as_front_desk(self):
