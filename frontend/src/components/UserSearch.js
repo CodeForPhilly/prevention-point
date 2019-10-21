@@ -25,9 +25,9 @@ const UserSearch = observer(() => {
     }
     // Validate that a user id or a first name last name paring exist on the form
     if (
-      "" === participantsStore.userId &&
-      "" === participantsStore.firstName &&
-      "" === participantsStore.lastName
+      "" === participantsStore.participant.userId &&
+      "" === participantsStore.participant.firstName &&
+      "" === participantsStore.participant.lastName
     ) {
       setErrorMessage("Need to enter a user id or a name")
       setErrorState(true)

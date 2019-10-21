@@ -21,6 +21,8 @@ const ParticipantsList = observer(() => {
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true)
+      // console.log(participantsStore.getParticipant())
+
       await participantsStore.getParticipants()
       setIsLoading(false)
     }

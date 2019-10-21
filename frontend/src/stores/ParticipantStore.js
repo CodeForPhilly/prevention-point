@@ -8,7 +8,7 @@ export class ParticipantStore {
   }
 
   participant = {
-    userId: null,
+    userId: "",
     firstName: "",
     lastName: "",
   }
