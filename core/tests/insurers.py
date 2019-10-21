@@ -27,7 +27,7 @@ class InsurersTestCase(BaseTestCase):
 
     def test_insurers_api_when_authed_as_front_desk(self):
         headers = self.auth_headers_for_user('front_desk')
-        response = self.client.get('/api/insurerss', follow=True, **headers)
+        response = self.client.get('/api/insurers', follow=True, **headers)
 
         self.assertEqual(200, response.status_code)
 
