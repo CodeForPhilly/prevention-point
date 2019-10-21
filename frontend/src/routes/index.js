@@ -1,6 +1,6 @@
 import React from "react"
 import { BrowserRouter, Route, Switch } from "react-router-dom"
-// import PrivateRoute from "../routes/PrivateRoute"
+import PrivateRoute from "../routes/PrivateRoute"
 import Navbar from "../components/Navbar"
 import LoginForm from "../components/LoginForm"
 import MainLayout from "../layouts/MainLayout"
@@ -14,8 +14,12 @@ const Routes = () => {
       <Route path="/login" component={LoginForm} />
       <MainLayout>
         <Switch>
-          <Route exact path="/" component={AllQueues} />
-          <Route exact path="/participants" component={ParticipantsList} />
+          <PrivateRoute exact path="/" component={AllQueues} />
+          <PrivateRoute
+            exact
+            path="/participants"
+            component={ParticipantsList}
+          />
         </Switch>
       </MainLayout>
     </BrowserRouter>
