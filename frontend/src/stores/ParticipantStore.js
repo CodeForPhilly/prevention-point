@@ -12,38 +12,60 @@ export class ParticipantStore {
     firstName: "",
     lastName: "",
   }
+
   participants = []
 
-  setParticipants = data => {
-    this.participants = data
-  }
-  setUserId = data => {
+  storeUserId = data => {
     this.participant.userId = data
   }
-  setFirstName = data => {
+  storeFirstName = data => {
     this.participant.firstName = data
   }
-  setLastName = data => {
+  storeLastName = data => {
     this.participant.lastName = data
   }
-  getParticipant = () => {
+
+  storeParticipant = data => {
+    this.participant = data
+  }
+  storeParticipantList = data => {
+    this.participants = data
+  }
+
+  getStoredParticipant = () => {
     return toJS(this.participant)
+  }
+  getStoredParticipantList = () => {
+    return toJS(this.participants)
   }
 
   getParticipants = flow(function*() {
     const { ok, data } = yield api.getParticipants()
     if (ok) {
-      this.setParticipants(data)
+      this.storeParticipantList(data)
     } else {
       // TODO: Handle errors
     }
   })
 
+  searchForParticipant = () => {
+    // console.log("search for participant:")
+    let participant = toJS(this.participant)
+    // console.log(participant)
+    if (participant.userId) {
+      this.getParticipantById(participant.userId)
+    } else {
+      this.getParticipantByName(participant.firstName, participant.lastName)
+    }
+  }
+
   getParticipantById = flow(function*(id) {
     const { ok, data } = yield api.getParticipantById(id)
     if (ok) {
+      // console.log("get participant by id response:")
       // console.log(data)
-      this.setParticipant(data)
+      // Regardless of how many participants are returned, we store them in a list
+      this.storeParticipantList(data)
     } else {
       // TODO: Handle errors
     }
@@ -53,7 +75,7 @@ export class ParticipantStore {
     const { ok, data } = yield api.getParticipantById(firstName, lastName)
     if (ok) {
       // console.log(data)
-      this.setParticipant(data)
+      this.storeParticipantList(data)
     } else {
       // TODO: Handle errors
     }
@@ -80,13 +102,15 @@ export class ParticipantStore {
 decorate(ParticipantStore, {
   participants: observable,
   participant: observable,
-  setParticipants: action,
-  setParticipant: action,
-  setUserId: action,
-  setFirstName: action,
-  setLastName: action,
-  getParticipant: action,
+  storeUserId: action,
+  storeFirstName: action,
+  storeLastName: action,
+  storeParticipant: action,
+  storeParticipantList: action,
+  getStoredParticipant: action,
+  getStoredParticipantList: action,
+  searchForParticipant: action,
 })
 
-//let participantStore = (window.participantStore = new ParticipantStore())
+// let participantStore = (window.participantStore = new ParticipantStore())
 export const ParticipantStoreContext = createContext(new ParticipantStore())

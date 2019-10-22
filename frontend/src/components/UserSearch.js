@@ -62,8 +62,8 @@ const UserSearch = observer(() => {
               <Input
                 id="user_id"
                 name="user_id"
-                value={participantsStore.userId}
-                onChange={e => participantsStore.setUserId(e.target.value)}
+                value={participantsStore.participant.userId}
+                onChange={e => participantsStore.storeUserId(e.target.value)}
                 className={errorState ? "error" : ""}
               />
             </FormControl>
@@ -82,8 +82,8 @@ const UserSearch = observer(() => {
               <Input
                 id="first_name"
                 name="first_name"
-                value={participantsStore.firstName}
-                onChange={e => participantsStore.setFirstName(e.target.value)}
+                value={participantsStore.participant.firstName}
+                onChange={e => participantsStore.storeFirstName(e.target.value)}
                 className={errorState ? "error" : ""}
               />
             </FormControl>
@@ -94,8 +94,8 @@ const UserSearch = observer(() => {
               <Input
                 id="last_name"
                 name="last_name"
-                value={participantsStore.lastName}
-                onChange={e => participantsStore.setLastName(e.target.value)}
+                value={participantsStore.participant.lastName}
+                onChange={e => participantsStore.storeLastName(e.target.value)}
                 className={errorState ? "error" : ""}
               />
             </FormControl>
