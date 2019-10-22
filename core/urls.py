@@ -29,6 +29,7 @@ from core.services import views as services_views
 from core.queue import views as queues_views
 from core.program_availability import views as program_availability_views
 from core.program_service_map import views as program_service_map_views
+from core.insurers import views as insurer_views
 
 
 admin.site.site_header = "Prevention Point Philadelphia"
@@ -43,6 +44,7 @@ router.register(r"front-desk-events", front_events_views.FrontDeskEventViewSet)
 router.register(r"programs", programs_views.ProgramViewSet)
 router.register(r"program-service-map", program_service_map_views.ProgramServiceMapView)
 router.register(r"services", services_views.ServiceViewSet)
+router.register(r"insurers", insurer_views.InsurerViewSet)
 
 
 schema_view = get_swagger_view(title="PreventionPoint API")
