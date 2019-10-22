@@ -26,7 +26,7 @@ const PrivateRoute = observer(({ component: Component, ...rest }) => {
 })
 
 PrivateRoute.propTypes = {
-  component: PropTypes.func,
+  component: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
 }
 
 export default PrivateRoute

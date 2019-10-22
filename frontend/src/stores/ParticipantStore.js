@@ -1,49 +1,60 @@
-import { observable, action, flow, toJS } from "mobx"
-import participantApi from "../api/participantApi"
+import { observable, action, flow, toJS, decorate } from "mobx"
+import { createContext } from "react"
+import api from "../api"
 
-class ParticipantStore {
+export class ParticipantStore {
   constructor(rootStore) {
     this.rootStore = rootStore
   }
 
-  //participants = observable([])
-  @observable participants = []
+  // Store Params
+  participants = []
+  params = {}
 
-  @action setParticipant(participant, index) {
-    this.participants[index] = participant
+  // Setters
+  setParticipantsList = data => {
+    this.participants = data
+  }
+  setUserIdParam = data => {
+    this.params.pp_id = data
+  }
+  setFirstNameParam = data => {
+    this.params.first_name = data
+  }
+  setLastNameParam = data => {
+    this.params.last_name = data
   }
 
+  // Getters
+  getParticipantsList = () => {
+    return toJS(this.participants)
+  }
+  getParams = () => {
+    return toJS(this.params)
+  }
+
+  // API Calls
   getParticipants = flow(function*() {
-    try {
-      const results = yield participantApi.getParticipants()
-      if (results) {
-        results.data.forEach((datum, index) => {
-          this.setParticipant(datum, index)
-        })
-      }
-    } catch (error) {
+    const { ok, data } = yield api.getParticipants(toJS(this.params))
+    if (ok) {
+      this.setParticipantsList(data)
+    } else {
       // TODO: Handle errors
-      //console.log(error)
     }
   })
-
-  filter(id, first, last) {
-    //Filter on ID first, then name. Return a Participant or null
-    const arr = toJS(this.participants)
-    if (typeof id !== "undefined" && id !== null) {
-      return arr.filter(x => x.pp_id === id)
-    } else if (
-      typeof first !== "undefined" &&
-      first !== null &&
-      typeof last !== "undefined" &&
-      last !== null
-    ) {
-      return arr.filter(x => x.first_name === first && x.last_name === last)
-    } else {
-      return null
-    }
-  }
 }
 
-let participantStore = (window.participantStore = new ParticipantStore())
-export default participantStore
+decorate(ParticipantStore, {
+  participants: observable,
+  params: observable,
+  setUserIdParam: action,
+  setFirstNameParam: action,
+  setLastNameParam: action,
+  setParticipantsList: action,
+  getParticipantsList: action,
+  getParams: action,
+  getParticipants: action,
+})
+
+// let participantStore = (window.participantStore = new ParticipantStore())
+export const ParticipantStoreContext = createContext(new ParticipantStore())

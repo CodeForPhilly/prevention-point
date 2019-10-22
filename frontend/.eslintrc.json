@@ -29,7 +29,7 @@
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
-  "plugins": ["react", "prettier", "jest"],
+  "plugins": ["react", "prettier", "jest", "react-hooks"],
   "rules": {
     "indent": ["error", 2],
     "linebreak-style": ["error", "unix"],
@@ -42,6 +42,8 @@
         "properties": "never",
         "ignoreDestructuring": true
       }
-    ]
+    ],
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
   }
 }
