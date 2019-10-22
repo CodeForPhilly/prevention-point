@@ -25,7 +25,7 @@ class ServicesTests(BaseTestCase):
         response = self.client.get( '/api/services/', follow=True, **headers)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(Service.objects.count(), 6)
+        self.assertEqual(Service.objects.count(), 43)
 
     def test_update_availability(self):
         """

@@ -64,7 +64,7 @@ const QueueTable = observer(queueData => {
           uid: x.participant.pp_id,
           timeElapsed: moment(x.status.created_at).format("LT"),
           status: x.status.event_type,
-          service: "Dummy",
+          service: x.service.name,
           seen: false,
           Notes: false,
         }))}
@@ -106,6 +106,10 @@ const QueueTable = observer(queueData => {
             render: ({ id }) => <NotesButton id={id} />,
           },
         ]}
+        //turn table search on/off with true/false
+        options={{
+          search: false,
+        }}
       />
     </Paper>
   )
