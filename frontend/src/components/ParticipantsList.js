@@ -10,7 +10,7 @@ import TableHead from "@material-ui/core/TableHead"
 import TableRow from "@material-ui/core/TableRow"
 import Fab from "@material-ui/core/Fab"
 import AddIcon from "@material-ui/icons/Add"
-import { observer } from "mobx-react-lite"
+import { toJS, observer } from "mobx-react-lite"
 
 const ParticipantsList = observer(() => {
   const rootStore = useContext(rootStoreContext)
@@ -22,8 +22,9 @@ const ParticipantsList = observer(() => {
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true)
-      await participantsStore.searchForParticipant()
-      let storedList = participantsStore.getStoredParticipantList()
+      await participantsStore.getParticipants()
+      let storedList = toJS(participantsStore.participants)
+      // console.log(storedList)
       if (storedList === undefined || storedList.length == 0) {
         setIsEmpty(true)
       }
@@ -118,9 +119,6 @@ const ParticipantsList = observer(() => {
           <Fab color="primary" aria-label="add" size="large">
             <AddIcon />
           </Fab>
-          <div>
-            <p>{participantsStore.filter("T9FN3", null, null).first_name}</p>
-          </div>
         </div>
       )}
     </Fragment>

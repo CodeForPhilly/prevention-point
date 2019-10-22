@@ -24,11 +24,7 @@ const UserSearch = observer(() => {
       e.preventDefault()
     }
     // Validate that a user id or a first name last name paring exist on the form
-    if (
-      "" === participantsStore.participant.userId &&
-      "" === participantsStore.participant.firstName &&
-      "" === participantsStore.participant.lastName
-    ) {
+    if (!participantsStore.params) {
       setErrorMessage("Need to enter a user id or a name")
       setErrorState(true)
     } else {
@@ -62,8 +58,8 @@ const UserSearch = observer(() => {
               <Input
                 id="user_id"
                 name="user_id"
-                value={participantsStore.participant.userId}
-                onChange={e => participantsStore.storeUserId(e.target.value)}
+                value={participantsStore.params.userId}
+                onChange={e => participantsStore.setUserIdParam(e.target.value)}
                 className={errorState ? "error" : ""}
               />
             </FormControl>
@@ -82,8 +78,10 @@ const UserSearch = observer(() => {
               <Input
                 id="first_name"
                 name="first_name"
-                value={participantsStore.participant.firstName}
-                onChange={e => participantsStore.storeFirstName(e.target.value)}
+                value={participantsStore.params.firstName}
+                onChange={e =>
+                  participantsStore.setFirstNameParam(e.target.value)
+                }
                 className={errorState ? "error" : ""}
               />
             </FormControl>
@@ -94,8 +92,10 @@ const UserSearch = observer(() => {
               <Input
                 id="last_name"
                 name="last_name"
-                value={participantsStore.participant.lastName}
-                onChange={e => participantsStore.storeLastName(e.target.value)}
+                value={participantsStore.params.lastName}
+                onChange={e =>
+                  participantsStore.setLastNameParam(e.target.value)
+                }
                 className={errorState ? "error" : ""}
               />
             </FormControl>

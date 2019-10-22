@@ -7,109 +7,53 @@ export class ParticipantStore {
     this.rootStore = rootStore
   }
 
-  participant = {
-    userId: "",
-    firstName: "",
-    lastName: "",
-  }
-
+  // Store Params
   participants = []
+  params = {}
 
-  storeUserId = data => {
-    this.participant.userId = data
-  }
-  storeFirstName = data => {
-    this.participant.firstName = data
-  }
-  storeLastName = data => {
-    this.participant.lastName = data
-  }
-
-  storeParticipant = data => {
-    this.participant = data
-  }
-  storeParticipantList = data => {
+  // Setters
+  setParticipantsList = data => {
     this.participants = data
   }
-
-  getStoredParticipant = () => {
-    return toJS(this.participant)
+  setUserIdParam = data => {
+    this.params.pp_id = data
   }
-  getStoredParticipantList = () => {
+  setFirstNameParam = data => {
+    this.params.first_name = data
+  }
+  setLastNameParam = data => {
+    this.params.last_name = data
+  }
+
+  // Getters
+  getParticipantsList = () => {
     return toJS(this.participants)
   }
+  getParams = () => {
+    return toJS(this.params)
+  }
 
+  // API Calls
   getParticipants = flow(function*() {
-    const { ok, data } = yield api.getParticipants()
+    const { ok, data } = yield api.getParticipants(toJS(this.params))
     if (ok) {
-      this.storeParticipantList(data)
+      this.setParticipantsList(data)
     } else {
       // TODO: Handle errors
     }
   })
-
-  searchForParticipant = () => {
-    // console.log("search for participant:")
-    let participant = toJS(this.participant)
-    // console.log(participant)
-    if (participant.userId) {
-      this.getParticipantById(participant.userId)
-    } else {
-      this.getParticipantByName(participant.firstName, participant.lastName)
-    }
-  }
-
-  getParticipantById = flow(function*(id) {
-    const { ok, data } = yield api.getParticipantById(id)
-    if (ok) {
-      // console.log("get participant by id response:")
-      // console.log(data)
-      // Regardless of how many participants are returned, we store them in a list
-      this.storeParticipantList(data)
-    } else {
-      // TODO: Handle errors
-    }
-  })
-
-  getParticipantByName = flow(function*({ firstName, lastName }) {
-    const { ok, data } = yield api.getParticipantById(firstName, lastName)
-    if (ok) {
-      // console.log(data)
-      this.storeParticipantList(data)
-    } else {
-      // TODO: Handle errors
-    }
-  })
-
-  filter(id, first, last) {
-    //Filter on ID first, then name. Return a Participant or null
-    const arr = toJS(this.participants)
-    if (typeof id !== "undefined" && id !== null) {
-      return arr.filter(x => x.pp_id === id)
-    } else if (
-      typeof first !== "undefined" &&
-      first !== null &&
-      typeof last !== "undefined" &&
-      last !== null
-    ) {
-      return arr.filter(x => x.first_name === first && x.last_name === last)
-    } else {
-      return null
-    }
-  }
 }
 
 decorate(ParticipantStore, {
   participants: observable,
-  participant: observable,
-  storeUserId: action,
-  storeFirstName: action,
-  storeLastName: action,
-  storeParticipant: action,
-  storeParticipantList: action,
-  getStoredParticipant: action,
-  getStoredParticipantList: action,
-  searchForParticipant: action,
+  params: observable,
+  setUserIdParam: action,
+  setFirstNameParam: action,
+  setLastNameParam: action,
+  setParticipantsList: action,
+  getParticipantsList: action,
+  getParams: action,
+  getParticipants: action,
 })
 
 // let participantStore = (window.participantStore = new ParticipantStore())
