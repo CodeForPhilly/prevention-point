@@ -64,7 +64,7 @@ const QueueTable = observer(queueData => {
           uid: x.participant.pp_id,
           timeElapsed: moment(x.status.created_at).format("LT"),
           status: x.status.event_type,
-          service: "Service",
+          service: x.service.name,
           seen: false,
           Notes: false,
         }))}
