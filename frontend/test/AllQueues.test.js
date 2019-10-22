@@ -20,6 +20,8 @@ describe("<AllQueues />", () => {
   let buttons
   let bar
   let mount
+  let button1
+  let button2
 
   // Create initial props that get passed into the components, (none in this case)
   const initialProps = {}
@@ -35,6 +37,8 @@ describe("<AllQueues />", () => {
         </ThemeProvider>
       )
       buttons = wrapper.find(Button)
+      button1 = buttons.at(0)
+      button2 = buttons.at(1)
       bar = wrapper.find(AppBar)
     })
 
@@ -52,6 +56,18 @@ describe("<AllQueues />", () => {
     // UI Integrity test
     it("should have 1 AppBar", () => {
       expect(bar.length).toEqual(1)
+    })
+
+    //Integration testing
+    it("should be able to click button1", () => {
+      button1.simulate("click")
+      //expect(wrapper.state("value")).toEqual(1) access for atate in functional components work in progress
+      //https://stackoverflow.com/questions/55325024/query-internal-state-of-component-using-usestate-with-enzyme
+    })
+
+    it("should be able to click button2", () => {
+      button2.simulate("click")
+      //expect(wrapper.state("value")).toEqual(2)
     })
   })
 })
