@@ -14,6 +14,7 @@ from faker.providers import BaseProvider
 from core.models import UrineDrugScreen, Medication, Participant, Gender, Race, Program, Service, Visit, ProgramServiceMap
 from core.permissions import CASE_MANAGER, FRONT_DESK, ADMIN
 from core.models.front_desk_event import FrontDeskEventType, FrontDeskEvent
+from core.models.insurer import Insurer
 
 fake = Faker()
 
@@ -21,6 +22,7 @@ DEFAULT_DEV_ENV_PASS = 'password123'
 DEFAULT_GROUPS = [FRONT_DESK, CASE_MANAGER, ADMIN]
 DEFAULT_NUMBER_PARTICIPANTS = 10
 DEFAULT_NUMBER_VISITS = 100
+DEFAULT_NUMBER_INSURERS = 10
 
 #Cribbed from prevpoint-backend 2 July 2019 Marieke
 DEFAULT_PROGRAMS = {
@@ -67,6 +69,7 @@ def run_seed(self):
     create_groups(output=False)
     create_users(output=False)
     add_users_to_groups(output=False)
+    create_insurers(output=True)
     create_participants()
     create_programs(output=False)
     create_visits(output=False)
@@ -102,10 +105,23 @@ def add_users_to_groups(output=True):
         role_title = Group.objects.get(name=group)
         user.groups.add(role_title)
 
+def create_insurers(output=True):
+    for _ in range(DEFAULT_NUMBER_INSURERS):
+        insurer = Insurer(
+            name=fake.company(),
+            is_active=random_bool(),
+            )
+        insurer.full_clean()
+        insurer.save()
+          
+        if output:
+            print("Created insurer name: {} active: {}".format(insurer.name, insurer.is_active))
+
 def create_participants(uds=True, medication=True):
     '''Create a fake participant, and optionally associated UDS and meds'''
     gender_list = list(Gender)
     race_list = list(Race)
+    insurers = Insurer.objects.all()
 
     for _ in range(DEFAULT_NUMBER_PARTICIPANTS):
         last_four = fake.ssn(taxpayer_identification_number_type="SSN")[-4:]
@@ -122,6 +138,8 @@ def create_participants(uds=True, medication=True):
                 last_four_ssn=last_four,
                 date_of_birth=profile['birthdate'],
                 start_date=fake.date_time(),
+                is_insured=random_bool(),
+                insurer=random.choice(insurers),
             )
         participant.full_clean()
         participant.save()
@@ -208,7 +226,7 @@ def create_visits(output=True):
         #v.created_at = pytz.utc.localize(fake.date_time())
         v.created_at = timezone.now()
         v.program_service_map = random.choice(p_s_maps)
-        v.urgency =random.choice(range(1,6))
+        v.urgency = random.choice(range(1,6))
         v.notes = fake.sentence(nb_words=10, variable_nb_words=True, ext_word_list=None)
         v.full_clean()
         v.save()

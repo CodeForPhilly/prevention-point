@@ -1,4 +1,5 @@
 from django.db import models
+from core.models.insurer import Insurer
 from enum import Enum
 
 class Gender(Enum):
@@ -29,6 +30,8 @@ class Participant(models.Model):
     race = models.CharField(choices=RACE_CHOICES, max_length=24)
     date_of_birth = models.DateField()
     start_date = models.DateField()
+    is_insured = models.BooleanField(default=False)
+    insurer = models.ForeignKey(Insurer, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return '%s %s' % (self.first_name, self.last_name)
