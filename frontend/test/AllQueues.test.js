@@ -5,9 +5,7 @@ import Adapter from "enzyme-adapter-react-16"
 //import { render, fireEvent, cleanup } from "@testing-library/react"
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles"
 import { createMount } from "@material-ui/core/test-utils"
-//import { createMuiTheme } from "@material-ui/core/styles"
 
-import Button from "@material-ui/core/Button"
 import AppBar from "@material-ui/core/AppBar"
 import AllQueues from "../src/components/AllQueues"
 
@@ -20,8 +18,10 @@ describe("<AllQueues />", () => {
   let buttons
   let bar
   let mount
-  let button1
-  let button2
+  let testingButton
+  let cmButton
+  let h6
+  let h6Update
 
   // Create initial props that get passed into the components, (none in this case)
   const initialProps = {}
@@ -36,10 +36,11 @@ describe("<AllQueues />", () => {
           <AllQueues {...initialProps} />
         </ThemeProvider>
       )
-      buttons = wrapper.find(Button)
-      button1 = buttons.at(0)
-      button2 = buttons.at(1)
       bar = wrapper.find(AppBar)
+      buttons = bar.find("button")
+      testingButton = buttons.at(0)
+      cmButton = buttons.at(1)
+      h6 = wrapper.find("h6")
     })
 
     // what to do after each test
@@ -49,25 +50,34 @@ describe("<AllQueues />", () => {
     })
 
     // UI Integrity test
+    it("should have 1 AppBar", () => {
+      expect(bar.length).toEqual(1)
+    })
+
+    // UI Integrity test
     it("should have 9 buttons", () => {
       expect(buttons.length).toEqual(9)
     })
 
     // UI Integrity test
-    it("should have 1 AppBar", () => {
-      expect(bar.length).toEqual(1)
+    it("should have 1 h6", () => {
+      expect(h6.length).toEqual(1)
+      expect(h6.text()).toEqual("TESTING")
     })
 
     //Integration testing
-    it("should be able to click button1", () => {
-      button1.simulate("click")
-      //expect(wrapper.state("value")).toEqual(1) access for atate in functional components work in progress
-      //https://stackoverflow.com/questions/55325024/query-internal-state-of-component-using-usestate-with-enzyme
+    it("should be able to click testingButton", () => {
+      testingButton.simulate("click")
+      expect(testingButton.text()).toEqual("TESTING00")
+      expect(h6.text()).toEqual("TESTING")
     })
 
-    it("should be able to click button2", () => {
-      button2.simulate("click")
-      //expect(wrapper.state("value")).toEqual(2)
+    it("should be able to click cmButton and change title to CM", () => {
+      cmButton.simulate("click")
+      expect(cmButton.text()).toEqual("CM00")
+      //Necessary to update the wrapper to see effect of click
+      h6Update = wrapper.update().find("h6")
+      expect(h6Update.text()).toEqual("CM")
     })
   })
 })
