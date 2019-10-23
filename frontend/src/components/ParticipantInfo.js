@@ -86,7 +86,7 @@ const ParticipantInfo = observer(() => {
   function handleSubmit(event) {
     event.preventDefault()
     // console.log(toJS(participantStore.participant))
-    if ("" === participantStore.participant.id) {
+    if (participantStore.participant.id === "") {
       participantStore.createParticipant(participantStore.participant)
     } else {
       participantStore.updateParticipant(participantStore.participant)
