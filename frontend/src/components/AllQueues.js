@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import PropTypes from "prop-types"
 import { makeStyles } from "@material-ui/styles"
@@ -91,10 +91,12 @@ function QueueTab(props) {
 const AllQueues = observer(() => {
   const queueStore = useContext(QueueStoreContext)
   const queueSize = Object.keys(queueStore.queueIds).length
-  for (let i = 1; i <= queueSize; i++) queueStore.updateQueue(i)
 
+  useEffect(() => {
+    for (let i = 1; i <= queueSize; i++) queueStore.updateQueue(i)
+  })
   const classes = useStyles()
-  const [value, setValue] = React.useState(0)
+  const [value, setValue] = useState(0)
   function handleChange(event, newValue) {
     setValue(newValue)
   }
