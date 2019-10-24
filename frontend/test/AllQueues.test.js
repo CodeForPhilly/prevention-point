@@ -2,7 +2,6 @@
 import React from "react"
 import { configure } from "enzyme"
 import Adapter from "enzyme-adapter-react-16"
-//import { render, fireEvent, cleanup } from "@testing-library/react"
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles"
 import { createMount } from "@material-ui/core/test-utils"
 
