@@ -29,9 +29,9 @@ function QueueTable({ queueData: { name, rows } }) {
 
   const classes = useStyles()
   const statusOptions = [
-    { value: "checkedIn", name: "Checked In" },
-    { value: "absent", name: "Absent" },
-    { value: "returned", name: "Returned" },
+    { value: "waiting", name: "Waiting" },
+    { value: "steppedOut", name: "Stepped Out" },
+    { value: "left", name: "Left" },
   ]
   const urgencyOptions = [
     { value: 1, name: 1 },
