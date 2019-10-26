@@ -3,11 +3,11 @@ import { observer } from "mobx-react-lite"
 import PropTypes from "prop-types"
 import { makeStyles } from "@material-ui/styles"
 import { Tabs, Tab, Typography, Button } from "@material-ui/core"
-import QueueTable from "./QueueTable"
 import PersonIcon from "@material-ui/icons/Person"
 import TimelapseIcon from "@material-ui/icons/Timelapse"
-import { QueueStoreContext } from "../stores/QueueStore"
 import AppBar from "@material-ui/core/AppBar"
+import { QueueStoreContext } from "../stores/QueueStore"
+import QueueTable from "./QueueTable"
 
 const useStyles = makeStyles(theme => ({
   root: {

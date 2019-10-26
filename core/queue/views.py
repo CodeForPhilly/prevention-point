@@ -30,9 +30,6 @@ class QueueViewSet(viewsets.ViewSet):
             created_at__date=datetime.date.today(),
         )
 
-        #todays_visit_data = VisitWithPopulationSerializer(
-        #    visits_queryset, many=True
-        #).data
         todays_visit_data = VisitWithPopulationSerializer(
             visits_queryset, many=True, context={'request': request}
         ).data
@@ -50,11 +47,8 @@ class QueueViewSet(viewsets.ViewSet):
             if front_desk_events_queryset.exists():
 
                 visit_event_data = FrontDeskEventForQueueSerializer(
-                    front_desk_events_queryset, many=True
+                    front_desk_events_queryset, many=True, context={'request': request}
                 ).data
-                #visit_event_data = FrontDeskEventForQueueSerializer(
-                #    front_desk_events_queryset, many=True, context={'request': request}
-                #).data
                 event_type = visit_event_data[0]["event_type"]
 
                 if event_type in (
