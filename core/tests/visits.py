@@ -1,4 +1,4 @@
-import json
+import json, datetime
 from django.urls import reverse
 from rest_framework import status
 from core.models import (
@@ -8,6 +8,7 @@ from core.models import (
     UrineDrugScreen,
     BehavioralHealthNotes,
     CaseManagement,
+    HCVNotes
 )
 from core.tests.base import BaseTestCase
 
@@ -126,20 +127,56 @@ class VisitMedicalRelationsTests(BaseTestCase):
         """
         ensure medical models are linked correctly to visits
         """
-        headers = self.auth_headers_for_user("front_desk")
         new_visit = {
-            "participant": 1,
-            "program": 1,
-            "service": 2,
+            "participant_id": 1,
+            "program_service_map_id": 1,
             "notes": "hello prevention point",
             "urgency": UrgencyLevel.TWO.name,
         }
-        create_response = self.client.post(
-            "/api/visits/", new_visit, format="json", **headers
+
+        visit = Visit.objects.create(**new_visit)
+        
+        uds_data = {
+            "visit_id": visit.pk,
+            "date_of_test": datetime.datetime.now(),
+            "uds_temp": "This is character field",
+            "pregnancy_test": False,
+            "opiates": False,
+            "fentanyl": True,
+            "bup": True,
+            "coc": True,
+            "amp": False,
+            "m_amp": True,
+            "thc": True,
+            "mtd": True,
+            "pcp": False,
+            "bar": False,
+            "bzo": False,
+            "tca": False,
+            "oxy": False,
+        }
+
+        uds = UrineDrugScreen.objects.create(**uds_data)
+
+        meds = Medication.objects.create(
+            medical_delivery="mouth",
+            medication_name="advil",
+            ingestion_frequency=100,
+            visit_id=visit.pk,
         )
-        visit_id = json.loads(create_response.content).id
 
-        import pdb
+        case_mgmt = CaseManagement.objects.create(crs_seen=True, visit_id=visit.pk)
 
-        pdb.set_trace()
+        health_notes = BehavioralHealthNotes.objects.create(
+            visit_id=visit.pk,
+            note_timestamp=datetime.datetime.now(),
+            behavior_note="very healthy, much improvement seen",
+        )
 
+        hcv_notes = HCVNotes.objects.create(
+            visit_id=visit.pk,
+            note_timestamp=datetime.datetime.now(),
+            hcv_note='important hcv note',
+        )
+
+        import pdb;pdb.set_trace()
