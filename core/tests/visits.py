@@ -1,4 +1,5 @@
-import json, datetime
+import json
+from django.utils import timezone
 from django.urls import reverse
 from rest_framework import status
 from core.models import (
@@ -8,7 +9,7 @@ from core.models import (
     UrineDrugScreen,
     BehavioralHealthNotes,
     CaseManagement,
-    HCVNotes
+    HCVNotes,
 )
 from core.tests.base import BaseTestCase
 
@@ -123,9 +124,9 @@ class VisitMedicalRelationsTests(BaseTestCase):
         super().setUp()
         self.seed_fake_users()
 
-    def test_create_visit_with_medical_data(self):
+    def test_create_visit_and_medical_data(self):
         """
-        ensure medical models are linked correctly to visits
+        ensure medical models are linked correctly to visits. Model test only
         """
         new_visit = {
             "participant_id": 1,
@@ -135,10 +136,10 @@ class VisitMedicalRelationsTests(BaseTestCase):
         }
 
         visit = Visit.objects.create(**new_visit)
-        
+
         uds_data = {
             "visit_id": visit.pk,
-            "date_of_test": datetime.datetime.now(),
+            "date_of_test": timezone.now(),
             "uds_temp": "This is character field",
             "pregnancy_test": False,
             "opiates": False,
@@ -156,27 +157,40 @@ class VisitMedicalRelationsTests(BaseTestCase):
             "oxy": False,
         }
 
-        uds = UrineDrugScreen.objects.create(**uds_data)
+        uds_id = UrineDrugScreen.objects.create(**uds_data).pk
 
-        meds = Medication.objects.create(
+        meds_id = Medication.objects.create(
             medical_delivery="mouth",
             medication_name="advil",
             ingestion_frequency=100,
             visit_id=visit.pk,
-        )
+        ).pk
 
-        case_mgmt = CaseManagement.objects.create(crs_seen=True, visit_id=visit.pk)
+        case_mgmt_id = CaseManagement.objects.create(
+            crs_seen=True, visit_id=visit.pk
+        ).pk
 
-        health_notes = BehavioralHealthNotes.objects.create(
+        bhn_id = BehavioralHealthNotes.objects.create(
             visit_id=visit.pk,
-            note_timestamp=datetime.datetime.now(),
+            note_timestamp=timezone.now(),
             behavior_note="very healthy, much improvement seen",
-        )
+        ).pk
 
-        hcv_notes = HCVNotes.objects.create(
+        hcv_id = HCVNotes.objects.create(
             visit_id=visit.pk,
-            note_timestamp=datetime.datetime.now(),
-            hcv_note='important hcv note',
-        )
+            note_timestamp=timezone.now(),
+            hcv_note="important hcv note",
+        ).pk
 
-        import pdb;pdb.set_trace()
+        uds = UrineDrugScreen.objects.get(pk=uds_id)
+        meds = Medication.objects.get(pk=meds_id)
+        case_mgmt = CaseManagement.objects.get(pk=case_mgmt_id)
+        health_notes = BehavioralHealthNotes.objects.get(pk=bhn_id)
+        hcv_notes = HCVNotes.objects.get(pk=hcv_id)
+
+        self.assertEqual(uds.visit_id, visit.pk)
+        self.assertEqual(meds.visit_id, visit.pk)
+        self.assertEqual(case_mgmt.visit_id, visit.pk)
+        self.assertEqual(health_notes.visit_id, visit.pk)
+        self.assertEqual(hcv_notes.visit_id, visit.pk)
+
