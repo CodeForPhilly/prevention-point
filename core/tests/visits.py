@@ -1,7 +1,14 @@
 import json
 from django.urls import reverse
 from rest_framework import status
-from core.models import Visit
+from core.models import (
+    Visit,
+    UrgencyLevel,
+    Medication,
+    UrineDrugScreen,
+    BehavioralHealthNotes,
+    CaseManagement,
+)
 from core.tests.base import BaseTestCase
 
 
@@ -28,7 +35,7 @@ class VisitTests(BaseTestCase):
             "program": 1,
             "service": 1,
             "notes": "hello prevention point",
-            "urgency": 2,
+            "urgency": "ONE",
         }
         response = self.client.post(url, data, format="json", follow=True, **headers)
 
@@ -43,7 +50,12 @@ class VisitTests(BaseTestCase):
         """
         # create a visit
         headers = self.auth_headers_for_user("front_desk")
-        data = {"participant": 1, "program": 1, "service": 1, "urgency": 1}
+        data = {
+            "participant": 1,
+            "program": 1,
+            "service": 1,
+            "urgency": UrgencyLevel.TWO.name,
+        }
         create_response = self.client.post(
             "/api/visits/", data, format="json", **headers
         )
@@ -77,7 +89,7 @@ class VisitTests(BaseTestCase):
                 "program": 1,
                 "service": 2,
                 "notes": "hello prevention point",
-                "urgency": 2,
+                "urgency": UrgencyLevel.THREE.name,
             }
             post_response = self.client.post(url, data, format="json", **headers)
             self.assertEqual(post_response.status_code, status.HTTP_201_CREATED)
@@ -96,3 +108,38 @@ class VisitTests(BaseTestCase):
 
         get_response = self.client.get(url, **headers)
         self.assertEqual(get_response.status_code, status.HTTP_403_FORBIDDEN)
+
+
+class VisitMedicalRelationsTests(BaseTestCase):
+    fixtures = [
+        "participants.yaml",
+        "programs.yaml",
+        "services.yaml",
+        "program_service_map.yaml",
+    ]
+
+    def setUp(self):
+        super().setUp()
+        self.seed_fake_users()
+
+    def test_create_visit_with_medical_data(self):
+        """
+        ensure medical models are linked correctly to visits
+        """
+        headers = self.auth_headers_for_user("front_desk")
+        new_visit = {
+            "participant": 1,
+            "program": 1,
+            "service": 2,
+            "notes": "hello prevention point",
+            "urgency": UrgencyLevel.TWO.name,
+        }
+        create_response = self.client.post(
+            "/api/visits/", new_visit, format="json", **headers
+        )
+        visit_id = json.loads(create_response.content).id
+
+        import pdb
+
+        pdb.set_trace()
+
