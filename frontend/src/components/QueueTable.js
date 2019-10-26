@@ -61,6 +61,7 @@ function QueueTable({ queueData: { name, rows } }) {
         title={name}
         className={classes.table}
         data={rows}
+        localization={{ body: { emptyDataSourceMessage: "Queue is empty" } }}
         columns={[
           {
             title: "Urgency",
