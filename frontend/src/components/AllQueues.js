@@ -90,7 +90,7 @@ function QueueTab(props) {
 
 const AllQueues = observer(() => {
   const queueStore = useContext(QueueStoreContext)
-  const queueSize = Object.keys(queueStore.queueIds).length
+  const queueSize = Object.keys(queueStore.queues).length
 
   useEffect(() => {
     for (let i = 1; i <= queueSize; i++) queueStore.updateQueue(i)
@@ -99,6 +99,13 @@ const AllQueues = observer(() => {
   const [tabValue, setTabValue] = useState(0)
   function handleChange(event, newValue) {
     setTabValue(newValue)
+  }
+
+  const tabArray = []
+  for (let i = 1; i <= queueSize; i++) {
+    tabArray.push(
+      <QueueTab className={classes.queueTab} queueData={i} key={i} />
+    )
   }
 
   return (
@@ -113,61 +120,10 @@ const AllQueues = observer(() => {
           textColor="primary"
           aria-label="scrollable force tabs example"
         >
-          <QueueTab
-            className={classes.queueTab}
-            queueData={queueStore.queueIds["TESTING"]}
-          />
-          <QueueTab
-            className={classes.queueTab}
-            queueData={queueStore.queueIds["CM"]}
-          />
-          <QueueTab
-            className={classes.queueTab}
-            queueData={queueStore.queueIds["SSHP"]}
-          />
-          <QueueTab
-            className={classes.queueTab}
-            queueData={queueStore.queueIds["LEGAL"]}
-          />
-          <QueueTab
-            className={classes.queueTab}
-            queueData={queueStore.queueIds["CRAFT"]}
-          />
-          <QueueTab
-            className={classes.queueTab}
-            queueData={queueStore.queueIds["PHAN"]}
-          />
-          <QueueTab
-            className={classes.queueTab}
-            queueData={queueStore.queueIds["STEP"]}
-          />
-          <QueueTab
-            className={classes.queueTab}
-            queueData={queueStore.queueIds["BIENSTAR"]}
-          />
-          <QueueTab
-            className={classes.queueTab}
-            queueData={queueStore.queueIds["SKWC"]}
-          />
+          {tabArray}
         </Tabs>
       </AppBar>
-      {tabValue === 0 && (
-        <QueueTable queueData={queueStore.queueIds["TESTING"]} />
-      )}
-      {tabValue === 1 && <QueueTable queueData={queueStore.queueIds["CM"]} />}
-      {tabValue === 2 && <QueueTable queueData={queueStore.queueIds["SSHP"]} />}
-      {tabValue === 3 && (
-        <QueueTable queueData={queueStore.queueIds["LEGAL"]} />
-      )}
-      {tabValue === 4 && (
-        <QueueTable queueData={queueStore.queueIds["CRAFT"]} />
-      )}
-      {tabValue === 5 && <QueueTable queueData={queueStore.queueIds["PHAN"]} />}
-      {tabValue === 6 && <QueueTable queueData={queueStore.queueIds["STEP"]} />}
-      {tabValue === 7 && (
-        <QueueTable queueData={queueStore.queueIds["BIENSTAR"]} />
-      )}
-      {tabValue === 8 && <QueueTable queueData={queueStore.queueIds["SKWC"]} />}
+      <QueueTable queueData={tabValue + 1} />
     </div>
   )
 })
