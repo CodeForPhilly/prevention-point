@@ -10,6 +10,7 @@ import MaterialTable from "material-table"
 import moment from "moment"
 import QueueTableDropdown from "./QueueTableDropdown"
 import { QueueStoreContext } from "../stores/QueueStore"
+import NotesDialog from "./NotesDialog"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -25,6 +26,12 @@ const useStyles = makeStyles(theme => ({
 const QueueTable = observer(queueData => {
   const queueStore = useContext(QueueStoreContext)
   const classes = useStyles()
+
+  const [visibleDialog, setVisibleDialog] = React.useState(false)
+  const toggleVisibleDialog = () => {
+    setVisibleDialog(!visibleDialog)
+  }
+
   const statusOptions = [
     { value: "ARRIVED", name: "Arrived" },
     { value: "SEEN", name: "Seen" },
@@ -106,10 +113,10 @@ const QueueTable = observer(queueData => {
             render: ({ id }) => <NotesButton id={id} />,
           },
         ]}
-        //turn table search on/off with true/false
-        options={{
-          search: false,
-        }}
+      />
+      <NotesDialog
+        visibleDialog={visibleDialog}
+        toggleVisibleDialog={toggleVisibleDialog}
       />
     </Paper>
   )

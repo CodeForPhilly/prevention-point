@@ -105,7 +105,7 @@ const AllQueues = observer(() => {
     <div className={classes.root}>
       <AppBar position="static" color="default">
         <Tabs
-          tabValue={tabValue}
+          value={tabValue}
           onChange={handleChange}
           variant="scrollable"
           scrollButtons="on"
