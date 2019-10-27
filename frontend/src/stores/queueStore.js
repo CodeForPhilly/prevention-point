@@ -21,18 +21,7 @@ export class QueueStore {
     9: [],
   }
 
-  queueIds = {
-    TESTING: 1,
-    CM: 2,
-    SSHP: 3,
-    LEGAL: 4,
-    CRAFT: 5,
-    PHAN: 6,
-    STEP: 7,
-    BIENSTAR: 8,
-    SKWC: 9,
-  }
-
+  //Set order of tabs here
   @computed get queueStats() {
     return {
       1: {
