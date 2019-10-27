@@ -21,7 +21,7 @@ export class QueueStore {
     9: [],
   }
 
-  //Set order of tabs here
+  //Set tab order here
   @computed get queueStats() {
     return {
       1: {
