@@ -46,13 +46,15 @@ const QueueTable = observer(queueData => {
     { value: 4, name: 4 },
     { value: 5, name: 5 },
   ]
+
   const NotesButton = () => {
     return (
-      <IconButton>
+      <IconButton onClick={toggleVisibleDialog}>
         <EditIcon />
       </IconButton>
     )
   }
+
   const SeenButton = () => {
     return (
       <IconButton>
