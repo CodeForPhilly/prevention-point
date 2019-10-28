@@ -40,10 +40,6 @@ const QueueTabContent = React.forwardRef(({ onClick, queueData }, _ref) => {
   const queueStore = useContext(QueueStoreContext)
   const classes = useStyles()
 
-  // Add state update functionality
-
-  // Add pinging for checking if queues have updated / websockets?
-
   return (
     <Button onClick={onClick} className={classes.queueTab}>
       <div>
@@ -93,7 +89,7 @@ const AllQueues = observer(() => {
   const queueSize = Object.keys(queueStore.queues).length
 
   useEffect(() => {
-    for (let i = 1; i <= queueSize; i++) queueStore.updateQueue(i)
+    for (let i = 1; i <= queueSize; i++) queueStore.getQueue(i)
   })
   const classes = useStyles()
   const [tabValue, setTabValue] = useState(0)
