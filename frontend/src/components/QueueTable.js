@@ -71,7 +71,7 @@ const QueueTable = observer(queueData => {
           search: false,
         }}
         data={queueStore.queues[queueData["queueData"]].map(x => ({
-          urgency: 1,
+          urgency: x.urgency,
           last: x.participant.last_name,
           uid: x.participant.pp_id,
           timeElapsed: moment(x.status.created_at).format("LT"),
