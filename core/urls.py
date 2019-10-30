@@ -32,33 +32,47 @@ from core.program_service_map import views as program_service_map_views
 from core.insurers import views as insurer_views
 
 
-admin.site.site_header = 'Prevention Point Philadelphia'
+admin.site.site_header = "Prevention Point Philadelphia"
 
 router = routers.DefaultRouter()
-router.register(r'users', user_views.UserViewSet)
-router.register(r'groups', user_views.GroupViewSet)
-router.register(r'visits', visits_views.VisitViewSet)
-router.register(r'uds', uds_views.UrineDrugScreenViewSet)
-router.register(r'participants', participant_views.ParticipantViewSet)
-router.register(r'visits', visits_views.VisitViewSet)
-router.register(r'front-desk-events', front_events_views.FrontDeskEventViewSet)
-router.register(r'programs', programs_views.ProgramViewSet)
-router.register(r'program-service-map', program_service_map_views.ProgramServiceMapView)
-router.register(r'services', services_views.ServiceViewSet)
-router.register(r'insurers', insurer_views.InsurerViewSet)
+router.register(r"users", user_views.UserViewSet)
+router.register(r"groups", user_views.GroupViewSet)
+router.register(r"visits", visits_views.VisitViewSet)
+router.register(r"uds", uds_views.UrineDrugScreenViewSet)
+router.register(r"participants", participant_views.ParticipantViewSet)
+router.register(r"front-desk-events", front_events_views.FrontDeskEventViewSet)
+router.register(r"programs", programs_views.ProgramViewSet)
+router.register(r"program-service-map", program_service_map_views.ProgramServiceMapView)
+router.register(r"services", services_views.ServiceViewSet)
+router.register(r"insurers", insurer_views.InsurerViewSet)
 
 
-schema_view = get_swagger_view(title='PreventionPoint API')
+schema_view = get_swagger_view(title="PreventionPoint API")
 
 urlpatterns = [
-    path('api/', include(router.urls)),
-    path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/token/verify/', jwt_views.TokenVerifyView.as_view(), name='token_verify'),
-    path('api/programs/<int:program_id>/program-availability/', program_availability_views.ProgramAvailabilityViewSet.as_view({'get':'list'})),
-    path('api/programs/<int:program_id>/program-availability/<int:pk>/', program_availability_views.ProgramAvailabilityViewSet.as_view({'put':'update'})),
-    path('api/programs/<int:program_id>/queue/', queues_views.QueueViewSet.as_view({'get':'retrieve'})),
+    path("api/", include(router.urls)),
+    path(
+        "api/token/", jwt_views.TokenObtainPairView.as_view(), name="token_obtain_pair"
+    ),
+    path(
+        "api/token/refresh/", jwt_views.TokenRefreshView.as_view(), name="token_refresh"
+    ),
+    path("api/token/verify/", jwt_views.TokenVerifyView.as_view(), name="token_verify"),
+    path(
+        "api/programs/<int:program_id>/program-availability/",
+        program_availability_views.ProgramAvailabilityViewSet.as_view({"get": "list"}),
+    ),
+    path(
+        "api/programs/<int:program_id>/program-availability/<int:pk>/",
+        program_availability_views.ProgramAvailabilityViewSet.as_view(
+            {"put": "update"}
+        ),
+    ),
+    path(
+        "api/programs/<int:program_id>/queue/",
+        queues_views.QueueViewSet.as_view({"get": "retrieve"}),
+    ),
     # above only 'registers' the retrieve path. to use other CRUD actions, must pass that explicitly to .as_view in another register
-    path('swagger/', schema_view),
-    path('admin/', admin.site.urls),
+    path("swagger/", schema_view),
+    path("admin/", admin.site.urls),
 ]

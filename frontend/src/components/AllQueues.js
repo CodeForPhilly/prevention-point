@@ -1,13 +1,13 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import PropTypes from "prop-types"
 import { makeStyles } from "@material-ui/styles"
 import { Tabs, Tab, Typography, Button } from "@material-ui/core"
-import QueueTable from "./QueueTable"
 import PersonIcon from "@material-ui/icons/Person"
 import TimelapseIcon from "@material-ui/icons/Timelapse"
-import { QueueStoreContext } from "../stores/QueueStore"
 import AppBar from "@material-ui/core/AppBar"
+import { QueueStoreContext } from "../stores/QueueStore"
+import QueueTable from "./QueueTable"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -39,10 +39,6 @@ const useStyles = makeStyles(theme => ({
 const QueueTabContent = React.forwardRef(({ onClick, queueData }, _ref) => {
   const queueStore = useContext(QueueStoreContext)
   const classes = useStyles()
-
-  // Add state update functionality
-
-  // Add pinging for checking if queues have updated / websockets?
 
   return (
     <Button onClick={onClick} className={classes.queueTab}>
@@ -90,20 +86,29 @@ function QueueTab(props) {
 
 const AllQueues = observer(() => {
   const queueStore = useContext(QueueStoreContext)
-  const queueSize = Object.keys(queueStore.queueIds).length
-  for (let i = 1; i <= queueSize; i++) queueStore.updateQueue(i)
+  const queueSize = Object.keys(queueStore.queues).length
 
+  useEffect(() => {
+    for (let i = 1; i <= queueSize; i++) queueStore.getQueue(i)
+  })
   const classes = useStyles()
-  const [value, setValue] = React.useState(0)
+  const [tabValue, setTabValue] = useState(0)
   function handleChange(event, newValue) {
-    setValue(newValue)
+    setTabValue(newValue)
+  }
+
+  const tabArray = []
+  for (let i = 1; i <= queueSize; i++) {
+    tabArray.push(
+      <QueueTab className={classes.queueTab} queueData={i} key={i} />
+    )
   }
 
   return (
     <div className={classes.root}>
       <AppBar position="static" color="default">
         <Tabs
-          value={value}
+          value={tabValue}
           onChange={handleChange}
           variant="scrollable"
           scrollButtons="on"
@@ -111,55 +116,10 @@ const AllQueues = observer(() => {
           textColor="primary"
           aria-label="scrollable force tabs example"
         >
-          <QueueTab
-            className={classes.queueTab}
-            queueData={queueStore.queueIds["TESTING"]}
-          />
-          <QueueTab
-            className={classes.queueTab}
-            queueData={queueStore.queueIds["CM"]}
-          />
-          <QueueTab
-            className={classes.queueTab}
-            queueData={queueStore.queueIds["SSHP"]}
-          />
-          <QueueTab
-            className={classes.queueTab}
-            queueData={queueStore.queueIds["LEGAL"]}
-          />
-          <QueueTab
-            className={classes.queueTab}
-            queueData={queueStore.queueIds["CRAFT"]}
-          />
-          <QueueTab
-            className={classes.queueTab}
-            queueData={queueStore.queueIds["PHAN"]}
-          />
-          <QueueTab
-            className={classes.queueTab}
-            queueData={queueStore.queueIds["STEP"]}
-          />
-          <QueueTab
-            className={classes.queueTab}
-            queueData={queueStore.queueIds["BIENSTAR"]}
-          />
-          <QueueTab
-            className={classes.queueTab}
-            queueData={queueStore.queueIds["SKWC"]}
-          />
+          {tabArray}
         </Tabs>
       </AppBar>
-      {value === 0 && <QueueTable queueData={queueStore.queueIds["TESTING"]} />}
-      {value === 1 && <QueueTable queueData={queueStore.queueIds["CM"]} />}
-      {value === 2 && <QueueTable queueData={queueStore.queueIds["SSHP"]} />}
-      {value === 3 && <QueueTable queueData={queueStore.queueIds["LEGAL"]} />}
-      {value === 4 && <QueueTable queueData={queueStore.queueIds["CRAFT"]} />}
-      {value === 5 && <QueueTable queueData={queueStore.queueIds["PHAN"]} />}
-      {value === 6 && <QueueTable queueData={queueStore.queueIds["STEP"]} />}
-      {value === 7 && (
-        <QueueTable queueData={queueStore.queueIds["BIENSTAR"]} />
-      )}
-      {value === 8 && <QueueTable queueData={queueStore.queueIds["SKWC"]} />}
+      <QueueTable queueData={tabValue + 1} />
     </div>
   )
 })

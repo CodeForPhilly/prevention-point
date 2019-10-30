@@ -21,18 +21,7 @@ export class QueueStore {
     9: [],
   }
 
-  queueIds = {
-    TESTING: 1,
-    CM: 2,
-    SSHP: 3,
-    LEGAL: 4,
-    CRAFT: 5,
-    PHAN: 6,
-    STEP: 7,
-    BIENSTAR: 8,
-    SKWC: 9,
-  }
-
+  //Set tab order here
   @computed get queueStats() {
     return {
       1: {
@@ -100,7 +89,7 @@ export class QueueStore {
     }
   }
 
-  updateQueue = flow(function*(queueIndex) {
+  getQueue = flow(function*(queueIndex) {
     const { ok, data } = yield api.getQueue(queueIndex)
     if (ok) {
       this.setQueue(queueIndex, data)

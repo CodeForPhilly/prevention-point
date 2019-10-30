@@ -69,7 +69,7 @@ def run_seed(self):
     create_groups(output=False)
     create_users(output=False)
     add_users_to_groups(output=False)
-    create_insurers(output=True)
+    create_insurers(output=False)
     create_participants()
     create_programs(output=False)
     create_visits(output=False)

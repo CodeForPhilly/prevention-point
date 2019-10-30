@@ -60,7 +60,7 @@ class ProgramsTests(BaseTestCase):
 
         # update the program
         data = {'is_closed': True}
-        response = self.client.put(
+        response = self.client.patch(
             '/api/programs/{}/'.format(random_program['id']),
             data, format='json',follow=True, **headers
         )
