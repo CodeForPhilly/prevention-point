@@ -85,12 +85,29 @@ const ParticipantInfo = observer(() => {
 
   function handleSubmit(event) {
     event.preventDefault()
-    // console.log(toJS(participantStore.participant))
-    if (participantStore.participant.id === "") {
+
+    // eslint-disable-next-line no-console
+    console.log("handle Add To Queue")
+    // check for undefined, null and empty string Ids
+    if (
+      !participantStore.participant.id ||
+      participantStore.participant.id.length === 0
+    ) {
+      // checking in participants
       participantStore.createParticipant(participantStore.participant)
+      // creating notes
+      // creating urgency score(priority level)
+      // creating status
+      // creating "seen"
     } else {
+      // updating participants
       participantStore.updateParticipant(participantStore.participant)
+      // updating notes
+      // updating urgency score(priority level)
+      // updating status
+      // updating "seen"
     }
+
     // Want to ask "Does this participant already have a database ID"
     // need if statement on which function to call. Need to look at the participant that's in the store
     // Is there an ID already?

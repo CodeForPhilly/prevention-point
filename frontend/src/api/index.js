@@ -9,6 +9,7 @@ import {
   updateParticipant,
   createParticipant,
 } from "./participantEndpoints"
+import { getVisits, updateVisits, createVisits } from "./visitsEnpoints"
 
 const create = () => {
   const api = apisauce.create({
@@ -34,6 +35,9 @@ const create = () => {
     getParticipant: getParticipant(api),
     updateParticipant: updateParticipant(api),
     createParticipant: createParticipant(api),
+    getVisits: getVisits(api),
+    updateVisits: updateVisits(api),
+    createVisits: createVisits(api),
   }
 }
 
