@@ -1,12 +1,15 @@
-import React from "react"
-import PropTypes, { shape } from "prop-types"
+import React, { useContext } from "react"
+import { observer } from "mobx-react-lite"
+import PropTypes from "prop-types"
 import { makeStyles } from "@material-ui/styles"
 import Paper from "@material-ui/core/Paper"
 import EditIcon from "@material-ui/icons/Edit"
 import CheckIcon from "@material-ui/icons/Check"
 import IconButton from "@material-ui/core/IconButton"
 import MaterialTable from "material-table"
+import moment from "moment"
 import QueueTableDropdown from "./QueueTableDropdown"
+import { QueueStoreContext } from "../stores/QueueStore"
 import NotesDialog from "./NotesDialog"
 
 const useStyles = makeStyles(theme => ({
@@ -20,18 +23,21 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-function QueueTable({ queueData: { name, rows } }) {
-  const [visibleDialog, setVisibleDialog] = React.useState(false)
+const QueueTable = observer(queueData => {
+  const queueStore = useContext(QueueStoreContext)
+  const classes = useStyles()
 
+  const [visibleDialog, setVisibleDialog] = React.useState(false)
   const toggleVisibleDialog = () => {
     setVisibleDialog(!visibleDialog)
   }
 
-  const classes = useStyles()
   const statusOptions = [
-    { value: "checkedIn", name: "Checked In" },
-    { value: "absent", name: "Absent" },
-    { value: "returned", name: "Returned" },
+    { value: "ARRIVED", name: "Arrived" },
+    { value: "SEEN", name: "Seen" },
+    { value: "STEPPED_OUT", name: "Stepped Out" },
+    { value: "CAME_BACK", name: "Came Back" },
+    { value: "LEFT", name: "Left" },
   ]
   const urgencyOptions = [
     { value: 1, name: 1 },
@@ -48,6 +54,7 @@ function QueueTable({ queueData: { name, rows } }) {
       </IconButton>
     )
   }
+
   const SeenButton = () => {
     return (
       <IconButton>
@@ -58,9 +65,21 @@ function QueueTable({ queueData: { name, rows } }) {
   return (
     <Paper className={classes.root}>
       <MaterialTable
-        title={name}
+        title={queueStore.queueStats[queueData["queueData"]].name}
         className={classes.table}
-        data={rows}
+        options={{
+          search: false,
+        }}
+        data={queueStore.queues[queueData["queueData"]].map(x => ({
+          urgency: x.urgency,
+          last: x.participant.last_name,
+          uid: x.participant.pp_id,
+          timeElapsed: moment(x.status.created_at).format("LT"),
+          status: x.status.event_type,
+          service: x.service.name,
+          seen: false,
+          notes: false,
+        }))}
         columns={[
           {
             title: "Urgency",
@@ -87,6 +106,7 @@ function QueueTable({ queueData: { name, rows } }) {
               />
             ),
           },
+          { title: "Service", field: "service" },
           {
             title: "Seen",
             //eslint-disable-next-line
@@ -105,13 +125,10 @@ function QueueTable({ queueData: { name, rows } }) {
       />
     </Paper>
   )
-}
+})
 
 QueueTable.propTypes = {
-  queueData: shape({
-    rows: PropTypes.array,
-    name: PropTypes.string,
-  }),
+  queueData: PropTypes.number,
 }
 
 export default QueueTable
