@@ -2,6 +2,7 @@ import { observable, action, flow } from "mobx"
 import { computed } from "mobx"
 import { createContext } from "react"
 import moment from "moment"
+import hash from "object-hash"
 import api from "../api"
 
 export class QueueStore {
@@ -70,6 +71,10 @@ export class QueueStore {
         waitTime: this.longestWait(this.queues[9]),
       },
     }
+  }
+
+  @computed get queueHash() {
+    return hash(this.queues)
   }
 
   @action
