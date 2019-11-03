@@ -48,3 +48,11 @@ class VisitViewSet(ModelViewSet):
         else:
             # TODO  better error
             return Response(visit_data.errors)
+
+    def patch(self, request, pk):
+        visit = self.get_object(pk)
+        serializer = VisitSerializer(visit, data=request.data, partial=True) # set partial=True to update a data partially
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_SUCCESS)
+        return Response(serializer.errors)

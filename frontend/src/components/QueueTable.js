@@ -79,6 +79,7 @@ const QueueTable = observer(queueData => {
           service: x.service.name,
           seen: false,
           notes: false,
+          id: x.id,
         }))}
         columns={[
           {

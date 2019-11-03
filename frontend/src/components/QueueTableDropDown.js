@@ -7,6 +7,7 @@ const QueueTableDropdown = props => {
   const [value, setValue] = useState(props.initialValue)
   function handleChange(event) {
     setValue(event.target.value)
+    //console.log("QueueTableDropDown", props)
   }
   return (
     <Select value={value} onChange={handleChange}>

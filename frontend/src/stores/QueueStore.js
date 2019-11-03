@@ -98,6 +98,16 @@ export class QueueStore {
       //console.log("Error")
     }
   })
+
+  patchVisit = flow(function*(queueIndex, visitIndex) {
+    const { ok } = yield api.patchVisit(visitIndex)
+    if (ok) {
+      this.getQueue(queueIndex)
+    } else {
+      // TODO: Handle error
+      //console.log("Error")
+    }
+  })
 }
 
 export const QueueStoreContext = createContext(new QueueStore())
