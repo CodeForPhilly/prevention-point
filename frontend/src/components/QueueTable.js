@@ -90,6 +90,8 @@ const QueueTable = observer(queueData => {
                 id={id}
                 initialValue={urgency}
                 items={urgencyOptions}
+                queueData={queueData["queueData"]}
+                column="urgency"
               />
             ),
           },
@@ -104,6 +106,8 @@ const QueueTable = observer(queueData => {
                 id={id}
                 initialValue={status}
                 items={statusOptions}
+                queueData={queueData["queueData"]}
+                column="status"
               />
             ),
           },

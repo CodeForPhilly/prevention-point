@@ -99,8 +99,8 @@ export class QueueStore {
     }
   })
 
-  patchVisit = flow(function*(queueIndex, visitIndex) {
-    const { ok } = yield api.patchVisit(visitIndex)
+  patchVisit = flow(function*(queueIndex, visitIndex, data) {
+    const { ok } = yield api.patchVisit(visitIndex, data)
     if (ok) {
       this.getQueue(queueIndex)
     } else {
