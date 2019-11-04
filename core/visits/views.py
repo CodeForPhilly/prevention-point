@@ -50,7 +50,6 @@ class VisitViewSet(ModelViewSet):
             return Response(visit_data.errors)
 
     def patch(self, request, pk):
-        visit = self.get_object(pk)
         serializer = VisitSerializer(visit, data=request.data, partial=True) # set partial=True to update a data partially
         if serializer.is_valid():
             serializer.save()

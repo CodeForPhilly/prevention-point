@@ -9,9 +9,7 @@ const QueueTableDropdown = props => {
   const [value, setValue] = useState(props.initialValue)
   function handleChange(event) {
     setValue(event.target.value)
-    const data = {
-      [props.column]: event.target.value,
-    }
+    const data = { [props.column]: event.target.value }
     //console.log("QueueTableDropDown: ", props.queueData, props.id, props.column, value, data)
     queueStore.patchVisit(props.queueData, props.id, data)
   }
