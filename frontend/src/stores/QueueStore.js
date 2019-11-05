@@ -95,7 +95,7 @@ export class QueueStore {
       this.setQueue(queueIndex, data)
     } else {
       // TODO: Handle error
-      //console.log("Error")
+      //console.log("Error in getQueue")
     }
   })
 
@@ -105,7 +105,23 @@ export class QueueStore {
       this.getQueue(queueIndex)
     } else {
       // TODO: Handle error
-      //console.log("Error")
+      //console.log("Error in patchVisit")
+    }
+  })
+
+  updateStatus = flow(function*(queueIndex, visitIndex, eventType) {
+    const body = {
+      visit: visitIndex,
+      event_type: eventType,
+    }
+    //console.log(body)
+    const { ok } = yield api.postFrontDeskEvent(body)
+    if (ok) {
+      //BUG this should recalculate queue rather than getting from database
+      this.getQueue(queueIndex)
+    } else {
+      // TODO: Handle error
+      //console.log("Error in updateStatus")
     }
   })
 }

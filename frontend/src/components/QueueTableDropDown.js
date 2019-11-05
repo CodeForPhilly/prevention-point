@@ -7,11 +7,17 @@ import { QueueStoreContext } from "../stores/QueueStore"
 const QueueTableDropdown = props => {
   const queueStore = useContext(QueueStoreContext)
   const [value, setValue] = useState(props.initialValue)
+  const col = props.column
   function handleChange(event) {
     setValue(event.target.value)
-    const data = { [props.column]: event.target.value }
-    //console.log("QueueTableDropDown: ", props.queueData, props.id, props.column, value, data)
-    queueStore.patchVisit(props.queueData, props.id, data)
+    if (col === "urgency") {
+      queueStore.patchVisit(props.queueData, props.id, {
+        [col]: event.target.value,
+      })
+    }
+    if (col === "status") {
+      queueStore.updateStatus(props.queueData, props.id, event.target.value)
+    }
   }
   return (
     <Select value={value} onChange={handleChange}>
