@@ -7,7 +7,7 @@ import InputLabel from "@material-ui/core/InputLabel"
 import Input from "@material-ui/core/Input"
 import Button from "@material-ui/core/Button"
 import Typography from "@material-ui/core/Typography"
-import { useHistory } from "react-router-dom"
+//import { useHistory } from "react-router-dom"
 import { observer } from "mobx-react-lite"
 
 const UserSearch = observer(() => {
@@ -17,7 +17,7 @@ const UserSearch = observer(() => {
   const [errorState, setErrorState] = useState(false)
   const [errorMessage, setErrorMessage] = useState("")
 
-  const history = useHistory()
+  //const history = useHistory()
 
   const handleSubmit = e => {
     if (e) {
