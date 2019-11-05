@@ -32,6 +32,12 @@ describe("<UserSearch />", () => {
     buttons = wrapper.find("button")
   })
 
+  // what to do after each test
+  afterAll(() => {
+    //mount.cleanup()
+    jest.clearAllMocks()
+  })
+
   it("should work", () => {
     wrapper = mount(<UserSearch />)
   })
