@@ -114,10 +114,8 @@ export class QueueStore {
       visit: visitIndex,
       event_type: eventType,
     }
-    //console.log(body)
     const { ok } = yield api.postFrontDeskEvent(body)
     if (ok) {
-      //BUG this should recalculate queue rather than getting from database
       this.getQueue(queueIndex)
     } else {
       // TODO: Handle error
