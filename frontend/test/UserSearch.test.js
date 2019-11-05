@@ -33,8 +33,7 @@ describe("<UserSearch />", () => {
   })
 
   it("should work", () => {
-    // eslint-disable-next-line no-unused-vars
-    const wrapper = shallow(<UserSearch />)
+    wrapper = shallow(<UserSearch />)
   })
 
   // UI Integrity test
