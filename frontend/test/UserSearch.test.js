@@ -1,34 +1,44 @@
-import { configure, shallow } from "enzyme"
-import Adapter from "enzyme-adapter-react-16"
+/* eslint-disable quotes */
 import React from "react"
-//import Button from "@material-ui/core/Button"
-//import TableCell from "@material-ui/core/TableCell"
-//import Typography from "@material-ui/core/Typography"
-//import UserSearch from "../src/components/UserSearch"
-//import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles"
-//import { createMount } from "@material-ui/core/test-utils"
-//hello world reference
-import App from "../src/App"
+import { configure } from "enzyme"
+import { createShallow, createMount } from "@material-ui/core/test-utils"
+import Adapter from "enzyme-adapter-react-16"
+import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles"
+
+import UserSearch from "../src/components/UserSearch"
 
 configure({ adapter: new Adapter() })
 
-//hello world test
-
-describe("Render the app", () => {
-  it("renders without crashing", () => {
-    shallow(<App />)
-  })
-})
+const theme = createMuiTheme({})
 
 describe("<UserSearch />", () => {
-  //let shallow
-  //let button
+  // eslint-disable-next-line no-unused-vars
+  let wrapper
+  let shallow
+  let mount
+  let buttons
 
-  before(() => {
-    shallow = createShallow() 
+  const initialProps = {}
+
+  beforeAll(() => {
+    // This is Mocha; in Jest, use beforeAll
+    shallow = createShallow()
+    mount = createMount()
+    wrapper = mount(
+      <ThemeProvider theme={theme}>
+        <UserSearch {...initialProps} />
+      </ThemeProvider>
+    )
+    buttons = wrapper.find("button")
   })
 
   it("should work", () => {
-//    const wrapper = shallow(<UserSearch />)
+    // eslint-disable-next-line no-unused-vars
+    const wrapper = shallow(<UserSearch />)
+  })
+
+  // UI Integrity test
+  it("should have submit buttons", () => {
+    expect(buttons.length).toEqual(1)
   })
 })
