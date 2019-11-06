@@ -10,28 +10,19 @@ import TableHead from "@material-ui/core/TableHead"
 import TableRow from "@material-ui/core/TableRow"
 import Fab from "@material-ui/core/Fab"
 import AddIcon from "@material-ui/icons/Add"
-import { toJS, observer } from "mobx-react-lite"
+import { observer } from "mobx-react-lite"
 
 const ParticipantsList = observer(() => {
   const rootStore = useContext(rootStoreContext)
   const participantsStore = rootStore.ParticipantStore
   const [isLoading, setIsLoading] = useState(false)
-  const [isEmpty, setIsEmpty] = useState(false)
 
   // useEffect is a hook that gets called after every render/re-render.  Empty array second argument prevents it from running again.
   useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true)
-      await participantsStore.getParticipants()
-      let storedList = toJS(participantsStore.participants)
-      // console.log(storedList)
-      if (storedList === undefined || storedList.length == 0) {
-        setIsEmpty(true)
-      }
-      setIsLoading(false)
-    }
-    fetchData()
-  }, [participantsStore, participantsStore.participant])
+    setIsLoading(true)
+    participantsStore.getParticipants()
+    setIsLoading(false)
+  }, [])
 
   return (
     <Fragment>
@@ -49,23 +40,49 @@ const ParticipantsList = observer(() => {
             Participants
           </Typography>
           <div className="participants">
-            {isEmpty ? (
-              <div>There are no results</div>
-            ) : (
-              <Table>
-                <TableHead>
-                  <TableRow>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>
+                    <Typography>#</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography>PPID</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography>First Name</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography>Last Name</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography>Gender</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography>DOB</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography>Race</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography>Add</Typography>
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {participantsStore.participants.map((participant, index) => (
+                  <TableRow key={index}>
                     <TableCell>
-                      <Typography>#</Typography>
+                      <Typography>Number</Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography>PPID</Typography>
+                      <Typography>{participant.pp_id} </Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography>First Name</Typography>
+                      <Typography>{participant.first_name}</Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography>Last Name</Typography>
+                      <Typography>{participant.last_name}</Typography>
                     </TableCell>
                     <TableCell>
                       <Typography>Gender</Typography>
@@ -77,44 +94,14 @@ const ParticipantsList = observer(() => {
                       <Typography>Race</Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography>Add</Typography>
+                      <Fab color="primary" size="small" aria-label="add">
+                        <AddIcon />
+                      </Fab>
                     </TableCell>
                   </TableRow>
-                </TableHead>
-                <TableBody>
-                  {participantsStore.participants.map((participant, index) => (
-                    <TableRow key={index}>
-                      <TableCell>
-                        <Typography>Number</Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography>{participant.pp_id} </Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography>{participant.first_name}</Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography>{participant.last_name}</Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography>Gender</Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography>DOB</Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography>Race</Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Fab color="primary" size="small" aria-label="add">
-                          <AddIcon />
-                        </Fab>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            )}
+                ))}
+              </TableBody>
+            </Table>
           </div>
           <Fab color="primary" aria-label="add" size="large">
             <AddIcon />
