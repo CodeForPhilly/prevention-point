@@ -16,7 +16,7 @@ describe("<UserSearch />", () => {
   let wrapper
   //let shallow
   let mount
-  let buttons
+  //let buttons
 
   const initialProps = {}
 
@@ -29,7 +29,7 @@ describe("<UserSearch />", () => {
         <UserSearch {...initialProps} />
       </ThemeProvider>
     )
-    buttons = wrapper.find("button")
+    //buttons = wrapper.find("button")
   })
 
   // what to do after each test
@@ -42,9 +42,32 @@ describe("<UserSearch />", () => {
     wrapper = mount(<UserSearch />)
   })
 
+  it("should match the snapshot", () => {
+    expect(wrapper.html()).toMatchSnapshot()
+  })
+
+  it("should have a users id", () => {
+    expect(wrapper.exists("#user_id")).toEqual(true)
+  })
+
+  it("should have a first name", () => {
+    expect(wrapper.exists("#first_name")).toEqual(true)
+  })
+
+  it("should have a last name", () => {
+    expect(wrapper.exists("#last_name")).toEqual(true)
+  })
+
+  it("should have a submit button", () => {
+    expect(wrapper.exists("submit"))
+  })
+
   // UI Integrity test
-  it("should have submit buttons", () => {
-    expect(buttons.length).toEqual(1)
+  it("should have submit button click", () => {
+    wrapper
+      .find("button")
+      .at(0)
+      .simulate("click")
   })
 })
 
