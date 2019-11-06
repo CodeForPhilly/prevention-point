@@ -3,7 +3,6 @@ from core.models import Participant
 
 class Appointment(models.Model):
     participant = models.ForeignKey(Participant, on_delete=models.CASCADE)
-
     appointment_timestamp = models.DateTimeField()
     crs_timestamp = models.DateTimeField()
     crs_seen = models.BooleanField(default=False)
