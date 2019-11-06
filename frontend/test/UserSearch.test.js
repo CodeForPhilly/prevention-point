@@ -1,7 +1,7 @@
 /* eslint-disable quotes */
 import React from "react"
 import { configure } from "enzyme"
-import { createShallow, createMount } from "@material-ui/core/test-utils"
+import { createMount } from "@material-ui/core/test-utils"
 import Adapter from "enzyme-adapter-react-16"
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles"
 
@@ -14,7 +14,7 @@ const theme = createMuiTheme({})
 describe("<UserSearch />", () => {
   // eslint-disable-next-line no-unused-vars
   let wrapper
-  let shallow
+  //let shallow
   let mount
   let buttons
 
@@ -22,7 +22,7 @@ describe("<UserSearch />", () => {
 
   beforeAll(() => {
     // This is Mocha; in Jest, use beforeAll
-    shallow = createShallow()
+    //shallow = createShallow()
     mount = createMount()
     wrapper = mount(
       <ThemeProvider theme={theme}>
@@ -32,9 +32,14 @@ describe("<UserSearch />", () => {
     buttons = wrapper.find("button")
   })
 
+  // what to do after each test
+  afterAll(() => {
+    //mount.cleanup()
+    jest.clearAllMocks()
+  })
+
   it("should work", () => {
-    // eslint-disable-next-line no-unused-vars
-    const wrapper = shallow(<UserSearch />)
+    wrapper = mount(<UserSearch />)
   })
 
   // UI Integrity test
@@ -42,3 +47,9 @@ describe("<UserSearch />", () => {
     expect(buttons.length).toEqual(1)
   })
 })
+
+jest.mock("react-router-dom", () => ({
+  useHistory: () => ({
+    push: jest.fn(),
+  }),
+}))
