@@ -12,29 +12,23 @@ configure({ adapter: new Adapter() })
 const theme = createMuiTheme({})
 
 describe("<UserSearch />", () => {
-  // eslint-disable-next-line no-unused-vars
   let wrapper
-  //let shallow
   let mount
-  //let buttons
 
   const initialProps = {}
 
   beforeAll(() => {
     // This is Mocha; in Jest, use beforeAll
-    //shallow = createShallow()
     mount = createMount()
     wrapper = mount(
       <ThemeProvider theme={theme}>
         <UserSearch {...initialProps} />
       </ThemeProvider>
     )
-    //buttons = wrapper.find("button")
   })
 
   // what to do after each test
   afterAll(() => {
-    //mount.cleanup()
     jest.clearAllMocks()
   })
 
@@ -70,7 +64,7 @@ describe("<UserSearch />", () => {
       .simulate("click")
   })
 })
-
+// resolves useHistory error hangup
 jest.mock("react-router-dom", () => ({
   useHistory: () => ({
     push: jest.fn(),
