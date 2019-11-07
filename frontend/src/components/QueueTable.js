@@ -37,10 +37,8 @@ const QueueTable = observer(queueData => {
   }
 
   const statusOptions = [
-    { value: "ARRIVED", name: "Arrived" },
-    { value: "SEEN", name: "Seen" },
+    { value: "ARRIVED", name: "Waiting" },
     { value: "STEPPED_OUT", name: "Stepped Out" },
-    { value: "CAME_BACK", name: "Came Back" },
     { value: "LEFT", name: "Left" },
   ]
 
