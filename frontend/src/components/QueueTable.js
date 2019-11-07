@@ -26,10 +26,14 @@ const useStyles = makeStyles(theme => ({
 const QueueTable = observer(queueData => {
   const queueStore = useContext(QueueStoreContext)
   const classes = useStyles()
-
   const [visibleDialog, setVisibleDialog] = React.useState(false)
+
   const toggleVisibleDialog = () => {
     setVisibleDialog(!visibleDialog)
+  }
+
+  const seenHandler = id => {
+    queueStore.updateStatus(queueData["queueData"], id["id"], "SEEN")
   }
 
   const statusOptions = [
@@ -39,12 +43,13 @@ const QueueTable = observer(queueData => {
     { value: "CAME_BACK", name: "Came Back" },
     { value: "LEFT", name: "Left" },
   ]
+
   const urgencyOptions = [
-    { value: 1, name: 1 },
-    { value: 2, name: 2 },
-    { value: 3, name: 3 },
-    { value: 4, name: 4 },
-    { value: 5, name: 5 },
+    { value: "ONE", name: 1 },
+    { value: "TWO", name: 2 },
+    { value: "THREE", name: 3 },
+    { value: "FOUR", name: 4 },
+    { value: "FIVE", name: 5 },
   ]
 
   const NotesButton = () => {
@@ -55,9 +60,9 @@ const QueueTable = observer(queueData => {
     )
   }
 
-  const SeenButton = () => {
+  const SeenButton = i => {
     return (
-      <IconButton>
+      <IconButton onClick={() => seenHandler(i)}>
         <CheckIcon />
       </IconButton>
     )
@@ -115,7 +120,7 @@ const QueueTable = observer(queueData => {
           {
             title: "Seen",
             //eslint-disable-next-line
-            render: ({ id }) => <SeenButton id={id} />,
+            render: ({id }) => <SeenButton id={id} />,
           },
           {
             title: "Notes",
