@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useState } from "react"
 import { observer } from "mobx-react-lite"
 import PropTypes from "prop-types"
 import { makeStyles } from "@material-ui/styles"
@@ -26,7 +26,13 @@ const useStyles = makeStyles(theme => ({
 const QueueTable = observer(queueData => {
   const queueStore = useContext(QueueStoreContext)
   const classes = useStyles()
-  const [visibleDialog, setVisibleDialog] = React.useState(false)
+  const [visibleDialog, setVisibleDialog] = useState(false)
+  const [notesVisit, setNotesVisit] = useState(1)
+
+  const handleNotesClick = visitId => {
+    setNotesVisit(visitId)
+    toggleVisibleDialog()
+  }
 
   const toggleVisibleDialog = () => {
     setVisibleDialog(!visibleDialog)
@@ -50,9 +56,9 @@ const QueueTable = observer(queueData => {
     { value: "FIVE", name: 5 },
   ]
 
-  const NotesButton = () => {
+  const NotesButton = visitId => {
     return (
-      <IconButton onClick={toggleVisibleDialog}>
+      <IconButton onClick={() => handleNotesClick(visitId)}>
         <EditIcon />
       </IconButton>
     )
@@ -130,6 +136,8 @@ const QueueTable = observer(queueData => {
       <NotesDialog
         visibleDialog={visibleDialog}
         toggleVisibleDialog={toggleVisibleDialog}
+        queueData={queueData.queueData}
+        id={notesVisit.id}
       />
     </Paper>
   )

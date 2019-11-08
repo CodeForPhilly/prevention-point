@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useContext } from "react"
 import PropTypes from "prop-types"
 import Button from "@material-ui/core/Button"
 import Dialog from "@material-ui/core/Dialog"
@@ -7,14 +7,24 @@ import DialogContent from "@material-ui/core/DialogContent"
 import DialogContentText from "@material-ui/core/DialogContentText"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import TextField from "@material-ui/core/TextField"
+import { QueueStoreContext } from "../stores/QueueStore"
 
-function NotesDialog({ visibleDialog, toggleVisibleDialog }) {
+function NotesDialog({ visibleDialog, toggleVisibleDialog, queueData, id }) {
+  const queueStore = useContext(QueueStoreContext)
   const [participantNotes, setParticipantNotes] = React.useState("")
 
-  const handleSubmit = () => {
-    // Make POST request to API here to submit data
-    // Need to pass in visit ID to this component (most likely) for API
+  const handleSubmit = (queueId, visitId) => {
+    queueStore.patchVisit(queueId, visitId, { notes: participantNotes })
     toggleVisibleDialog()
+  }
+
+  const getNote = () => {
+    const array = queueStore.queues[queueData].filter(x => x.id === id)
+    if (array) {
+      return "Array was found!"
+    }
+    //console.log(array[0])
+    return "Enter a note!"
   }
 
   return (
@@ -33,19 +43,23 @@ function NotesDialog({ visibleDialog, toggleVisibleDialog }) {
         <TextField
           id="notes"
           type="text"
-          placeholder="Enter a note about this participant"
+          placeholder={getNote()}
           margin="dense"
           autoFocus
           fullWidth
           multiline
           onChange={e => setParticipantNotes(e.target.value)}
-          value={participantNotes}
+          value={queueStore.queues[queueData].filter(x => x.id === id).notes}
         />
         <DialogActions>
           <Button id="cancel" onClick={toggleVisibleDialog}>
             Cancel
           </Button>
-          <Button id="submit" onClick={handleSubmit} color="primary">
+          <Button
+            id="submit"
+            onClick={() => handleSubmit(queueData, id, participantNotes)}
+            color="primary"
+          >
             Submit
           </Button>
         </DialogActions>
@@ -57,6 +71,8 @@ function NotesDialog({ visibleDialog, toggleVisibleDialog }) {
 NotesDialog.propTypes = {
   visibleDialog: PropTypes.bool,
   toggleVisibleDialog: PropTypes.func,
+  queueData: PropTypes.number,
+  id: PropTypes.number,
 }
 
 export default NotesDialog
