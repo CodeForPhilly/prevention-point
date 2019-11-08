@@ -122,6 +122,14 @@ export class QueueStore {
       //console.log("Error in updateStatus")
     }
   })
+
+  getNotes(queueIndex, visitIndex) {
+    const array = this.queues[queueIndex].filter(x => x.id === visitIndex)
+    if (array.length === 1) {
+      return array[0].notes
+    }
+    return ""
+  }
 }
 
 export const QueueStoreContext = createContext(new QueueStore())

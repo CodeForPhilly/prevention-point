@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect } from "react"
 import PropTypes from "prop-types"
 import Button from "@material-ui/core/Button"
 import Dialog from "@material-ui/core/Dialog"
@@ -18,14 +18,9 @@ function NotesDialog({ visibleDialog, toggleVisibleDialog, queueData, id }) {
     toggleVisibleDialog()
   }
 
-  const getNote = () => {
-    const array = queueStore.queues[queueData].filter(x => x.id === id)
-    if (array) {
-      return "Array was found!"
-    }
-    //console.log(array[0])
-    return "Enter a note!"
-  }
+  useEffect(() => {
+    setParticipantNotes("")
+  }, [queueData, id])
 
   return (
     <Dialog
@@ -38,18 +33,18 @@ function NotesDialog({ visibleDialog, toggleVisibleDialog, queueData, id }) {
       <DialogTitle id="note-dialog-title">Participant Notes</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Enter a note about this participant.
+          Current Note: {queueStore.getNotes(queueData, id)}
         </DialogContentText>
         <TextField
           id="notes"
           type="text"
-          placeholder={getNote()}
+          placeholder="Enter new note here"
           margin="dense"
           autoFocus
           fullWidth
           multiline
           onChange={e => setParticipantNotes(e.target.value)}
-          value={queueStore.queues[queueData].filter(x => x.id === id).notes}
+          value={participantNotes}
         />
         <DialogActions>
           <Button id="cancel" onClick={toggleVisibleDialog}>
