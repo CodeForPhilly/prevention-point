@@ -39,7 +39,7 @@ const QueueTable = observer(queueData => {
   }
 
   const seenHandler = id => {
-    queueStore.updateStatus(queueData["queueData"], id["id"], "SEEN")
+    queueStore.updateStatus(queueData.queueData, id.id, "SEEN")
   }
 
   const statusOptions = [
@@ -74,12 +74,12 @@ const QueueTable = observer(queueData => {
   return (
     <Paper className={classes.root}>
       <MaterialTable
-        title={queueStore.queueStats[queueData["queueData"]].name}
+        title={queueStore.queueStats[queueData.queueData].name}
         className={classes.table}
         options={{
           search: false,
         }}
-        data={queueStore.queues[queueData["queueData"]].map(x => ({
+        data={queueStore.queues[queueData.queueData].map(x => ({
           urgency: x.urgency,
           last: x.participant.last_name,
           uid: x.participant.pp_id,
@@ -99,7 +99,7 @@ const QueueTable = observer(queueData => {
                 id={id}
                 initialValue={urgency}
                 items={urgencyOptions}
-                queueData={queueData["queueData"]}
+                queueData={queueData.queueData}
                 column="urgency"
               />
             ),
@@ -115,7 +115,7 @@ const QueueTable = observer(queueData => {
                 id={id}
                 initialValue={status}
                 items={statusOptions}
-                queueData={queueData["queueData"]}
+                queueData={queueData.queueData}
                 column="status"
               />
             ),
