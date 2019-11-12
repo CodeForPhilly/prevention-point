@@ -1,7 +1,16 @@
 import json
+from django.utils import timezone
 from django.urls import reverse
 from rest_framework import status
-from core.models import Visit
+from core.models import (
+    Visit,
+    UrgencyLevel,
+    Medication,
+    UrineDrugScreen,
+    BehavioralHealthNotes,
+    CaseManagement,
+    HCVNotes,
+)
 from core.tests.base import BaseTestCase
 
 
@@ -28,7 +37,7 @@ class VisitTests(BaseTestCase):
             "program": 1,
             "service": 1,
             "notes": "hello prevention point",
-            "urgency": 2,
+            "urgency": "ONE",
         }
         response = self.client.post(url, data, format="json", follow=True, **headers)
 
@@ -43,7 +52,12 @@ class VisitTests(BaseTestCase):
         """
         # create a visit
         headers = self.auth_headers_for_user("front_desk")
-        data = {"participant": 1, "program": 1, "service": 1, "urgency": 1}
+        data = {
+            "participant": 1,
+            "program": 1,
+            "service": 1,
+            "urgency": UrgencyLevel.TWO.name,
+        }
         create_response = self.client.post(
             "/api/visits/", data, format="json", **headers
         )
@@ -77,7 +91,7 @@ class VisitTests(BaseTestCase):
                 "program": 1,
                 "service": 2,
                 "notes": "hello prevention point",
-                "urgency": 2,
+                "urgency": UrgencyLevel.THREE.name,
             }
             post_response = self.client.post(url, data, format="json", **headers)
             self.assertEqual(post_response.status_code, status.HTTP_201_CREATED)
@@ -96,3 +110,87 @@ class VisitTests(BaseTestCase):
 
         get_response = self.client.get(url, **headers)
         self.assertEqual(get_response.status_code, status.HTTP_403_FORBIDDEN)
+
+
+class VisitMedicalRelationsTests(BaseTestCase):
+    fixtures = [
+        "participants.yaml",
+        "programs.yaml",
+        "services.yaml",
+        "program_service_map.yaml",
+    ]
+
+    def setUp(self):
+        super().setUp()
+        self.seed_fake_users()
+
+    def test_create_visit_and_medical_data(self):
+        """
+        ensure medical models are linked correctly to visits. Model test only
+        """
+        new_visit = {
+            "participant_id": 1,
+            "program_service_map_id": 1,
+            "notes": "hello prevention point",
+            "urgency": UrgencyLevel.TWO.name,
+        }
+
+        visit = Visit.objects.create(**new_visit)
+
+        uds_data = {
+            "visit_id": visit.pk,
+            "date_of_test": timezone.now(),
+            "uds_temp": "This is character field",
+            "pregnancy_test": False,
+            "opiates": False,
+            "fentanyl": True,
+            "bup": True,
+            "coc": True,
+            "amp": False,
+            "m_amp": True,
+            "thc": True,
+            "mtd": True,
+            "pcp": False,
+            "bar": False,
+            "bzo": False,
+            "tca": False,
+            "oxy": False,
+        }
+
+        uds_id = UrineDrugScreen.objects.create(**uds_data).pk
+
+        meds_id = Medication.objects.create(
+            medical_delivery="mouth",
+            medication_name="advil",
+            ingestion_frequency=100,
+            visit_id=visit.pk,
+        ).pk
+
+        case_mgmt_id = CaseManagement.objects.create(
+            crs_seen=True, visit_id=visit.pk
+        ).pk
+
+        bhn_id = BehavioralHealthNotes.objects.create(
+            visit_id=visit.pk,
+            note_timestamp=timezone.now(),
+            behavior_note="very healthy, much improvement seen",
+        ).pk
+
+        hcv_id = HCVNotes.objects.create(
+            visit_id=visit.pk,
+            note_timestamp=timezone.now(),
+            hcv_note="important hcv note",
+        ).pk
+
+        uds = UrineDrugScreen.objects.get(pk=uds_id)
+        meds = Medication.objects.get(pk=meds_id)
+        case_mgmt = CaseManagement.objects.get(pk=case_mgmt_id)
+        health_notes = BehavioralHealthNotes.objects.get(pk=bhn_id)
+        hcv_notes = HCVNotes.objects.get(pk=hcv_id)
+
+        self.assertEqual(uds.visit_id, visit.pk)
+        self.assertEqual(meds.visit_id, visit.pk)
+        self.assertEqual(case_mgmt.visit_id, visit.pk)
+        self.assertEqual(health_notes.visit_id, visit.pk)
+        self.assertEqual(hcv_notes.visit_id, visit.pk)
+
