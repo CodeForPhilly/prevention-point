@@ -37,7 +37,6 @@ const QueueTable = observer(queueData => {
     { value: "steppedOut", name: "Stepped Out" },
     { value: "left", name: "Left" },
   ]
-  
   const urgencyOptions = [
     { value: 1, name: 1 },
     { value: 2, name: 2 },
