@@ -21,4 +21,4 @@ class Visit(models.Model):
         ProgramServiceMap, null=True, on_delete=models.CASCADE
     )
     notes = models.TextField("Visit Notes", null=True, blank=True)
-    urgency = models.CharField(max_length=20, default=1)
+    urgency = models.CharField(choices=URGENCY_LEVEL, max_length=20, default=UrgencyLevel.ONE)

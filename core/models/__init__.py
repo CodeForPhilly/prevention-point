@@ -10,3 +10,4 @@ from .medication import *
 from .front_desk_event import *
 from .urine_drug_screen import *
 from .program_availability import *
+from .hcv_notes import *

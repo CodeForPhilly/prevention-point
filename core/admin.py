@@ -27,9 +27,9 @@ class CaseManagement(BaseInline):
 class ParticipantAdmin(admin.ModelAdmin):
     inlines = [
             AppointmentInline,
-            MedicationInline,
-            CaseManagement,
-            UrineDrugScreenInline,
+            # MedicationInline,
+            # CaseManagement,
+            # UrineDrugScreenInline,
             ]
 
 admin.site.register(Participant, ParticipantAdmin)
