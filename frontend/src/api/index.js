@@ -4,6 +4,7 @@ import refreshAuthLogic from "./refreshAuthLogic"
 import { getParticipants } from "./participantEndpoints"
 import { createToken, verifyToken } from "./authEndpoints"
 import { getQueue } from "./queueEndpoints"
+import { getVisits, updateVisits, createVisits } from "./visitsEndpoint"
 
 const create = () => {
   const api = apisauce.create({
@@ -26,6 +27,9 @@ const create = () => {
     verifyToken: verifyToken(api),
     getQueue: getQueue(api),
     getParticipants: getParticipants(api),
+    getVisits: getVisits(api),
+    updateVisits: updateVisits(api),
+    createVisits: createVisits(api),
   }
 }
 
