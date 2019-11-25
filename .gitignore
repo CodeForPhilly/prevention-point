@@ -102,7 +102,6 @@ frontend/.pnp
 
 # testing
 frontend/coverage
-frontend/test/__snapshots__/  
 
 # production
 frontend/build
