@@ -8,7 +8,6 @@ export class QueueStore {
   constructor(rootStore) {
     this.rootStore = rootStore
   }
-
   @observable queues = {
     1: [],
     2: [],
@@ -20,7 +19,6 @@ export class QueueStore {
     8: [],
     9: [],
   }
-
   //Set tab order here
   @computed get queueStats() {
     return {
@@ -71,12 +69,9 @@ export class QueueStore {
       },
     }
   }
-
-  @action
-  setQueue(queueIndex, data) {
+  @action setQueue(queueIndex, data) {
     this.queues[queueIndex] = data
   }
-
   //Return the longest wait time in minutes
   longestWait(queue) {
     if (queue && queue.length > 0) {
@@ -88,16 +83,50 @@ export class QueueStore {
       return 0
     }
   }
-
   getQueue = flow(function*(queueIndex) {
     const { ok, data } = yield api.getQueue(queueIndex)
     if (ok) {
-      this.setQueue(queueIndex, data)
+      // TODO: Temp fix until db's urgency property updated
+      const sorted = data
+        .map(item => {
+          return { ...item, urgency: ConvertUrgency(item) }
+        })
+        .sort((item1, item2) => {
+          if (item1.urgency > item2.urgency) return -1
+          if (item1.urgency < item2.urgency) return 1
+          if (item1.created_at > item2.created_at) return 1
+          if (item1.created_at < item2.created_at) return -1
+        })
+      this.setQueue(queueIndex, sorted)
     } else {
       // TODO: Handle error
       //console.log("Error")
     }
   })
 }
-
+/* eslint-disable indent */
+// TEMP FIX until urgency is fixed on backend db
+function ConvertUrgency({ urgency }) {
+  switch (urgency) {
+    case "ONE": {
+      return 1
+    }
+    case "TWO": {
+      return 2
+    }
+    case "THREE": {
+      return 3
+    }
+    case "FOUR": {
+      return 4
+    }
+    case "FIVE": {
+      return 5
+    }
+    default: {
+      throw new Error(`Urgency value ${urgency} is invalid`)
+    }
+  }
+}
+/* eslint-enable indent */
 export const QueueStoreContext = createContext(new QueueStore())

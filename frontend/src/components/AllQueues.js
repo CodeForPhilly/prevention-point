@@ -37,26 +37,25 @@ const useStyles = makeStyles(theme => ({
 
 //Forward ref used with MUI BaseButton. Does not allow observer.
 const QueueTabContent = React.forwardRef(({ onClick, queueData }, _ref) => {
-  const queueStore = useContext(QueueStoreContext)
+  const { queueStats } = useContext(QueueStoreContext)
+  const { name, length, waitTime } = queueStats[queueData]
   const classes = useStyles()
 
   return (
     <Button onClick={onClick} className={classes.queueTab}>
       <div>
-        <Typography className={classes.heading}>
-          {queueStore.queueStats[queueData].name}
-        </Typography>
+        <Typography className={classes.heading}>{name}</Typography>
         <div className={classes.queueTabContent}>
           <div className={classes.queueTabStat}>
             <PersonIcon className={classes.queueTabIcon} />
             <Typography className={classes.queueTabStatValue}>
-              {queueStore.queueStats[queueData].length}
+              {length}
             </Typography>
           </div>
           <div className={classes.queueTabStat}>
             <TimelapseIcon className={classes.queueTabIcon} />
             <Typography className={classes.queueTabStatValue}>
-              {queueStore.queueStats[queueData].waitTime}
+              {waitTime}
             </Typography>
           </div>
         </div>
@@ -86,11 +85,13 @@ function QueueTab(props) {
 
 const AllQueues = observer(() => {
   const queueStore = useContext(QueueStoreContext)
-  const queueSize = Object.keys(queueStore.queues).length
+  const { queues } = queueStore
+  const queueSize = Object.keys(queues).length
 
   useEffect(() => {
+    // don't access getQueue outside useEffect
     for (let i = 1; i <= queueSize; i++) queueStore.getQueue(i)
-  })
+  }, [])
   const classes = useStyles()
   const [tabValue, setTabValue] = useState(0)
   function handleChange(event, newValue) {
@@ -119,7 +120,7 @@ const AllQueues = observer(() => {
           {tabArray}
         </Tabs>
       </AppBar>
-      <QueueTable queueData={tabValue + 1} />
+      <QueueTable queueStore={queueStore} queueData={tabValue + 1} />
     </div>
   )
 })
