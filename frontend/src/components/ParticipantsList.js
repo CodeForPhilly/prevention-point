@@ -12,17 +12,39 @@ import Fab from "@material-ui/core/Fab"
 import AddIcon from "@material-ui/icons/Add"
 import { observer } from "mobx-react-lite"
 
+import { makeStyles } from "@material-ui/core/styles"
+import Popover from "@material-ui/core/Popover"
+
+const useStyles = makeStyles(theme => ({
+  typography: {
+    padding: theme.spacing(2),
+  },
+}))
+
 const ParticipantsList = observer(() => {
+  const classes = useStyles()
   const rootStore = useContext(rootStoreContext)
   const participantsStore = rootStore.ParticipantStore
   const [isLoading, setIsLoading] = useState(false)
 
+  const [anchorEl, setAnchorEl] = React.useState(null)
   // useEffect is a hook that gets called after every render/re-render.  Empty array second argument prevents it from running again.
   useEffect(() => {
     setIsLoading(true)
     participantsStore.getParticipants()
     setIsLoading(false)
   }, [])
+
+  const handleClick = event => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
+  const open = Boolean(anchorEl)
+  const id = open ? "simple-popover" : undefined
 
   return (
     <Fragment>
@@ -94,9 +116,38 @@ const ParticipantsList = observer(() => {
                       <Typography>Race</Typography>
                     </TableCell>
                     <TableCell>
-                      <Fab color="primary" size="small" aria-label="add">
+                      <Fab
+                        color="primary"
+                        size="small"
+                        aria-label="add"
+                        onClick={handleClick}
+                      >
                         <AddIcon />
                       </Fab>
+                      <Popover
+                        id={id}
+                        open={open}
+                        anchorEl={anchorEl}
+                        onClose={handleClose}
+                        anchorOrigin={{
+                          vertical: "bottom",
+                          horizontal: "center",
+                        }}
+                        transformOrigin={{
+                          vertical: "top",
+                          horizontal: "center",
+                        }}
+                      >
+                        <Typography className={classes.typography}>
+                          Step
+                        </Typography>
+                        <Typography className={classes.typography}>
+                          Case Management
+                        </Typography>
+                        <Typography className={classes.typography}>
+                          Legal
+                        </Typography>
+                      </Popover>
                     </TableCell>
                   </TableRow>
                 ))}
