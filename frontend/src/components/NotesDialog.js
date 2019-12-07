@@ -19,8 +19,8 @@ function NotesDialog({ visibleDialog, toggleVisibleDialog, queueData, id }) {
   }
 
   useEffect(() => {
-    setParticipantNotes("")
-  }, [queueData, id])
+    setParticipantNotes(queueStore.getNotes(queueData, id))
+  }, [queueStore, queueStore.getNotes, queueData, id])
 
   return (
     <Dialog
@@ -32,9 +32,7 @@ function NotesDialog({ visibleDialog, toggleVisibleDialog, queueData, id }) {
     >
       <DialogTitle id="note-dialog-title">Participant Notes</DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          Current Note: {queueStore.getNotes(queueData, id)}
-        </DialogContentText>
+        <DialogContentText>Enter a note:</DialogContentText>
         <TextField
           id="notes"
           type="text"

@@ -96,14 +96,12 @@ const AllQueues = observer(() => {
   //Update all queues on first rendering
   useEffect(() => {
     for (let i = 1; i <= queueSize; i++) queueStore.getQueue(i)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [queueStore, queueSize, queueStore.getQueue])
 
   //Update queue of selected tab
   useEffect(() => {
     queueStore.getQueue(tabValue + 1)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tabValue])
+  }, [queueStore, queueStore.getQueue, tabValue])
 
   const tabArray = []
   for (let i = 1; i <= queueSize; i++) {
