@@ -96,7 +96,7 @@ const AllQueues = observer(() => {
   //Update all queues on first rendering
   useEffect(() => {
     for (let i = 1; i <= queueSize; i++) queueStore.getQueue(i)
-  }, [queueStore])
+  }, [queueSize, queueStore])
 
   //Update queue of selected tab
   useEffect(() => {
