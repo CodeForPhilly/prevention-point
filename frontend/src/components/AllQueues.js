@@ -96,12 +96,12 @@ const AllQueues = observer(() => {
   //Update all queues on first rendering
   useEffect(() => {
     for (let i = 1; i <= queueSize; i++) queueStore.getQueue(i)
-  }, [queueStore, queueSize, queueStore.getQueue])
+  }, [queueStore, queueSize])
 
   //Update queue of selected tab
   useEffect(() => {
     queueStore.getQueue(tabValue + 1)
-  }, [queueStore, queueStore.getQueue, tabValue])
+  }, [queueStore, tabValue])
 
   const tabArray = []
   for (let i = 1; i <= queueSize; i++) {
