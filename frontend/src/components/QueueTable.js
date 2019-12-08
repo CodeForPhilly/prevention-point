@@ -125,7 +125,7 @@ const QueueTable = observer(queueData => {
           {
             title: "Seen",
             //eslint-disable-next-line
-            render: ({id }) => <SeenButton id={id} />,
+            render: ({ id }) => <SeenButton id={id} />,
           },
           {
             title: "Notes",
