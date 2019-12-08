@@ -71,6 +71,7 @@ const QueueTable = observer(queueData => {
       </IconButton>
     )
   }
+
   return (
     <Paper className={classes.root}>
       <MaterialTable
