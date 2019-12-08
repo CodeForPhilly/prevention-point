@@ -18,11 +18,12 @@ const ParticipantsList = observer(() => {
   const [isLoading, setIsLoading] = useState(false)
 
   // useEffect is a hook that gets called after every render/re-render.  Empty array second argument prevents it from running again.
+  // Empty array throws eslint warning--treated as an error in TravisCI.  Including dependency to resolve it.
   useEffect(() => {
     setIsLoading(true)
     participantsStore.getParticipants()
     setIsLoading(false)
-  }, [])
+  }, [participantsStore])
 
   return (
     <Fragment>

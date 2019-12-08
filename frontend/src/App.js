@@ -28,7 +28,8 @@ const App = observer(() => {
       }
     }
     stillAuthenticated()
-  }, []) // Hooks equivalent to "componentDidMount"
+    //Add in dependency to eliminate eslint error
+  }, [rootStore.authStore]) // Hooks equivalent to "componentDidMount"
 
   if (rootStore.authStore.isAuthenticated === null) {
     return null
