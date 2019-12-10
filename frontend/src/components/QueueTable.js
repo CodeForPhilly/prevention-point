@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useState } from "react"
 import { observer } from "mobx-react-lite"
 import PropTypes from "prop-types"
 import { makeStyles } from "@material-ui/styles"
@@ -26,51 +26,61 @@ const useStyles = makeStyles(theme => ({
 const QueueTable = observer(queueData => {
   const queueStore = useContext(QueueStoreContext)
   const classes = useStyles()
+  const [visibleDialog, setVisibleDialog] = useState(false)
+  const [notesVisit, setNotesVisit] = useState(1)
 
-  const [visibleDialog, setVisibleDialog] = React.useState(false)
+  const handleNotesClick = visitId => {
+    setNotesVisit(visitId)
+    toggleVisibleDialog()
+  }
+
   const toggleVisibleDialog = () => {
     setVisibleDialog(!visibleDialog)
   }
 
+  const seenHandler = id => {
+    queueStore.updateStatus(queueData.queueData, id.id, "SEEN")
+  }
+
   const statusOptions = [
-    { value: "ARRIVED", name: "Arrived" },
-    { value: "SEEN", name: "Seen" },
+    { value: "ARRIVED", name: "Waiting" },
     { value: "STEPPED_OUT", name: "Stepped Out" },
-    { value: "CAME_BACK", name: "Came Back" },
     { value: "LEFT", name: "Left" },
   ]
+
   const urgencyOptions = [
-    { value: 1, name: 1 },
-    { value: 2, name: 2 },
-    { value: 3, name: 3 },
-    { value: 4, name: 4 },
-    { value: 5, name: 5 },
+    { value: "_1", name: 1 },
+    { value: "_2", name: 2 },
+    { value: "_3", name: 3 },
+    { value: "_4", name: 4 },
+    { value: "_5", name: 5 },
   ]
 
-  const NotesButton = () => {
+  const NotesButton = visitId => {
     return (
-      <IconButton onClick={toggleVisibleDialog}>
+      <IconButton onClick={() => handleNotesClick(visitId)}>
         <EditIcon />
       </IconButton>
     )
   }
 
-  const SeenButton = () => {
+  const SeenButton = i => {
     return (
-      <IconButton>
+      <IconButton onClick={() => seenHandler(i)}>
         <CheckIcon />
       </IconButton>
     )
   }
+
   return (
     <Paper className={classes.root}>
       <MaterialTable
-        title={queueStore.queueStats[queueData["queueData"]].name}
+        title={queueStore.queueStats[queueData.queueData].name}
         className={classes.table}
         options={{
           search: false,
         }}
-        data={queueStore.queues[queueData["queueData"]].map(x => ({
+        data={queueStore.queues[queueData.queueData].map(x => ({
           urgency: x.urgency,
           last: x.participant.last_name,
           uid: x.participant.pp_id,
@@ -79,6 +89,7 @@ const QueueTable = observer(queueData => {
           service: x.service.name,
           seen: false,
           notes: false,
+          id: x.id,
         }))}
         columns={[
           {
@@ -89,6 +100,8 @@ const QueueTable = observer(queueData => {
                 id={id}
                 initialValue={urgency}
                 items={urgencyOptions}
+                queueData={queueData.queueData}
+                column="urgency"
               />
             ),
           },
@@ -103,6 +116,8 @@ const QueueTable = observer(queueData => {
                 id={id}
                 initialValue={status}
                 items={statusOptions}
+                queueData={queueData.queueData}
+                column="status"
               />
             ),
           },
@@ -122,6 +137,8 @@ const QueueTable = observer(queueData => {
       <NotesDialog
         visibleDialog={visibleDialog}
         toggleVisibleDialog={toggleVisibleDialog}
+        queueData={queueData.queueData}
+        id={notesVisit.id}
       />
     </Paper>
   )

@@ -6,11 +6,11 @@ from enum import Enum
 
 
 class UrgencyLevel(Enum):
-    ONE = 1
-    TWO = 2
-    THREE = 3
-    FOUR = 4
-    FIVE = 5
+    _1 = 1
+    _2 = 2
+    _3 = 3
+    _4 = 4
+    _5 = 5
 
 
 class Visit(models.Model):
@@ -21,4 +21,4 @@ class Visit(models.Model):
         ProgramServiceMap, null=True, on_delete=models.CASCADE
     )
     notes = models.TextField("Visit Notes", null=True, blank=True)
-    urgency = models.CharField(choices=URGENCY_LEVEL, max_length=20, default=UrgencyLevel.ONE)
+    urgency = models.CharField(choices=URGENCY_LEVEL, max_length=20, default=UrgencyLevel._1)

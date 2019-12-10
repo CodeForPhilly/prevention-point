@@ -29,7 +29,7 @@ fake = Faker()
 
 DEFAULT_DEV_ENV_PASS = "password123"
 DEFAULT_GROUPS = [FRONT_DESK, CASE_MANAGER, ADMIN]
-DEFAULT_NUMBER_PARTICIPANTS = 10
+DEFAULT_NUMBER_PARTICIPANTS = 1000
 DEFAULT_NUMBER_VISITS = 100
 DEFAULT_NUMBER_INSURERS = 10
 
@@ -290,7 +290,6 @@ def create_visits(output=True, uds=True, medication=True):
                 )
             )
 
-
 def create_event(visit, type):
     """Create a FrontDeskEvent for thie visit and of this type, e.g. ARRIVED, STEPPED_OUT. Events are created now(), i.e. today"""
     f = FrontDeskEvent()
@@ -299,32 +298,21 @@ def create_event(visit, type):
     f.full_clean()
     f.save()
 
-
 def arrived(visit):
     """After ARRIVED, can be either LEFT, SEEN, STEPPED_OUT or pending (still in ARRIVED status)"""
     create_event(visit, "ARRIVED")
     random.choice([left, seen, stepped_out, pending])(visit)
 
-
 def left(visit):
     create_event(visit, "LEFT")
-
 
 def seen(visit):
     create_event(visit, "SEEN")
 
-
 def stepped_out(visit):
-    """After STEPPED_OUT can be either LEFT, CAME_BACK or pending (still in STEPPED_OUT status)"""
+    """After STEPPED_OUT can be either LEFT, ARRIVED or pending (still in STEPPED_OUT status)"""
     create_event(visit, "STEPPED_OUT")
-    random.choice([left, came_back, pending])(visit)
-
-
-def came_back(visit):
-    """After CAME_BACK, either LEFT, SEEN or pending (still in CAME_BACK status)"""
-    create_event(visit, "CAME_BACK")
-    random.choice([left, seen, pending])(visit)
-
+    random.choice([left, arrived, pending])(visit)
 
 def pending(visit):
     pass

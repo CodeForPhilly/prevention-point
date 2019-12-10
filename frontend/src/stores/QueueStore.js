@@ -95,9 +95,41 @@ export class QueueStore {
       this.setQueue(queueIndex, data)
     } else {
       // TODO: Handle error
-      //console.log("Error")
+      //console.log("Error in getQueue")
     }
   })
+
+  patchVisit = flow(function*(queueIndex, visitIndex, data) {
+    const { ok } = yield api.patchVisit(visitIndex, data)
+    if (ok) {
+      this.getQueue(queueIndex)
+    } else {
+      // TODO: Handle error
+      //console.log("Error in patchVisit")
+    }
+  })
+
+  updateStatus = flow(function*(queueIndex, visitIndex, eventType) {
+    const body = {
+      visit: visitIndex,
+      event_type: eventType,
+    }
+    const { ok } = yield api.postFrontDeskEvent(body)
+    if (ok) {
+      this.getQueue(queueIndex)
+    } else {
+      // TODO: Handle error
+      //console.log("Error in updateStatus")
+    }
+  })
+
+  getNotes(queueIndex, visitIndex) {
+    const array = this.queues[queueIndex].filter(x => x.id === visitIndex)
+    if (array.length === 1) {
+      return array[0].notes
+    }
+    return ""
+  }
 }
 
 export const QueueStoreContext = createContext(new QueueStore())

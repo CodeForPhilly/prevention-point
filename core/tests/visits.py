@@ -37,7 +37,7 @@ class VisitTests(BaseTestCase):
             "program": 1,
             "service": 1,
             "notes": "hello prevention point",
-            "urgency": "ONE",
+            "urgency": "_1",
         }
         response = self.client.post(url, data, format="json", follow=True, **headers)
 
@@ -56,7 +56,7 @@ class VisitTests(BaseTestCase):
             "participant": 1,
             "program": 1,
             "service": 1,
-            "urgency": UrgencyLevel.TWO.name,
+            "urgency": "_2",
         }
         create_response = self.client.post(
             "/api/visits/", data, format="json", **headers
@@ -91,7 +91,7 @@ class VisitTests(BaseTestCase):
                 "program": 1,
                 "service": 2,
                 "notes": "hello prevention point",
-                "urgency": UrgencyLevel.THREE.name,
+                "urgency": "_3",
             }
             post_response = self.client.post(url, data, format="json", **headers)
             self.assertEqual(post_response.status_code, status.HTTP_201_CREATED)
@@ -132,7 +132,7 @@ class VisitMedicalRelationsTests(BaseTestCase):
             "participant_id": 1,
             "program_service_map_id": 1,
             "notes": "hello prevention point",
-            "urgency": UrgencyLevel.TWO.name,
+            "urgency": "_2",
         }
 
         visit = Visit.objects.create(**new_visit)

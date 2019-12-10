@@ -23,6 +23,8 @@ const ParticipantsList = observer(() => {
     setIsLoading(true)
     participantsStore.getParticipants()
     setIsLoading(false)
+    //Suppress eslint error for []
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
