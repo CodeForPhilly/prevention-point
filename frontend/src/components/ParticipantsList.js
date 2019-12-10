@@ -23,7 +23,7 @@ const ParticipantsList = observer(() => {
     setIsLoading(true)
     participantsStore.getParticipants()
     setIsLoading(false)
-  }, [participantsStore])
+  }, [])
 
   return (
     <Fragment>

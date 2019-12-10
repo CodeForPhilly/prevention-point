@@ -28,7 +28,7 @@ class QueueViewSet(viewsets.ViewSet):
         visits_queryset = Visit.objects.filter(
             program_service_map__program_id=program_id,
             created_at__date=datetime.date.today(),
-        )
+        ).order_by("urgency")
 
         todays_visit_data = VisitWithPopulationSerializer(
             visits_queryset, many=True, context={'request': request}
