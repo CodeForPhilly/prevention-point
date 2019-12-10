@@ -28,7 +28,8 @@ const App = observer(() => {
       }
     }
     stillAuthenticated()
-    //Add in dependency to eliminate eslint error
+    //Suppress eslint error for []
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []) // Hooks equivalent to "componentDidMount"
 
   if (rootStore.authStore.isAuthenticated === null) {

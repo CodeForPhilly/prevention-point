@@ -49,11 +49,11 @@ const QueueTable = observer(queueData => {
   ]
 
   const urgencyOptions = [
-    { value: "ONE", name: 1 },
-    { value: "TWO", name: 2 },
-    { value: "THREE", name: 3 },
-    { value: "FOUR", name: 4 },
-    { value: "FIVE", name: 5 },
+    { value: "_1", name: 1 },
+    { value: "_2", name: 2 },
+    { value: "_3", name: 3 },
+    { value: "_4", name: 4 },
+    { value: "_5", name: 5 },
   ]
 
   const NotesButton = visitId => {
