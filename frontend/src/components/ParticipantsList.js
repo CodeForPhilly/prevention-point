@@ -10,6 +10,7 @@ import TableHead from "@material-ui/core/TableHead"
 import TableRow from "@material-ui/core/TableRow"
 import Fab from "@material-ui/core/Fab"
 import AddIcon from "@material-ui/icons/Add"
+import AssignmentIcon from "@material-ui/icons/Assignment"
 import { observer } from "mobx-react-lite"
 
 const ParticipantsList = observer(() => {
@@ -65,7 +66,7 @@ const ParticipantsList = observer(() => {
                     <Typography>Race</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography>Add</Typography>
+                    <Typography>Participant Details</Typography>
                   </TableCell>
                 </TableRow>
               </TableHead>
@@ -94,9 +95,11 @@ const ParticipantsList = observer(() => {
                       <Typography>Race</Typography>
                     </TableCell>
                     <TableCell>
-                      <Fab color="primary" size="small" aria-label="add">
-                        <AddIcon />
-                      </Fab>
+                      <Link to="/participantInfo">
+                        <Fab color="primary" size="small" aria-label="add">
+                          <AssignmentIcon />
+                        </Fab>
+                      </Link>
                     </TableCell>
                   </TableRow>
                 ))}
