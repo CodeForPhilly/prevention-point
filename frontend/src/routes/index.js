@@ -6,6 +6,7 @@ import LoginForm from "../components/LoginForm"
 import MainLayout from "../layouts/MainLayout"
 import ParticipantsList from "../components/ParticipantsList"
 import AllQueues from "../components/AllQueues"
+import ParticipantInfo from "../components/ParticipantInfo"
 
 const Routes = () => {
   return (
@@ -19,6 +20,11 @@ const Routes = () => {
             exact
             path="/participants"
             component={ParticipantsList}
+          />
+          <PrivateRoute
+            exact
+            path="/participantInfo"
+            component={ParticipantInfo}
           />
         </Switch>
       </MainLayout>

@@ -9,6 +9,7 @@ export class ParticipantStore {
 
   // Store Params
   participants = []
+  participantId = ""
   params = {}
 
   // Setters
@@ -24,6 +25,15 @@ export class ParticipantStore {
   setLastNameParam = data => {
     this.params.last_name = data
   }
+  setNewParticipant = data => {
+    this.participants = this.participants.push(data)
+  }
+  setUpdateParticipant = (data, index) => {
+    this.participants[index] = data
+  }
+  setParticipantId = data => {
+    this.participantId = data
+  }
 
   // Getters
   getParticipantsList = () => {
@@ -31,6 +41,9 @@ export class ParticipantStore {
   }
   getParams = () => {
     return toJS(this.params)
+  }
+  getParticipantId = () => {
+    return toJS(this.participantId)
   }
 
   // API Calls
