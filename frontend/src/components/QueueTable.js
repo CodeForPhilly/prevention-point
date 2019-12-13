@@ -1,12 +1,16 @@
-import React from "react"
-import PropTypes, { shape } from "prop-types"
+import React, { useContext, useState } from "react"
+import { observer } from "mobx-react-lite"
+import PropTypes from "prop-types"
 import { makeStyles } from "@material-ui/styles"
 import Paper from "@material-ui/core/Paper"
 import EditIcon from "@material-ui/icons/Edit"
 import CheckIcon from "@material-ui/icons/Check"
 import IconButton from "@material-ui/core/IconButton"
 import MaterialTable from "material-table"
+import moment from "moment"
 import QueueTableDropdown from "./QueueTableDropdown"
+import { QueueStoreContext } from "../stores/QueueStore"
+import NotesDialog from "./NotesDialog"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -19,40 +23,74 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-function QueueTable({ queueData: { name, rows } }) {
+const QueueTable = observer(queueData => {
+  const queueStore = useContext(QueueStoreContext)
   const classes = useStyles()
+  const [visibleDialog, setVisibleDialog] = useState(false)
+  const [notesVisit, setNotesVisit] = useState(1)
+
+  const handleNotesClick = visitId => {
+    setNotesVisit(visitId)
+    toggleVisibleDialog()
+  }
+
+  const toggleVisibleDialog = () => {
+    setVisibleDialog(!visibleDialog)
+  }
+
+  const seenHandler = id => {
+    queueStore.updateStatus(queueData.queueData, id.id, "SEEN")
+  }
+
   const statusOptions = [
-    { value: "checkedIn", name: "Checked In" },
-    { value: "absent", name: "Absent" },
-    { value: "returned", name: "Returned" },
+    { value: "ARRIVED", name: "Waiting" },
+    { value: "STEPPED_OUT", name: "Stepped Out" },
+    { value: "LEFT", name: "Left" },
   ]
+
   const urgencyOptions = [
-    { value: 1, name: 1 },
-    { value: 2, name: 2 },
-    { value: 3, name: 3 },
-    { value: 4, name: 4 },
-    { value: 5, name: 5 },
+    { value: "_1", name: 1 },
+    { value: "_2", name: 2 },
+    { value: "_3", name: 3 },
+    { value: "_4", name: 4 },
+    { value: "_5", name: 5 },
   ]
-  const NotesButton = () => {
+
+  const NotesButton = visitId => {
     return (
-      <IconButton>
+      <IconButton onClick={() => handleNotesClick(visitId)}>
         <EditIcon />
       </IconButton>
     )
   }
-  const SeenButton = () => {
+
+  const SeenButton = i => {
     return (
-      <IconButton>
+      <IconButton onClick={() => seenHandler(i)}>
         <CheckIcon />
       </IconButton>
     )
   }
+
   return (
     <Paper className={classes.root}>
       <MaterialTable
-        title={name}
+        title={queueStore.queueStats[queueData.queueData].name}
         className={classes.table}
-        data={rows}
+        options={{
+          search: false,
+        }}
+        data={queueStore.queues[queueData.queueData].map(x => ({
+          urgency: x.urgency,
+          last: x.participant.last_name,
+          uid: x.participant.pp_id,
+          timeElapsed: moment(x.status.created_at).format("LT"),
+          status: x.status.event_type,
+          service: x.service.name,
+          seen: false,
+          notes: false,
+          id: x.id,
+        }))}
         columns={[
           {
             title: "Urgency",
@@ -62,6 +100,8 @@ function QueueTable({ queueData: { name, rows } }) {
                 id={id}
                 initialValue={urgency}
                 items={urgencyOptions}
+                queueData={queueData.queueData}
+                column="urgency"
               />
             ),
           },
@@ -76,9 +116,12 @@ function QueueTable({ queueData: { name, rows } }) {
                 id={id}
                 initialValue={status}
                 items={statusOptions}
+                queueData={queueData.queueData}
+                column="status"
               />
             ),
           },
+          { title: "Service", field: "service" },
           {
             title: "Seen",
             //eslint-disable-next-line
@@ -91,15 +134,18 @@ function QueueTable({ queueData: { name, rows } }) {
           },
         ]}
       />
+      <NotesDialog
+        visibleDialog={visibleDialog}
+        toggleVisibleDialog={toggleVisibleDialog}
+        queueData={queueData.queueData}
+        id={notesVisit.id}
+      />
     </Paper>
   )
-}
+})
 
 QueueTable.propTypes = {
-  queueData: shape({
-    rows: PropTypes.array,
-    name: PropTypes.string,
-  }),
+  queueData: PropTypes.number,
 }
 
 export default QueueTable

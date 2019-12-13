@@ -7,6 +7,7 @@ admin.site.register(UrineDrugScreen)
 admin.site.register(CaseManagement)
 admin.site.register(Appointment)
 admin.site.register(BehavioralHealthNotes)
+admin.site.register(Visit)
 
 class BaseInline(admin.StackedInline):
     extra = 0
@@ -26,9 +27,9 @@ class CaseManagement(BaseInline):
 class ParticipantAdmin(admin.ModelAdmin):
     inlines = [
             AppointmentInline,
-            MedicationInline,
-            CaseManagement,
-            UrineDrugScreenInline,
+            # MedicationInline,
+            # CaseManagement,
+            # UrineDrugScreenInline,
             ]
 
 admin.site.register(Participant, ParticipantAdmin)

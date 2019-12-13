@@ -1,18 +1,17 @@
-import React from "react"
+import React, { useContext, useEffect, useState } from "react"
+import { observer } from "mobx-react-lite"
 import PropTypes from "prop-types"
 import { makeStyles } from "@material-ui/styles"
 import { Tabs, Tab, Typography, Button } from "@material-ui/core"
-import QueueTable from "./QueueTable"
 import PersonIcon from "@material-ui/icons/Person"
 import TimelapseIcon from "@material-ui/icons/Timelapse"
-import {
-  caseManagementQueueData,
-  legalServicesQueueData,
-  stepQueueData,
-} from "../../fixtures/MockQueueData"
+import AppBar from "@material-ui/core/AppBar"
+import { QueueStoreContext } from "../stores/QueueStore"
+import QueueTable from "./QueueTable"
 
 const useStyles = makeStyles(theme => ({
   root: {
+    flexGrow: 1,
     width: "100%",
   },
   heading: {
@@ -36,23 +35,28 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
+//Forward ref used with MUI BaseButton. Does not allow observer.
 const QueueTabContent = React.forwardRef(({ onClick, queueData }, _ref) => {
+  const queueStore = useContext(QueueStoreContext)
   const classes = useStyles()
+
   return (
     <Button onClick={onClick} className={classes.queueTab}>
       <div>
-        <Typography className={classes.heading}>{queueData.name}</Typography>
+        <Typography className={classes.heading}>
+          {queueStore.queueStats[queueData].name}
+        </Typography>
         <div className={classes.queueTabContent}>
           <div className={classes.queueTabStat}>
             <PersonIcon className={classes.queueTabIcon} />
             <Typography className={classes.queueTabStatValue}>
-              {queueData.length}
+              {queueStore.queueStats[queueData].length}
             </Typography>
           </div>
           <div className={classes.queueTabStat}>
             <TimelapseIcon className={classes.queueTabIcon} />
             <Typography className={classes.queueTabStatValue}>
-              {queueData.waitTime}
+              {queueStore.queueStats[queueData].waitTime}
             </Typography>
           </div>
         </div>
@@ -65,7 +69,7 @@ QueueTabContent.displayName = "QueueTabContent"
 
 QueueTabContent.propTypes = {
   onClick: PropTypes.func,
-  queueData: PropTypes.object,
+  queueData: PropTypes.number,
 }
 
 function QueueTab(props) {
@@ -80,35 +84,56 @@ function QueueTab(props) {
   )
 }
 
-function AllQueues() {
+const AllQueues = observer(() => {
+  const queueStore = useContext(QueueStoreContext)
+  const queueSize = Object.keys(queueStore.queues).length
   const classes = useStyles()
-  const [value, setValue] = React.useState(0)
+  const [tabValue, setTabValue] = useState(0)
   function handleChange(event, newValue) {
-    setValue(newValue)
+    setTabValue(newValue)
+  }
+
+  //Update all queues on first rendering
+  useEffect(() => {
+    for (let i = 1; i <= queueSize; i++) queueStore.getQueue(i)
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  //Update queue of selected tab
+  useEffect(() => {
+    queueStore.getQueue(tabValue + 1)
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tabValue])
+
+  const tabArray = []
+  for (let i = 1; i <= queueSize; i++) {
+    tabArray.push(
+      <QueueTab className={classes.queueTab} queueData={i} key={i} />
+    )
   }
 
   return (
     <div className={classes.root}>
-      <Tabs variant="fullWidth" value={value} onChange={handleChange}>
-        <QueueTab
-          className={classes.queueTab}
-          queueData={caseManagementQueueData}
-        />
-        <QueueTab
-          className={classes.queueTab}
-          queueData={legalServicesQueueData}
-        />
-        <QueueTab className={classes.queueTab} queueData={stepQueueData} />
-      </Tabs>
-      {value === 0 && <QueueTable queueData={caseManagementQueueData} />}
-      {value === 1 && <QueueTable queueData={legalServicesQueueData} />}
-      {value === 2 && <QueueTable queueData={stepQueueData} />}
+      <AppBar position="static" color="default">
+        <Tabs
+          value={tabValue}
+          onChange={handleChange}
+          variant="scrollable"
+          scrollButtons="on"
+          indicatorColor="primary"
+          textColor="primary"
+          aria-label="scrollable force tabs example"
+        >
+          {tabArray}
+        </Tabs>
+      </AppBar>
+      <QueueTable queueData={tabValue + 1} />
     </div>
   )
-}
+})
 
 AllQueues.propTypes = {
-  queueData: PropTypes.array,
+  queueData: PropTypes.string,
   classes: PropTypes.object,
 }
 
