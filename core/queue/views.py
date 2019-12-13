@@ -28,10 +28,10 @@ class QueueViewSet(viewsets.ViewSet):
         visits_queryset = Visit.objects.filter(
             program_service_map__program_id=program_id,
             created_at__date=datetime.date.today(),
-        )
+        ).order_by("urgency", "-created_at")
 
         todays_visit_data = VisitWithPopulationSerializer(
-            visits_queryset, many=True
+            visits_queryset, many=True, context={'request': request}
         ).data
         active_visits_queue = []
 
@@ -47,7 +47,7 @@ class QueueViewSet(viewsets.ViewSet):
             if front_desk_events_queryset.exists():
 
                 visit_event_data = FrontDeskEventForQueueSerializer(
-                    front_desk_events_queryset, many=True
+                    front_desk_events_queryset, many=True, context={'request': request}
                 ).data
                 event_type = visit_event_data[0]["event_type"]
 

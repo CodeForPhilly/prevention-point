@@ -20,4 +20,4 @@ matrix:
         - yarn
       script:
         - yarn lint
-        - yarn test
+        - yarn test -u -t="UpdateSnapshot"

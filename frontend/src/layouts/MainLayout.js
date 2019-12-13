@@ -10,10 +10,11 @@ import IconButton from "@material-ui/core/IconButton"
 import MenuIcon from "@material-ui/icons/Menu"
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
 import ChevronRightIcon from "@material-ui/icons/ChevronRight"
-import UserSearch from "./UserSearch"
 import Navbar from "../components/Navbar"
+import UserSearch from "../components/UserSearch"
+import PropTypes from "prop-types"
 
-const drawerWidth = 400
+const drawerWidth = 300
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -45,12 +46,12 @@ const useStyles = makeStyles(theme => ({
   },
   drawerPaper: {
     width: drawerWidth,
-    background: "#F2FCFF",
+    background: theme.palette.background.default,
   },
   drawerHeader: {
     display: "flex",
     alignItems: "center",
-    padding: "0 8px",
+    padding: theme.spacing(0, 1),
     ...theme.mixins.toolbar,
     justifyContent: "flex-end",
   },
@@ -72,7 +73,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default function PersistentDrawerLeft() {
+const PersistentDrawerLeft = props => {
   const classes = useStyles()
   const theme = useTheme()
   const [open, setOpen] = React.useState(false)
@@ -96,8 +97,8 @@ export default function PersistentDrawerLeft() {
       >
         <Toolbar>
           <IconButton
-            //color="inherit"  //not necessary
-            aria-label="Open drawer"
+            color="inherit"
+            aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
             className={clsx(classes.menuButton, open && classes.hide)}
@@ -127,13 +128,20 @@ export default function PersistentDrawerLeft() {
         </div>
         <Divider />
         <UserSearch />
-        <Divider />
       </Drawer>
       <main
         className={clsx(classes.content, {
           [classes.contentShift]: open,
         })}
-      />
+      >
+        {props.children}
+      </main>
     </div>
   )
 }
+
+PersistentDrawerLeft.propTypes = {
+  children: PropTypes.element.isRequired,
+}
+
+export default PersistentDrawerLeft

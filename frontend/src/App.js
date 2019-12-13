@@ -9,6 +9,9 @@ const theme = createMuiTheme({
   palette: {
     primary: { main: "#086375", contrastText: "#ffffff" },
     secondary: { main: "#119da4", contrastText: "#ffffff" },
+    background: {
+      default: "#F2FCFF",
+    },
   },
 })
 
@@ -25,6 +28,8 @@ const App = observer(() => {
       }
     }
     stillAuthenticated()
+    //Suppress eslint error for []
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []) // Hooks equivalent to "componentDidMount"
 
   if (rootStore.authStore.isAuthenticated === null) {
