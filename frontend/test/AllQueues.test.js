@@ -21,6 +21,9 @@ describe("<AllQueues />", () => {
   let cmButton
   let h6
   let h6Update
+  let tables
+  let table
+  let tr
 
   // Create initial props that get passed into the components, (none in this case)
   const initialProps = {}
@@ -40,6 +43,8 @@ describe("<AllQueues />", () => {
       testingButton = buttons.at(0)
       cmButton = buttons.at(1)
       h6 = wrapper.find("h6")
+      tables = wrapper.find("table")
+      table = tables.at(0)
     })
 
     // what to do after each test
@@ -56,6 +61,11 @@ describe("<AllQueues />", () => {
     // UI Integrity test
     it("should have 9 buttons", () => {
       expect(buttons.length).toEqual(9)
+    })
+
+    // UI Integrity test
+    it("should have 2 tables", () => {
+      expect(tables.length).toEqual(2)
     })
 
     // UI Integrity test
@@ -77,6 +87,20 @@ describe("<AllQueues />", () => {
       //Necessary to update the wrapper to see effect of click
       h6Update = wrapper.update().find("h6")
       expect(h6Update.text()).toEqual("CM")
+    })
+
+    it("should be have a shorter Testing queue if status is set to 'left'", () => {
+      tr = table.find("tr")
+      expect(tr.length).toEqual(2)
+    })
+
+    it("should be have a shorter CM queue if status is set to 'left'", () => {
+      cmButton.simulate("click")
+      expect(cmButton.text()).toEqual("CM00")
+      //Necessary to update the wrapper to see effect of click
+      table = wrapper.update().find("table")
+      tr = table.find("tr")
+      expect(tr.length).toEqual(3)
     })
   })
 })

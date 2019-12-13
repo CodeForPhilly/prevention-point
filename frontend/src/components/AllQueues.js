@@ -87,15 +87,23 @@ function QueueTab(props) {
 const AllQueues = observer(() => {
   const queueStore = useContext(QueueStoreContext)
   const queueSize = Object.keys(queueStore.queues).length
-
-  useEffect(() => {
-    for (let i = 1; i <= queueSize; i++) queueStore.getQueue(i)
-  })
   const classes = useStyles()
   const [tabValue, setTabValue] = useState(0)
   function handleChange(event, newValue) {
     setTabValue(newValue)
   }
+
+  //Update all queues on first rendering
+  useEffect(() => {
+    for (let i = 1; i <= queueSize; i++) queueStore.getQueue(i)
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  //Update queue of selected tab
+  useEffect(() => {
+    queueStore.getQueue(tabValue + 1)
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tabValue])
 
   const tabArray = []
   for (let i = 1; i <= queueSize; i++) {
