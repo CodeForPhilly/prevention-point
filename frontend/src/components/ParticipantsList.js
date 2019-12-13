@@ -26,7 +26,7 @@ const ParticipantsList = observer(() => {
   }, [participantsStore])
 
   const handleParticipant = (e, participant) => {
-    participantsStore.setParticipantId(participant.pp_id)
+    participantsStore.setParticipant(participant)
   }
 
   return (

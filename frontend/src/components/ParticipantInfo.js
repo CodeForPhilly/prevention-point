@@ -18,6 +18,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel"
 import FormLabel from "@material-ui/core/FormLabel"
 import Button from "@material-ui/core/Button"
 import { observer } from "mobx-react-lite"
+import { useHistory } from "react-router-dom"
 // import { toJS } from "mobx"
 
 const useStyles = makeStyles(theme => ({
@@ -74,28 +75,37 @@ const ParticipantInfo = observer(() => {
   const participantStore = rootStore.ParticipantStore
 
   const [open, setOpen] = React.useState("")
+  const [id, setId] = React.useState(0)
+  const [lastFourSSN, setSSN] = React.useState(0)
+  const [startDate, setStartDate] = React.useState("")
+  const [insurer, setInsurer] = React.useState("")
   const [firstName, setFirstName] = React.useState("")
   const [lastName, setLastName] = React.useState("")
   const [dateOfBirth, setDateOfBirth] = React.useState("")
   const [ppId, setPPId] = React.useState("")
   const [race, setRace] = React.useState("")
   const [gender, setGender] = React.useState("")
-  const [hasInsurance, setHasInsurance] = React.useState("")
+  const [hasInsurance, setHasInsurance] = React.useState(false)
   const [insuranceType, setInsuranceType] = React.useState("")
   const [program, setProgram] = React.useState("")
   const [service, setService] = React.useState("")
   const [priority, setPriority] = React.useState("")
   const [note, setNote] = React.useState("")
+  const history = useHistory()
 
-  let participantId = participantStore.getParticipantId()
+  let participant = participantStore.getParticipant()
   let data = participantStore.getParticipantsList()
-  let participantIndex = data.findIndex(val => val.pp_id === participantId)
+  let participantIndex = data.findIndex(val => val.pp_id === participant.pp_id)
   // useEffect is a hook that gets called after every render/re-render.  Empty array second argument prevents it from running again.
   useEffect(() => {
     if (participantIndex > -1) {
       // eslint-disable-next-line no-console
       // console.log(this.props.participantData)
       // assign incoming participant data if available
+      setId(data[participantIndex].id)
+      setSSN(data[participantIndex].last_four_ssn)
+      setStartDate(data[participantIndex].start_date)
+      setInsurer(data[participantIndex].insurer)
       setFirstName(data[participantIndex].first_name)
       setLastName(data[participantIndex].last_name)
       setDateOfBirth(data[participantIndex].date_of_birth)
@@ -114,7 +124,10 @@ const ParticipantInfo = observer(() => {
   const handleFNameChange = e => setFirstName(e.target.value)
   const handleLNameChange = e => setLastName(e.target.value)
   const handleDOBChange = e => setDateOfBirth(e.target.value)
-  const handleUUIDChange = e => setPPId(e.target.value)
+  const handleUUIDChange = e => {
+    setPPId(e.target.value)
+    setSSN(e.target.value.slice(-4))
+  }
   const handleRaceChange = e => setRace(e.target.value)
   const handleGenderChange = e => setGender(e.target.value)
   const handleHasInsuranceChange = e => setHasInsurance(e.target.value)
@@ -123,6 +136,16 @@ const ParticipantInfo = observer(() => {
   const handleServiceChange = e => setService(e.target.value)
   const handlePriorityLevelChange = e => setPriority(e.target.value)
   const handleNoteChange = e => setNote(e.target.value)
+
+  const createStartDate = () => {
+    var now = new Date()
+    var y = now.getFullYear()
+    var m = now.getMonth() + 1
+    var d = now.getDate()
+    return (
+      "" + y + "-" + (m < 10 ? "0" : "") + m + "-" + (d < 10 ? "0" : "") + d
+    )
+  }
 
   // set store stuff here and update Mobx on submit
   function handleClose() {
@@ -137,29 +160,33 @@ const ParticipantInfo = observer(() => {
     e.preventDefault()
     // match participant ID
     if (participantIndex > -1) {
-      participantStore.setUpdateParticipant(
-        {
-          first_name: firstName,
-          last_name: lastName,
-          date_of_birth: dateOfBirth,
-          pp_id: ppId,
-          race: race,
-          gender: gender,
-          is_insured: hasInsurance,
-          insuranceType: insuranceType,
-          program: program,
-          service: service,
-          priority: priority,
-          note: note,
-        },
-        participantIndex
-      )
-      // if no match occurs then create new Participant
-    } else {
-      participantStore.setNewParticipant({
+      participantStore.setParticipant({
+        id: id,
         first_name: firstName,
         last_name: lastName,
+        last_four_ssn: lastFourSSN,
         date_of_birth: dateOfBirth,
+        start_date: startDate,
+        pp_id: ppId,
+        race: race,
+        gender: gender,
+        is_insured: hasInsurance,
+        insuranceType: insuranceType,
+        insurer: insurer,
+        program: program,
+        service: service,
+        priority: priority,
+        note: note,
+      })
+      participantStore.updateParticipant()
+      // if no match occurs then create new Participant
+    } else {
+      participantStore.setParticipant({
+        first_name: firstName,
+        last_name: lastName,
+        last_four_ssn: lastFourSSN,
+        date_of_birth: dateOfBirth,
+        start_date: createStartDate(),
         pp_id: ppId,
         race: race,
         gender: gender,
@@ -170,7 +197,9 @@ const ParticipantInfo = observer(() => {
         priority: priority,
         note: note,
       })
+      participantStore.createParticipant()
     }
+    history.push("/")
   }
 
   const classes = useStyles()
