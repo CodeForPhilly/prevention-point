@@ -11,8 +11,8 @@ export const caseManagementQueueData = {
   waitTime: "10 minutes",
   length: 2,
   rows: [
-    createData(1, "FL159", "Last", "1:23 PM", "checkedIn", true),
-    createData(1, "FL237", "Last", "1:23 PM", "checkedIn", false),
+    createData(1, "FL159", "Last", "1:23 PM", "Waiting", true),
+    createData(1, "FL237", "Last", "1:23 PM", "Waiting", false),
   ],
 }
 export const legalServicesQueueData = {
@@ -21,9 +21,9 @@ export const legalServicesQueueData = {
   waitTime: "5 minutes",
   length: 3,
   rows: [
-    createData(1, "FL262", "Last", "1:23 PM", "checkedIn", false),
-    createData(1, "FL305", "Last", "1:23 PM", "checkedIn", false),
-    createData(3, "FL356", "Last", "1:23 PM", "checkedIn", false),
+    createData(1, "FL262", "Last", "1:23 PM", "Waiting", false),
+    createData(1, "FL305", "Last", "1:23 PM", "Waiting", false),
+    createData(3, "FL356", "Last", "1:23 PM", "Waiting", false),
   ],
 }
 export const stepQueueData = {
@@ -32,10 +32,10 @@ export const stepQueueData = {
   waitTime: "7 minutes",
   length: 5,
   rows: [
-    createData(1, "FL159", "Last", "1:23 PM", "checkedIn", false),
-    createData(1, "FL237", "Last", "1:23 PM", "checkedIn", false),
-    createData(3, "FL262", "Last", "1:23 PM", "checkedIn", true),
-    createData(1, "FL305", "Last", "1:23 PM", "checkedIn", false),
-    createData(5, "FL356", "Last", "1:23 PM", "checkedIn", true),
+    createData(1, "FL159", "Last", "1:23 PM", "Waiting", false),
+    createData(1, "FL237", "Last", "1:23 PM", "Waiting", false),
+    createData(3, "FL262", "Last", "1:23 PM", "Waiting", true),
+    createData(1, "FL305", "Last", "1:23 PM", "Waiting", false),
+    createData(5, "FL356", "Last", "1:23 PM", "Waiting", true),
   ],
 }
