@@ -8,6 +8,11 @@ Currently, they are storing data from their programs in separate Excel spreadshe
 
 This project would work to migrate all of the disparate data sources into one system, make a UI that allows Prevention Point to access all participant data in one system, and increase the ease with which program coordinators can evaluate and monitor activities.
 
+## Before Contributing: 
+
+* Read through the [Wiki](https://github.com/CodeForPhilly/prevention-point/wiki). 
+* Familiarize yourself with the agreed upon project [change management practices](https://github.com/CodeForPhilly/prevention-point/wiki/Change-Management-Practices).
+
 ## [Code of Conduct](https://codeforphilly.org/pages/code_of_conduct/)
 
 This is a Code for Philly project operating under their code of conduct.
