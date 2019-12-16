@@ -19,7 +19,7 @@ import FormLabel from "@material-ui/core/FormLabel"
 import Button from "@material-ui/core/Button"
 import { observer } from "mobx-react-lite"
 import { useHistory } from "react-router-dom"
-// import { toJS } from "mobx"
+import { format } from "date-fns"
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -73,132 +73,81 @@ const useStyles = makeStyles(theme => ({
 const ParticipantInfo = observer(() => {
   const rootStore = useContext(rootStoreContext)
   const participantStore = rootStore.ParticipantStore
-
+  const [participant, setParticipant] = React.useState({})
   const [open, setOpen] = React.useState("")
-  const [id, setId] = React.useState(0)
-  const [lastFourSSN, setSSN] = React.useState(0)
-  const [startDate, setStartDate] = React.useState("")
-  const [insurer, setInsurer] = React.useState("")
-  const [firstName, setFirstName] = React.useState("")
-  const [lastName, setLastName] = React.useState("")
-  const [dateOfBirth, setDateOfBirth] = React.useState("")
-  const [ppId, setPPId] = React.useState("")
-  const [race, setRace] = React.useState("")
-  const [gender, setGender] = React.useState("")
-  const [hasInsurance, setHasInsurance] = React.useState(false)
-  const [insuranceType, setInsuranceType] = React.useState("")
-  const [program, setProgram] = React.useState("")
-  const [service, setService] = React.useState("")
-  const [priority, setPriority] = React.useState("")
-  const [note, setNote] = React.useState("")
   const history = useHistory()
 
-  let participant = participantStore.getParticipant()
+  let currentParticipant = participantStore.getParticipant()
   let data = participantStore.getParticipantsList()
-  let participantIndex = data.findIndex(val => val.pp_id === participant.pp_id)
+  let participantIndex = data.findIndex(
+    val => val.pp_id === currentParticipant.pp_id
+  )
   // useEffect is a hook that gets called after every render/re-render.  Empty array second argument prevents it from running again.
   useEffect(() => {
     if (participantIndex > -1) {
-      // eslint-disable-next-line no-console
-      // console.log(this.props.participantData)
       // assign incoming participant data if available
-      setId(data[participantIndex].id)
-      setSSN(data[participantIndex].last_four_ssn)
-      setStartDate(data[participantIndex].start_date)
-      setInsurer(data[participantIndex].insurer)
-      setFirstName(data[participantIndex].first_name)
-      setLastName(data[participantIndex].last_name)
-      setDateOfBirth(data[participantIndex].date_of_birth)
-      setPPId(data[participantIndex].pp_id)
-      setRace(data[participantIndex].race)
-      setGender(data[participantIndex].gender)
-      setHasInsurance(data[participantIndex].is_insured)
-      // setInsuranceType(data.insuranceType)
-      // setProgram(data.program)
-      // setService(data.service)
-      // setPriority(data.priority)
-      // setNote(data.note)
+      setParticipant({
+        id: data[participantIndex].id,
+        firstName: data[participantIndex].first_name,
+        lastName: data[participantIndex].last_name,
+        lastFourSSN: data[participantIndex].last_four_ssn,
+        dateOfBirth: data[participantIndex].date_of_birth,
+        startDate: data[participantIndex].start_date,
+        ppId: data[participantIndex].pp_id,
+        race: data[participantIndex].race,
+        gender: data[participantIndex].gender,
+        hasInsurance: data[participantIndex].is_insured,
+        insuranceType: data[participantIndex],
+        insurer: data[participantIndex].insurer,
+        program: data[participantIndex].program,
+        service: data[participantIndex].service,
+        priority: data[participantIndex].priority,
+        note: data[participantIndex].note,
+      })
     }
   }, [])
 
-  const handleFNameChange = e => setFirstName(e.target.value)
-  const handleLNameChange = e => setLastName(e.target.value)
-  const handleDOBChange = e => setDateOfBirth(e.target.value)
-  const handleUUIDChange = e => {
-    setPPId(e.target.value)
-    setSSN(e.target.value.slice(-4))
-  }
-  const handleRaceChange = e => setRace(e.target.value)
-  const handleGenderChange = e => setGender(e.target.value)
-  const handleHasInsuranceChange = e => setHasInsurance(e.target.value)
-  const handleInsuranceTypeChange = e => setInsuranceType(e.target.value)
-  const handleProgramChange = e => setProgram(e.target.value)
-  const handleServiceChange = e => setService(e.target.value)
-  const handlePriorityLevelChange = e => setPriority(e.target.value)
-  const handleNoteChange = e => setNote(e.target.value)
-
   const createStartDate = () => {
-    var now = new Date()
-    var y = now.getFullYear()
-    var m = now.getMonth() + 1
-    var d = now.getDate()
-    return (
-      "" + y + "-" + (m < 10 ? "0" : "") + m + "-" + (d < 10 ? "0" : "") + d
-    )
+    return format(new Date(), "yyyy-MM-dd")
   }
-
+  const changeParticipant = (e, args) => {
+    setParticipant(prevState => ({
+      ...prevState,
+      [args]: e.target.value,
+    }))
+  }
   // set store stuff here and update Mobx on submit
   function handleClose() {
     setOpen(false)
   }
-
   function handleOpen() {
     setOpen(true)
   }
-
   function handleSubmit(e) {
     e.preventDefault()
     // match participant ID
-    if (participantIndex > -1) {
-      participantStore.setParticipant({
-        id: id,
-        first_name: firstName,
-        last_name: lastName,
-        last_four_ssn: lastFourSSN,
-        date_of_birth: dateOfBirth,
-        start_date: startDate,
-        pp_id: ppId,
-        race: race,
-        gender: gender,
-        is_insured: hasInsurance,
-        insuranceType: insuranceType,
-        insurer: insurer,
-        program: program,
-        service: service,
-        priority: priority,
-        note: note,
-      })
-      participantStore.updateParticipant()
-      // if no match occurs then create new Participant
-    } else {
-      participantStore.setParticipant({
-        first_name: firstName,
-        last_name: lastName,
-        last_four_ssn: lastFourSSN,
-        date_of_birth: dateOfBirth,
-        start_date: createStartDate(),
-        pp_id: ppId,
-        race: race,
-        gender: gender,
-        is_insured: hasInsurance,
-        insuranceType: insuranceType,
-        program: program,
-        service: service,
-        priority: priority,
-        note: note,
-      })
-      participantStore.createParticipant()
-    }
+    participantStore.setParticipant({
+      id: participantIndex > -1 ? participant.id : null,
+      first_name: participant.firstName,
+      last_name: participant.lastName,
+      last_four_ssn: participant.lastFourSSN,
+      date_of_birth: participant.dateOfBirth,
+      start_date:
+        participantIndex > -1 ? participant.startDate : createStartDate(),
+      pp_id: participant.ppId,
+      race: participant.race,
+      gender: participant.gender,
+      is_insured: participant.hasInsurance,
+      insuranceType: participant.insuranceType,
+      insurer: participant.insurer,
+      program: participant.program,
+      service: participant.service,
+      priority: participant.priority,
+      note: participant.note,
+    })
+    participantIndex > -1
+      ? participantStore.updateParticipant()
+      : participantStore.createParticipant()
     history.push("/")
   }
 
@@ -228,8 +177,8 @@ const ParticipantInfo = observer(() => {
                     <Input
                       id="user_first-name"
                       name="user_first-name"
-                      value={firstName}
-                      onChange={handleFNameChange}
+                      value={participant.firstName}
+                      onChange={e => changeParticipant(e, "firstName")}
                       required
                     />
                   </FormControl>
@@ -240,8 +189,8 @@ const ParticipantInfo = observer(() => {
                     <Input
                       id="user_last-name"
                       name="user_last-name"
-                      value={lastName}
-                      onChange={handleLNameChange}
+                      value={participant.lastName}
+                      onChange={e => changeParticipant(e, "lastName")}
                       required
                     />
                   </FormControl>
@@ -256,8 +205,8 @@ const ParticipantInfo = observer(() => {
                     <TextField
                       id="user_birth-date"
                       name="user_birth-date"
-                      value={dateOfBirth}
-                      onChange={handleDOBChange}
+                      value={participant.dateOfBirth}
+                      onChange={e => changeParticipant(e, "dateOfBirth")}
                       required
                       style={{ marginTop: 40 }}
                       type="date"
@@ -274,8 +223,8 @@ const ParticipantInfo = observer(() => {
                     <Input
                       id="uuid"
                       name="uuid"
-                      value={ppId}
-                      onChange={handleUUIDChange}
+                      value={participant.ppId}
+                      onChange={e => changeParticipant(e, "ppId")}
                       required
                     />
                   </FormControl>
@@ -296,8 +245,8 @@ const ParticipantInfo = observer(() => {
                         onClose={handleClose.race}
                         onOpen={handleOpen.race}
                         required
-                        value={race}
-                        onChange={handleRaceChange}
+                        value={participant.race}
+                        onChange={e => changeParticipant(e, "race")}
                         inputProps={{
                           name: "race",
                           id: "demo-controlled-open-select",
@@ -332,8 +281,8 @@ const ParticipantInfo = observer(() => {
                         onClose={handleClose.gender}
                         onOpen={handleOpen.gender}
                         required
-                        value={gender}
-                        onChange={handleGenderChange}
+                        value={participant.gender}
+                        onChange={e => changeParticipant(e, "gender")}
                         inputProps={{
                           name: "gender",
                           id: "demo-controlled-open-select",
@@ -366,8 +315,8 @@ const ParticipantInfo = observer(() => {
                         aria-label="insurance"
                         name="hasInsurance"
                         className={classes.group}
-                        value={hasInsurance}
-                        onChange={handleHasInsuranceChange}
+                        value={participant.hasInsurance}
+                        onChange={e => changeParticipant(e, "hasInsurance")}
                         style={{ display: "inline" }}
                       >
                         <FormControlLabel
@@ -393,8 +342,8 @@ const ParticipantInfo = observer(() => {
                         open={open.insuranceType}
                         onClose={handleClose.insuranceType}
                         onOpen={handleOpen.insuranceType}
-                        value={insuranceType}
-                        onChange={handleInsuranceTypeChange}
+                        value={participant.insuranceType}
+                        onChange={e => changeParticipant(e, "insuranceType")}
                         inputProps={{
                           name: "insuranceType",
                           id: "demo-controlled-open-select",
@@ -443,8 +392,8 @@ const ParticipantInfo = observer(() => {
                       onClose={handleClose.program}
                       onOpen={handleOpen.program}
                       required
-                      value={program}
-                      onChange={handleProgramChange}
+                      value={participant.program}
+                      onChange={e => changeParticipant(e, "program")}
                       inputProps={{
                         name: "program",
                         id: "demo-controlled-open-select",
@@ -466,8 +415,8 @@ const ParticipantInfo = observer(() => {
                       onClose={handleClose.service}
                       onOpen={handleOpen.service}
                       required
-                      value={service}
-                      onChange={handleServiceChange}
+                      value={participant.service}
+                      onChange={e => changeParticipant(e, "service")}
                       inputProps={{
                         name: "service",
                         id: "demo-controlled-open-select",
@@ -489,8 +438,8 @@ const ParticipantInfo = observer(() => {
                       open={open.priorityLevel}
                       onClose={handleClose.priorityLevel}
                       onOpen={handleOpen.priorityLevel}
-                      value={priority}
-                      onChange={handlePriorityLevelChange}
+                      value={participant.priority}
+                      onChange={e => changeParticipant(e, "priority")}
                       inputProps={{
                         name: "priorityLevel",
                         id: "demo-controlled-open-select",
@@ -509,8 +458,8 @@ const ParticipantInfo = observer(() => {
                   id="standard-full-width"
                   style={{ margin: 8, marginTop: 40 }}
                   placeholder="Add a note"
-                  onChange={handleNoteChange}
-                  value={note}
+                  onChange={e => changeParticipant(e, "note")}
+                  value={participant.note}
                   fullWidth
                   margin="normal"
                   InputLabelProps={{
