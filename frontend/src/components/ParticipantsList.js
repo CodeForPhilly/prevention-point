@@ -8,12 +8,36 @@ import TableCell from "@material-ui/core/TableCell"
 import TableHead from "@material-ui/core/TableHead"
 import TableRow from "@material-ui/core/TableRow"
 import Fab from "@material-ui/core/Fab"
-import AddIcon from "@material-ui/icons/Add"
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd"
 import { observer } from "mobx-react-lite"
 import { Link } from "react-router-dom"
+import BottomNavigation from "@material-ui/core/BottomNavigation"
+import PersonAddIcon from "@material-ui/icons/PersonAdd"
+import { makeStyles } from "@material-ui/core/styles"
 
 const ParticipantsList = observer(() => {
+  const useStyles = makeStyles({
+    root: {
+      width: "100%",
+      position: "fixed",
+      bottom: 0,
+      backgroundColor: "#c4c4c4",
+    },
+    addParticipant: {
+      float: "right",
+    },
+    addParticipantText: {
+      float: "left",
+      color: "primary",
+      fontWeight: "bold",
+      marginRight: "1em",
+      display: "inline-block",
+      verticalAlign: "middle",
+      lineHeight: "normal",
+    },
+  })
+  const classes = useStyles()
+
   const rootStore = useContext(rootStoreContext)
   const participantsStore = rootStore.ParticipantStore
   const [isLoading, setIsLoading] = useState(false)
@@ -113,9 +137,24 @@ const ParticipantsList = observer(() => {
               </TableBody>
             </Table>
           </div>
-          <Fab color="primary" aria-label="add" size="large">
-            <AddIcon />
-          </Fab>
+          <BottomNavigation showLabels className={classes.root}>
+            <Link to="/participantInfo">
+              <Typography
+                className={classes.addParticipantText}
+                color="primary"
+              >
+                Add New User
+              </Typography>
+              <Fab
+                className={classes.addParticipant}
+                color="primary"
+                size="small"
+                aria-label="add"
+              >
+                <PersonAddIcon />
+              </Fab>
+            </Link>
+          </BottomNavigation>
         </div>
       )}
     </Fragment>
