@@ -9,6 +9,7 @@ export class ParticipantStore {
 
   // Store Params
   participants = []
+  participant = {}
   params = {}
 
   // Setters
@@ -24,6 +25,9 @@ export class ParticipantStore {
   setLastNameParam = data => {
     this.params.last_name = data
   }
+  setParticipant = data => {
+    this.participant = data
+  }
 
   // Getters
   getParticipantsList = () => {
@@ -32,12 +36,38 @@ export class ParticipantStore {
   getParams = () => {
     return toJS(this.params)
   }
+  getParticipant = () => {
+    return toJS(this.participant)
+  }
 
   // API Calls
   getParticipants = flow(function*() {
     const { ok, data } = yield api.getParticipants(toJS(this.params))
     if (ok) {
       this.setParticipantsList(data)
+    } else {
+      // TODO: Handle errors
+    }
+  })
+
+  createParticipant = flow(function*() {
+    const { ok, data } = yield api.createParticipant(toJS(this.participant))
+    if (ok) {
+      // eslint-disable-next-line no-console
+      console.log(data)
+    } else {
+      // TODO: Handle errors
+    }
+  })
+
+  updateParticipant = flow(function*() {
+    const { ok, data } = yield api.updateParticipant(
+      toJS(this.participant.id),
+      toJS(this.participant)
+    )
+    if (ok) {
+      // eslint-disable-next-line no-console
+      console.log(data)
     } else {
       // TODO: Handle errors
     }
