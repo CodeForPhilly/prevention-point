@@ -36,7 +36,7 @@ python manage.py migrate
  ```bash
 python manage.py seed
 ```
-- Create a superuser:
+- Create a superuser (optional):
  ```bash
  python manage.py createsuperuser
 ```
@@ -55,11 +55,23 @@ python manage.py seed
 $ docker-compose down
 ```
 
+### Reinstall backend
+- Shut down the app (if running):
+```bash
+$ docker-compose down
+```
+- Delete docker instances (WARNING: delete all docker instances):
+```bash
+$ docker volume prune
+```
+- Repeat steps starting from [`Getting Started > Activate virtualenv`](https://github.com/CodeForPhilly/prevention-point#back-end)
+
 ### Front-end
  - Make sure you have [`node (>=10.15.3)`](https://nodejs.org/en/) and [`yarn (>=1.15.2)`](https://yarnpkg.com/en/docs/install) installed
  - From the project's root directory, `cd frontend`
  - Run `yarn` to install dependencies
  - Run `yarn dev` and navigate to `localhost:1234`
+ - Default username / password: admin / password123
 
 Other tools
 ## Links
