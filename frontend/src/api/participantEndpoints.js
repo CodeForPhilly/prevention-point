@@ -1,4 +1,20 @@
-export const getParticipants = api => async () => await api.get("participants/")
+import queryString from "query-string"
+
+const removeEmptyParams = params => {
+  let filteredParams = {}
+  for (const key in params) {
+    if (["", null, undefined].includes(params[key])) continue
+    filteredParams[key] = params[key]
+  }
+  return filteredParams
+}
+
+export const getParticipants = api => async params => {
+  const queryParams = queryString.stringify(removeEmptyParams(params))
+  return await api.get(
+    queryParams ? `participants?${queryParams}` : "participants"
+  )
+}
 
 export const getParticipantById = api => async id =>
   await api.get(`participants/${id}/`)
