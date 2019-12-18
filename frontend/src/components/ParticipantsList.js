@@ -2,7 +2,6 @@ import React, { Fragment, useContext, useEffect, useState } from "react"
 import { rootStoreContext } from "../stores/RootStore"
 import Breadcrumbs from "@material-ui/core/Breadcrumbs"
 import Typography from "@material-ui/core/Typography"
-import Link from "@material-ui/core/Link"
 import Table from "@material-ui/core/Table"
 import TableBody from "@material-ui/core/TableBody"
 import TableCell from "@material-ui/core/TableCell"
@@ -10,8 +9,9 @@ import TableHead from "@material-ui/core/TableHead"
 import TableRow from "@material-ui/core/TableRow"
 import Fab from "@material-ui/core/Fab"
 import AddIcon from "@material-ui/icons/Add"
-import AssignmentIcon from "@material-ui/icons/Assignment"
+import AssignmentIndIcon from "@material-ui/icons/AssignmentInd"
 import { observer } from "mobx-react-lite"
+import { Link } from "react-router-dom"
 
 const ParticipantsList = observer(() => {
   const rootStore = useContext(rootStoreContext)
@@ -23,9 +23,11 @@ const ParticipantsList = observer(() => {
     setIsLoading(true)
     participantsStore.getParticipants()
     setIsLoading(false)
-    //Suppress eslint error for []
-    //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [participantsStore])
+
+  const handleParticipant = (e, participant) => {
+    participantsStore.setParticipant(participant)
+  }
 
   return (
     <Fragment>
@@ -34,7 +36,7 @@ const ParticipantsList = observer(() => {
       ) : (
         <div>
           <Breadcrumbs separator="›" aria-label="breadcrumb">
-            <Link color="inherit" href="/">
+            <Link color="inherit" to="/">
               Home
             </Link>
             <Typography color="textPrimary">Search Results</Typography>
@@ -68,13 +70,16 @@ const ParticipantsList = observer(() => {
                     <Typography>Race</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography>Participant Details</Typography>
+                    <Typography>Edit Participant Info</Typography>
                   </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {participantsStore.participants.map((participant, index) => (
-                  <TableRow key={index}>
+                  <TableRow
+                    key={index}
+                    onClick={e => handleParticipant(e, participant)}
+                  >
                     <TableCell>
                       <Typography>Number</Typography>
                     </TableCell>
@@ -88,18 +93,18 @@ const ParticipantsList = observer(() => {
                       <Typography>{participant.last_name}</Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography>Gender</Typography>
+                      <Typography>{participant.gender}</Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography>DOB</Typography>
+                      <Typography>{participant.date_of_birth}</Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography>Race</Typography>
+                      <Typography>{participant.race}</Typography>
                     </TableCell>
                     <TableCell>
                       <Link to="/participantInfo">
                         <Fab color="primary" size="small" aria-label="add">
-                          <AssignmentIcon />
+                          <AssignmentIndIcon />
                         </Fab>
                       </Link>
                     </TableCell>

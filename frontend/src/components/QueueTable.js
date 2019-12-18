@@ -77,9 +77,8 @@ const QueueTable = observer(queueData => {
       <MaterialTable
         title={queueStore.queueStats[queueData.queueData].name}
         className={classes.table}
-        options={{
-          search: false,
-        }}
+        localization={{ body: { emptyDataSourceMessage: "Queue is empty" } }}
+        options={{ search: false }}
         data={queueStore.queues[queueData.queueData].map(x => ({
           urgency: x.urgency,
           last: x.participant.last_name,
