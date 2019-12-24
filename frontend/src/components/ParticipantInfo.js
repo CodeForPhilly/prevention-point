@@ -99,6 +99,7 @@ const ParticipantInfo = observer(() => {
   let participantIndex = data.findIndex(
     val => val.pp_id === currentParticipant.pp_id
   )
+  participantStore.getInsurers()
   // useEffect is a hook that gets called after every render/re-render.  Empty array second argument prevents it from running again.
   useEffect(() => {
     if (participantIndex > -1) {
@@ -122,7 +123,7 @@ const ParticipantInfo = observer(() => {
         note: data[participantIndex].note,
       })
     }
-  }, [])
+  }, [data, participantIndex])
 
   const createStartDate = () => {
     return format(new Date(), "yyyy-MM-dd")
@@ -400,18 +401,9 @@ const ParticipantInfo = observer(() => {
                           id: "demo-controlled-open-select",
                         }}
                       >
-                        <MenuItem value="">
-                          <em>None</em>
-                        </MenuItem>
-                        <MenuItem value={"Insurance Plan 1"}>
-                          Insurance Plan 1
-                        </MenuItem>
-                        <MenuItem value={"Insurance Plan 2"}>
-                          Insurance Plan 2
-                        </MenuItem>
-                        <MenuItem value={"Insurance Plan 3"}>
-                          Insurance Plan 3
-                        </MenuItem>
+                        {participantStore.insurers.map((insurer, index) => (
+                          <MenuItem key={index}>{insurer.name}</MenuItem>
+                        ))}
                       </Select>
                     </FormControl>
                   </Grid>

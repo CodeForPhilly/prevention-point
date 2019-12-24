@@ -10,6 +10,8 @@ export class ParticipantStore {
   // Store Params
   participants = []
   participant = {}
+  programs = {}
+  insurers = {}
   params = {}
 
   // Setters
@@ -28,6 +30,9 @@ export class ParticipantStore {
   setParticipant = data => {
     this.participant = data
   }
+  setInsurers = data => {
+    this.insurers = data
+  }
 
   // Getters
   getParticipantsList = () => {
@@ -38,6 +43,9 @@ export class ParticipantStore {
   }
   getParticipant = () => {
     return toJS(this.participant)
+  }
+  getInsuranceList = () => {
+    return toJS(this.insurers)
   }
 
   // API Calls
@@ -55,6 +63,15 @@ export class ParticipantStore {
     if (ok) {
       // eslint-disable-next-line no-console
       console.log(data)
+    } else {
+      // TODO: Handle errors
+    }
+  })
+
+  getInsurers = flow(function*() {
+    const { ok, data } = yield api.getInsurers()
+    if (ok) {
+      this.setInsurers(data)
     } else {
       // TODO: Handle errors
     }
