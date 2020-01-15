@@ -1,9 +1,8 @@
-import React, { useEffect, useContext } from "react"
-import { rootStoreContext } from "./stores/RootStore"
+import React from "react"
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
 import RoutesIndex from "./routes"
-import api from "./api"
 import { observer } from "mobx-react-lite"
+import IndexProvider from "./contexts"
 
 const theme = createMuiTheme({
   palette: {
@@ -16,29 +15,11 @@ const theme = createMuiTheme({
 })
 
 const App = observer(() => {
-  const rootStore = useContext(rootStoreContext)
-
-  useEffect(() => {
-    async function stillAuthenticated() {
-      const verifyToken = await api.verifyToken()
-      if (verifyToken.ok) {
-        rootStore.authStore.setIsAuthenticated(true)
-      } else {
-        rootStore.authStore.setIsAuthenticated(false)
-      }
-    }
-    stillAuthenticated()
-    //Suppress eslint error for []
-    //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []) // Hooks equivalent to "componentDidMount"
-
-  if (rootStore.authStore.isAuthenticated === null) {
-    return null
-  }
-
   return (
     <MuiThemeProvider theme={theme}>
-      <RoutesIndex />
+      <IndexProvider>
+        <RoutesIndex />
+      </IndexProvider>
     </MuiThemeProvider>
   )
 })
