@@ -50,6 +50,7 @@ const ParticipantsList = observer(() => {
   useEffect(() => {
     setIsLoading(true)
     participantsStore.getParticipants()
+    participantsStore.getInsurers()
     setIsLoading(false)
   }, [participantsStore])
 
