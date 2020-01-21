@@ -2,18 +2,46 @@ import React, { Fragment, useContext, useEffect, useState } from "react"
 import { rootStoreContext } from "../stores/RootStore"
 import Breadcrumbs from "@material-ui/core/Breadcrumbs"
 import Typography from "@material-ui/core/Typography"
-import Link from "@material-ui/core/Link"
 import Table from "@material-ui/core/Table"
 import TableBody from "@material-ui/core/TableBody"
 import TableCell from "@material-ui/core/TableCell"
 import TableHead from "@material-ui/core/TableHead"
 import TableRow from "@material-ui/core/TableRow"
 import Fab from "@material-ui/core/Fab"
-import AddIcon from "@material-ui/icons/Add"
-import AssignmentIcon from "@material-ui/icons/Assignment"
+import AssignmentIndIcon from "@material-ui/icons/AssignmentInd"
 import { observer } from "mobx-react-lite"
+import { Link } from "react-router-dom"
+import BottomNavigation from "@material-ui/core/BottomNavigation"
+import PersonAddIcon from "@material-ui/icons/PersonAdd"
+import { makeStyles } from "@material-ui/core/styles"
+import Grid from "@material-ui/core/Grid"
 
 const ParticipantsList = observer(() => {
+  const useStyles = makeStyles({
+    addParticipantNav: {
+      width: "100%",
+      position: "fixed",
+      bottom: 0,
+      left: 0,
+      right: 0,
+      backgroundColor: "#d4d4d4",
+      height: "auto",
+    },
+    addParticipant: {
+      float: "right",
+    },
+    addParticipantText: {
+      float: "left",
+      color: "primary",
+      fontWeight: "bold",
+      marginRight: "1em",
+      display: "inline-block",
+      verticalAlign: "middle",
+      lineHeight: "normal",
+    },
+  })
+  const classes = useStyles()
+
   const rootStore = useContext(rootStoreContext)
   const participantsStore = rootStore.ParticipantStore
   const [isLoading, setIsLoading] = useState(false)
@@ -22,10 +50,13 @@ const ParticipantsList = observer(() => {
   useEffect(() => {
     setIsLoading(true)
     participantsStore.getParticipants()
+    participantsStore.getInsurers()
     setIsLoading(false)
-    //Suppress eslint error for []
-    //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [participantsStore])
+
+  const handleParticipant = (e, participant) => {
+    participantsStore.setParticipant(participant)
+  }
 
   return (
     <Fragment>
@@ -34,7 +65,7 @@ const ParticipantsList = observer(() => {
       ) : (
         <div>
           <Breadcrumbs separator="›" aria-label="breadcrumb">
-            <Link color="inherit" href="/">
+            <Link color="inherit" to="/">
               Home
             </Link>
             <Typography color="textPrimary">Search Results</Typography>
@@ -46,9 +77,6 @@ const ParticipantsList = observer(() => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>
-                    <Typography>#</Typography>
-                  </TableCell>
                   <TableCell>
                     <Typography>PPID</Typography>
                   </TableCell>
@@ -68,16 +96,16 @@ const ParticipantsList = observer(() => {
                     <Typography>Race</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography>Participant Details</Typography>
+                    <Typography>Edit Participant</Typography>
                   </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {participantsStore.participants.map((participant, index) => (
-                  <TableRow key={index}>
-                    <TableCell>
-                      <Typography>Number</Typography>
-                    </TableCell>
+                  <TableRow
+                    key={index}
+                    onClick={e => handleParticipant(e, participant)}
+                  >
                     <TableCell>
                       <Typography>{participant.pp_id} </Typography>
                     </TableCell>
@@ -88,18 +116,18 @@ const ParticipantsList = observer(() => {
                       <Typography>{participant.last_name}</Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography>Gender</Typography>
+                      <Typography>{participant.gender}</Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography>DOB</Typography>
+                      <Typography>{participant.date_of_birth}</Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography>Race</Typography>
+                      <Typography>{participant.race}</Typography>
                     </TableCell>
                     <TableCell>
                       <Link to="/participantInfo">
                         <Fab color="primary" size="small" aria-label="add">
-                          <AssignmentIcon />
+                          <AssignmentIndIcon />
                         </Fab>
                       </Link>
                     </TableCell>
@@ -108,9 +136,21 @@ const ParticipantsList = observer(() => {
               </TableBody>
             </Table>
           </div>
-          <Fab color="primary" aria-label="add" size="large">
-            <AddIcon />
-          </Fab>
+          <BottomNavigation showLabels className={classes.addParticipantNav}>
+            <Link to="/participantInfo">
+              <Grid container>
+                <Grid container item justify="flex-end">
+                  <Typography
+                    color="primary"
+                    style={{ fontSize: 28, paddingRight: "0.75em" }}
+                  >
+                    Add Participant
+                  </Typography>
+                  <PersonAddIcon color="primary" style={{ fontSize: 50 }} />
+                </Grid>
+              </Grid>
+            </Link>
+          </BottomNavigation>
         </div>
       )}
     </Fragment>

@@ -77,9 +77,8 @@ const QueueTable = observer(queueData => {
       <MaterialTable
         title={queueStore.queueStats[queueData.queueData].name}
         className={classes.table}
-        options={{
-          search: false,
-        }}
+        localization={{ body: { emptyDataSourceMessage: "Queue is empty" } }}
+        options={{ search: false, sorting: true }}
         data={queueStore.queues[queueData.queueData].map(x => ({
           urgency: x.urgency,
           last: x.participant.last_name,
@@ -104,10 +103,17 @@ const QueueTable = observer(queueData => {
                 column="urgency"
               />
             ),
+            customSort: (a, b) => +a.urgency[1] - +b.urgency[1],
           },
           { title: "Last", field: "last" },
           { title: "UID", field: "uid" },
-          { title: "Time", field: "timeElapsed" },
+          {
+            title: "Time",
+            field: "timeElapsed",
+            customSort: (a, b) =>
+              new Date("1970/01/01 " + a.timeElapsed) -
+              new Date("1970/01/01 " + b.timeElapsed),
+          },
           {
             title: "Status",
             //eslint-disable-next-line
