@@ -15,6 +15,7 @@ export class ParticipantStore {
   params = {}
   visit = {}
   visitList = []
+  @observable routeToQueueTable = false
 
   // Setters
   setParticipantsList = data => {
@@ -49,6 +50,9 @@ export class ParticipantStore {
   }
   setVisitParticipantId = data => {
     this.visit.participant = data
+  }
+  setRouteToQueue = data => {
+    this.routeToQueueTable = data
   }
 
   // Getters
@@ -135,13 +139,9 @@ export class ParticipantStore {
   })
 
   updateVisit = flow(function*() {
-    const { ok } = yield api.updateVisits(
-      toJS(this.visit.id),
-      toJS(this.participant)
-    )
+    const { ok } = yield api.updateVisits(toJS(this.visit.id), toJS(this.visit))
     if (ok) {
       this.setRouteToQueue(true)
-      this.routeToQueueTable()
     } else {
       // TODO: Handle errors
     }
@@ -151,17 +151,6 @@ export class ParticipantStore {
     const { ok, data } = yield api.getVisits()
     if (ok) {
       this.setVisitList(data)
-    } else {
-      // TODO: Handle errors
-    }
-  })
-
-  getFrontDeskStuff = flow(function*() {
-    const { ok } = yield api.getFrontDeskEvent({
-      participant: this.participant.id,
-    })
-    if (ok) {
-      // TODO: Handle sucess
     } else {
       // TODO: Handle errors
     }
@@ -182,7 +171,7 @@ export class ParticipantStore {
       event_type: "ARRIVED",
     })
     if (ok) {
-      // TODO: Handle sucess
+      this.setRouteToQueue(true)
     } else {
       // TODO: Handle errors
     }

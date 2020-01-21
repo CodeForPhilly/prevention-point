@@ -20,6 +20,7 @@ import Button from "@material-ui/core/Button"
 import { observer } from "mobx-react-lite"
 import { useHistory } from "react-router-dom"
 import { format } from "date-fns"
+import { autorun } from "mobx"
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -131,8 +132,12 @@ const ParticipantInfo = observer(() => {
         race: data[participantIndex].race,
         gender: data[participantIndex].gender,
         hasInsurance: data[participantIndex].is_insured,
-        insuranceType: data[participantIndex],
-        insurer: data[participantIndex].insurer,
+        insuranceType: data[participantIndex].insuranceType
+          ? data[participantIndex].insuranceType
+          : "",
+        insurer: data[participantIndex].insurer
+          ? data[participantIndex].insurer.name
+          : "",
         priority: data[participantIndex].priority,
         note: data[participantIndex].note,
       })
@@ -170,7 +175,7 @@ const ParticipantInfo = observer(() => {
       gender: participant.gender,
       is_insured: participant.hasInsurance,
       insuranceType: participant.insuranceType,
-      insurer: participant.insurer,
+      insurer: participant.insurer.name,
       priority: participant.priority,
       note: participant.note,
     })
@@ -185,7 +190,11 @@ const ParticipantInfo = observer(() => {
     participantIndex > -1
       ? participantStore.updateParticipant()
       : participantStore.createParticipant()
-    history.push("/")
+    autorun(() => {
+      if (participantStore.routeToQueueTable) {
+        history.push("/")
+      }
+    })
   }
 
   const classes = useStyles()
@@ -416,11 +425,11 @@ const ParticipantInfo = observer(() => {
                         open={open.insuranceType}
                         onClose={handleClose.insuranceType}
                         onOpen={handleOpen.insuranceType}
-                        value={participant.insuranceType}
+                        value={participant.insurer}
                         onChange={e =>
                           setParticipant({
                             ...participant,
-                            insuranceType: e.target.value,
+                            insurer: e.target.value.name,
                           })
                         }
                         inputProps={{
