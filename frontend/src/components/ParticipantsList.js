@@ -8,12 +8,40 @@ import TableCell from "@material-ui/core/TableCell"
 import TableHead from "@material-ui/core/TableHead"
 import TableRow from "@material-ui/core/TableRow"
 import Fab from "@material-ui/core/Fab"
-import AddIcon from "@material-ui/icons/Add"
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd"
 import { observer } from "mobx-react-lite"
 import { Link } from "react-router-dom"
+import BottomNavigation from "@material-ui/core/BottomNavigation"
+import PersonAddIcon from "@material-ui/icons/PersonAdd"
+import { makeStyles } from "@material-ui/core/styles"
+import Grid from "@material-ui/core/Grid"
 
 const ParticipantsList = observer(() => {
+  const useStyles = makeStyles({
+    addParticipantNav: {
+      width: "100%",
+      position: "fixed",
+      bottom: 0,
+      left: 0,
+      right: 0,
+      backgroundColor: "#d4d4d4",
+      height: "auto",
+    },
+    addParticipant: {
+      float: "right",
+    },
+    addParticipantText: {
+      float: "left",
+      color: "primary",
+      fontWeight: "bold",
+      marginRight: "1em",
+      display: "inline-block",
+      verticalAlign: "middle",
+      lineHeight: "normal",
+    },
+  })
+  const classes = useStyles()
+
   const rootStore = useContext(rootStoreContext)
   const participantsStore = rootStore.ParticipantStore
   const [isLoading, setIsLoading] = useState(false)
@@ -22,6 +50,7 @@ const ParticipantsList = observer(() => {
   useEffect(() => {
     setIsLoading(true)
     participantsStore.getParticipants()
+    participantsStore.getInsurers()
     setIsLoading(false)
   }, [participantsStore])
 
@@ -49,9 +78,6 @@ const ParticipantsList = observer(() => {
               <TableHead>
                 <TableRow>
                   <TableCell>
-                    <Typography>#</Typography>
-                  </TableCell>
-                  <TableCell>
                     <Typography>PPID</Typography>
                   </TableCell>
                   <TableCell>
@@ -70,7 +96,7 @@ const ParticipantsList = observer(() => {
                     <Typography>Race</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography>Edit Participant Info</Typography>
+                    <Typography>Edit Participant</Typography>
                   </TableCell>
                 </TableRow>
               </TableHead>
@@ -80,9 +106,6 @@ const ParticipantsList = observer(() => {
                     key={index}
                     onClick={e => handleParticipant(e, participant)}
                   >
-                    <TableCell>
-                      <Typography>Number</Typography>
-                    </TableCell>
                     <TableCell>
                       <Typography>{participant.pp_id} </Typography>
                     </TableCell>
@@ -113,9 +136,21 @@ const ParticipantsList = observer(() => {
               </TableBody>
             </Table>
           </div>
-          <Fab color="primary" aria-label="add" size="large">
-            <AddIcon />
-          </Fab>
+          <BottomNavigation showLabels className={classes.addParticipantNav}>
+            <Link to="/participantInfo">
+              <Grid container>
+                <Grid container item justify="flex-end">
+                  <Typography
+                    color="primary"
+                    style={{ fontSize: 28, paddingRight: "0.75em" }}
+                  >
+                    Add Participant
+                  </Typography>
+                  <PersonAddIcon color="primary" style={{ fontSize: 50 }} />
+                </Grid>
+              </Grid>
+            </Link>
+          </BottomNavigation>
         </div>
       )}
     </Fragment>

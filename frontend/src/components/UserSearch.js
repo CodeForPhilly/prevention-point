@@ -28,6 +28,7 @@ const UserSearch = observer(() => {
       setErrorMessage("Need to enter a user id or a name")
       setErrorState(true)
     } else {
+      participantsStore.getParticipants()
       history.push("/participants")
     }
   }
