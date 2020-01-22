@@ -13,6 +13,7 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight"
 import Navbar from "../components/Navbar"
 import UserSearch from "../components/UserSearch"
 import PropTypes from "prop-types"
+import { withRouter } from "react-router-dom"
 
 const drawerWidth = 300
 
@@ -78,6 +79,23 @@ const PersistentDrawerLeft = props => {
   const theme = useTheme()
   const [open, setOpen] = React.useState(false)
 
+  const ToolbarWrapper = withRouter(({ history }) =>
+    history.location.pathname.match(/login/) ? null : (
+      <Toolbar>
+        <IconButton
+          color="inherit"
+          aria-label="open drawer"
+          onClick={handleDrawerOpen}
+          edge="start"
+          className={clsx(classes.menuButton, open && classes.hide)}
+        >
+          <MenuIcon />
+        </IconButton>
+        <Navbar />
+      </Toolbar>
+    )
+  )
+
   function handleDrawerOpen() {
     setOpen(true)
   }
@@ -95,18 +113,7 @@ const PersistentDrawerLeft = props => {
           [classes.appBarShift]: open,
         })}
       >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            className={clsx(classes.menuButton, open && classes.hide)}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Navbar />
-        </Toolbar>
+        <ToolbarWrapper />
       </AppBar>
       <Drawer
         className={classes.drawer}
