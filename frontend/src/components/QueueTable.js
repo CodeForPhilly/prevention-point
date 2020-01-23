@@ -81,6 +81,7 @@ const QueueTable = observer(queueData => {
         options={{ search: false, sorting: true }}
         data={queueStore.queues[queueData.queueData].map(x => ({
           urgency: x.urgency,
+          first: x.participant.first_name,
           last: x.participant.last_name,
           uid: x.participant.pp_id,
           timeElapsed: moment(x.status.created_at).format("LT"),
@@ -105,6 +106,7 @@ const QueueTable = observer(queueData => {
             ),
             customSort: (a, b) => +a.urgency[1] - +b.urgency[1],
           },
+          { title: "First", field: "first" },
           { title: "Last", field: "last" },
           { title: "UID", field: "uid" },
           {
