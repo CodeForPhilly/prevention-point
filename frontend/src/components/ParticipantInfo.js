@@ -132,8 +132,12 @@ const ParticipantInfo = observer(() => {
         race: data[participantIndex].race,
         gender: data[participantIndex].gender,
         hasInsurance: data[participantIndex].is_insured,
-        insuranceType: data[participantIndex],
-        insurer: data[participantIndex].insurer,
+        insuranceType: data[participantIndex].insuranceType
+          ? data[participantIndex].insuranceType
+          : "",
+        insurer: data[participantIndex].insurer
+          ? data[participantIndex].insurer
+          : "",
         priority: data[participantIndex].priority,
         note: data[participantIndex].note,
       })
@@ -171,7 +175,7 @@ const ParticipantInfo = observer(() => {
       gender: participant.gender,
       is_insured: participant.hasInsurance,
       insuranceType: participant.insuranceType,
-      insurer: participant.insurer,
+      insurer: participant.insurer.name,
       priority: participant.priority,
       note: participant.note,
     })
