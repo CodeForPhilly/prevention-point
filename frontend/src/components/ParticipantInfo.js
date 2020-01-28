@@ -136,7 +136,7 @@ const ParticipantInfo = observer(() => {
           ? data[participantIndex].insuranceType
           : "",
         insurer: data[participantIndex].insurer
-          ? data[participantIndex].insurer.name
+          ? data[participantIndex].insurer
           : "",
         priority: data[participantIndex].priority,
         note: data[participantIndex].note,
@@ -425,11 +425,11 @@ const ParticipantInfo = observer(() => {
                         open={open.insuranceType}
                         onClose={handleClose.insuranceType}
                         onOpen={handleOpen.insuranceType}
-                        value={participant.insurer}
+                        value={participant.insuranceType}
                         onChange={e =>
                           setParticipant({
                             ...participant,
-                            insurer: e.target.value.name,
+                            insuranceType: e.target.value,
                           })
                         }
                         inputProps={{
