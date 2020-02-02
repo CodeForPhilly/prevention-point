@@ -109,12 +109,11 @@ class AvailabilityWindowProvider(BaseProvider):
     __provider__ = "availability window"
     __lang__ = "en_US"
 
-    def availability_window(self):
+    def availability_window(self, start_hour = 10, end_hour = 17):
         """Returns a tuple (start_time, end_time)"""
-        END_HOUR = 16  # 4pm
-        start_hour = random.randint(10, END_HOUR)
-        end_hour = random.randint(start_hour, END_HOUR)
-        return datetime.time(start_hour, random.randint(0, 59)), datetime.time(end_hour, random.randint(0, 59))
+        start_hour = random.randint(start_hour, end_hour)
+        end_hour = random.randint(start_hour, end_hour)
+        return datetime.time(hour=start_hour), datetime.time(hour=end_hour)
        
 
 fake.add_provider(AvailabilityWindowProvider)
@@ -330,12 +329,13 @@ def create_event(visit, type):
 
 
 def create_program_availability(output=True):
+    """create program availability"""
     programs = Program.objects.all()
     for _ in range(DEFAULT_NUMBER_PROGRAM_AVAILABILITIES):
         availability = ProgramAvailability()
         availability.program = random.choice(programs)
-        availability.day_of_week = fake.mon_fri()[0]
-        availability.start_time, availability.end_time = fake.availability_window()
+        availability.day_of_week = fake.day_of_week()
+        availability.start_time, availability.end_time = fake.availability_window(start_hour=8, end_hour=23)
         availability.full_clean()
         availability.save()
 
