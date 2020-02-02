@@ -111,8 +111,8 @@ class AvailabilityWindowProvider(BaseProvider):
 
     def availability_window(self, start_hour = 10, end_hour = 17):
         """Returns a tuple (start_time, end_time)"""
-        window_begin = random.randint(start_hour, end_hour - 1)
-        end_hour = random.randint(window_begin, end_hour)
+        window_begin = random.randint(start_hour, end_hour - 2)
+        end_hour = random.randint(window_begin + 1, end_hour)
         return datetime.time(hour=window_begin), datetime.time(hour=end_hour)
        
 
