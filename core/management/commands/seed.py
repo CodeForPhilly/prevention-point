@@ -331,23 +331,46 @@ def create_event(visit, type):
 def create_program_availability(output=True):
     """create program availability"""
     programs = Program.objects.all()
-    for _ in range(DEFAULT_NUMBER_PROGRAM_AVAILABILITIES):
-        availability = ProgramAvailability()
-        availability.program = random.choice(programs)
-        availability.day_of_week = fake.day_of_week()
-        availability.start_time, availability.end_time = fake.availability_window(start_hour=8, end_hour=23)
-        availability.full_clean()
-        availability.save()
+    days_of_week = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    for program in programs:
+        for day in days_of_week:
+            if random.randint(0, 10) < 8:
+                availability = ProgramAvailability()
+                availability.program = program
+                availability.day_of_week = day
+                availability.start_time, availability.end_time = fake.availability_window(
+                    start_hour=8, end_hour=18)
+                window_one_end = availability.end_time.hour
+                availability.full_clean()
+                availability.save()
+                if window_one_end < 15:
+                    availability_two = ProgramAvailability()
+                    availability_two.program = program
+                    availability_two.day_of_week = day
+                    availability_two.start_time, availability_two.end_time = fake.availability_window(
+                        start_hour=window_one_end+1, end_hour=23)
+                    availability_two.full_clean()
+                    availability_two.save()
 
-        if output:
-            print(
-                "Created program availability: {} {} {} {}".format(
-                    availability.program,
-                    availability.day_of_week,
-                    availability.start_time,
-                    availability.end_time
-                )
-            )
+                    if output:
+                        print(
+                            "Created program availability: {} {} {} {}".format(
+                                availability_two.program,
+                                availability_two.day_of_week,
+                                availability_two.start_time,
+                                availability_two.end_time
+                            )
+                        )
+
+                if output:
+                    print(
+                        "Created program availability: {} {} {} {}".format(
+                            availability.program,
+                            availability.day_of_week,
+                            availability.start_time,
+                            availability.end_time
+                        )
+                    )
 
 
 def arrived(visit):
