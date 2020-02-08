@@ -33,7 +33,6 @@ DEFAULT_GROUPS = [FRONT_DESK, CASE_MANAGER, ADMIN]
 DEFAULT_NUMBER_PARTICIPANTS = 1000
 DEFAULT_NUMBER_VISITS = 100
 DEFAULT_NUMBER_INSURERS = 10
-DEFAULT_NUMBER_PROGRAM_AVAILABILITIES = 10
 
 # Cribbed from prevpoint-backend 2 July 2019 Marieke
 DEFAULT_PROGRAMS = {
@@ -352,25 +351,9 @@ def create_program_availability(output=True):
                     availability_two.full_clean()
                     availability_two.save()
 
-                    if output:
-                        print(
-                            "Created program availability: {} {} {} {}".format(
-                                availability_two.program,
-                                availability_two.day_of_week,
-                                availability_two.start_time,
-                                availability_two.end_time
-                            )
-                        )
-
-                if output:
-                    print(
-                        "Created program availability: {} {} {} {}".format(
-                            availability.program,
-                            availability.day_of_week,
-                            availability.start_time,
-                            availability.end_time
-                        )
-                    )
+    if output:
+        for availability in ProgramAvailability.objects.all().order_by('program'): 
+            print(f"Created program availability: {availability.program.name} {availability.day_of_week} {availability.start_time} {availability.end_time}")
 
 
 def arrived(visit):
