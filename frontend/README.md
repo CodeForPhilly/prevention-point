@@ -16,7 +16,7 @@ To start the backend you may either run the setup instructions for the core proj
 
 ```bash
 # start dockerized database and backend
-docker-compose up db app -d --build
+docker-compose up -d --build db app
 ```
 
 to start the frontend app
