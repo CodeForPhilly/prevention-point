@@ -22,6 +22,7 @@ docker-compose up -d --build db app
 to start the frontend app
 
 ```bash
+yarn
 yarn dev
 ```
 
