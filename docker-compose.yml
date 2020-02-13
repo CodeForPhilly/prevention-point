@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   db:
@@ -7,16 +7,21 @@ services:
       - "5432:5432"
     volumes:
       - data:/var/lib/postgresql/data/
-  # app:
-  #   build: .
-  #   command: python /app/manage.py runserver 0.0.0.0:8000
-  #   ports:
-  #     - "8000:8000"
-  #   depends_on:
-  #     - db
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DJANGO_SETTINGS_MODULE=core.settings.docker
   client:
     build: ./frontend
     ports:
       - "8080:80"
+    depends_on:
+      - app
+    volumes:
+      - ./frontend/nginx.conf:/etc/nginx/conf.d/default.conf:ro
 volumes:
   data:

@@ -1,7 +1,8 @@
-FROM python:3.7
+FROM python:3.7-slim
 
-RUN pip install pipenv
 COPY . /app
-
 WORKDIR /app
-RUN pipenv install --system
+
+RUN pip install pipenv && pipenv install --system
+
+ENTRYPOINT ["./django-entrypoint.sh"]
