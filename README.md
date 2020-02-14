@@ -68,6 +68,10 @@ $ docker-compose down
 
  For more information on the front-end please see the [front-end README](./frontend/readme)
 
+## Scripts
+`scripts/bootstrap.sh` - brings a fully working environment
+`scrpts/develop.sh` - Run after bootstrapping. Loads data for development and testing
+
 Other tools
 ## Links
 [Wiki](https://github.com/CodeForPhilly/prevention-point/wiki)

@@ -15,8 +15,9 @@ The frontend app for the Prevention Point Unified Reporting System (URS) project
 To start the backend you may either run the setup instructions for the core project or
 
 ```bash
-# start dockerized database and backend
-docker-compose up -d --build db app
+# start dockerized environment
+../scripts/bootstrap.sh
+../scripts/develop.sh
 ```
 
 to start the frontend app
