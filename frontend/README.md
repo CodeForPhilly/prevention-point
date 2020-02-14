@@ -16,8 +16,8 @@ To start the backend you may either run the setup instructions for the core proj
 
 ```bash
 # start dockerized environment
-../scripts/bootstrap.sh
-../scripts/develop.sh
+../scripts/bootstrap
+../scripts/setup
 ```
 
 to start the frontend app
