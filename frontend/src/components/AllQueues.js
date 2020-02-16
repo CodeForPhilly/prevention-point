@@ -8,6 +8,7 @@ import TimelapseIcon from "@material-ui/icons/Timelapse"
 import AppBar from "@material-ui/core/AppBar"
 import { QueueStoreContext } from "../stores/QueueStore"
 import QueueTable from "./QueueTable"
+import api from "../api"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -89,19 +90,32 @@ const AllQueues = observer(() => {
   const queueSize = Object.keys(queueStore.queues).length
   const classes = useStyles()
   const [tabValue, setTabValue] = useState(0)
+  const [isFrozen, setIsFrozen] = useState(false)
   function handleChange(event, newValue) {
     setTabValue(newValue)
+  }
+
+  const getProgram = async () => {
+    let { data } = await api.getProgram(tabValue + 1)
+    setIsFrozen(data.is_frozen)
+  }
+
+  const toggleFreeze = async () => {
+    setIsFrozen(!isFrozen)
+    await api.patchProgram(tabValue + 1, { is_frozen: !isFrozen })
   }
 
   //Update all queues on first rendering
   useEffect(() => {
     for (let i = 1; i <= queueSize; i++) queueStore.getQueue(i)
+    getProgram()
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   //Update queue of selected tab
   useEffect(() => {
     queueStore.getQueue(tabValue + 1)
+    getProgram()
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tabValue])
 
@@ -128,6 +142,17 @@ const AllQueues = observer(() => {
         </Tabs>
       </AppBar>
       <QueueTable queueData={tabValue + 1} />
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+      >
+        <Button variant="contained" color="secondary" onClick={toggleFreeze}>
+          {isFrozen ? "UnFreeze" : "Freeze"}
+        </Button>
+      </div>
     </div>
   )
 })
