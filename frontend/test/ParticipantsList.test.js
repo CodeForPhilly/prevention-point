@@ -22,7 +22,7 @@ describe("<ParticipantsList />", () => {
   // the reason for 7 and not all the other cells, is because the initial render only has 7 table cells that are the header cells.
   it("should render 8 TableCell Material-UI components on initial render", () => {
     // wrapper.setProps({prop: value}) for setting any initial props
-    expect(wrapper.find(TableCell)).toHaveLength(8)
+    expect(wrapper.find(TableCell)).toHaveLength(7)
   })
 
   it("should render 8 TableCell Material-UI components on initial render", () => {
