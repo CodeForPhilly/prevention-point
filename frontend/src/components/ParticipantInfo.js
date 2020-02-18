@@ -18,7 +18,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel"
 import FormLabel from "@material-ui/core/FormLabel"
 import Button from "@material-ui/core/Button"
 import { observer } from "mobx-react-lite"
-import { useHistory } from "react-router-dom"
+import { useHistory, useLocation } from "react-router-dom"
 import { format } from "date-fns"
 import { autorun } from "mobx"
 
@@ -74,14 +74,17 @@ const useStyles = makeStyles(theme => ({
 const ParticipantInfo = observer(() => {
   const rootStore = useContext(rootStoreContext)
   const participantStore = rootStore.ParticipantStore
+  const location = useLocation()
+  const rowData = location.state
+  //console.log(rowData)
   const [participant, setParticipant] = React.useState({
-    id: null,
-    firstName: "",
-    lastName: "",
+    id: "",
+    firstName: rowData.first,
+    lastName: rowData.last,
     lastFourSSN: 0,
     dateOfBirth: "",
     startDate: "",
-    ppId: "",
+    ppId: rowData.uid,
     race: "",
     gender: "",
     hasInsurance: false,

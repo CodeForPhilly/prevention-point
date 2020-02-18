@@ -97,7 +97,8 @@ const QueueTable = observer(queueData => {
           {
             icon: "assignmentIndIcon",
             tooltip: "Edit Participant",
-            onClick: () => history.push("/participantInfo"),
+            onClick: (event, rowData) =>
+              history.push("/participantInfo", rowData),
           },
         ]}
         columns={[
