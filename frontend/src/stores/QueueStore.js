@@ -82,14 +82,14 @@ export class QueueStore {
     if (queue && queue.length > 0) {
       return Math.floor(
         (moment() - Math.min(...queue.map(x => moment(x.status.created_at)))) /
-          60000
+        60000
       )
     } else {
       return 0
     }
   }
 
-  getQueue = flow(function*(queueIndex) {
+  getQueue = flow(function* (queueIndex) {
     const { ok, data } = yield api.getQueue(queueIndex)
     if (ok) {
       this.setQueue(queueIndex, data)
@@ -99,7 +99,7 @@ export class QueueStore {
     }
   })
 
-  patchVisit = flow(function*(queueIndex, visitIndex, data) {
+  patchVisit = flow(function* (queueIndex, visitIndex, data) {
     const { ok } = yield api.patchVisit(visitIndex, data)
     if (ok) {
       this.getQueue(queueIndex)
@@ -109,7 +109,7 @@ export class QueueStore {
     }
   })
 
-  updateStatus = flow(function*(queueIndex, visitIndex, eventType) {
+  updateStatus = flow(function* (queueIndex, visitIndex, eventType) {
     const body = {
       visit: visitIndex,
       event_type: eventType,

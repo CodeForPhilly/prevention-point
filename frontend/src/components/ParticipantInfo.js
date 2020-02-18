@@ -74,6 +74,7 @@ const useStyles = makeStyles(theme => ({
 const ParticipantInfo = observer(() => {
   const rootStore = useContext(rootStoreContext)
   const participantStore = rootStore.ParticipantStore
+
   const [participant, setParticipant] = React.useState({
     id: null,
     firstName: "",
@@ -87,38 +88,59 @@ const ParticipantInfo = observer(() => {
     hasInsurance: false,
     insuranceType: "",
     insurer: "",
-    priority: "",
-    note: "",
   })
-  const [open, setOpen] = React.useState("")
+  const [visit, setVisit] = React.useState({
+    id: null,
+    participant: "",
+    program: "",
+    service: "",
+    notes: "",
+    urgency: "",
+  })
+  // list of all insurerers
   const [insurers, setInsurers] = React.useState([])
+  // list of all programs
   const [programList, setProgramList] = React.useState([])
-  const [program, setProgram] = React.useState({})
-  const [showServices, setShowServices] = React.useState(false)
+  // list of all services
   const [serviceList, setServiceList] = React.useState([])
-  const [service, setService] = React.useState({})
-  const [prevVisit, setPrevVisit] = React.useState({})
+  const [open, setOpen] = React.useState("")
   const history = useHistory()
 
-  let currentParticipant = participantStore.getParticipant()
-  let data = participantStore.getParticipantsList()
-  let participantIndex = data.findIndex(
-    val => val.pp_id === currentParticipant.pp_id
+  // TODO: delete
+  // const [program, setProgram] = React.useState({})
+  // const [showServices, setShowServices] = React.useState(false)
+  // const [prevVisit, setPrevVisit] = React.useState({})
+
+  const [service, setService] = React.useState({})
+
+
+  // TODO: delete
+  // let currentParticipant = participantStore.getParticipant()
+  // let data = participantStore.getParticipantsList()
+  let participantIndex = participantStore.getParticipantsList().findIndex(
+    val => val.pp_id === participantStore.getParticipant().pp_id
   )
   // useEffect is a hook that gets called after every render/re-render.  Empty array second argument prevents it from running again.
   useEffect(() => {
-    ;(async () => {
+    ; (async () => {
+      // kick off api calls for insurers from Mobx
       await participantStore.getInsurers()
+      // kick off api calls for programs from Mobx
       await participantStore.getPrograms()
-      if (participantIndex > -1) {
-        await participantStore.getVisits()
-        let v = await participantStore.getVisitsList()
-        let result = v.find(val => val.participant.id === currentParticipant.id)
-        // eslint-disable-next-line no-console
-        setPrevVisit(result)
-      }
       setInsurers(await participantStore.getInsuranceList())
       setProgramList(await participantStore.getProgramList())
+      // if we navigated from QueueTable then get and prepopulate visits object
+      if (participantStore.navigatedFromQueue) {
+        await participantStore.getVisits()
+        let v = await participantStore.getVisitsList()
+        setVisit(v.find(val => val.participant.id === currentParticipant.id))
+      }
+      // TODO: delete
+      // if
+      // if (participantIndex > -1) {
+
+      // }
+
     })()
     if (participantIndex > -1) {
       setParticipant({
@@ -137,18 +159,17 @@ const ParticipantInfo = observer(() => {
           : "",
         insurer: data[participantIndex].insurer
           ? data[participantIndex].insurer
-          : "",
-        priority: data[participantIndex].priority,
-        note: data[participantIndex].note,
+          : ""
       })
     }
   }, [])
 
-  const setProgramAndShowServices = e => {
-    setProgram(e.target.value)
-    setShowServices(true)
-    setServiceList(e.target.value.services)
-  }
+  // TODO: delete
+  // const setProgramAndShowServices = e => {
+  //   setProgram(e.target.value)
+  //   setShowServices(true)
+  //   setServiceList(e.target.value.services)
+  // }
 
   const createStartDate = () => {
     return format(new Date(), "yyyy-MM-dd")
@@ -175,26 +196,59 @@ const ParticipantInfo = observer(() => {
       gender: participant.gender,
       is_insured: participant.hasInsurance,
       insuranceType: participant.insuranceType,
-      insurer: participant.insurer.name,
-      priority: participant.priority,
-      note: participant.note,
+      insurer: participant.insurer.name
     })
-    participantStore.setVisit({
-      id: prevVisit && prevVisit.id ? prevVisit.id : null,
-      participant: participant.id,
-      program: program.id,
-      service: service.id,
-      notes: participant.note,
-      urgency: participant.priority,
-    })
+    // if we have a participant and navigated from queuetable or is a new participant set visit
+    if ((participantIndex > -1 && participantStore.navigatedFromQueue) || participantIndex === -1) {
+      // set visit in Mobx
+      participantStore.setVisit({ visit })
+    }
+    // kick either update or create participant in Mobx
     participantIndex > -1
       ? participantStore.updateParticipant()
       : participantStore.createParticipant()
+    // after all api calls for submit have been completed route to QueueTable
     autorun(() => {
       if (participantStore.routeToQueueTable) {
         history.push("/")
       }
     })
+  }
+
+
+  const selectService = () => {
+    if (visit && visit.programs && visit.programs.services) {
+      setServiceList(visit.programs.services)
+      return (
+        <Select
+          open={open.service}
+          onClose={handleClose.service}
+          onOpen={handleOpen.service}
+          required
+          value={visit.service}
+          onChange={e => setVisit({
+            service: e.target.value
+          })}
+          inputProps={{
+            name: "service",
+            id: "demo-controlled-open-select",
+          }}
+        >
+          {serviceList.map((s, index) => (
+            <MenuItem
+              key={index}
+              value={
+                serviceList && serviceList.length > 0 ? s : 0
+              }
+            >
+              {serviceList && serviceList.length > 0
+                ? s.name
+                : ""}
+            </MenuItem>
+          ))}
+        </Select>
+      )
+    }
   }
 
   const classes = useStyles()
@@ -467,122 +521,103 @@ const ParticipantInfo = observer(() => {
             2. Check In Participant
           </Typography>
 
-          <Grid container>
-            <FormGroup className="participant-info">
+          {(participantIndex > -1 && participantStore.navigatedFromQueue) || participantIndex === -1 ?
+            (
               <Grid container>
-                <Grid item xs>
-                  <FormControl className={classes.formControl}>
-                    <InputLabel htmlFor="demo-controlled-open-select">
-                      Choose Program
+                <FormGroup className="participant-info">
+                  <Grid container>
+                    <Grid item xs>
+                      <FormControl className={classes.formControl}>
+                        <InputLabel htmlFor="demo-controlled-open-select">
+                          Choose Program
                     </InputLabel>
-                    <Select
-                      open={open.program}
-                      onClose={handleClose.program}
-                      onOpen={handleOpen.program}
-                      required
-                      value={program && program.name ? program.name : null}
-                      onChange={e => setProgramAndShowServices(e)}
-                      inputProps={{
-                        name: "program",
-                        id: "demo-controlled-open-select",
-                      }}
-                    >
-                      {programList.map((p, index) => (
-                        <MenuItem
-                          key={index}
-                          value={programList && programList.length > 0 ? p : 0}
+                        <Select
+                          open={open.program}
+                          onClose={handleClose.program}
+                          onOpen={handleOpen.program}
+                          required
+                          value={visit.program}
+                          onChange={e => setVisit({
+                            ...visit,
+                            program: e.target.value,
+                          })}
+                          inputProps={{
+                            name: "program",
+                            id: "demo-controlled-open-select",
+                          }}
                         >
-                          {programList && programList.length > 0 ? p.name : ""}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item xs>
-                  <FormControl className={classes.formControl}>
-                    <InputLabel htmlFor="demo-controlled-open-select">
-                      Select Service
+                          {programList.map((p, index) => (
+                            <MenuItem
+                              key={index}
+                              value={programList && programList.length > 0 ? p : 0}
+                            >
+                              {programList && programList.length > 0 ? p.name : ""}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs>
+                      <FormControl className={classes.formControl}>
+                        <InputLabel htmlFor="demo-controlled-open-select">
+                          Select Service
                     </InputLabel>
-                    {showServices ? (
-                      <Select
-                        open={open.service}
-                        onClose={handleClose.service}
-                        onOpen={handleOpen.service}
-                        required
-                        value={service && service.name ? service.name : null}
-                        onChange={e => setService(e.target.value)}
-                        inputProps={{
-                          name: "service",
-                          id: "demo-controlled-open-select",
-                        }}
-                      >
-                        {serviceList.map((s, index) => (
-                          <MenuItem
-                            key={index}
-                            value={
-                              serviceList && serviceList.length > 0 ? s : 0
-                            }
-                          >
-                            {serviceList && serviceList.length > 0
-                              ? s.name
-                              : ""}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    ) : null}
-                  </FormControl>
-                </Grid>
-                <br />
-                <Grid item xs>
-                  <FormControl className={classes.formControl}>
-                    <InputLabel htmlFor="demo-controlled-open-select">
-                      Select Priority Level
+                        {visit.program ? selectServices : null}
+                      </FormControl>
+                    </Grid>
+                    <br />
+                    <Grid item xs>
+                      <FormControl className={classes.formControl}>
+                        <InputLabel htmlFor="demo-controlled-open-select">
+                          Select Priority Level
                     </InputLabel>
-                    <Select
-                      open={open.priorityLevel}
-                      onClose={handleClose.priorityLevel}
-                      onOpen={handleOpen.priorityLevel}
-                      value={participant.priority}
+                        <Select
+                          open={open.priorityLevel}
+                          onClose={handleClose.priorityLevel}
+                          onOpen={handleOpen.priorityLevel}
+                          value={visit.urgency}
+                          onChange={e =>
+                            setVisit({
+                              ...visit,
+                              priority: e.target.value,
+                            })
+                          }
+                          inputProps={{
+                            name: "priorityLevel",
+                            id: "demo-controlled-open-select",
+                          }}
+                        >
+                          <MenuItem value={"_1"}>1 (Lowest)</MenuItem>
+                          <MenuItem value={"_2"}>2</MenuItem>
+                          <MenuItem value={"_3"}>3</MenuItem>
+                          <MenuItem value={"_4"}>4</MenuItem>
+                          <MenuItem value={"_5"}>5 (Highest)</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <br />
+                    <TextField
+                      id="standard-full-width"
+                      style={{ margin: 8, marginTop: 40 }}
+                      placeholder="Add a note"
                       onChange={e =>
-                        setParticipant({
-                          ...participant,
-                          priority: e.target.value,
+                        setVisit({
+                          ...visit,
+                          note: e.target.value,
                         })
                       }
-                      inputProps={{
-                        name: "priorityLevel",
-                        id: "demo-controlled-open-select",
+                      value={visit.note}
+                      fullWidth
+                      margin="normal"
+                      InputLabelProps={{
+                        shrink: true,
                       }}
-                    >
-                      <MenuItem value={"_1"}>1 (Lowest)</MenuItem>
-                      <MenuItem value={"_2"}>2</MenuItem>
-                      <MenuItem value={"_3"}>3</MenuItem>
-                      <MenuItem value={"_4"}>4</MenuItem>
-                      <MenuItem value={"_5"}>5 (Highest)</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <br />
-                <TextField
-                  id="standard-full-width"
-                  style={{ margin: 8, marginTop: 40 }}
-                  placeholder="Add a note"
-                  onChange={e =>
-                    setParticipant({
-                      ...participant,
-                      note: e.target.value,
-                    })
-                  }
-                  value={participant.note}
-                  fullWidth
-                  margin="normal"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
+                    />
+                  </Grid>
+                </FormGroup>
               </Grid>
-            </FormGroup>
-          </Grid>
+            ) : null}
+
           <Button
             style={{
               alignSelf: "flex-end",

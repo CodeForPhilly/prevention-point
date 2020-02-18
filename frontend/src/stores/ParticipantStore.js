@@ -15,6 +15,7 @@ export class ParticipantStore {
   params = {}
   visit = {}
   visitList = []
+  navigatedFromQueue = false
   @observable routeToQueueTable = false
 
   // Setters
@@ -76,7 +77,7 @@ export class ParticipantStore {
   }
 
   // API Calls
-  getParticipants = flow(function*() {
+  getParticipants = flow(function* () {
     const { ok, data } = yield api.getParticipants(toJS(this.params))
     if (ok) {
       this.setParticipantsList(data)
@@ -85,7 +86,7 @@ export class ParticipantStore {
     }
   })
 
-  createParticipant = flow(function*() {
+  createParticipant = flow(function* () {
     const { ok, data } = yield api.createParticipant(toJS(this.participant))
     if (ok) {
       this.setParticipant(data)
@@ -96,7 +97,7 @@ export class ParticipantStore {
     }
   })
 
-  updateParticipant = flow(function*() {
+  updateParticipant = flow(function* () {
     const { ok, data } = yield api.updateParticipant(
       toJS(this.participant.id),
       toJS(this.participant)
@@ -110,7 +111,7 @@ export class ParticipantStore {
     }
   })
 
-  getInsurers = flow(function*() {
+  getInsurers = flow(function* () {
     const { ok, data } = yield api.getInsurers()
     if (ok) {
       this.setInsurers(data)
@@ -119,7 +120,7 @@ export class ParticipantStore {
     }
   })
 
-  getPrograms = flow(function*() {
+  getPrograms = flow(function* () {
     const { ok, data } = yield api.getPrograms()
     if (ok) {
       this.setPrograms(data)
@@ -128,7 +129,7 @@ export class ParticipantStore {
     }
   })
 
-  createVisit = flow(function*() {
+  createVisit = flow(function* () {
     const { ok, data } = yield api.createVisits(toJS(this.visit))
     if (ok) {
       this.setVisit(data)
@@ -138,7 +139,7 @@ export class ParticipantStore {
     }
   })
 
-  updateVisit = flow(function*() {
+  updateVisit = flow(function* () {
     const { ok } = yield api.updateVisits(toJS(this.visit.id), toJS(this.visit))
     if (ok) {
       this.setRouteToQueue(true)
@@ -147,7 +148,7 @@ export class ParticipantStore {
     }
   })
 
-  getVisits = flow(function*() {
+  getVisits = flow(function* () {
     const { ok, data } = yield api.getVisits()
     if (ok) {
       this.setVisitList(data)
@@ -156,7 +157,7 @@ export class ParticipantStore {
     }
   })
 
-  updateFrontEndDeskEvent = flow(function*() {
+  updateFrontEndDeskEvent = flow(function* () {
     const { ok } = yield api.patchFrontDeskEvent()
     if (ok) {
       // TODO: Handle sucess
@@ -165,7 +166,7 @@ export class ParticipantStore {
     }
   })
 
-  getFrontEndDeskEvents = flow(function*() {
+  getFrontEndDeskEvents = flow(function* () {
     const { ok } = yield api.postFrontDeskEvent({
       visit: this.visit.id,
       event_type: "ARRIVED",
