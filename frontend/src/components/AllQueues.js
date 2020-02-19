@@ -34,6 +34,11 @@ const useStyles = makeStyles(theme => ({
   queueTab: {
     flexGrow: 1,
   },
+  freezeQueueContainer: {
+    display: "flex",
+    justifyContent: "flex-end",
+    padding: "8px",
+  },
 }))
 
 //Forward ref used with MUI BaseButton. Does not allow observer.
@@ -90,19 +95,30 @@ const AllQueues = observer(() => {
   const queueSize = Object.keys(queueStore.queues).length
   const classes = useStyles()
   const [tabValue, setTabValue] = useState(0)
-  const [isFrozen, setIsFrozen] = useState(false)
+  const [btnState, setBtnState] = useState({ disabled: false, isFrozen: false })
   function handleChange(event, newValue) {
     setTabValue(newValue)
   }
 
   const getProgram = async () => {
     let { data } = await api.getProgram(tabValue + 1)
-    setIsFrozen(data.is_frozen)
+    setBtnState({ ...btnState, isFrozen: data.is_frozen })
   }
 
   const toggleFreeze = async () => {
-    setIsFrozen(!isFrozen)
-    await api.patchProgram(tabValue + 1, { is_frozen: !isFrozen })
+    setBtnState({ ...btnState, disabled: true })
+    try {
+      let response = await api.patchProgram(tabValue + 1, {
+        is_frozen: !btnState.isFrozen,
+      })
+      if (response.ok) {
+        setBtnState({ disabled: false, isFrozen: !btnState.isFrozen })
+      } else {
+        setBtnState({ ...btnState, disabled: false })
+      }
+    } catch {
+      setBtnState({ ...btnState, disabled: false })
+    }
   }
 
   //Update all queues on first rendering
@@ -143,14 +159,14 @@ const AllQueues = observer(() => {
       </AppBar>
       <QueueTable queueData={tabValue + 1} />
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-        }}
-      >
-        <Button variant="contained" color="secondary" onClick={toggleFreeze}>
-          {isFrozen ? "UnFreeze" : "Freeze"}
+      <div className={classes.freezeQueueContainer}>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={toggleFreeze}
+          disabled={btnState.disabled}
+        >
+          {btnState.isFrozen ? "Unfreeze" : "Freeze"}
         </Button>
       </div>
     </div>
