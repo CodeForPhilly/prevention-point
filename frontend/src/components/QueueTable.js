@@ -26,7 +26,6 @@ const useStyles = makeStyles(theme => ({
 
 const QueueTable = observer(queueData => {
   const queueStore = useContext(QueueStoreContext)
-  const participantStore = rootStore.ParticipantStore
   const classes = useStyles()
   const [visibleDialog, setVisibleDialog] = useState(false)
   const [notesVisit, setNotesVisit] = useState(1)
@@ -98,10 +97,7 @@ const QueueTable = observer(queueData => {
           {
             icon: "assignmentIndIcon",
             tooltip: "Edit Participant",
-            onClick: () => {
-              participantStore.navigatedFromQueue = true
-              history.push("/participantInfo")
-            }
+            onClick: () => history.push("/participantInfo"),
           },
         ]}
         columns={[

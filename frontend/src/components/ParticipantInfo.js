@@ -74,7 +74,7 @@ const useStyles = makeStyles(theme => ({
 const ParticipantInfo = observer(() => {
   const rootStore = useContext(rootStoreContext)
   const participantStore = rootStore.ParticipantStore
-
+  // init participant state
   const [participant, setParticipant] = React.useState({
     id: null,
     firstName: "",
@@ -89,9 +89,10 @@ const ParticipantInfo = observer(() => {
     insuranceType: "",
     insurer: "",
   })
+  // init visit state
   const [visit, setVisit] = React.useState({
     id: null,
-    participant: "",
+    participant: null,
     program: "",
     service: "",
     notes: "",
@@ -104,107 +105,78 @@ const ParticipantInfo = observer(() => {
   // list of all services
   const [serviceList, setServiceList] = React.useState([])
   const [open, setOpen] = React.useState("")
+  // set up history for routing pushes
   const history = useHistory()
-
-  // TODO: delete
-  // const [program, setProgram] = React.useState({})
-  // const [showServices, setShowServices] = React.useState(false)
-  // const [prevVisit, setPrevVisit] = React.useState({})
-
-  const [service, setService] = React.useState({})
-
-
-  // TODO: delete
-  // let currentParticipant = participantStore.getParticipant()
-  // let data = participantStore.getParticipantsList()
-  let participantIndex = participantStore.getParticipantsList().findIndex(
-    val => val.pp_id === participantStore.getParticipant().pp_id
-  )
+  // get existing participant if applicable else its undefined
+  const existingParticipant = participantStore.getParticipant()
   // useEffect is a hook that gets called after every render/re-render.  Empty array second argument prevents it from running again.
   useEffect(() => {
-    ; (async () => {
+    // self invoked async function making api calls for insurers and programs
+    ;(async () => {
       // kick off api calls for insurers from Mobx
       await participantStore.getInsurers()
       // kick off api calls for programs from Mobx
       await participantStore.getPrograms()
       setInsurers(await participantStore.getInsuranceList())
       setProgramList(await participantStore.getProgramList())
-      // if we navigated from QueueTable then get and prepopulate visits object
-      if (participantStore.navigatedFromQueue) {
-        await participantStore.getVisits()
-        let v = await participantStore.getVisitsList()
-        setVisit(v.find(val => val.participant.id === currentParticipant.id))
-      }
-      // TODO: delete
-      // if
-      // if (participantIndex > -1) {
-
-      // }
-
     })()
-    if (participantIndex > -1) {
+    // if existing participant exists then auto fill the fields
+    if (existingParticipant) {
       setParticipant({
-        id: data[participantIndex].id,
-        firstName: data[participantIndex].first_name,
-        lastName: data[participantIndex].last_name,
-        lastFourSSN: data[participantIndex].last_four_ssn,
-        dateOfBirth: data[participantIndex].date_of_birth,
-        startDate: data[participantIndex].start_date,
-        ppId: data[participantIndex].pp_id,
-        race: data[participantIndex].race,
-        gender: data[participantIndex].gender,
-        hasInsurance: data[participantIndex].is_insured,
-        insuranceType: data[participantIndex].insuranceType
-          ? data[participantIndex].insuranceType
+        id: existingParticipant.id,
+        firstName: existingParticipant.first_name,
+        lastName: existingParticipant.last_name,
+        lastFourSSN: existingParticipant.last_four_ssn,
+        dateOfBirth: existingParticipant.date_of_birth,
+        startDate: existingParticipant.start_date,
+        ppId: existingParticipant.pp_id,
+        race: existingParticipant.race,
+        gender: existingParticipant.gender,
+        hasInsurance: existingParticipant.is_insured,
+        insuranceType: existingParticipant.insuranceType
+          ? existingParticipant.insuranceType
           : "",
-        insurer: data[participantIndex].insurer
-          ? data[participantIndex].insurer
-          : ""
+        insurer: existingParticipant.insurer ? existingParticipant.insurer : "",
       })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  // TODO: delete
-  // const setProgramAndShowServices = e => {
-  //   setProgram(e.target.value)
-  //   setShowServices(true)
-  //   setServiceList(e.target.value.services)
-  // }
 
   const createStartDate = () => {
     return format(new Date(), "yyyy-MM-dd")
   }
   // set store stuff here and update Mobx on submit
-  function handleClose() {
+  const handleClose = () => {
     setOpen(false)
   }
-  function handleOpen() {
+  const handleOpen = () => {
     setOpen(true)
   }
-  function handleSubmit(e) {
+  const handleSubmit = e => {
     e.preventDefault()
     participantStore.setParticipant({
-      id: participantIndex > -1 ? participant.id : null,
+      id: existingParticipant ? participant.id : null,
       first_name: participant.firstName,
       last_name: participant.lastName,
       last_four_ssn: participant.lastFourSSN,
       date_of_birth: participant.dateOfBirth,
-      start_date:
-        participantIndex > -1 ? participant.startDate : createStartDate(),
+      start_date: existingParticipant
+        ? participant.startDate
+        : createStartDate(),
       pp_id: participant.ppId,
       race: participant.race,
       gender: participant.gender,
       is_insured: participant.hasInsurance,
       insuranceType: participant.insuranceType,
-      insurer: participant.insurer.name
+      insurer: participant.insurer.name,
     })
     // if we have a participant and navigated from queuetable or is a new participant set visit
-    if ((participantIndex > -1 && participantStore.navigatedFromQueue) || participantIndex === -1) {
+    if (!existingParticipant) {
       // set visit in Mobx
-      participantStore.setVisit({ visit })
+      participantStore.setVisit(visit)
     }
     // kick either update or create participant in Mobx
-    participantIndex > -1
+    existingParticipant
       ? participantStore.updateParticipant()
       : participantStore.createParticipant()
     // after all api calls for submit have been completed route to QueueTable
@@ -213,42 +185,6 @@ const ParticipantInfo = observer(() => {
         history.push("/")
       }
     })
-  }
-
-
-  const selectService = () => {
-    if (visit && visit.programs && visit.programs.services) {
-      setServiceList(visit.programs.services)
-      return (
-        <Select
-          open={open.service}
-          onClose={handleClose.service}
-          onOpen={handleOpen.service}
-          required
-          value={visit.service}
-          onChange={e => setVisit({
-            service: e.target.value
-          })}
-          inputProps={{
-            name: "service",
-            id: "demo-controlled-open-select",
-          }}
-        >
-          {serviceList.map((s, index) => (
-            <MenuItem
-              key={index}
-              value={
-                serviceList && serviceList.length > 0 ? s : 0
-              }
-            >
-              {serviceList && serviceList.length > 0
-                ? s.name
-                : ""}
-            </MenuItem>
-          ))}
-        </Select>
-      )
-    }
   }
 
   const classes = useStyles()
@@ -267,7 +203,7 @@ const ParticipantInfo = observer(() => {
           1. Participant Information
         </Typography>
 
-        <form className="participant-info-form" onSubmit={handleSubmit}>
+        <form className="participant-info-form" onSubmit={e => handleSubmit(e)}>
           <Grid container>
             <FormGroup className="participant-info">
               <Grid container>
@@ -510,19 +446,19 @@ const ParticipantInfo = observer(() => {
               </FormGroup>
             </div>
           </Grid>
-          <Typography
-            style={{ textAlign: "left" }}
-            component="h5"
-            variant="h5"
-            gutterBottom
-          >
-            <br />
-            <br />
-            2. Check In Participant
-          </Typography>
 
-          {(participantIndex > -1 && participantStore.navigatedFromQueue) || participantIndex === -1 ?
-            (
+          {!existingParticipant ? (
+            <div>
+              <Typography
+                style={{ textAlign: "left" }}
+                component="h5"
+                variant="h5"
+                gutterBottom
+              >
+                <br />
+                <br />
+                2. Check In Participant
+              </Typography>
               <Grid container>
                 <FormGroup className="participant-info">
                   <Grid container>
@@ -530,17 +466,20 @@ const ParticipantInfo = observer(() => {
                       <FormControl className={classes.formControl}>
                         <InputLabel htmlFor="demo-controlled-open-select">
                           Choose Program
-                    </InputLabel>
+                        </InputLabel>
                         <Select
                           open={open.program}
                           onClose={handleClose.program}
                           onOpen={handleOpen.program}
                           required
                           value={visit.program}
-                          onChange={e => setVisit({
-                            ...visit,
-                            program: e.target.value,
-                          })}
+                          onChange={e => {
+                            setVisit({
+                              ...visit,
+                              program: e.target.value,
+                            })
+                            setServiceList(e.target.value.services)
+                          }}
                           inputProps={{
                             name: "program",
                             id: "demo-controlled-open-select",
@@ -549,20 +488,56 @@ const ParticipantInfo = observer(() => {
                           {programList.map((p, index) => (
                             <MenuItem
                               key={index}
-                              value={programList && programList.length > 0 ? p : 0}
+                              value={
+                                programList && programList.length > 0 ? p : 0
+                              }
                             >
-                              {programList && programList.length > 0 ? p.name : ""}
+                              {programList && programList.length > 0
+                                ? p.name
+                                : ""}
                             </MenuItem>
                           ))}
                         </Select>
                       </FormControl>
                     </Grid>
+
                     <Grid item xs>
                       <FormControl className={classes.formControl}>
                         <InputLabel htmlFor="demo-controlled-open-select">
                           Select Service
-                    </InputLabel>
-                        {visit.program ? selectServices : null}
+                        </InputLabel>
+                        {visit.program && serviceList.length > 0 ? (
+                          <Select
+                            open={open.service}
+                            onClose={handleClose.service}
+                            onOpen={handleOpen.service}
+                            required
+                            value={visit.service}
+                            onChange={e =>
+                              setVisit({
+                                ...visit,
+                                service: e.target.value,
+                              })
+                            }
+                            inputProps={{
+                              name: "service",
+                              id: "demo-controlled-open-select",
+                            }}
+                          >
+                            {serviceList.map((s, index) => (
+                              <MenuItem
+                                key={index}
+                                value={
+                                  serviceList && serviceList.length > 0 ? s : 0
+                                }
+                              >
+                                {serviceList && serviceList.length > 0
+                                  ? s.name
+                                  : ""}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        ) : null}
                       </FormControl>
                     </Grid>
                     <br />
@@ -570,7 +545,7 @@ const ParticipantInfo = observer(() => {
                       <FormControl className={classes.formControl}>
                         <InputLabel htmlFor="demo-controlled-open-select">
                           Select Priority Level
-                    </InputLabel>
+                        </InputLabel>
                         <Select
                           open={open.priorityLevel}
                           onClose={handleClose.priorityLevel}
@@ -579,7 +554,7 @@ const ParticipantInfo = observer(() => {
                           onChange={e =>
                             setVisit({
                               ...visit,
-                              priority: e.target.value,
+                              urgency: e.target.value,
                             })
                           }
                           inputProps={{
@@ -603,10 +578,10 @@ const ParticipantInfo = observer(() => {
                       onChange={e =>
                         setVisit({
                           ...visit,
-                          note: e.target.value,
+                          notes: e.target.value,
                         })
                       }
-                      value={visit.note}
+                      value={visit.notes}
                       fullWidth
                       margin="normal"
                       InputLabelProps={{
@@ -616,7 +591,8 @@ const ParticipantInfo = observer(() => {
                   </Grid>
                 </FormGroup>
               </Grid>
-            ) : null}
+            </div>
+          ) : null}
 
           <Button
             style={{
