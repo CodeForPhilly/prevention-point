@@ -137,7 +137,10 @@ const ParticipantsList = observer(() => {
             </Table>
           </div>
           <BottomNavigation showLabels className={classes.addParticipantNav}>
-            <Link to="/participantInfo">
+            <Link
+              to="/participantInfo"
+              onClick={participantsStore.setParticipant(undefined)}
+            >
               <Grid container>
                 <Grid container item justify="flex-end">
                   <Typography
