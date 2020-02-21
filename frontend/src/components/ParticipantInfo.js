@@ -79,7 +79,9 @@ const ParticipantInfo = observer(() => {
   const rowData = location.state
   //console.log("rowData: ", rowData)
   //Pass data to store if there is existing participant from link
-  if (rowData) {
+  //if (rowData) {
+  const debug = false
+  if (debug) {
     participantStore.setParticipant({
       id: rowData.id,
       firstName: rowData.first,
