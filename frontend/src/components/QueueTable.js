@@ -86,12 +86,22 @@ const QueueTable = observer(queueData => {
           first: x.participant.first_name,
           last: x.participant.last_name,
           uid: x.participant.pp_id,
+          last_four_ssn: x.participant.last_four_ssn,
+          date_of_birth: x.participant.date_of_birth,
+          start_date: x.participant.start_date,
+          race: x.participant.race,
+          gender: x.participant.gender,
+          has_insurance: x.participant.is_insured,
+          insurance_type: "",
+          insurer: x.participant.insurer,
           timeElapsed: moment(x.status.created_at).format("LT"),
           status: x.status.event_type,
+          program: x.program.name,
           service: x.service.name,
           seen: false,
           notes: false,
-          id: x.id,
+          visit_id: x.id,
+          id: x.participant.id,
         }))}
         actions={[
           {
