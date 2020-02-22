@@ -69,8 +69,8 @@ $ docker-compose down
  For more information on the front-end please see the [front-end README](./frontend/readme)
 
 ## Scripts
-`scripts/bootstrap` - brings up a fully working environment
-`scripts/setup` - Run after bootstrapping. Loads data for development and testing
+`script/server` - brings up a fully working environment
+`script/setup` - Run after bootstrapping. Loads data for development and testing
 
 Other tools
 ## Links
