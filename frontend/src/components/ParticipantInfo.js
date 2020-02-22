@@ -79,26 +79,26 @@ const ParticipantInfo = observer(() => {
   const rowData = location.state
   //Pass data to store if there is existing participant from link
   const [participant, setParticipant] = React.useState({
-    id: rowData.id || "",
-    firstName: rowData.first || "",
-    lastName: rowData.last || "",
-    lastFourSSN: rowData.last_four_ssn || 0,
-    dateOfBirth: rowData.date_of_birth || "",
-    startDate: rowData.start_date || "",
-    ppId: rowData.uid || "",
-    race: rowData.race || "",
-    gender: rowData.gender || "",
-    hasInsurance: rowData.has_insurance || false,
+    id: rowData ? rowData.id : "",
+    firstName: rowData ? rowData.first : "",
+    lastName: rowData ? rowData.last : "",
+    lastFourSSN: rowData ? rowData.last_four_ssn : 0,
+    dateOfBirth: rowData ? rowData.date_of_birth : "",
+    startDate: rowData ? rowData.start_date : "",
+    ppId: rowData ? rowData.uid : "",
+    race: rowData ? rowData.race : "",
+    gender: rowData ? rowData.gender : "",
+    hasInsurance: rowData ? rowData.has_insurance : false,
     insuranceType: "",
-    insurer: rowData.insurer || "",
+    insurer: rowData ? rowData.insurer : "",
   })
   const [visit, setVisit] = React.useState({
-    id: rowData.visit_id || "",
-    participant: rowData.id || "",
-    program: rowData.program || "",
-    service: rowData.service || "",
+    id: rowData ? rowData.visit_id : "",
+    participant: rowData ? rowData.id : "",
+    program: rowData ? rowData.program : "",
+    service: rowData ? rowData.service : "",
     notes: "",
-    urgency: rowData.urgency || "",
+    urgency: rowData ? rowData.urgency : "",
   })
   // list of all insurerers
   const [insurers, setInsurers] = React.useState([])
