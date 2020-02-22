@@ -16,7 +16,7 @@ import {
   patchVisit,
 } from "./visitEndpoints"
 import { getInsurers } from "./insurersEndpoints"
-import { getPrograms } from "./programEndpoints"
+import { getPrograms, getProgram, patchProgram } from "./programEndpoints"
 
 const create = () => {
   const api = apisauce.create({
@@ -48,6 +48,8 @@ const create = () => {
     patchVisit: patchVisit(api),
     getInsurers: getInsurers(api),
     getPrograms: getPrograms(api),
+    getProgram: getProgram(api),
+    patchProgram: patchProgram(api),
   }
 }
 
