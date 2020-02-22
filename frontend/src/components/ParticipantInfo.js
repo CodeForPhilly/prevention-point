@@ -77,48 +77,28 @@ const ParticipantInfo = observer(() => {
 
   const location = useLocation()
   const rowData = location.state
-  //console.log("rowData: ", rowData)
   //Pass data to store if there is existing participant from link
-  //if (rowData) {
-  const debug = false
-  if (debug) {
-    participantStore.setParticipant({
-      id: rowData.id,
-      firstName: rowData.first,
-      lastName: rowData.last,
-      lastFourSSN: rowData.last_four_ssn,
-      dateOfBirth: rowData.date_of_birth,
-      startDate: rowData.start_date,
-      ppId: rowData.uid,
-      race: rowData.race,
-      gender: rowData.gender,
-      hasInsurance: rowData.has_insurance,
-      insuranceType: "",
-      insurer: rowData.insurer,
-    })
-  }
-  //Populate data on participant and visit if it exists
   const [participant, setParticipant] = React.useState({
-    id: rowData ? rowData.id : "",
-    firstName: rowData ? rowData.first : "",
-    lastName: rowData ? rowData.last : "",
-    lastFourSSN: rowData ? rowData.last_four_ssn : 0,
-    dateOfBirth: rowData ? rowData.date_of_birth : "",
-    startDate: rowData ? rowData.start_date : "",
-    ppId: rowData ? rowData.uid : "",
-    race: rowData ? rowData.race : "",
-    gender: rowData ? rowData.gender : "",
-    hasInsurance: rowData ? rowData.has_insurance : false,
+    id: rowData.id || "",
+    firstName: rowData.first || "",
+    lastName: rowData.last || "",
+    lastFourSSN: rowData.last_four_ssn || 0,
+    dateOfBirth: rowData.date_of_birth || "",
+    startDate: rowData.start_date || "",
+    ppId: rowData.uid || "",
+    race: rowData.race || "",
+    gender: rowData.gender || "",
+    hasInsurance: rowData.has_insurance || false,
     insuranceType: "",
-    insurer: rowData ? rowData.insurer : "",
+    insurer: rowData.insurer || "",
   })
   const [visit, setVisit] = React.useState({
-    id: rowData ? rowData.visit_id : "",
-    participant: rowData ? rowData.id : "",
-    program: rowData ? rowData.program : "",
-    service: rowData ? rowData.service : "",
+    id: rowData.visit_id || "",
+    participant: rowData.id || "",
+    program: rowData.program || "",
+    service: rowData.service || "",
     notes: "",
-    urgency: rowData ? rowData.urgency : "",
+    urgency: rowData.urgency || "",
   })
   // list of all insurerers
   const [insurers, setInsurers] = React.useState([])
@@ -143,7 +123,7 @@ const ParticipantInfo = observer(() => {
       setProgramList(await participantStore.getProgramList())
     })()
     // if existing participant exists then auto fill the fields
-    if (existingParticipant) {
+    if (existingParticipant && !rowData) {
       setParticipant({
         id: existingParticipant.id,
         firstName: existingParticipant.first_name,
@@ -193,7 +173,7 @@ const ParticipantInfo = observer(() => {
       insurer: participant.insurer.name,
     })
     // if we have a participant and navigated from queuetable or is a new participant set visit
-    if (!existingParticipant) {
+    if (!existingParticipant && !rowData) {
       // set visit in Mobx
       participantStore.setVisit(visit)
     }
