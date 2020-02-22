@@ -68,9 +68,6 @@ export class ParticipantStore {
   getParams = () => {
     return toJS(this.params)
   }
-  getParticipant = () => {
-    return toJS(this.participant)
-  }
   getInsuranceList = () => {
     return toJS(this.insurers)
   }
@@ -79,6 +76,10 @@ export class ParticipantStore {
   }
   getVisitsList = () => {
     return toJS(this.visitList)
+  }
+
+  getVisit = () => {
+    return toJS(this.visit)
   }
 
   // API Calls
@@ -205,6 +206,7 @@ decorate(ParticipantStore, {
   getInsurers: action,
   getInsuranceList: action,
   getParticipant: action,
+  getVisit: action,
   createParticipant: action,
   updateParticipant: action,
   createVisit: action,

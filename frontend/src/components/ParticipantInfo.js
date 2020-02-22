@@ -18,7 +18,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel"
 import FormLabel from "@material-ui/core/FormLabel"
 import Button from "@material-ui/core/Button"
 import { observer } from "mobx-react-lite"
-import { useHistory, useLocation } from "react-router-dom"
+import { useHistory } from "react-router-dom"
 import { format } from "date-fns"
 import { autorun } from "mobx"
 
@@ -74,31 +74,29 @@ const useStyles = makeStyles(theme => ({
 const ParticipantInfo = observer(() => {
   const rootStore = useContext(rootStoreContext)
   const participantStore = rootStore.ParticipantStore
-
-  const location = useLocation()
-  const rowData = location.state
-  //Pass data to store if there is existing participant from link
+  // init participant state
   const [participant, setParticipant] = React.useState({
-    id: rowData ? rowData.id : "",
-    firstName: rowData ? rowData.first : "",
-    lastName: rowData ? rowData.last : "",
-    lastFourSSN: rowData ? rowData.last_four_ssn : 0,
-    dateOfBirth: rowData ? rowData.date_of_birth : "",
-    startDate: rowData ? rowData.start_date : "",
-    ppId: rowData ? rowData.uid : "",
-    race: rowData ? rowData.race : "",
-    gender: rowData ? rowData.gender : "",
-    hasInsurance: rowData ? rowData.has_insurance : false,
+    id: null,
+    firstName: "",
+    lastName: "",
+    lastFourSSN: 0,
+    dateOfBirth: "",
+    startDate: "",
+    ppId: "",
+    race: "",
+    gender: "",
+    hasInsurance: false,
     insuranceType: "",
-    insurer: rowData ? rowData.insurer : "",
+    insurer: "",
   })
+  // init visit state
   const [visit, setVisit] = React.useState({
-    id: rowData ? rowData.visit_id : "",
-    participant: rowData ? rowData.id : "",
-    program: rowData ? rowData.program : "",
-    service: rowData ? rowData.service : "",
+    id: null,
+    participant: null,
+    program: "",
+    service: "",
     notes: "",
-    urgency: rowData ? rowData.urgency : "",
+    urgency: "",
   })
   // list of all insurerers
   const [insurers, setInsurers] = React.useState([])
@@ -123,7 +121,7 @@ const ParticipantInfo = observer(() => {
       setProgramList(await participantStore.getProgramList())
     })()
     // if existing participant exists then auto fill the fields
-    if (existingParticipant && !rowData) {
+    if (existingParticipant) {
       setParticipant({
         id: existingParticipant.id,
         firstName: existingParticipant.first_name,
@@ -157,15 +155,14 @@ const ParticipantInfo = observer(() => {
   const handleSubmit = e => {
     e.preventDefault()
     participantStore.setParticipant({
-      id: existingParticipant || rowData ? participant.id : null,
+      id: existingParticipant ? participant.id : null,
       first_name: participant.firstName,
       last_name: participant.lastName,
       last_four_ssn: participant.lastFourSSN,
       date_of_birth: participant.dateOfBirth,
-      start_date:
-        existingParticipant || rowData
-          ? participant.startDate
-          : createStartDate(),
+      start_date: existingParticipant
+        ? participant.startDate
+        : createStartDate(),
       pp_id: participant.ppId,
       race: participant.race,
       gender: participant.gender,
@@ -174,12 +171,12 @@ const ParticipantInfo = observer(() => {
       insurer: participant.insurer.name,
     })
     // if we have a participant and navigated from queuetable or is a new participant set visit
-    if (!existingParticipant || rowData) {
+    if (!existingParticipant) {
       // set visit in Mobx
       participantStore.setVisit(visit)
     }
     // kick either update or create participant in Mobx
-    existingParticipant || rowData
+    existingParticipant
       ? participantStore.updateParticipant()
       : participantStore.createParticipant()
     // after all api calls for submit have been completed route to QueueTable
@@ -450,7 +447,7 @@ const ParticipantInfo = observer(() => {
             </div>
           </Grid>
 
-          {!existingParticipant || rowData ? (
+          {!existingParticipant ? (
             <div>
               <Typography
                 style={{ textAlign: "left" }}
