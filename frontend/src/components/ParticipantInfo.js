@@ -118,7 +118,9 @@ const ParticipantInfo = observer(() => {
       // kick off api calls for programs from Mobx
       await participantStore.getPrograms()
       setInsurers(await participantStore.getInsuranceList())
-      setProgramList(await participantStore.getProgramList())
+      setProgramList(
+        await participantStore.getProgramList().filter(item => !item.is_frozen)
+      )
     })()
     // if existing participant exists then auto fill the fields
     if (existingParticipant) {
