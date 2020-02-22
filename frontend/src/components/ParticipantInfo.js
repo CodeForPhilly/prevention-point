@@ -157,14 +157,15 @@ const ParticipantInfo = observer(() => {
   const handleSubmit = e => {
     e.preventDefault()
     participantStore.setParticipant({
-      id: existingParticipant ? participant.id : null,
+      id: existingParticipant || rowData ? participant.id : null,
       first_name: participant.firstName,
       last_name: participant.lastName,
       last_four_ssn: participant.lastFourSSN,
       date_of_birth: participant.dateOfBirth,
-      start_date: existingParticipant
-        ? participant.startDate
-        : createStartDate(),
+      start_date:
+        existingParticipant || rowData
+          ? participant.startDate
+          : createStartDate(),
       pp_id: participant.ppId,
       race: participant.race,
       gender: participant.gender,
@@ -173,12 +174,12 @@ const ParticipantInfo = observer(() => {
       insurer: participant.insurer.name,
     })
     // if we have a participant and navigated from queuetable or is a new participant set visit
-    if (!existingParticipant && !rowData) {
+    if (!existingParticipant || rowData) {
       // set visit in Mobx
       participantStore.setVisit(visit)
     }
     // kick either update or create participant in Mobx
-    existingParticipant
+    existingParticipant || rowData
       ? participantStore.updateParticipant()
       : participantStore.createParticipant()
     // after all api calls for submit have been completed route to QueueTable
@@ -449,7 +450,7 @@ const ParticipantInfo = observer(() => {
             </div>
           </Grid>
 
-          {!existingParticipant ? (
+          {!existingParticipant || rowData ? (
             <div>
               <Typography
                 style={{ textAlign: "left" }}
