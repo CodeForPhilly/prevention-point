@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# script/update: Update application to run for its current checkout.
+
+set -e
+cd "$(dirname "$0")/.."
+
+
+script/bootstrap
+script/-check-docker-compose
+
+echo
+echo "==> Rebuilding containers…"
+docker-compose up -d --build
+
+echo
+echo "==> Running migrations…"
+docker-compose exec app python manage.py migrate

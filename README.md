@@ -69,8 +69,12 @@ $ docker-compose down
  For more information on the front-end please see the [front-end README](./frontend/readme)
 
 ## Scripts
-`scripts/bootstrap` - brings up a fully working environment
-`scripts/setup` - Run after bootstrapping. Loads data for development and testing
+
+This project implements the [Scripts To Rule Them All](https://github.com/github/scripts-to-rule-them-all) interface for developers:
+
+* `script/server` — Brings a fully working environment up at [localhost:8080](http://localhost:8080)
+* `script/setup` — Run after `script/server` to initialize local database with seed data
+* `script/update` — Run after changing code or switching branches to refresh server
 
 Other tools
 ## Links
