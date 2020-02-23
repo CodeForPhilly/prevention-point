@@ -18,7 +18,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel"
 import FormLabel from "@material-ui/core/FormLabel"
 import Button from "@material-ui/core/Button"
 import { observer } from "mobx-react-lite"
-import { useHistory } from "react-router-dom"
+import { useHistory, useLocation } from "react-router-dom"
 import { format } from "date-fns"
 import { autorun } from "mobx"
 
@@ -74,6 +74,10 @@ const useStyles = makeStyles(theme => ({
 const ParticipantInfo = observer(() => {
   const rootStore = useContext(rootStoreContext)
   const participantStore = rootStore.ParticipantStore
+  //Get state data from QueueTable
+  const location = useLocation()
+  const rowData = location.state
+
   // init participant state
   const [participant, setParticipant] = React.useState({
     id: null,
@@ -108,6 +112,7 @@ const ParticipantInfo = observer(() => {
   // set up history for routing pushes
   const history = useHistory()
   // get existing participant if applicable else its undefined
+  //const existingParticipant = participantStore.getParticipant()
   const existingParticipant = participantStore.getParticipant()
   // useEffect is a hook that gets called after every render/re-render.  Empty array second argument prevents it from running again.
   useEffect(() => {
@@ -120,19 +125,23 @@ const ParticipantInfo = observer(() => {
       setInsurers(await participantStore.getInsuranceList())
       setProgramList(await participantStore.getProgramList())
     })()
+
     // if existing participant exists then auto fill the fields
     if (existingParticipant) {
       setParticipant({
-        id: existingParticipant.id,
-        firstName: existingParticipant.first_name,
-        lastName: existingParticipant.last_name,
-        lastFourSSN: existingParticipant.last_four_ssn,
-        dateOfBirth: existingParticipant.date_of_birth,
-        startDate: existingParticipant.start_date,
-        ppId: existingParticipant.pp_id,
-        race: existingParticipant.race,
-        gender: existingParticipant.gender,
-        hasInsurance: existingParticipant.is_insured,
+        id: existingParticipant.id || participant.id,
+        firstName: existingParticipant.first_name || participant.firstName,
+        lastName: existingParticipant.last_name || participant.lastName,
+        lastFourSSN:
+          existingParticipant.last_four_ssn || participant.lastFourSSN,
+        dateOfBirth:
+          existingParticipant.date_of_birth || participant.dateOfBirth,
+        startDate: existingParticipant.start_date || participant.startDate,
+        ppId: existingParticipant.pp_id || participant.ppId,
+        race: existingParticipant.race || participant.race,
+        gender: existingParticipant.gender || participant.gender,
+        hasInsurance:
+          existingParticipant.is_insured || participant.hasInsurance,
         insuranceType: existingParticipant.insuranceType
           ? existingParticipant.insuranceType
           : "",
@@ -447,7 +456,7 @@ const ParticipantInfo = observer(() => {
             </div>
           </Grid>
 
-          {!existingParticipant ? (
+          {!existingParticipant || rowData ? (
             <div>
               <Typography
                 style={{ textAlign: "left" }}
