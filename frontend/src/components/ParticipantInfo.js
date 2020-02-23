@@ -78,6 +78,8 @@ const ParticipantInfo = observer(() => {
   const location = useLocation()
   const rowData = location.state
 
+  participantStore.testParticipant("In ParticipantInfo")
+
   // init participant state
   const [participant, setParticipant] = React.useState({
     id: null,
@@ -112,7 +114,6 @@ const ParticipantInfo = observer(() => {
   // set up history for routing pushes
   const history = useHistory()
   // get existing participant if applicable else its undefined
-  //const existingParticipant = participantStore.getParticipant()
   const existingParticipant = participantStore.getParticipant()
   // useEffect is a hook that gets called after every render/re-render.  Empty array second argument prevents it from running again.
   useEffect(() => {

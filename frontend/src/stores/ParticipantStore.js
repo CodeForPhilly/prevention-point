@@ -1,4 +1,4 @@
-import { observable, action, flow, toJS, decorate } from "mobx"
+import { observable, action, flow, toJS, decorate, autorun } from "mobx"
 import { createContext } from "react"
 import api from "../api"
 
@@ -16,6 +16,14 @@ export class ParticipantStore {
   visit = {}
   visitList = []
   @observable routeToQueueTable = false
+
+  testParticipant = location => {
+    autorun(() => {
+      const label = location || ""
+      //console.log(`Test participant: ${label}`, this.participant)
+      return label
+    })
+  }
 
   // Setters
   setParticipantsList = data => {
@@ -35,6 +43,7 @@ export class ParticipantStore {
   }
   setParticipant = data => {
     this.participant = data
+    this.testParticipant("in setParticipant")
   }
   setInsurers = data => {
     this.insurers = data
@@ -63,7 +72,9 @@ export class ParticipantStore {
     return toJS(this.participants)
   }
   getParticipant = () => {
-    return toJS(this.participant)
+    this.testParticipant("in getParticipant")
+    //return toJS(this.participant)
+    return this.participant
   }
   getParams = () => {
     return toJS(this.params)
@@ -205,8 +216,8 @@ decorate(ParticipantStore, {
   getParticipants: action,
   getInsurers: action,
   getInsuranceList: action,
-  getParticipant: action,
-  getVisit: action,
+  //getParticipant: action,
+  //getVisit: action,
   createParticipant: action,
   updateParticipant: action,
   createVisit: action,
