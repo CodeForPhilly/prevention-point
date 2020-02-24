@@ -10,6 +10,7 @@ import MaterialTable from "material-table"
 import moment from "moment"
 import QueueTableDropdown from "./QueueTableDropdown"
 import { QueueStoreContext } from "../stores/QueueStore"
+import { rootStoreContext } from "../stores/RootStore"
 import NotesDialog from "./NotesDialog"
 import { useHistory } from "react-router-dom"
 
@@ -26,6 +27,8 @@ const useStyles = makeStyles(theme => ({
 
 const QueueTable = observer(queueData => {
   const queueStore = useContext(QueueStoreContext)
+  const rootStore = useContext(rootStoreContext)
+  const participantsStore = rootStore.ParticipantStore
   const classes = useStyles()
   const [visibleDialog, setVisibleDialog] = useState(false)
   const [notesVisit, setNotesVisit] = useState(1)
@@ -97,7 +100,31 @@ const QueueTable = observer(queueData => {
           {
             icon: "assignmentIndIcon",
             tooltip: "Edit Participant",
-            onClick: () => history.push("/participantInfo"),
+            onClick: (event, rowData) => {
+              participantStore.setParticipant({
+                id: rowData.id,
+                first_name: rowData.first,
+                last_name: rowData.last,
+                last_four_ssn: rowData.last_four_ssn,
+                date_of_birth: rowData.date_of_birth,
+                start_date: rowData.start_date,
+                pp_id: rowData.uid,
+                race: rowData.race,
+                gender: rowData.gender,
+                has_insurance: rowData.is_insured,
+                insurance_type: rowData.insurance_type,
+                insurer: rowData.insurer,
+              })
+              participantStore.setVisit({
+                id: rowData.visit_id,
+                participant: rowData.id,
+                program: rowData.program,
+                service: rowData.service,
+                notes: "",
+                urgency: rowData.urgency,
+              })
+              history.push("/participantInfo")
+            },
           },
         ]}
         columns={[

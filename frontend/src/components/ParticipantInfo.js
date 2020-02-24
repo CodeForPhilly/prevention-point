@@ -72,7 +72,9 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const ParticipantInfo = observer(() => {
+  // root sotre
   const rootStore = useContext(rootStoreContext)
+  // particiant store derived from root store
   const participantStore = rootStore.ParticipantStore
   // init participant state
   const [participant, setParticipant] = React.useState({
@@ -104,20 +106,25 @@ const ParticipantInfo = observer(() => {
   const [programList, setProgramList] = React.useState([])
   // list of all services
   const [serviceList, setServiceList] = React.useState([])
+  // ???
   const [open, setOpen] = React.useState("")
   // set up history for routing pushes
   const history = useHistory()
   // get existing participant if applicable else its undefined
   const existingParticipant = participantStore.getParticipant()
+  // get existing visit if applicable else its undefined
+  const existingVisit = participantStore.getVisit()
   // useEffect is a hook that gets called after every render/re-render.  Empty array second argument prevents it from running again.
   useEffect(() => {
     // self invoked async function making api calls for insurers and programs
-    ;(async () => {
+    ; (async () => {
       // kick off api calls for insurers from Mobx
       await participantStore.getInsurers()
       // kick off api calls for programs from Mobx
       await participantStore.getPrograms()
+      // save insurers locally
       setInsurers(await participantStore.getInsuranceList())
+      // save programs locally
       setProgramList(
         await participantStore.getProgramList().filter(item => !item.is_frozen)
       )
@@ -140,6 +147,16 @@ const ParticipantInfo = observer(() => {
           : "",
         insurer: existingParticipant.insurer ? existingParticipant.insurer : "",
       })
+      if (existingVisit) {
+        setVisit({
+          id: existingVisit.id,
+          participant: existingVisit.participant,
+          program: existingVisit.program,
+          service: existingVisit.service,
+          notes: existingVisit.notes,
+          urgency: existingVisit.urgency,
+        })
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -173,14 +190,21 @@ const ParticipantInfo = observer(() => {
       insurer: participant.insurer.name,
     })
     // if we have a participant and navigated from queuetable or is a new participant set visit
-    if (!existingParticipant) {
+    if ((!existingParticipant && !existingVisit) || (existingParticipant && existingVisit)) {
       // set visit in Mobx
       participantStore.setVisit(visit)
     }
-    // kick either update or create participant in Mobx
-    existingParticipant
-      ? participantStore.updateParticipant()
-      : participantStore.createParticipant()
+    // if existing participant and vist we are coming from QueueTable, so update particiapnt and visit
+    if (existingParticipant && existingVisit) {
+      participantStore.updateParticipant()
+      participantStore.updateVisit()
+      // if existing participant and no vist we are coming from search, so update particiapnt only
+    } else if (existingParticipant && !existingVisit) {
+      participantStore.updateParticipant()
+      // otherwise we are adding a new participant because both participant and visit will be undefined
+    } else {
+      participantStore.createParticipant()
+    }
     // after all api calls for submit have been completed route to QueueTable
     autorun(() => {
       if (participantStore.routeToQueueTable) {
@@ -449,7 +473,7 @@ const ParticipantInfo = observer(() => {
             </div>
           </Grid>
 
-          {!existingParticipant ? (
+          {(!existingParticipant && !existingVisit) || (existingParticipant && existingVisit) ? (
             <div>
               <Typography
                 style={{ textAlign: "left" }}
