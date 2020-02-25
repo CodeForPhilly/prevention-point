@@ -14,9 +14,9 @@ const refreshAuthLogic = api => async failedRequest => {
   }
 
   // put the refreshed token in the header and retry the request
-  failedRequest.response.config.headers[
-    "Authentication"
-  ] = `Bearer ${tokenRefreshResponse.data.access}`
+  failedRequest.response.config.headers["Authentication"] = `Bearer ${
+    tokenRefreshResponse.data.access
+  }`
 
   return Promise.resolve()
 }

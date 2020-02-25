@@ -1,7 +1,7 @@
 from core.models import Participant
 from rest_framework import serializers
 
-class ParticipantSerializer(serializers.HyperlinkedModelSerializer):
+class ParticipantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Participant
 
