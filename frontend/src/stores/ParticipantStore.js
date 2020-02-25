@@ -145,7 +145,7 @@ export class ParticipantStore {
   })
 
   updateVisit = flow(function*() {
-    const { ok } = yield api.updateVisits(toJS(this.visit.id), toJS(this.visit))
+    const { ok } = yield api.patchVisit(toJS(this.visit.id), toJS(this.visit))
     if (ok) {
       this.setRouteToQueue(true)
     } else {

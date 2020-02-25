@@ -10,4 +10,4 @@ class ProgramServiceMapSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProgramServiceMap
-        fields = ("program", "service")
+        fields = ("id", "program", "service")
