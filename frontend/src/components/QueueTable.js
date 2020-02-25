@@ -112,10 +112,7 @@ const QueueTable = observer(queueData => {
           date_of_birth: x.participant.date_of_birth,
           start_date: x.participant.start_date,
           is_insured: x.participant.is_insured,
-          insurer: x.participant.insurer.slice(
-            x.participant.insurer.length - 2,
-            x.participant.insurer.length - 1
-          ),
+          insurer: x.participant.insurer,
           race: x.participant.race,
           gender: x.participant.gender,
         }))}
