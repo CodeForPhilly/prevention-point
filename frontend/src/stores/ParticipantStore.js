@@ -50,6 +50,9 @@ export class ParticipantStore {
   }
   setVisitParticipantId = data => {
     this.visit.participant = data
+    // swapping extraneous program ans service objects for numbered IDs, required for visit request
+    this.visit.program = toJS(this.visit.program.id)
+    this.visit.service = toJS(this.visit.service.id)
   }
   setRouteToQueue = data => {
     this.routeToQueueTable = data
@@ -58,6 +61,9 @@ export class ParticipantStore {
   // Getters
   getParticipantsList = () => {
     return toJS(this.participants)
+  }
+  getParticipant = () => {
+    return toJS(this.participant)
   }
   getParams = () => {
     return toJS(this.params)
@@ -96,6 +102,7 @@ export class ParticipantStore {
     }
   })
 
+  // only update basic facts about the participant
   updateParticipant = flow(function*() {
     const { ok, data } = yield api.updateParticipant(
       toJS(this.participant.id),
@@ -103,8 +110,7 @@ export class ParticipantStore {
     )
     if (ok) {
       this.setParticipant(data)
-      this.setVisitParticipantId(data.id)
-      this.updateVisit()
+      this.setRouteToQueue(true)
     } else {
       // TODO: Handle errors
     }

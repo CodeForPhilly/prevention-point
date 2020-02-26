@@ -11,6 +11,7 @@ import moment from "moment"
 import QueueTableDropdown from "./QueueTableDropdown"
 import { QueueStoreContext } from "../stores/QueueStore"
 import NotesDialog from "./NotesDialog"
+import { useHistory } from "react-router-dom"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,6 +29,7 @@ const QueueTable = observer(queueData => {
   const classes = useStyles()
   const [visibleDialog, setVisibleDialog] = useState(false)
   const [notesVisit, setNotesVisit] = useState(1)
+  const history = useHistory()
 
   const handleNotesClick = visitId => {
     setNotesVisit(visitId)
@@ -91,6 +93,13 @@ const QueueTable = observer(queueData => {
           notes: false,
           id: x.id,
         }))}
+        actions={[
+          {
+            icon: "assignmentIndIcon",
+            tooltip: "Edit Participant",
+            onClick: () => history.push("/participantInfo"),
+          },
+        ]}
         columns={[
           {
             title: "Urgency",

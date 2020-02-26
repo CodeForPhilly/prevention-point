@@ -96,8 +96,9 @@ db.sqlite3
 /.cache
 /dist
 
-# dependencies
+# Javascript
 frontend/node_modules/
+node_modules
 frontend/.pnp
 .pnp.js
 
