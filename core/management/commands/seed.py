@@ -119,8 +119,8 @@ fake.add_provider(AvailabilityWindowProvider)
 
 
 def run_seed(self):
-    call_command("migrate")
-    call_command("flush")
+    call_command("migrate", interactive=False)
+    call_command("flush", interactive=False)
     create_groups(output=False)
     create_users(output=False)
     add_users_to_groups(output=False)

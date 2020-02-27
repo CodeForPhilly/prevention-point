@@ -10,6 +10,23 @@ The frontend app for the Prevention Point Unified Reporting System (URS) project
 - Bundler: [Parcel](https://parceljs.org/)
 - Package manager: [Yarn](https://yarnpkg.com/)
 
+## Getting started
+
+To start the backend you may either run the setup instructions for the core project or
+
+```bash
+# start dockerized environment
+../scripts/bootstrap
+../scripts/setup
+```
+
+to start the frontend app
+
+```bash
+yarn
+yarn dev
+```
+
 ## Project Style Conventions:
 
 ### Javascript
