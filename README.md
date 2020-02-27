@@ -8,9 +8,9 @@ Currently, they are storing data from their programs in separate Excel spreadshe
 
 This project would work to migrate all of the disparate data sources into one system, make a UI that allows Prevention Point to access all participant data in one system, and increase the ease with which program coordinators can evaluate and monitor activities.
 
-## Before Contributing: 
+## Before Contributing:
 
-* Read through the [Wiki](https://github.com/CodeForPhilly/prevention-point/wiki). 
+* Read through the [Wiki](https://github.com/CodeForPhilly/prevention-point/wiki).
 * Familiarize yourself with the agreed upon project [change management practices](https://github.com/CodeForPhilly/prevention-point/wiki/Change-Management-Practices).
 
 ## [Code of Conduct](https://codeforphilly.org/pages/code_of_conduct/)
@@ -65,6 +65,16 @@ $ docker-compose down
  - From the project's root directory, `cd frontend`
  - Run `yarn` to install dependencies
  - Run `yarn dev` and navigate to `localhost:1234`
+
+ For more information on the front-end please see the [front-end README](./frontend/readme)
+
+## Scripts
+
+This project implements the [Scripts To Rule Them All](https://github.com/github/scripts-to-rule-them-all) interface for developers:
+
+* `script/server` — Brings a fully working environment up at [localhost:8080](http://localhost:8080)
+* `script/setup` — Run after `script/server` to initialize local database with seed data
+* `script/update` — Run after changing code or switching branches to refresh server
 
 Other tools
 ## Links
