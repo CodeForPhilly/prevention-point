@@ -1,5 +1,5 @@
 from core.viewsets import ModelViewSet
-from core.models import Visit
+from core.models import Visit, Participant
 from core.visits.serializer import VisitSerializer, VisitWithPopulationSerializer
 from core.permissions import FRONT_DESK, ADMIN, CASE_MANAGER
 from core.models import ProgramServiceMap
@@ -26,7 +26,7 @@ class VisitViewSet(ModelViewSet):
         """
         post route to create new visit
         """
-        # gets the coressponding mam id for the program-service pair.
+        # gets the corresponding mam id for the program-service pair.
         program_service_map = ProgramServiceMap.objects.get(
             service=req.data["service"], program=req.data["program"]
         )
@@ -48,3 +48,26 @@ class VisitViewSet(ModelViewSet):
         else:
             # TODO  better error
             return Response(visit_data.errors)
+
+    def update(self, req, *args, **kwargs):
+        """
+        update an existing visit
+        """
+        try:
+            program_service_map = ProgramServiceMap.objects.get(
+                service=req.data["service"], program=req.data["program"]
+            )
+            participant = Participant.objects.get(pk=req.data["participant"])
+
+            visit = Visit.objects.get(pk=req.data["id"])
+            visit.participant = participant
+            visit.program_service_map = program_service_map
+            visit.notes = req.data["notes"]
+            visit.urgency = req.data["urgency"]
+
+            visit.clean()
+            visit.save()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        except KeyError:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
