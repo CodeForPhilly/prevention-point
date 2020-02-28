@@ -67,7 +67,7 @@ class VisitViewSet(ModelViewSet):
 
             visit.clean()
             visit.save()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response(status=status.HTTP_200_OK)
 
         except KeyError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
