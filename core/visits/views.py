@@ -1,5 +1,5 @@
 from core.viewsets import ModelViewSet
-from core.models import Visit, Participant
+from core.models import Visit
 from core.visits.serializer import VisitSerializer, VisitWithPopulationSerializer
 from core.permissions import FRONT_DESK, ADMIN, CASE_MANAGER
 from core.models import ProgramServiceMap
@@ -55,38 +55,29 @@ class VisitViewSet(ModelViewSet):
         """
         try:
             visit = Visit.objects.get(pk=req.data["id"])
-
-            print("visit before: ", visit.__dict__)
-
-            participant = Participant.objects.get(pk=req.data["participant"])
+            update_data = {}
             
             if req.data["service"] and req.data["program"]:
                 program_service_map = ProgramServiceMap.objects.get(
                     service=req.data["service"], program=req.data["program"]
                 )
-                visit.program_service_map = program_service_map
-            else:
-                visit.program_service_map = visit.program_service_map
+                update_data["program_service_map"] = program_service_map.id
 
             if req.data["notes"]:
-                visit.notes = req.data["notes"]
-            else:
-                visit.notes = visit.notes
+                update_data["notes"] = req.data["notes"]
 
             if req.data["urgency"]:
-                visit.urgency = req.data["urgency"]
+                update_data["urgency"] = req.data["urgency"]
+
+            visit_data = VisitSerializer(visit, update_data, partial=True)
+
+            if visit_data.is_valid():
+                visit_data.save()
+                populated_visit = VisitWithPopulationSerializer(visit, context={'request': req}).data
+                return Response(populated_visit, status=status.HTTP_200_OK)
             else:
-                visit.urgency = visit.urgency
-
-            print("visit after: ", visit.__dict__)
-
-            visit.clean()
-
-            print("visit after clean : ", visit.__dict__)
-
-            visit.save()
-
-            return Response(status=status.HTTP_200_OK)
+                # TODO  better error
+                return Response(visit_data.errors)
 
         except KeyError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
