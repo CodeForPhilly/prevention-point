@@ -51,22 +51,41 @@ class VisitViewSet(ModelViewSet):
 
     def update(self, req, *args, **kwargs):
         """
-        update an existing visit
+        Update an existing visit. Must have visit and participant.  Other fields optional
         """
         try:
-            program_service_map = ProgramServiceMap.objects.get(
-                service=req.data["service"], program=req.data["program"]
-            )
-            participant = Participant.objects.get(pk=req.data["participant"])
-
             visit = Visit.objects.get(pk=req.data["id"])
-            visit.participant = participant
-            visit.program_service_map = program_service_map
-            visit.notes = req.data["notes"]
-            visit.urgency = req.data["urgency"]
+
+            print("visit before: ", visit.__dict__)
+
+            participant = Participant.objects.get(pk=req.data["participant"])
+            
+            if req.data["service"] and req.data["program"]:
+                program_service_map = ProgramServiceMap.objects.get(
+                    service=req.data["service"], program=req.data["program"]
+                )
+                visit.program_service_map = program_service_map
+            else:
+                visit.program_service_map = visit.program_service_map
+
+            if req.data["notes"]:
+                visit.notes = req.data["notes"]
+            else:
+                visit.notes = visit.notes
+
+            if req.data["urgency"]:
+                visit.urgency = req.data["urgency"]
+            else:
+                visit.urgency = visit.urgency
+
+            print("visit after: ", visit.__dict__)
 
             visit.clean()
+
+            print("visit after clean : ", visit.__dict__)
+
             visit.save()
+
             return Response(status=status.HTTP_200_OK)
 
         except KeyError:
