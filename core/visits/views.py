@@ -53,11 +53,14 @@ class VisitViewSet(ModelViewSet):
 
     def update(self, req, *args, **kwargs):
         """
-        Update an existing visit. Must have visit and participant.  Other fields optional
+        Update an existing visit for program, service, urgency, notes
         """
+        update_data = {}
         try:
-            visit = Visit.objects.get(pk=req.data["id"])
-            update_data = {}
+            if "pk" in kwargs:
+                visit = Visit.objects.get(pk=kwargs["pk"])
+            else:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
             
             if "service" in req.data and "program" in req.data:
                 program_service_map = ProgramServiceMap.objects.get(
