@@ -1,4 +1,4 @@
-import random, pytz
+import random, pytz, datetime
 
 
 from django.utils import timezone
@@ -20,6 +20,7 @@ from core.models import (
     Visit,
     ProgramServiceMap,
     UrgencyLevel,
+    ProgramAvailability
 )
 from core.permissions import CASE_MANAGER, FRONT_DESK, ADMIN
 from core.models.front_desk_event import FrontDeskEventType, FrontDeskEvent
@@ -90,6 +91,33 @@ class FrequencyProvider(BaseProvider):
 fake.add_provider(FrequencyProvider)
 
 
+class MonFriProvider(BaseProvider):
+    __provider__ = "day of week"
+    __lang__ = "en_US"
+
+    def mon_fri(self):
+        days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+        return random.choices(days)
+
+
+fake.add_provider(MonFriProvider)
+
+
+class AvailabilityWindowProvider(BaseProvider):
+    """For HRSC sign in. HRSC appointments are available Mon-Fri, 10a-4p"""
+    __provider__ = "availability window"
+    __lang__ = "en_US"
+
+    def availability_window(self, start_hour = 10, end_hour = 17):
+        """Returns a tuple (start_time, end_time)"""
+        window_begin = random.randint(start_hour, end_hour - 2)
+        end_hour = random.randint(window_begin + 1, end_hour)
+        return datetime.time(hour=window_begin), datetime.time(hour=end_hour)
+       
+
+fake.add_provider(AvailabilityWindowProvider)
+
+
 def run_seed(self):
     call_command("migrate", interactive=False)
     call_command("flush", interactive=False)
@@ -100,7 +128,7 @@ def run_seed(self):
     create_participants()
     create_programs(output=False)
     create_visits(output=False)
-
+    create_program_availability(output=False)
 
 def create_users(output=True):
     for group in DEFAULT_GROUPS:
@@ -297,6 +325,36 @@ def create_event(visit, type):
     f.event_type = type
     f.full_clean()
     f.save()
+
+
+def create_program_availability(output=True):
+    """create program availability"""
+    programs = Program.objects.all()
+    days_of_week = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    for program in programs:
+        for day in days_of_week:
+            if random.randint(0, 10) < 8:
+                availability = ProgramAvailability()
+                availability.program = program
+                availability.day_of_week = day
+                availability.start_time, availability.end_time = fake.availability_window(
+                    start_hour=8, end_hour=18)
+                window_one_end = availability.end_time.hour
+                availability.full_clean()
+                availability.save()
+                if window_one_end < 15:
+                    availability_two = ProgramAvailability()
+                    availability_two.program = program
+                    availability_two.day_of_week = day
+                    availability_two.start_time, availability_two.end_time = fake.availability_window(
+                        start_hour=window_one_end+1, end_hour=23)
+                    availability_two.full_clean()
+                    availability_two.save()
+
+    if output:
+        for availability in ProgramAvailability.objects.all().order_by('program'): 
+            print(f"Created program availability: {availability.program.name} {availability.day_of_week} {availability.start_time} {availability.end_time}")
+
 
 def arrived(visit):
     """After ARRIVED, can be either LEFT, SEEN, STEPPED_OUT or pending (still in ARRIVED status)"""
