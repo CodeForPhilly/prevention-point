@@ -1,10 +1,12 @@
+from django.core.exceptions import ObjectDoesNotExist
+from rest_framework.response import Response
+from rest_framework import status
+
 from core.viewsets import ModelViewSet
 from core.models import Visit
 from core.visits.serializer import VisitSerializer, VisitWithPopulationSerializer
 from core.permissions import FRONT_DESK, ADMIN, CASE_MANAGER
 from core.models import ProgramServiceMap
-from rest_framework.response import Response
-from rest_framework import status
 
 
 class VisitViewSet(ModelViewSet):
@@ -54,30 +56,22 @@ class VisitViewSet(ModelViewSet):
         Update an existing visit. Must have visit and participant.  Other fields optional
         """
         try:
-            print("Point -1")
             visit = Visit.objects.get(pk=req.data["id"])
             update_data = {}
-            print("Point 0")
             
             if "service" in req.data and "program" in req.data:
-            #if req.data["service"] and req.data["program"]:
                 program_service_map = ProgramServiceMap.objects.get(
                     service=req.data["service"], program=req.data["program"]
                 )
                 update_data["program_service_map"] = program_service_map.id
 
-            print("Point 1")
-
             if "notes" in req.data:
                 update_data["notes"] = req.data["notes"]
-            print("Point 2")
 
             if "urgency" in req.data:
                 update_data["urgency"] = req.data["urgency"]
-            print("Point 3")
 
             visit_data = VisitSerializer(visit, update_data, partial=True)
-            print("Point 4")
 
             if visit_data.is_valid():
                 visit_data.save()
@@ -86,7 +80,6 @@ class VisitViewSet(ModelViewSet):
             else:
                 # TODO  better error
                 return Response(visit_data.errors)
-            print("Point 5")
 
-        except KeyError:
+        except ObjectDoesNotExist:
             return Response(status=status.HTTP_400_BAD_REQUEST)
