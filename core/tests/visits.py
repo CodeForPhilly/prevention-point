@@ -82,7 +82,7 @@ class VisitTests(BaseTestCase):
 
     def test_update_visit_urgency(self):
         """
-        Ensure we can update notes on a visit
+        Ensure we can update urgency on a visit
         """
         # create a visit
         headers = self.auth_headers_for_user("front_desk")
@@ -129,7 +129,6 @@ class VisitTests(BaseTestCase):
         create_response = self.client.post(
             "/api/visits/", data, format="json", **headers
         )
-        self.assertEqual(create_response.status_code, status.HTTP_201_CREATED)
 
         headers = self.auth_headers_for_user("case_manager")
         new_note = "I forgot to add notes the first time!"
