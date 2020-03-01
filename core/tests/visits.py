@@ -129,10 +129,9 @@ class VisitTests(BaseTestCase):
         create_response = self.client.post(
             "/api/visits/", data, format="json", **headers
         )
+        self.assertEqual(create_response.status_code, status.HTTP_201_CREATED)
 
         headers = self.auth_headers_for_user("case_manager")
-        new_note = "I forgot to add notes the first time!"
-
         visit_id = json.loads(create_response.content)["id"]
 
         data = {
