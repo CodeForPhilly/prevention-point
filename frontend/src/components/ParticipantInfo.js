@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import React, { useContext, useEffect } from "react"
 import { rootStoreContext } from "../stores/RootStore"
 import "../scss/participant-search.scss"
@@ -73,6 +74,7 @@ const useStyles = makeStyles(theme => ({
 
 const ParticipantInfo = observer(() => {
   const rootStore = useContext(rootStoreContext)
+  // particiant store derived from root store
   const participantStore = rootStore.ParticipantStore
   // init participant state
   const [participant, setParticipant] = React.useState({
@@ -104,22 +106,23 @@ const ParticipantInfo = observer(() => {
   const [programList, setProgramList] = React.useState([])
   // list of all services
   const [serviceList, setServiceList] = React.useState([])
+  // ???
   const [open, setOpen] = React.useState("")
   // set up history for routing pushes
   const history = useHistory()
   // get existing participant if applicable else its undefined
   const existingParticipant = participantStore.getParticipant()
+  // get existing visit if applicable else its undefined
+  const existingVisit = participantStore.getVisit()
   // useEffect is a hook that gets called after every render/re-render.  Empty array second argument prevents it from running again.
   useEffect(() => {
     // self invoked async function making api calls for insurers and programs
     ;(async () => {
-      // kick off api calls for insurers from Mobx
-      await participantStore.getInsurers()
-      // kick off api calls for programs from Mobx
-      await participantStore.getPrograms()
-      setInsurers(await participantStore.getInsuranceList())
-      setProgramList(
-        await participantStore.getProgramList().filter(item => !item.is_frozen)
+      // save insurers locally
+      await setInsurers(participantStore.getInsuranceList())
+      // save programs locally
+      await setProgramList(
+        participantStore.getProgramList().filter(item => !item.is_frozen)
       )
     })()
     // if existing participant exists then auto fill the fields
@@ -138,8 +141,25 @@ const ParticipantInfo = observer(() => {
         insuranceType: existingParticipant.insuranceType
           ? existingParticipant.insuranceType
           : "",
-        insurer: existingParticipant.insurer ? existingParticipant.insurer : "",
+        insurer: existingParticipant.insurer,
       })
+      if (existingVisit) {
+        setVisit({
+          id: existingVisit.id,
+          participant: existingVisit.participant,
+          program: existingVisit.program,
+          service: existingVisit.service,
+          notes: existingVisit.notes,
+          urgency: existingVisit.urgency,
+        })
+        // preload services
+        if (existingVisit.program && existingVisit.service) {
+          let serviceList = participantStore
+            .getProgramList()
+            .find(val => val.id === existingVisit.program)
+          setServiceList(serviceList.services)
+        }
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -170,23 +190,38 @@ const ParticipantInfo = observer(() => {
       gender: participant.gender,
       is_insured: participant.hasInsurance,
       insuranceType: participant.insuranceType,
-      insurer: participant.insurer.name,
+      insurer: participant.insurer,
     })
     // if we have a participant and navigated from queuetable or is a new participant set visit
-    if (!existingParticipant) {
+    if (
+      (!existingParticipant && !existingVisit) ||
+      (existingParticipant && existingVisit)
+    ) {
       // set visit in Mobx
       participantStore.setVisit(visit)
     }
-    // kick either update or create participant in Mobx
-    existingParticipant
-      ? participantStore.updateParticipant()
-      : participantStore.createParticipant()
+    // if existing participant and vist we are coming from QueueTable, so update particiapnt and visit
+    if (existingParticipant && existingVisit) {
+      participantStore.updateParticipant()
+      participantStore.updateVisit()
+      // if existing participant and no vist we are coming from search, so update particiapnt only
+    } else if (existingParticipant && !existingVisit) {
+      participantStore.updateParticipant()
+      // otherwise we are adding a new participant because both participant and visit will be undefined
+    } else {
+      participantStore.createParticipant()
+    }
     // after all api calls for submit have been completed route to QueueTable
     autorun(() => {
       if (participantStore.routeToQueueTable) {
         history.push("/")
       }
     })
+  }
+
+  const findAndSaveServiceListings = e => {
+    let serviceList = programList.find(val => val.id === e.target.value)
+    setServiceList(serviceList.services)
   }
 
   const classes = useStyles()
@@ -417,11 +452,11 @@ const ParticipantInfo = observer(() => {
                         open={open.insuranceType}
                         onClose={handleClose.insuranceType}
                         onOpen={handleOpen.insuranceType}
-                        value={participant.insuranceType}
+                        value={participant.insurer}
                         onChange={e =>
                           setParticipant({
                             ...participant,
-                            insuranceType: e.target.value,
+                            insurer: e.target.value,
                           })
                         }
                         inputProps={{
@@ -433,7 +468,7 @@ const ParticipantInfo = observer(() => {
                           <MenuItem
                             key={index}
                             value={
-                              insurers && insurers.length > 0 ? company : null
+                              insurers && insurers.length > 0 ? company.id : ""
                             }
                           >
                             {insurers && insurers.length > 0
@@ -449,7 +484,8 @@ const ParticipantInfo = observer(() => {
             </div>
           </Grid>
 
-          {!existingParticipant ? (
+          {(!existingParticipant && !existingVisit) ||
+          (existingParticipant && existingVisit) ? (
             <div>
               <Typography
                 style={{ textAlign: "left" }}
@@ -480,7 +516,7 @@ const ParticipantInfo = observer(() => {
                               ...visit,
                               program: e.target.value,
                             })
-                            setServiceList(e.target.value.services)
+                            findAndSaveServiceListings(e)
                           }}
                           inputProps={{
                             name: "program",
@@ -491,7 +527,9 @@ const ParticipantInfo = observer(() => {
                             <MenuItem
                               key={index}
                               value={
-                                programList && programList.length > 0 ? p : 0
+                                programList && programList.length > 0
+                                  ? p.id
+                                  : ""
                               }
                             >
                               {programList && programList.length > 0
@@ -530,7 +568,9 @@ const ParticipantInfo = observer(() => {
                               <MenuItem
                                 key={index}
                                 value={
-                                  serviceList && serviceList.length > 0 ? s : 0
+                                  serviceList && serviceList.length > 0
+                                    ? s.id
+                                    : ""
                                 }
                               >
                                 {serviceList && serviceList.length > 0

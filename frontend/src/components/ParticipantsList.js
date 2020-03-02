@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect, useState } from "react"
+import React, { Fragment, useContext } from "react"
 import { rootStoreContext } from "../stores/RootStore"
 import Breadcrumbs from "@material-ui/core/Breadcrumbs"
 import Typography from "@material-ui/core/Typography"
@@ -44,118 +44,109 @@ const ParticipantsList = observer(() => {
 
   const rootStore = useContext(rootStoreContext)
   const participantsStore = rootStore.ParticipantStore
-  const [isLoading, setIsLoading] = useState(false)
-
-  // useEffect is a hook that gets called after every render/re-render.  Empty array second argument prevents it from running again.
-  useEffect(() => {
-    setIsLoading(true)
-    participantsStore.getParticipants()
-    participantsStore.getInsurers()
-    setIsLoading(false)
-  }, [participantsStore])
 
   const handleParticipant = (e, participant) => {
     participantsStore.setParticipant(participant)
+    participantsStore.setVisit(undefined)
   }
 
   return (
     <Fragment>
-      {isLoading ? (
-        <div>Loading ...</div>
-      ) : (
-        <div>
-          <Breadcrumbs separator="›" aria-label="breadcrumb">
-            <Link color="inherit" to="/">
-              Home
-            </Link>
-            <Typography color="textPrimary">Search Results</Typography>
-          </Breadcrumbs>
-          <Typography variant="h5" color="textPrimary">
-            Participants
-          </Typography>
-          <div className="participants">
-            <Table>
-              <TableHead>
-                <TableRow>
+      <div>
+        <Breadcrumbs separator="›" aria-label="breadcrumb">
+          <Link color="inherit" to="/">
+            Home
+          </Link>
+          <Typography color="textPrimary">Search Results</Typography>
+        </Breadcrumbs>
+        <Typography variant="h5" color="textPrimary">
+          Participants
+        </Typography>
+        <div className="participants">
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                  <Typography>PPID</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>First Name</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>Last Name</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>Gender</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>DOB</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>Race</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>Edit Participant</Typography>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {participantsStore.participants.map((participant, index) => (
+                <TableRow
+                  key={index}
+                  onClick={e => handleParticipant(e, participant)}
+                >
                   <TableCell>
-                    <Typography>PPID</Typography>
+                    <Typography>{participant.pp_id} </Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography>First Name</Typography>
+                    <Typography>{participant.first_name}</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography>Last Name</Typography>
+                    <Typography>{participant.last_name}</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography>Gender</Typography>
+                    <Typography>{participant.gender}</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography>DOB</Typography>
+                    <Typography>{participant.date_of_birth}</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography>Race</Typography>
+                    <Typography>{participant.race}</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography>Edit Participant</Typography>
+                    <Link to="/participantInfo">
+                      <Fab color="primary" size="small" aria-label="add">
+                        <AssignmentIndIcon />
+                      </Fab>
+                    </Link>
                   </TableCell>
                 </TableRow>
-              </TableHead>
-              <TableBody>
-                {participantsStore.participants.map((participant, index) => (
-                  <TableRow
-                    key={index}
-                    onClick={e => handleParticipant(e, participant)}
-                  >
-                    <TableCell>
-                      <Typography>{participant.pp_id} </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography>{participant.first_name}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography>{participant.last_name}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography>{participant.gender}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography>{participant.date_of_birth}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography>{participant.race}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Link to="/participantInfo">
-                        <Fab color="primary" size="small" aria-label="add">
-                          <AssignmentIndIcon />
-                        </Fab>
-                      </Link>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-          <BottomNavigation showLabels className={classes.addParticipantNav}>
-            <Link
-              to="/participantInfo"
-              onClick={participantsStore.setParticipant(undefined)}
-            >
-              <Grid container>
-                <Grid container item justify="flex-end">
-                  <Typography
-                    color="primary"
-                    style={{ fontSize: 28, paddingRight: "0.75em" }}
-                  >
-                    Add Participant
-                  </Typography>
-                  <PersonAddIcon color="primary" style={{ fontSize: 50 }} />
-                </Grid>
-              </Grid>
-            </Link>
-          </BottomNavigation>
+              ))}
+            </TableBody>
+          </Table>
         </div>
-      )}
+        <BottomNavigation showLabels className={classes.addParticipantNav}>
+          <Link
+            to="/participantInfo"
+            onClick={() => {
+              participantsStore.setParticipant(undefined)
+              participantsStore.setVisit(undefined)
+            }}
+          >
+            <Grid container>
+              <Grid container item justify="flex-end">
+                <Typography
+                  color="primary"
+                  style={{ fontSize: 28, paddingRight: "0.75em" }}
+                >
+                  Add Participant
+                </Typography>
+                <PersonAddIcon color="primary" style={{ fontSize: 50 }} />
+              </Grid>
+            </Grid>
+          </Link>
+        </BottomNavigation>
+      </div>
     </Fragment>
   )
 })
