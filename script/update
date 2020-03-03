@@ -13,6 +13,10 @@ echo
 echo "==> Rebuilding containers…"
 docker-compose up -d --build
 
+echo 
+echo "==> Initialize static assets"
+docker-compose exec app python manage.py collectstatic
+
 echo
 echo "==> Running migrations…"
 docker-compose exec app python manage.py migrate

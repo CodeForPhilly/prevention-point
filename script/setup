@@ -15,10 +15,6 @@ echo "==> Initializing and seeding database…"
 docker-compose exec app python manage.py migrate
 docker-compose exec app python manage.py seed
 
-echo 
-echo "==> Initialize static assets"
-docker-compose exec app python manage.py collectstatic
-
 echo
 echo "==> Creating default admin user…"
 docker-compose exec -T app python manage.py shell <<END_OF_SCRIPT
