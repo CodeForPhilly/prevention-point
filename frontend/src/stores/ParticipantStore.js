@@ -1,4 +1,4 @@
-import { observable, action, flow, toJS, decorate } from "mobx"
+import { observable, action, flow, toJS, decorate, computed } from "mobx"
 import { createContext } from "react"
 import api from "../api"
 
@@ -22,12 +22,22 @@ export class ParticipantStore {
   @observable
   routeToQueueTable = false
 
+  // if user has input a value for search, enable search else disable search
+  @computed get toggleSearch() {
+    let hasString =
+      Object.keys(this.params).length > 0 &&
+      (this.params.pp_id || this.params.first_name || this.params.last_name)
+        ? true
+        : false
+    return hasString ? false : true
+  }
+
   // Setters
   setParticipantsList = data => {
     this.participants = data
   }
   setUserIdParam = data => {
-    this.params.pp_id = data
+    this.params.pp_id = data.toUpperCase()
   }
   setFirstNameParam = data => {
     this.params.first_name = data

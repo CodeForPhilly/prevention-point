@@ -1,4 +1,4 @@
-import React, { Fragment, useContext } from "react"
+import React, { Fragment, useContext, useEffect } from "react"
 import { rootStoreContext } from "../stores/RootStore"
 import Breadcrumbs from "@material-ui/core/Breadcrumbs"
 import Typography from "@material-ui/core/Typography"
@@ -43,11 +43,19 @@ const ParticipantsList = observer(() => {
   const classes = useStyles()
 
   const rootStore = useContext(rootStoreContext)
-  const participantsStore = rootStore.ParticipantStore
+  const participantStore = rootStore.ParticipantStore
+
+  useEffect(() => {
+    ;(async () => {
+      // kick off api calls for participants from Mobx
+      await participantStore.getParticipants()
+    })()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleParticipant = (e, participant) => {
-    participantsStore.setParticipant(participant)
-    participantsStore.setVisit(undefined)
+    participantStore.setParticipant(participant)
+    participantStore.setVisit(undefined)
   }
 
   return (
@@ -90,9 +98,12 @@ const ParticipantsList = observer(() => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {participantsStore.participants.map((participant, index) => (
+              {participantStore.participants.length < 1 ? (
+                <h5>Sorry no participants found</h5>
+              ) : null}
+              {participantStore.participants.map(participant => (
                 <TableRow
-                  key={index}
+                  key={participant.id}
                   onClick={e => handleParticipant(e, participant)}
                 >
                   <TableCell>
@@ -129,8 +140,8 @@ const ParticipantsList = observer(() => {
           <Link
             to="/participantInfo"
             onClick={() => {
-              participantsStore.setParticipant(undefined)
-              participantsStore.setVisit(undefined)
+              participantStore.setParticipant(undefined)
+              participantStore.setVisit(undefined)
             }}
           >
             <Grid container>

@@ -41,8 +41,6 @@ const QueueTable = observer(queueData => {
       await participantStore.getInsurers()
       // kick off api calls for programs from Mobx
       await participantStore.getPrograms()
-      // kick off api calls for participants from Mobx
-      await participantStore.getParticipants()
     })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
