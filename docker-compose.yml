@@ -23,5 +23,13 @@ services:
       - app
     volumes:
       - ./frontend/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+  metabase:
+    image: metabase/metabase:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./metabase-data:/metabase-data:Z
+    environment:
+      - MB_DB_FILE=/metabase-data/metabase.db
 volumes:
   data:

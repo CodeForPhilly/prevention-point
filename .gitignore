@@ -119,3 +119,4 @@ yarn-debug.log*
 yarn-error.log*
 
 /notes.txt
+/metabase-data

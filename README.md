@@ -76,6 +76,20 @@ This project implements the [Scripts To Rule Them All](https://github.com/github
 * `script/setup` — Run after `script/server` to initialize local database with seed data
 * `script/update` — Run after changing code or switching branches to refresh server
 
+## Metabase
+
+The Metabase containers can be configured to the postgres database by using there settings aftering creating the containers. 
+| Setting           | Value             |
+| ----------------- | ----------------- |
+| Name              | (Your preference) |
+| Host              | db                |
+| Port              | 5432 (default)    |
+| Database name     | postgres          |
+| Database username | (leave blank)     |
+| Database passowrd | (leave blank)     |
+
+Leave other settings as default. 
+
 Other tools
 ## Links
 [Wiki](https://github.com/CodeForPhilly/prevention-point/wiki)
