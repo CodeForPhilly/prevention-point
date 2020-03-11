@@ -21,7 +21,8 @@ const LoginForm = observer(({ location }) => {
 
   const changePassword = e => setPassword(e.target.value)
 
-  const login = () => {
+  const login = event => {
+    event.preventDefault()
     rootStore.authStore.login(username, password)
   }
 
