@@ -20,8 +20,7 @@ import FormLabel from "@material-ui/core/FormLabel"
 import Button from "@material-ui/core/Button"
 import { observer } from "mobx-react-lite"
 import { useHistory } from "react-router-dom"
-import { format } from "date-fns"
-import { autorun } from "mobx"
+import { autorun, toJS } from "mobx"
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -76,44 +75,18 @@ const ParticipantInfo = observer(() => {
   const rootStore = useContext(rootStoreContext)
   // particiant store derived from root store
   const participantStore = rootStore.ParticipantStore
-  // init participant state
-  const [participant, setParticipant] = React.useState({
-    id: null,
-    firstName: "",
-    lastName: "",
-    lastFourSSN: 0,
-    dateOfBirth: "",
-    startDate: "",
-    ppId: "",
-    race: "",
-    gender: "",
-    hasInsurance: false,
-    insuranceType: "",
-    insurer: "",
-  })
-  // init visit state
-  const [visit, setVisit] = React.useState({
-    id: null,
-    participant: null,
-    program: "",
-    service: "",
-    notes: "",
-    urgency: "",
-  })
-  // list of all insurerers
   const [insurers, setInsurers] = React.useState([])
   // list of all programs
   const [programList, setProgramList] = React.useState([])
   // list of all services
   const [serviceList, setServiceList] = React.useState([])
-  // ???
   const [open, setOpen] = React.useState("")
   // set up history for routing pushes
   const history = useHistory()
   // get existing participant if applicable else its undefined
-  const existingParticipant = participantStore.getParticipant()
+  const existingParticipant = toJS(participantStore.participant)
   // get existing visit if applicable else its undefined
-  const existingVisit = participantStore.getVisit()
+  const existingVisit = toJS(participantStore.visit)
   // useEffect is a hook that gets called after every render/re-render.  Empty array second argument prevents it from running again.
   useEffect(() => {
     // self invoked async function making api calls for insurers and programs
@@ -126,47 +99,21 @@ const ParticipantInfo = observer(() => {
       )
     })()
     // if existing participant exists then auto fill the fields
-    if (existingParticipant) {
-      setParticipant({
-        id: existingParticipant.id,
-        firstName: existingParticipant.first_name,
-        lastName: existingParticipant.last_name,
-        lastFourSSN: existingParticipant.last_four_ssn,
-        dateOfBirth: existingParticipant.date_of_birth,
-        startDate: existingParticipant.start_date,
-        ppId: existingParticipant.pp_id,
-        race: existingParticipant.race,
-        gender: existingParticipant.gender,
-        hasInsurance: existingParticipant.is_insured,
-        insuranceType: existingParticipant.insuranceType
-          ? existingParticipant.insuranceType
-          : "",
-        insurer: existingParticipant.insurer,
-      })
-      if (existingVisit) {
-        setVisit({
-          id: existingVisit.id,
-          participant: existingVisit.participant,
-          program: existingVisit.program,
-          service: existingVisit.service,
-          notes: existingVisit.notes,
-          urgency: existingVisit.urgency,
-        })
-        // preload services
-        if (existingVisit.program && existingVisit.service) {
-          let serviceList = participantStore
-            .getProgramList()
-            .find(val => val.id === existingVisit.program)
-          setServiceList(serviceList.services)
-        }
-      }
+    if (
+      existingParticipant.id &&
+      existingVisit.id &&
+      existingVisit.program &&
+      existingVisit.service
+    ) {
+      // preload services
+      let serviceList = participantStore
+        .getProgramList()
+        .find(val => val.id === existingVisit.program)
+      setServiceList(serviceList.services)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const createStartDate = () => {
-    return format(new Date(), "yyyy-MM-dd")
-  }
   // set store stuff here and update Mobx on submit
   const handleClose = () => {
     setOpen(false)
@@ -176,36 +123,12 @@ const ParticipantInfo = observer(() => {
   }
   const handleSubmit = e => {
     e.preventDefault()
-    participantStore.setParticipant({
-      id: existingParticipant ? participant.id : null,
-      first_name: participant.firstName,
-      last_name: participant.lastName,
-      last_four_ssn: participant.lastFourSSN,
-      date_of_birth: participant.dateOfBirth,
-      start_date: existingParticipant
-        ? participant.startDate
-        : createStartDate(),
-      pp_id: participant.ppId,
-      race: participant.race,
-      gender: participant.gender,
-      is_insured: participant.hasInsurance,
-      insuranceType: participant.insuranceType,
-      insurer: participant.insurer,
-    })
-    // if we have a participant and navigated from queuetable or is a new participant set visit
-    if (
-      (!existingParticipant && !existingVisit) ||
-      (existingParticipant && existingVisit)
-    ) {
-      // set visit in Mobx
-      participantStore.setVisit(visit)
-    }
     // if existing participant and vist we are coming from QueueTable, so update particiapnt and visit
-    if (existingParticipant && existingVisit) {
+    if (existingParticipant.id && existingVisit.id) {
       participantStore.updateParticipant()
       participantStore.updateVisit()
       // if existing participant and no vist we are coming from search, so update particiapnt only
-    } else if (existingParticipant && !existingVisit) {
+    } else if (existingParticipant.id && !existingVisit.id) {
       participantStore.updateParticipant()
       // otherwise we are adding a new participant because both participant and visit will be undefined
     } else {
@@ -250,12 +173,9 @@ const ParticipantInfo = observer(() => {
                     <Input
                       id="user_first-name"
                       name="user_first-name"
-                      value={participant.firstName}
+                      value={existingParticipant.first_name}
                       onChange={e =>
-                        setParticipant({
-                          ...participant,
-                          firstName: e.target.value,
-                        })
+                        participantStore.setFirstName(e.target.value)
                       }
                       required
                     />
@@ -267,12 +187,9 @@ const ParticipantInfo = observer(() => {
                     <Input
                       id="user_last-name"
                       name="user_last-name"
-                      value={participant.lastName}
+                      value={existingParticipant.last_name}
                       onChange={e =>
-                        setParticipant({
-                          ...participant,
-                          lastName: e.target.value,
-                        })
+                        participantStore.setLastName(e.target.value)
                       }
                       required
                     />
@@ -288,12 +205,9 @@ const ParticipantInfo = observer(() => {
                     <TextField
                       id="user_birth-date"
                       name="user_birth-date"
-                      value={participant.dateOfBirth}
+                      value={existingParticipant.date_of_birth}
                       onChange={e =>
-                        setParticipant({
-                          ...participant,
-                          dateOfBirth: e.target.value,
-                        })
+                        participantStore.setDateOfBirth(e.target.value)
                       }
                       required
                       style={{ marginTop: 40 }}
@@ -311,14 +225,13 @@ const ParticipantInfo = observer(() => {
                     <Input
                       id="uuid"
                       name="uuid"
-                      value={participant.ppId}
-                      onChange={e =>
-                        setParticipant({
-                          ...participant,
-                          ppId: e.target.value,
-                          lastFourSSN: +e.target.value.substr(2),
-                        })
-                      }
+                      value={existingParticipant.pp_id}
+                      onChange={e => {
+                        participantStore.setPPId(e.target.value)
+                        participantStore.setLastFourSSN(
+                          +e.target.value.substr(2)
+                        )
+                      }}
                       required
                     />
                   </FormControl>
@@ -339,13 +252,8 @@ const ParticipantInfo = observer(() => {
                         onClose={handleClose.race}
                         onOpen={handleOpen.race}
                         required
-                        value={participant.race}
-                        onChange={e =>
-                          setParticipant({
-                            ...participant,
-                            race: e.target.value,
-                          })
-                        }
+                        value={existingParticipant.race}
+                        onChange={e => participantStore.setRace(e.target.value)}
                         inputProps={{
                           name: "race",
                           id: "demo-controlled-open-select",
@@ -380,12 +288,9 @@ const ParticipantInfo = observer(() => {
                         onClose={handleClose.gender}
                         onOpen={handleOpen.gender}
                         required
-                        value={participant.gender}
+                        value={existingParticipant.gender}
                         onChange={e =>
-                          setParticipant({
-                            ...participant,
-                            gender: e.target.value,
-                          })
+                          participantStore.setGender(e.target.value)
                         }
                         inputProps={{
                           name: "gender",
@@ -419,13 +324,13 @@ const ParticipantInfo = observer(() => {
                         aria-label="insurance"
                         name="hasInsurance"
                         className={classes.group}
-                        value={participant.hasInsurance === true ? "yes" : "no"}
+                        value={
+                          existingParticipant.is_insured === true ? "yes" : "no"
+                        }
                         onChange={e =>
-                          setParticipant({
-                            ...participant,
-                            hasInsurance:
-                              e.target.value === "yes" ? true : false,
-                          })
+                          participantStore.setIsInsured(
+                            e.target.value === "yes" ? true : false
+                          )
                         }
                         style={{ display: "inline" }}
                       >
@@ -452,12 +357,9 @@ const ParticipantInfo = observer(() => {
                         open={open.insuranceType}
                         onClose={handleClose.insuranceType}
                         onOpen={handleOpen.insuranceType}
-                        value={participant.insurer}
+                        value={existingParticipant.insurer}
                         onChange={e =>
-                          setParticipant({
-                            ...participant,
-                            insurer: e.target.value,
-                          })
+                          participantStore.setInsurer(e.target.value)
                         }
                         inputProps={{
                           name: "insuranceType",
@@ -484,8 +386,8 @@ const ParticipantInfo = observer(() => {
             </div>
           </Grid>
 
-          {(!existingParticipant && !existingVisit) ||
-          (existingParticipant && existingVisit) ? (
+          {(!existingParticipant.id && !existingVisit.id) ||
+          (existingParticipant.id && existingVisit.id) ? (
             <div>
               <Typography
                 style={{ textAlign: "left" }}
@@ -510,12 +412,9 @@ const ParticipantInfo = observer(() => {
                           onClose={handleClose.program}
                           onOpen={handleOpen.program}
                           required
-                          value={visit.program}
+                          value={existingVisit.program}
                           onChange={e => {
-                            setVisit({
-                              ...visit,
-                              program: e.target.value,
-                            })
+                            participantStore.setVisitProgram(e.target.value)
                             findAndSaveServiceListings(e)
                           }}
                           inputProps={{
@@ -546,18 +445,15 @@ const ParticipantInfo = observer(() => {
                         <InputLabel htmlFor="demo-controlled-open-select">
                           Select Service
                         </InputLabel>
-                        {visit.program && serviceList.length > 0 ? (
+                        {existingVisit.program && serviceList.length > 0 ? (
                           <Select
                             open={open.service}
                             onClose={handleClose.service}
                             onOpen={handleOpen.service}
                             required
-                            value={visit.service}
+                            value={existingVisit.service}
                             onChange={e =>
-                              setVisit({
-                                ...visit,
-                                service: e.target.value,
-                              })
+                              participantStore.setVisitService(e.target.value)
                             }
                             inputProps={{
                               name: "service",
@@ -592,12 +488,9 @@ const ParticipantInfo = observer(() => {
                           open={open.priorityLevel}
                           onClose={handleClose.priorityLevel}
                           onOpen={handleOpen.priorityLevel}
-                          value={visit.urgency}
+                          value={existingVisit.urgency}
                           onChange={e =>
-                            setVisit({
-                              ...visit,
-                              urgency: e.target.value,
-                            })
+                            participantStore.setVisitUrgency(e.target.value)
                           }
                           inputProps={{
                             name: "priorityLevel",
@@ -618,12 +511,9 @@ const ParticipantInfo = observer(() => {
                       style={{ margin: 8, marginTop: 40 }}
                       placeholder="Add a note"
                       onChange={e =>
-                        setVisit({
-                          ...visit,
-                          notes: e.target.value,
-                        })
+                        participantStore.setVisitNotes(e.target.value)
                       }
-                      value={visit.notes}
+                      value={existingVisit.notes}
                       fullWidth
                       margin="normal"
                       InputLabelProps={{
