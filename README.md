@@ -90,7 +90,7 @@ This project implements the [Scripts To Rule Them All](https://github.com/github
 
 ## Merges
 
-Once your branch is ready to be merged, request merge approval from two other users. After approvals are received, proceed to merge the branch.
+Once your branch is ready to be merged, request merge approval from one other user. After approval is received, proceed to merge the branch.
 
 Other tools
 ## Links
