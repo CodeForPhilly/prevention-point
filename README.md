@@ -88,6 +88,10 @@ This project implements the [Scripts To Rule Them All](https://github.com/github
 * `script/setup` — Run after `script/server` to initialize local database with seed data
 * `script/update` — Run after changing code or switching branches to refresh server
 
+## Merges
+
+Once your branch is ready to be merged, request merge approval from two other users. After approvals are received, proceed to merge the branch.
+
 Other tools
 ## Links
 [Wiki](https://github.com/CodeForPhilly/prevention-point/wiki)
