@@ -31,6 +31,7 @@ Temporary Items
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+.mypy_cache/
 
 # C extensions
 *.so
@@ -95,8 +96,9 @@ db.sqlite3
 /.cache
 /dist
 
-# dependencies
+# Javascript
 frontend/node_modules/
+node_modules
 frontend/.pnp
 .pnp.js
 

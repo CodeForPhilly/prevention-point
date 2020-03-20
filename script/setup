@@ -1,0 +1,32 @@
+#!/bin/sh
+
+# script/setup: Set up application for the first time after cloning, or set it
+#               back to the initial first unused state.
+
+set -e
+cd "$(dirname "$0")/.."
+
+
+script/bootstrap
+script/-check-docker-compose
+
+echo
+echo "==> Initializing and seeding database…"
+docker-compose exec app python manage.py migrate
+docker-compose exec app python manage.py seed
+
+echo
+echo "==> Creating default admin user…"
+docker-compose exec -T app python manage.py shell <<END_OF_SCRIPT
+from django.contrib.auth import get_user_model;
+
+User = get_user_model();
+User.objects.create_superuser("root", "admin@myproject.com", "password");
+END_OF_SCRIPT
+
+echo
+echo "==> App is now ready to go!"
+echo "    * Open http://localhost:8080"
+echo "    * Login with Username: root"
+echo "                 Password: password"
+echo

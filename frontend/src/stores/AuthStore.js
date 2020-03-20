@@ -23,6 +23,14 @@ export class AuthStore {
   setEmail(email) {
     this.username = email
   }
+  @action
+  logout() {
+    localStorage.removeItem("JWT_ACCESS")
+    localStorage.removeItem("JWT_REFRESH")
+    this.isAuthenticated = false
+    this.username = null
+    this.email = null
+  }
 
   login = flow(function*(username, password) {
     try {
@@ -33,18 +41,9 @@ export class AuthStore {
         this.setEmail(data.email)
       }
     } catch (error) {
-      // TODO: Handle errors
+      throw "AuthStore:  login() Failed  =>  " + error
     }
   })
-
-  @action
-  logout() {
-    localStorage.removeItem("JWT_ACCESS")
-    localStorage.removeItem("JWT_REFRESH")
-    this.isAuthenticated = false
-    this.username = null
-    this.email = null
-  }
 }
 
 export const AuthStoreContext = createContext(new AuthStore())

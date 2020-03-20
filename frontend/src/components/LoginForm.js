@@ -21,7 +21,8 @@ const LoginForm = observer(({ location }) => {
 
   const changePassword = e => setPassword(e.target.value)
 
-  const login = () => {
+  const login = event => {
+    event.preventDefault()
     rootStore.authStore.login(username, password)
   }
 
@@ -29,7 +30,7 @@ const LoginForm = observer(({ location }) => {
 
   return (
     <div className="login-form">
-      <form className="login-form__form">
+      <form className="login-form__form" onSubmit={login}>
         <FormGroup className="login-form__input">
           <FormControl>
             <InputLabel htmlFor="username">Username</InputLabel>
@@ -56,12 +57,7 @@ const LoginForm = observer(({ location }) => {
             />
           </FormControl>
         </FormGroup>
-        <Button
-          type="button"
-          variant="contained"
-          style={{ marginTop: "10px" }}
-          onClick={login}
-        >
+        <Button type="submit" variant="contained" style={{ marginTop: "10px" }}>
           Sign In
         </Button>
       </form>
