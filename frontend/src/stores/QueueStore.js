@@ -74,7 +74,7 @@ export class QueueStore {
 
   @action
   setQueue(queueIndex, data) {
-    this.queues[queueIndex] = data
+    this.queues[queueIndex] = data.sort((a, b) => +b.urgency[1] - +a.urgency[1])
   }
 
   //Return the longest wait time in minutes
