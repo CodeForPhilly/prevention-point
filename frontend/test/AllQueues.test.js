@@ -1,9 +1,20 @@
 /* eslint-disable quotes */
 import React from "react"
+import { act } from "react-dom/test-utils"
 import { configure } from "enzyme"
 import Adapter from "enzyme-adapter-react-16"
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles"
+import { Button } from "@material-ui/core"
 import { createMount } from "@material-ui/core/test-utils"
+import { BrowserRouter } from "react-router-dom"
+import api from "../src/api"
+
+jest.mock("../src/api")
+api.getProgram = jest
+  .fn()
+  .mockResolvedValue({ ok: true, data: { is_frozen: false } })
+api.getQueue = jest.fn().mockResolvedValue({ ok: true, data: [] })
+api.patchProgram = jest.fn().mockResolvedValue({ ok: true })
 
 import AppBar from "@material-ui/core/AppBar"
 import AllQueues from "../src/components/AllQueues"
@@ -31,13 +42,17 @@ describe("<AllQueues />", () => {
   // Unit testing
   describe("Unit tests", () => {
     // what to do before each test
-    beforeEach(() => {
+    beforeEach(async () => {
       mount = createMount()
-      wrapper = mount(
-        <ThemeProvider theme={theme}>
-          <AllQueues {...initialProps} />
-        </ThemeProvider>
-      )
+      await act(async () => {
+        wrapper = mount(
+          <ThemeProvider theme={theme}>
+            <BrowserRouter>
+              <AllQueues {...initialProps} />
+            </BrowserRouter>
+          </ThemeProvider>
+        )
+      })
       bar = wrapper.find(AppBar)
       buttons = bar.find("button")
       testingButton = buttons.at(0)
@@ -81,11 +96,15 @@ describe("<AllQueues />", () => {
       expect(h6.text()).toEqual("TESTING")
     })
 
-    it("should be able to click cmButton and change title to CM", () => {
-      cmButton.simulate("click")
+    it("should be able to click cmButton and change title to CM", async () => {
+      await act(async () => {
+        cmButton.simulate("click")
+      })
       expect(cmButton.text()).toEqual("CM00")
       //Necessary to update the wrapper to see effect of click
-      h6Update = wrapper.update().find("h6")
+      await act(async () => {
+        h6Update = wrapper.update().find("h6")
+      })
       expect(h6Update.text()).toEqual("CM")
     })
 
@@ -94,13 +113,26 @@ describe("<AllQueues />", () => {
       expect(tr.length).toEqual(2)
     })
 
-    it("should be have a shorter CM queue if status is set to 'left'", () => {
-      cmButton.simulate("click")
+    it("should be have a shorter CM queue if status is set to 'left'", async () => {
+      await act(async () => {
+        cmButton.simulate("click")
+      })
       expect(cmButton.text()).toEqual("CM00")
       //Necessary to update the wrapper to see effect of click
-      table = wrapper.update().find("table")
+      await act(async () => {
+        table = wrapper.update().find("table")
+      })
       tr = table.find("tr")
       expect(tr.length).toEqual(3)
+    })
+
+    it("should update freeze button when clicked", async () => {
+      let freezeButton = wrapper.find(Button).at(9)
+      api.patchProgram = jest.fn().mockResolvedValueOnce({ ok: true })
+      await act(async () => {
+        freezeButton.simulate("click")
+      })
+      expect(freezeButton.text()).toEqual("Unfreeze")
     })
   })
 })

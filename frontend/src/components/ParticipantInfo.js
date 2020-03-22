@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import React, { useContext, useEffect } from "react"
 import { rootStoreContext } from "../stores/RootStore"
 import "../scss/participant-search.scss"
@@ -19,8 +20,7 @@ import FormLabel from "@material-ui/core/FormLabel"
 import Button from "@material-ui/core/Button"
 import { observer } from "mobx-react-lite"
 import { useHistory } from "react-router-dom"
-import { format } from "date-fns"
-import { autorun } from "mobx"
+import { autorun, toJS } from "mobx"
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -73,128 +73,78 @@ const useStyles = makeStyles(theme => ({
 
 const ParticipantInfo = observer(() => {
   const rootStore = useContext(rootStoreContext)
+  // particiant store derived from root store
   const participantStore = rootStore.ParticipantStore
-  const [participant, setParticipant] = React.useState({
-    id: null,
-    firstName: "",
-    lastName: "",
-    lastFourSSN: 0,
-    dateOfBirth: "",
-    startDate: "",
-    ppId: "",
-    race: "",
-    gender: "",
-    hasInsurance: false,
-    insuranceType: "",
-    insurer: "",
-    priority: "",
-    note: "",
-  })
-  const [open, setOpen] = React.useState("")
   const [insurers, setInsurers] = React.useState([])
+  // list of all programs
   const [programList, setProgramList] = React.useState([])
-  const [program, setProgram] = React.useState({})
-  const [showServices, setShowServices] = React.useState(false)
+  // list of all services
   const [serviceList, setServiceList] = React.useState([])
-  const [service, setService] = React.useState({})
-  const [prevVisit, setPrevVisit] = React.useState({})
+  const [open, setOpen] = React.useState("")
+  // set up history for routing pushes
   const history = useHistory()
-
-  let currentParticipant = participantStore.getParticipant()
-  let data = participantStore.getParticipantsList()
-  let participantIndex = data.findIndex(
-    val => val.pp_id === currentParticipant.pp_id
-  )
+  // get existing participant if applicable else its undefined
+  const existingParticipant = toJS(participantStore.participant)
+  // get existing visit if applicable else its undefined
+  const existingVisit = toJS(participantStore.visit)
   // useEffect is a hook that gets called after every render/re-render.  Empty array second argument prevents it from running again.
   useEffect(() => {
+    // self invoked async function making api calls for insurers and programs
     ;(async () => {
-      await participantStore.getInsurers()
-      await participantStore.getPrograms()
-      if (participantIndex > -1) {
-        await participantStore.getVisits()
-        let v = await participantStore.getVisitsList()
-        let result = v.find(val => val.participant.id === currentParticipant.id)
-        // eslint-disable-next-line no-console
-        setPrevVisit(result)
-      }
-      setInsurers(await participantStore.getInsuranceList())
-      setProgramList(await participantStore.getProgramList())
+      // save insurers locally
+      await setInsurers(participantStore.getInsuranceList())
+      // save programs locally
+      await setProgramList(
+        participantStore.getProgramList().filter(item => !item.is_frozen)
+      )
     })()
-    if (participantIndex > -1) {
-      setParticipant({
-        id: data[participantIndex].id,
-        firstName: data[participantIndex].first_name,
-        lastName: data[participantIndex].last_name,
-        lastFourSSN: data[participantIndex].last_four_ssn,
-        dateOfBirth: data[participantIndex].date_of_birth,
-        startDate: data[participantIndex].start_date,
-        ppId: data[participantIndex].pp_id,
-        race: data[participantIndex].race,
-        gender: data[participantIndex].gender,
-        hasInsurance: data[participantIndex].is_insured,
-        insuranceType: data[participantIndex].insuranceType
-          ? data[participantIndex].insuranceType
-          : "",
-        insurer: data[participantIndex].insurer
-          ? data[participantIndex].insurer
-          : "",
-        priority: data[participantIndex].priority,
-        note: data[participantIndex].note,
-      })
+    // if existing participant exists then auto fill the fields
+    if (
+      existingParticipant.id &&
+      existingVisit.id &&
+      existingVisit.program &&
+      existingVisit.service
+    ) {
+      // preload services
+      let serviceList = participantStore
+        .getProgramList()
+        .find(val => val.id === existingVisit.program)
+      setServiceList(serviceList.services)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const setProgramAndShowServices = e => {
-    setProgram(e.target.value)
-    setShowServices(true)
-    setServiceList(e.target.value.services)
-  }
-
-  const createStartDate = () => {
-    return format(new Date(), "yyyy-MM-dd")
-  }
   // set store stuff here and update Mobx on submit
-  function handleClose() {
+  const handleClose = () => {
     setOpen(false)
   }
-  function handleOpen() {
+  const handleOpen = () => {
     setOpen(true)
   }
-  function handleSubmit(e) {
+  const handleSubmit = e => {
     e.preventDefault()
-    participantStore.setParticipant({
-      id: participantIndex > -1 ? participant.id : null,
-      first_name: participant.firstName,
-      last_name: participant.lastName,
-      last_four_ssn: participant.lastFourSSN,
-      date_of_birth: participant.dateOfBirth,
-      start_date:
-        participantIndex > -1 ? participant.startDate : createStartDate(),
-      pp_id: participant.ppId,
-      race: participant.race,
-      gender: participant.gender,
-      is_insured: participant.hasInsurance,
-      insuranceType: participant.insuranceType,
-      insurer: participant.insurer.name,
-      priority: participant.priority,
-      note: participant.note,
-    })
-    participantStore.setVisit({
-      id: prevVisit && prevVisit.id ? prevVisit.id : null,
-      participant: participant.id,
-      program: program.id,
-      service: service.id,
-      notes: participant.note,
-      urgency: participant.priority,
-    })
-    participantIndex > -1
-      ? participantStore.updateParticipant()
-      : participantStore.createParticipant()
+    // if existing participant and vist we are coming from QueueTable, so update particiapnt and visit
+    if (existingParticipant.id && existingVisit.id) {
+      participantStore.updateParticipant()
+      participantStore.updateVisit()
+      // if existing participant and no vist we are coming from search, so update particiapnt only
+    } else if (existingParticipant.id && !existingVisit.id) {
+      participantStore.updateParticipant()
+      // otherwise we are adding a new participant because both participant and visit will be undefined
+    } else {
+      participantStore.createParticipant()
+    }
+    // after all api calls for submit have been completed route to QueueTable
     autorun(() => {
       if (participantStore.routeToQueueTable) {
         history.push("/")
       }
     })
+  }
+
+  const findAndSaveServiceListings = e => {
+    let serviceList = programList.find(val => val.id === e.target.value)
+    setServiceList(serviceList.services)
   }
 
   const classes = useStyles()
@@ -213,7 +163,7 @@ const ParticipantInfo = observer(() => {
           1. Participant Information
         </Typography>
 
-        <form className="participant-info-form" onSubmit={handleSubmit}>
+        <form className="participant-info-form" onSubmit={e => handleSubmit(e)}>
           <Grid container>
             <FormGroup className="participant-info">
               <Grid container>
@@ -223,12 +173,9 @@ const ParticipantInfo = observer(() => {
                     <Input
                       id="user_first-name"
                       name="user_first-name"
-                      value={participant.firstName}
+                      value={existingParticipant.first_name}
                       onChange={e =>
-                        setParticipant({
-                          ...participant,
-                          firstName: e.target.value,
-                        })
+                        participantStore.setFirstName(e.target.value)
                       }
                       required
                     />
@@ -240,12 +187,9 @@ const ParticipantInfo = observer(() => {
                     <Input
                       id="user_last-name"
                       name="user_last-name"
-                      value={participant.lastName}
+                      value={existingParticipant.last_name}
                       onChange={e =>
-                        setParticipant({
-                          ...participant,
-                          lastName: e.target.value,
-                        })
+                        participantStore.setLastName(e.target.value)
                       }
                       required
                     />
@@ -261,12 +205,9 @@ const ParticipantInfo = observer(() => {
                     <TextField
                       id="user_birth-date"
                       name="user_birth-date"
-                      value={participant.dateOfBirth}
+                      value={existingParticipant.date_of_birth}
                       onChange={e =>
-                        setParticipant({
-                          ...participant,
-                          dateOfBirth: e.target.value,
-                        })
+                        participantStore.setDateOfBirth(e.target.value)
                       }
                       required
                       style={{ marginTop: 40 }}
@@ -284,14 +225,13 @@ const ParticipantInfo = observer(() => {
                     <Input
                       id="uuid"
                       name="uuid"
-                      value={participant.ppId}
-                      onChange={e =>
-                        setParticipant({
-                          ...participant,
-                          ppId: e.target.value,
-                          lastFourSSN: +e.target.value.substr(2),
-                        })
-                      }
+                      value={existingParticipant.pp_id}
+                      onChange={e => {
+                        participantStore.setPPId(e.target.value)
+                        participantStore.setLastFourSSN(
+                          +e.target.value.substr(2)
+                        )
+                      }}
                       required
                     />
                   </FormControl>
@@ -312,13 +252,8 @@ const ParticipantInfo = observer(() => {
                         onClose={handleClose.race}
                         onOpen={handleOpen.race}
                         required
-                        value={participant.race}
-                        onChange={e =>
-                          setParticipant({
-                            ...participant,
-                            race: e.target.value,
-                          })
-                        }
+                        value={existingParticipant.race}
+                        onChange={e => participantStore.setRace(e.target.value)}
                         inputProps={{
                           name: "race",
                           id: "demo-controlled-open-select",
@@ -353,12 +288,9 @@ const ParticipantInfo = observer(() => {
                         onClose={handleClose.gender}
                         onOpen={handleOpen.gender}
                         required
-                        value={participant.gender}
+                        value={existingParticipant.gender}
                         onChange={e =>
-                          setParticipant({
-                            ...participant,
-                            gender: e.target.value,
-                          })
+                          participantStore.setGender(e.target.value)
                         }
                         inputProps={{
                           name: "gender",
@@ -392,13 +324,13 @@ const ParticipantInfo = observer(() => {
                         aria-label="insurance"
                         name="hasInsurance"
                         className={classes.group}
-                        value={participant.hasInsurance === true ? "yes" : "no"}
+                        value={
+                          existingParticipant.is_insured === true ? "yes" : "no"
+                        }
                         onChange={e =>
-                          setParticipant({
-                            ...participant,
-                            hasInsurance:
-                              e.target.value === "yes" ? true : false,
-                          })
+                          participantStore.setIsInsured(
+                            e.target.value === "yes" ? true : false
+                          )
                         }
                         style={{ display: "inline" }}
                       >
@@ -425,12 +357,9 @@ const ParticipantInfo = observer(() => {
                         open={open.insuranceType}
                         onClose={handleClose.insuranceType}
                         onOpen={handleOpen.insuranceType}
-                        value={participant.insuranceType}
+                        value={existingParticipant.insurer}
                         onChange={e =>
-                          setParticipant({
-                            ...participant,
-                            insuranceType: e.target.value,
-                          })
+                          participantStore.setInsurer(e.target.value)
                         }
                         inputProps={{
                           name: "insuranceType",
@@ -441,7 +370,7 @@ const ParticipantInfo = observer(() => {
                           <MenuItem
                             key={index}
                             value={
-                              insurers && insurers.length > 0 ? company : null
+                              insurers && insurers.length > 0 ? company.id : ""
                             }
                           >
                             {insurers && insurers.length > 0
@@ -456,133 +385,147 @@ const ParticipantInfo = observer(() => {
               </FormGroup>
             </div>
           </Grid>
-          <Typography
-            style={{ textAlign: "left" }}
-            component="h5"
-            variant="h5"
-            gutterBottom
-          >
-            <br />
-            <br />
-            2. Check In Participant
-          </Typography>
 
-          <Grid container>
-            <FormGroup className="participant-info">
+          {(!existingParticipant.id && !existingVisit.id) ||
+          (existingParticipant.id && existingVisit.id) ? (
+            <div>
+              <Typography
+                style={{ textAlign: "left" }}
+                component="h5"
+                variant="h5"
+                gutterBottom
+              >
+                <br />
+                <br />
+                2. Check In Participant
+              </Typography>
               <Grid container>
-                <Grid item xs>
-                  <FormControl className={classes.formControl}>
-                    <InputLabel htmlFor="demo-controlled-open-select">
-                      Choose Program
-                    </InputLabel>
-                    <Select
-                      open={open.program}
-                      onClose={handleClose.program}
-                      onOpen={handleOpen.program}
-                      required
-                      value={program && program.name ? program.name : null}
-                      onChange={e => setProgramAndShowServices(e)}
-                      inputProps={{
-                        name: "program",
-                        id: "demo-controlled-open-select",
-                      }}
-                    >
-                      {programList.map((p, index) => (
-                        <MenuItem
-                          key={index}
-                          value={programList && programList.length > 0 ? p : 0}
+                <FormGroup className="participant-info">
+                  <Grid container>
+                    <Grid item xs>
+                      <FormControl className={classes.formControl}>
+                        <InputLabel htmlFor="demo-controlled-open-select">
+                          Choose Program
+                        </InputLabel>
+                        <Select
+                          open={open.program}
+                          onClose={handleClose.program}
+                          onOpen={handleOpen.program}
+                          required
+                          value={existingVisit.program}
+                          onChange={e => {
+                            participantStore.setVisitProgram(e.target.value)
+                            findAndSaveServiceListings(e)
+                          }}
+                          inputProps={{
+                            name: "program",
+                            id: "demo-controlled-open-select",
+                          }}
                         >
-                          {programList && programList.length > 0 ? p.name : ""}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item xs>
-                  <FormControl className={classes.formControl}>
-                    <InputLabel htmlFor="demo-controlled-open-select">
-                      Select Service
-                    </InputLabel>
-                    {showServices ? (
-                      <Select
-                        open={open.service}
-                        onClose={handleClose.service}
-                        onOpen={handleOpen.service}
-                        required
-                        value={service && service.name ? service.name : null}
-                        onChange={e => setService(e.target.value)}
-                        inputProps={{
-                          name: "service",
-                          id: "demo-controlled-open-select",
-                        }}
-                      >
-                        {serviceList.map((s, index) => (
-                          <MenuItem
-                            key={index}
-                            value={
-                              serviceList && serviceList.length > 0 ? s : 0
+                          {programList.map((p, index) => (
+                            <MenuItem
+                              key={index}
+                              value={
+                                programList && programList.length > 0
+                                  ? p.id
+                                  : ""
+                              }
+                            >
+                              {programList && programList.length > 0
+                                ? p.name
+                                : ""}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    </Grid>
+
+                    <Grid item xs>
+                      <FormControl className={classes.formControl}>
+                        <InputLabel htmlFor="demo-controlled-open-select">
+                          Select Service
+                        </InputLabel>
+                        {existingVisit.program && serviceList.length > 0 ? (
+                          <Select
+                            open={open.service}
+                            onClose={handleClose.service}
+                            onOpen={handleOpen.service}
+                            required
+                            value={existingVisit.service}
+                            onChange={e =>
+                              participantStore.setVisitService(e.target.value)
                             }
+                            inputProps={{
+                              name: "service",
+                              id: "demo-controlled-open-select",
+                            }}
                           >
-                            {serviceList && serviceList.length > 0
-                              ? s.name
-                              : ""}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    ) : null}
-                  </FormControl>
-                </Grid>
-                <br />
-                <Grid item xs>
-                  <FormControl className={classes.formControl}>
-                    <InputLabel htmlFor="demo-controlled-open-select">
-                      Select Priority Level
-                    </InputLabel>
-                    <Select
-                      open={open.priorityLevel}
-                      onClose={handleClose.priorityLevel}
-                      onOpen={handleOpen.priorityLevel}
-                      value={participant.priority}
+                            {serviceList.map((s, index) => (
+                              <MenuItem
+                                key={index}
+                                value={
+                                  serviceList && serviceList.length > 0
+                                    ? s.id
+                                    : ""
+                                }
+                              >
+                                {serviceList && serviceList.length > 0
+                                  ? s.name
+                                  : ""}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        ) : null}
+                      </FormControl>
+                    </Grid>
+                    <br />
+                    <Grid item xs>
+                      <FormControl className={classes.formControl}>
+                        <InputLabel htmlFor="demo-controlled-open-select">
+                          Select Priority Level
+                        </InputLabel>
+                        <Select
+                          open={open.priorityLevel}
+                          onClose={handleClose.priorityLevel}
+                          onOpen={handleOpen.priorityLevel}
+                          value={existingVisit.urgency}
+                          onChange={e =>
+                            participantStore.setVisitUrgency(e.target.value)
+                          }
+                          inputProps={{
+                            name: "priorityLevel",
+                            id: "demo-controlled-open-select",
+                          }}
+                        >
+                          <MenuItem value={"_1"}>1 (Lowest)</MenuItem>
+                          <MenuItem value={"_2"}>2</MenuItem>
+                          <MenuItem value={"_3"}>3</MenuItem>
+                          <MenuItem value={"_4"}>4</MenuItem>
+                          <MenuItem value={"_5"}>5 (Highest)</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <br />
+                    <TextField
+                      id="standard-full-width"
+                      style={{ margin: 8, marginTop: 40 }}
+                      placeholder="Add a note"
                       onChange={e =>
-                        setParticipant({
-                          ...participant,
-                          priority: e.target.value,
-                        })
+                        participantStore.setVisitNotes(e.target.value)
                       }
-                      inputProps={{
-                        name: "priorityLevel",
-                        id: "demo-controlled-open-select",
+                      value={existingVisit.notes}
+                      fullWidth
+                      margin="normal"
+                      InputLabelProps={{
+                        shrink: true,
                       }}
-                    >
-                      <MenuItem value={"_1"}>1 (Lowest)</MenuItem>
-                      <MenuItem value={"_2"}>2</MenuItem>
-                      <MenuItem value={"_3"}>3</MenuItem>
-                      <MenuItem value={"_4"}>4</MenuItem>
-                      <MenuItem value={"_5"}>5 (Highest)</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <br />
-                <TextField
-                  id="standard-full-width"
-                  style={{ margin: 8, marginTop: 40 }}
-                  placeholder="Add a note"
-                  onChange={e =>
-                    setParticipant({
-                      ...participant,
-                      note: e.target.value,
-                    })
-                  }
-                  value={participant.note}
-                  fullWidth
-                  margin="normal"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
+                    />
+                  </Grid>
+                </FormGroup>
               </Grid>
-            </FormGroup>
-          </Grid>
+            </div>
+          ) : null}
+
           <Button
             style={{
               alignSelf: "flex-end",

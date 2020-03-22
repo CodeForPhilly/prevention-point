@@ -9,4 +9,5 @@ class ProgramSerializer(serializers.ModelSerializer):
             "id",
             "name",
             "is_closed",
+            "is_frozen",
         )  # backwards nested relationship uses '_set'

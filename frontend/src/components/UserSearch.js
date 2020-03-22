@@ -13,10 +13,8 @@ import { observer } from "mobx-react-lite"
 const UserSearch = observer(() => {
   const rootStore = useContext(rootStoreContext)
   const participantsStore = rootStore.ParticipantStore
-
   const [errorState, setErrorState] = useState(false)
   const [errorMessage, setErrorMessage] = useState("")
-
   const history = useHistory()
 
   const handleSubmit = e => {
@@ -102,7 +100,12 @@ const UserSearch = observer(() => {
             </FormControl>
           </FormGroup>
           <p className="error-message">{errorMessage}</p>
-          <Button type="submit" variant="contained" style={{ marginTop: 30 }}>
+          <Button
+            type="submit"
+            variant="contained"
+            disabled={participantsStore.toggleSearch}
+            style={{ marginTop: 30 }}
+          >
             Submit
           </Button>
         </form>

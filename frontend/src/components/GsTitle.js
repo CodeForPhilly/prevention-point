@@ -19,7 +19,7 @@ export default function GsTitle() {
   return (
     <div>
       Welcome to
-      <Button variant="contained" className={classes.button}>
+      <Button variant="contained" href="/" className={classes.button}>
         General Services
       </Button>
     </div>

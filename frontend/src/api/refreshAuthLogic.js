@@ -14,9 +14,8 @@ const refreshAuthLogic = api => async failedRequest => {
   }
 
   // put the refreshed token in the header and retry the request
-  failedRequest.response.config.headers[
-    "Authentication"
-  ] = `Bearer ${tokenRefreshResponse.data.access}`
+  // eslint-disable-next-line prettier/prettier
+  failedRequest.response.config.headers.Authorization = `Bearer ${tokenRefreshResponse.data.access}`
 
   return Promise.resolve()
 }
