@@ -55,7 +55,7 @@ const ParticipantsList = observer(() => {
 
   const handleParticipant = (e, participant) => {
     participantStore.setParticipant(participant)
-    participantStore.setVisit(undefined)
+    participantStore.setDefaultVisit()
   }
 
   return (
@@ -140,8 +140,8 @@ const ParticipantsList = observer(() => {
           <Link
             to="/participantInfo"
             onClick={() => {
-              participantStore.setParticipant(undefined)
-              participantStore.setVisit(undefined)
+              participantStore.setDefaultParticipant()
+              participantStore.setDefaultVisit()
             }}
           >
             <Grid container>

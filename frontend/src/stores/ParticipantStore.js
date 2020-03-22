@@ -1,5 +1,6 @@
-import { observable, action, flow, toJS, decorate, computed } from "mobx"
+import { observable, action, flow, toJS, computed } from "mobx"
 import { createContext } from "react"
+import { format } from "date-fns"
 import api from "../api"
 
 export class ParticipantStore {
@@ -8,20 +9,19 @@ export class ParticipantStore {
   }
 
   // Store Params
-  participants = []
-  participant = {}
+  @observable participants = []
+  @observable participant = {}
   // list of all insurers fetched via api
-  insurers = []
+  @observable insurers = []
   // list of all programs with nested services fetched via api
-  programs = []
-  params = {}
+  @observable programs = []
+  @observable params = {}
   // singular participant visit
-  visit = {}
-  visitList = []
+  @observable visit = {}
   // flag for triggering route to Queue table once Participant Info has bee sent
-  @observable
-  routeToQueueTable = false
+  @observable routeToQueueTable = false
 
+  // computed
   // if user has input a value for search, enable search else disable search
   @computed get toggleSearch() {
     let hasString =
@@ -33,75 +33,149 @@ export class ParticipantStore {
   }
 
   // Setters
-  setParticipantsList = data => {
+  @action setDefaultParticipant = () => {
+    this.participant = {
+      id: null,
+      first_name: "",
+      last_name: "",
+      last_four_ssn: 0,
+      date_of_birth: "",
+      start_date: this.createStartDate(),
+      pp_id: "",
+      race: "",
+      gender: "",
+      is_insured: false,
+      insuranceType: "",
+      insurer: "",
+    }
+  }
+  @action setDefaultVisit = () => {
+    this.visit = {
+      id: null,
+      participant: null,
+      program: "",
+      service: "",
+      notes: "",
+      urgency: "",
+    }
+  }
+  @action setParticipantsList = data => {
     this.participants = data
   }
-  setUserIdParam = data => {
-    this.params.pp_id = data.toUpperCase()
-  }
-  setFirstNameParam = data => {
-    this.params.first_name = data
-  }
-  setLastNameParam = data => {
-    this.params.last_name = data
-  }
-  setIdParam = data => {
-    this.participant.id = data
-  }
-  setParticipant = data => {
+  // Full Participant and Visit Assignment Actions
+  @action setParticipant = data => {
     this.participant = data
   }
-  setInsurers = data => {
-    this.insurers = data
-  }
-  setPrograms = data => {
-    this.programs = data
-  }
-  setVisit = data => {
+  @action setVisit = data => {
     this.visit = data
   }
-  setVisitList = data => {
-    this.visitList = data
+  // User Search Actions
+  @action setUserIdParam = data => {
+    this.params.pp_id = data.toUpperCase()
   }
-  setVisitParticipantId = data => {
-    this.visit.participant = data
+  @action setFirstNameParam = data => {
+    this.params.first_name = data
   }
-  setRouteToQueue = data => {
+  @action setLastNameParam = data => {
+    this.params.last_name = data
+  }
+  @action setIdParam = data => {
+    this.participant.id = data
+  }
+  // Insurance and Programs Actions
+  @action setInsurers = data => {
+    this.insurers = data
+  }
+  @action setPrograms = data => {
+    this.programs = data
+  }
+  @action setRouteToQueue = data => {
     this.routeToQueueTable = data
   }
-  setProgramServiceValue = data => {
-    delete this.visit.program
-    delete this.visit.service
-    this.visit.program_service_map = data
+  // Participant State Actions
+  @action setFirstName = data => {
+    this.participant.first_name = data
+  }
+  @action setLastName = data => {
+    this.participant.last_name = data
+  }
+  @action setDateOfBirth = data => {
+    this.participant.date_of_birth = data
+  }
+  @action setPPId = data => {
+    this.participant.pp_id = data
+  }
+  @action setLastFourSSN = data => {
+    this.participant.last_four_ssn = data
+  }
+  @action setRace = data => {
+    this.participant.race = data
+  }
+  @action setGender = data => {
+    this.participant.gender = data
+  }
+  @action setIsInsured = data => {
+    this.participant.is_insured = data
+  }
+  @action setInsurer = data => {
+    this.participant.insurer = data
+  }
+  @action setStartDate = () => {
+    this.participant.start_date = format(new Date(), "yyyy-MM-dd")
+  }
+  // Visit State Actions
+  @action setVisitProgram = data => {
+    this.visit.program = data
+  }
+  @action setVisitService = data => {
+    this.visit.service = data
+  }
+  @action setVisitUrgency = data => {
+    this.visit.urgency = data
+  }
+  @action setVisitNotes = data => {
+    this.visit.notes = data
+  }
+  @action setVisitParticipantId = data => {
+    this.visit.participant = data
   }
 
   // Getters
-  getParticipantsList = () => {
-    return toJS(this.participants)
-  }
-  getParticipant = () => {
-    return toJS(this.participant)
-  }
-  getParams = () => {
-    return toJS(this.params)
-  }
-  getParticipant = () => {
-    return toJS(this.participant)
-  }
   getInsuranceList = () => {
     return toJS(this.insurers)
   }
   getProgramList = () => {
     return toJS(this.programs)
   }
-  getVisitsList = () => {
-    return toJS(this.visitList)
-  }
-  getVisit = () => {
-    return toJS(this.visit)
+
+  createStartDate = () => {
+    return format(new Date(), "yyyy-MM-dd")
   }
 
   // API Calls
+  // called on  =>  QueueTable.js
+  getInsurers = flow(function*() {
+    try {
+      const { ok, data } = yield api.getInsurers()
+      if (ok && data) {
+        this.setInsurers(data)
+      }
+    } catch (error) {
+      throw "ParticipantStore:  getInsurers() Failed  =>  " + error
+    }
+  })
+  // called on  =>  QueueTable.js
+  getPrograms = flow(function*() {
+    try {
+      const { ok, data } = yield api.getPrograms()
+      if (ok && data) {
+        this.setPrograms(data)
+      }
+    } catch (error) {
+      throw "ParticipantStore:  getPrograms() Failed  =>  " + error
+    }
+  })
+  // called on  =>  ParticipantList.js
   getParticipants = flow(function*() {
     try {
       const { ok, data } = yield api.getParticipants(toJS(this.params))
@@ -112,7 +186,7 @@ export class ParticipantStore {
       throw "ParticipantStore:  getParticipants() Failed  =>  " + error
     }
   })
-
+  // called on  =>  ParticipantInfo.js
   createParticipant = flow(function*() {
     try {
       const { ok, data } = yield api.createParticipant(toJS(this.participant))
@@ -125,7 +199,6 @@ export class ParticipantStore {
       throw "ParticipantStore:  createParticipant() Failed  =>  " + error
     }
   })
-
   createVisit = flow(function*() {
     try {
       const { ok, data } = yield api.createVisits(toJS(this.visit))
@@ -137,7 +210,20 @@ export class ParticipantStore {
       throw "ParticipantStore:  createVisit() Failed  =>  " + error
     }
   })
-
+  getFrontEndDeskEvents = flow(function*() {
+    try {
+      const { ok } = yield api.postFrontDeskEvent({
+        visit: this.visit.id,
+        event_type: "ARRIVED",
+      })
+      if (ok) {
+        this.setRouteToQueue(true)
+      }
+    } catch (error) {
+      throw "ParticipantStore:  getFrontEndDeskEvents() Failed  =>  " + error
+    }
+  })
+  // called on  =>  ParticipantInfo.js
   // only update basic facts about the participant
   updateParticipant = flow(function*() {
     try {
@@ -152,7 +238,7 @@ export class ParticipantStore {
       throw "ParticipantStore:  updateParticipant() Failed  =>  " + error
     }
   })
-
+  // called on  =>  ParticipantInfo.js
   updateVisit = flow(function*() {
     try {
       const { ok } = yield api.patchVisit(toJS(this.visit.id), toJS(this.visit))
@@ -163,106 +249,6 @@ export class ParticipantStore {
       throw "ParticipantStore:  updateVisit() Failed  =>  " + error
     }
   })
-
-  getInsurers = flow(function*() {
-    try {
-      const { ok, data } = yield api.getInsurers()
-      if (ok && data) {
-        this.setInsurers(data)
-      }
-    } catch (error) {
-      throw "ParticipantStore:  getInsurers() Failed  =>  " + error
-    }
-  })
-
-  getPrograms = flow(function*() {
-    try {
-      const { ok, data } = yield api.getPrograms()
-      if (ok && data) {
-        this.setPrograms(data)
-      }
-    } catch (error) {
-      throw "ParticipantStore:  getPrograms() Failed  =>  " + error
-    }
-  })
-
-  getProgramServiceMap = flow(function*() {
-    try {
-      const { ok, data } = yield api.getProgramServiceMap()
-      if (ok && data) {
-        let programServiceObject = data.find(val => {
-          if (
-            val.program.id === toJS(this.visit.program) &&
-            val.service.id === toJS(this.visit.service)
-          ) {
-            return val
-          }
-        })
-        this.setProgramServiceValue(programServiceObject.id)
-        this.updateVisit()
-      }
-    } catch (error) {
-      throw "ParticipantStore:  getProgramServiceMap() Failed  =>  " + error
-    }
-  })
-
-  getVisits = flow(function*() {
-    try {
-      const { ok, data } = yield api.getVisits()
-      if (ok && data) {
-        this.setVisitList(data)
-      }
-    } catch (error) {
-      throw "ParticipantStore:  getVisits() Failed  =>  " + error
-    }
-  })
-
-  getFrontEndDeskEvents = flow(function*() {
-    try {
-      const { ok } = yield api.postFrontDeskEvent({
-        visit: this.visit.id,
-        event_type: "ARRIVED",
-      })
-      if (ok) {
-        this.setRouteToQueue(true)
-      }
-    } catch (error) {
-      throw "ParticipantStore:  getFrontEndDeskEvents() Failed  =>  " + error
-    }
-  })
 }
 
-decorate(ParticipantStore, {
-  participants: observable,
-  params: observable,
-  participant: observable,
-  insurers: observable,
-  programs: observable,
-  visit: observable,
-  setUserIdParam: action,
-  setFirstNameParam: action,
-  setLastNameParam: action,
-  setParticipantsList: action,
-  setPrograms: action,
-  setIdParam: action,
-  setVisitParticipantId: action,
-  setVisit: action,
-  getParticipantsList: action,
-  getParams: action,
-  getParticipants: action,
-  getInsurers: action,
-  getInsuranceList: action,
-  getParticipant: action,
-  createParticipant: action,
-  updateParticipant: action,
-  createVisit: action,
-  updateVisit: action,
-  setParticipant: action,
-  setInsurers: action,
-  getProgramList: action,
-  getPrograms: action,
-  getProgramServiceMap: action,
-})
-
-// let participantStore = (window.participantStore = new ParticipantStore())
 export const ParticipantStoreContext = createContext(new ParticipantStore())
