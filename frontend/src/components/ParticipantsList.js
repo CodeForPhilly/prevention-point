@@ -142,6 +142,7 @@ const ParticipantsList = observer(() => {
             onClick={() => {
               participantStore.setDefaultParticipant()
               participantStore.setDefaultVisit()
+              participantStore.setServiceList([])
             }}
           >
             <Grid container>
