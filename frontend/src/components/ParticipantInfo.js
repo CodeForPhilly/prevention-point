@@ -94,6 +94,12 @@ const ParticipantInfo = observer(() => {
 
   // useEffect is a hook that gets called after every render/re-render. Empty array second argument prevents it from running again.
   useEffect(() => {
+    ;(async () => {
+      // kick off api calls for insurance list from Mobx
+      await participantStore.getInsurers()
+      // kick off api calls for program list from Mobx
+      await participantStore.getPrograms()
+    })()
     if (
       existingParticipant.id &&
       existingVisit.id &&
@@ -396,9 +402,9 @@ const ParticipantInfo = observer(() => {
                             id: "demo-controlled-open-select",
                           }}
                         >
-                          {programList.map((program, index) => (
+                          {programList.map(program => (
                             <MenuItem
-                              key={index}
+                              key={program.id}
                               value={
                                 programList && programList.length > 0
                                   ? program.id
@@ -431,9 +437,9 @@ const ParticipantInfo = observer(() => {
                               id: "demo-controlled-open-select",
                             }}
                           >
-                            {serviceList.map((service, index) => (
+                            {serviceList.map(service => (
                               <MenuItem
-                                key={index}
+                                key={service.id}
                                 value={
                                   serviceList && serviceList.length > 0
                                     ? service.id
