@@ -9,27 +9,32 @@ export class ParticipantStore {
   }
 
   // Store Params
+  // full participant list
   @observable participants = []
+  // single participant for editing
   @observable participant = {}
   // list of all insurers fetched via api
   @observable insurers = []
   // list of all programs with nested services fetched via api
   @observable programs = []
+  // params for participant searching
   @observable params = {}
   // singular participant visit
   @observable visit = {}
   // flag for triggering route to Queue table once Participant Info has bee sent
   @observable routeToQueueTable = false
+  @observable services = []
 
   // computed
   // if user has input a value for search, enable search else disable search
   @computed get toggleSearch() {
-    let hasString =
+    // if the params obj has any new prop with a length > 0 and its ppId or fName or lName, then enable
+    let hasSearchString =
       Object.keys(this.params).length > 0 &&
-      (this.params.pp_id || this.params.first_name || this.params.last_name)
+        (this.params.pp_id || this.params.first_name || this.params.last_name)
         ? true
         : false
-    return hasString ? false : true
+    return !hasSearchString
   }
 
   // Setters
@@ -87,7 +92,7 @@ export class ParticipantStore {
     this.insurers = data
   }
   @action setPrograms = data => {
-    this.programs = data
+    this.programs = data.filter(item => !item.is_frozen)
   }
   @action setRouteToQueue = data => {
     this.routeToQueueTable = data
@@ -139,22 +144,18 @@ export class ParticipantStore {
   @action setVisitParticipantId = data => {
     this.visit.participant = data
   }
-
-  // Getters
-  getInsuranceList = () => {
-    return toJS(this.insurers)
-  }
-  getProgramList = () => {
-    return toJS(this.programs)
+  @action setServiceList = data => {
+    this.services = data
   }
 
+  // Utils
   createStartDate = () => {
     return format(new Date(), "yyyy-MM-dd")
   }
 
   // API Calls
   // called on  =>  QueueTable.js
-  getInsurers = flow(function*() {
+  getInsurers = flow(function* () {
     try {
       const { ok, data } = yield api.getInsurers()
       if (ok && data) {
@@ -165,7 +166,7 @@ export class ParticipantStore {
     }
   })
   // called on  =>  QueueTable.js
-  getPrograms = flow(function*() {
+  getPrograms = flow(function* () {
     try {
       const { ok, data } = yield api.getPrograms()
       if (ok && data) {
@@ -176,7 +177,7 @@ export class ParticipantStore {
     }
   })
   // called on  =>  ParticipantList.js
-  getParticipants = flow(function*() {
+  getParticipants = flow(function* () {
     try {
       const { ok, data } = yield api.getParticipants(toJS(this.params))
       if (ok && data) {
@@ -187,7 +188,7 @@ export class ParticipantStore {
     }
   })
   // called on  =>  ParticipantInfo.js
-  createParticipant = flow(function*() {
+  createParticipant = flow(function* () {
     try {
       const { ok, data } = yield api.createParticipant(toJS(this.participant))
       if (ok && data) {
@@ -199,7 +200,7 @@ export class ParticipantStore {
       throw "ParticipantStore:  createParticipant() Failed  =>  " + error
     }
   })
-  createVisit = flow(function*() {
+  createVisit = flow(function* () {
     try {
       const { ok, data } = yield api.createVisits(toJS(this.visit))
       if (ok && data) {
@@ -210,7 +211,7 @@ export class ParticipantStore {
       throw "ParticipantStore:  createVisit() Failed  =>  " + error
     }
   })
-  getFrontEndDeskEvents = flow(function*() {
+  getFrontEndDeskEvents = flow(function* () {
     try {
       const { ok } = yield api.postFrontDeskEvent({
         visit: this.visit.id,
@@ -225,7 +226,7 @@ export class ParticipantStore {
   })
   // called on  =>  ParticipantInfo.js
   // only update basic facts about the participant
-  updateParticipant = flow(function*() {
+  updateParticipant = flow(function* () {
     try {
       const { ok, data } = yield api.updateParticipant(
         toJS(this.participant.id),
@@ -239,7 +240,7 @@ export class ParticipantStore {
     }
   })
   // called on  =>  ParticipantInfo.js
-  updateVisit = flow(function*() {
+  updateVisit = flow(function* () {
     try {
       const { ok } = yield api.patchVisit(toJS(this.visit.id), toJS(this.visit))
       if (ok) {

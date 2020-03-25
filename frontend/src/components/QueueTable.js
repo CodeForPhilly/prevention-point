@@ -34,17 +34,6 @@ const QueueTable = observer(queueData => {
   const [notesVisit, setNotesVisit] = useState(1)
   const history = useHistory()
 
-  useEffect(() => {
-    // self invoked async function making api calls for insurers and programs
-    ;(async () => {
-      // kick off api calls for insurers from Mobx
-      await participantStore.getInsurers()
-      // kick off api calls for programs from Mobx
-      await participantStore.getPrograms()
-    })()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   const handleNotesClick = visitId => {
     setNotesVisit(visitId)
     toggleVisibleDialog()
