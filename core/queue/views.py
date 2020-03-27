@@ -1,11 +1,14 @@
+import datetime
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from core.models import Visit, FrontDeskEvent, FrontDeskEventType
-from core.visits.serializer import VisitWithPopulationSerializer
-from core.permissions import FRONT_DESK, CASE_MANAGER, ADMIN, HasGroupPermission
 from rest_framework.permissions import IsAuthenticated
-import datetime
 
+from core.permissions import  DjangoModelPermissions
+from core.visits.serializer import VisitWithPopulationSerializer
+from core.models import Visit, FrontDeskEvent, FrontDeskEventType
+from core.front_desk_events.serializer import FrontDeskEventForQueueSerializer
+
+from django.contrib.auth.models import User
 
 class QueueViewSet(viewsets.ViewSet):
     """
@@ -13,9 +16,8 @@ class QueueViewSet(viewsets.ViewSet):
   uses regular ViewSet to be able to display adjacent model responses in one view,
   hence the permission classes being repeated here instead of using viewsets.py prototype
   """
-
-    permission_classes = [HasGroupPermission, IsAuthenticated]
-    permission_groups = {"retrieve": [FRONT_DESK, CASE_MANAGER, ADMIN]}
+    queryset= User.objects.none()
+    permission_classes = [DjangoModelPermissions, IsAuthenticated]
 
     def retrieve(self, request, program_id=None):
         """

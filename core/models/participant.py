@@ -1,5 +1,5 @@
 from django.db import models
-from core.models.insurer import Insurer
+from core.models import Insurer
 from enum import Enum
 
 class Gender(Enum):

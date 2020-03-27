@@ -10,12 +10,6 @@ class ParticipantViewSet(ModelViewSet):
     """
     queryset = Participant.objects.all()
     serializer_class = ParticipantSerializer
-    permission_groups = {
-        'create': [FRONT_DESK, ADMIN],
-        'retrieve': [FRONT_DESK, CASE_MANAGER, ADMIN],
-        'update': [FRONT_DESK, CASE_MANAGER, ADMIN],
-        'list': [FRONT_DESK, CASE_MANAGER, ADMIN]
-    }
 
     def get_queryset(self):
         first_name = self.request.query_params.get('first_name', None)
