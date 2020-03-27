@@ -18,7 +18,7 @@ class GroupsTests(BaseTestCase):
         response = self.client.get( '/api/groups/', follow=True, **headers)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(Group.objects.count(), 3)
+        self.assertEqual(Group.objects.count(), 4)
 
     def test_groups_api_when_unauthenticated(self):
         response = self.client.get('/api/groups', follow=True)

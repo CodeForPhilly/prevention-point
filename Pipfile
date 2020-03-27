@@ -27,3 +27,6 @@ python_version = "3.7"
 drs = "python manage.py runserver"
 test = "python manage.py test"
 seed = "python manage.py seed"
+
+[pipenv]
+allow_prereleases = true

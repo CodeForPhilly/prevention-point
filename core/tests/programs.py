@@ -51,7 +51,7 @@ class ProgramsTests(BaseTestCase):
         """
         Ensures that a case manager can update the is_closed property
         """
-        headers = self.auth_headers_for_user('case_manager')
+        headers = self.auth_headers_for_user('internal_provider')
         random_pk = random.randint(1, 3)
         random_program = Program.objects.filter(
             pk__exact=random_pk
@@ -77,7 +77,7 @@ class ProgramsTests(BaseTestCase):
         """
         Ensures that a case manager can update the is_frozen property
         """
-        headers = self.auth_headers_for_user('case_manager')
+        headers = self.auth_headers_for_user('internal_provider')
         random_pk = random.randint(1, 3)
         random_program = Program.objects.filter(
             pk__exact=random_pk

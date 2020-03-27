@@ -17,8 +17,8 @@ class UsersTests(BaseTestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        self.assertEqual(User.objects.count(), 3)
-        self.assertEqual(len(response.data), 3)
+        self.assertEqual(User.objects.count(), 4)
+        self.assertEqual(len(response.data), 4)
 
     def test_get_user_by_id(self):
         """

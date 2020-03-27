@@ -7,7 +7,6 @@ from core.permissions import  DjangoModelPermissions
 from core.visits.serializer import VisitWithPopulationSerializer
 from core.models import Visit, FrontDeskEvent, FrontDeskEventType
 from core.front_desk_events.serializer import FrontDeskEventForQueueSerializer
-
 from django.contrib.auth.models import User
 
 class QueueViewSet(viewsets.ViewSet):
@@ -16,7 +15,11 @@ class QueueViewSet(viewsets.ViewSet):
   uses regular ViewSet to be able to display adjacent model responses in one view,
   hence the permission classes being repeated here instead of using viewsets.py prototype
   """
-    queryset= User.objects.none()
+
+    # DjangoModelPermissions requires a queryset to function,
+    # the next line is what the docs suggest as a 'sentinel queryset'
+
+    queryset= FrontDeskEvent.objects.none()
     permission_classes = [DjangoModelPermissions, IsAuthenticated]
 
     def retrieve(self, request, program_id=None):
