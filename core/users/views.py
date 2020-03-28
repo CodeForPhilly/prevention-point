@@ -2,7 +2,6 @@ from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from core.users.serializers import UserSerializer, GroupSerializer
 from core.viewsets import ModelViewSet
-from core.permissions import FRONT_DESK, CASE_MANAGER, ADMIN
 
 
 class UserViewSet(ModelViewSet):
@@ -11,12 +10,6 @@ class UserViewSet(ModelViewSet):
     """
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
-    permission_groups = {
-        'create':[ADMIN],
-        'retrieve': [FRONT_DESK, CASE_MANAGER, ADMIN],
-        'update': [ADMIN],
-        'list': [FRONT_DESK, CASE_MANAGER, ADMIN]
-    }
 
     def get_queryset(self):
         username =  self.request.query_params.get('username', None)
@@ -44,10 +37,5 @@ class GroupViewSet(ModelViewSet):
     """
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
-    permission_groups = {
-        'create':[ADMIN],
-        'retrieve': [FRONT_DESK, CASE_MANAGER, ADMIN],
-        'update': [ADMIN],
-        'list': [FRONT_DESK, CASE_MANAGER, ADMIN]
-    }
+
 

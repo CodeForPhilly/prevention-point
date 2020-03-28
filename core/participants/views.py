@@ -1,8 +1,6 @@
 from core.viewsets import ModelViewSet
 from core.models import Participant
 from core.participants.serializers import ParticipantSerializer
-from core.permissions import FRONT_DESK, CASE_MANAGER, ADMIN
-
 
 class ParticipantViewSet(ModelViewSet):
     """
