@@ -183,9 +183,9 @@ UDS_PROVIDER_PERMISSIONS = [
 
 DEFAULT_GROUPS = {
     "admin": ADMIN_PERMISSIONS,
-    "internal_provider": INTERNAL_PROVIDER_PERMISSIONS,
     "front_desk": FRONT_DESK_PERMISSIONS,
     "uds_provider": UDS_PROVIDER_PERMISSIONS,
+    "internal_provider": INTERNAL_PROVIDER_PERMISSIONS,
 }
 
 
