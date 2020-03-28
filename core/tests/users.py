@@ -3,16 +3,7 @@ from rest_framework import status
 from core.tests.base import BaseTestCase
 from django.contrib.auth.models import User
 
-
 class UsersTests(BaseTestCase):
-    fixtures = [
-        "visits.yaml",
-        "programs.yaml",
-        "services.yaml",
-        "participants.yaml",
-        "front_desk_events.yaml",
-        "program_service_map.yaml",
-    ] 
 
     def setUp(self):
         super().setUp()
@@ -75,6 +66,9 @@ class UserPermissionsTests(BaseTestCase):
         self.seed_fake_users()
 
     def test_front_desk_can_access_queue(self):
+        """
+        ensure front desk has permission to access queue
+        """
         headers = self.auth_headers_for_user('front_desk')
         
         res = self.client.get('/api/programs', follow=True, **headers)
@@ -84,22 +78,33 @@ class UserPermissionsTests(BaseTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_front_desk_cannot_access_uds_or_medication(self):
+        """
+        ensure front desk does not have permission to access medical type tables
+        """
+
         headers = self.auth_headers_for_user('front_desk')
 
-        response_1 = self.client.get(f'/api/uds', follow=True, **headers)
+        response_1 = self.client.get('/api/uds', follow=True, **headers)
         self.assertEqual(response_1.status_code, status.HTTP_403_FORBIDDEN)
         
-        response_2 = self.client.get(f'/api/medications', follow=True, **headers)
+        response_2 = self.client.get('/api/medications', follow=True, **headers)
         self.assertEqual(response_2.status_code, status.HTTP_403_FORBIDDEN)
     
     def test_uds_provider_cannot_access_medication(self):
+        """
+        ensure uds provider cannot access other types of medical data
+        """
+
         headers = self.auth_headers_for_user('uds_provider')
        
-        response = self.client.get(f'/api/medications', follow=True, **headers)
+        response = self.client.get('/api/medications', follow=True, **headers)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
     
     def test_uds_provider_can_access_uds(self):
+        """
+        ensure uds provider can access uds data
+        """
         headers = self.auth_headers_for_user('uds_provider')
        
-        response = self.client.get(f'/api/uds', follow=True, **headers)
+        response = self.client.get('/api/uds', follow=True, **headers)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
