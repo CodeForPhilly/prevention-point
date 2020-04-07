@@ -17,6 +17,7 @@ class ParticipantViewSet(ModelViewSet):
         'list': [FRONT_DESK, CASE_MANAGER, ADMIN]
     }
 
+    # filter contains instead of exact?
     def get_queryset(self):
         first_name = self.request.query_params.get('first_name', None)
         last_name = self.request.query_params.get('last_name', None)
