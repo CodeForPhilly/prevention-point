@@ -172,6 +172,19 @@ export class ParticipantStore {
       const { ok, data } = yield api.getPrograms()
       if (ok && data) {
         this.setPrograms(data)
+        if (
+          this.participant.id &&
+          this.visit.id &&
+          this.visit.program &&
+          this.visit.service &&
+          this.programs.length > 0
+        ) {
+          // preload chosen services based on visit programs
+          const preloadedServices = this.programs.find(
+            program => program.id === this.visit.program
+          )
+          this.setServiceList(preloadedServices.services)
+        }
       }
     } catch (error) {
       throw "ParticipantStore:  getPrograms() Failed  =>  " + error
