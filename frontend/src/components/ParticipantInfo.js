@@ -92,28 +92,14 @@ const ParticipantInfo = observer(() => {
   const programList = toJS(participantStore.programs)
   const serviceList = toJS(participantStore.services)
 
-  // useEffect is a hook that gets called after every render/re-render. Empty array second argument prevents it from running again.
   useEffect(() => {
-    ;(async () => {
-      // kick off api calls for insurance list from Mobx
-      await participantStore.getInsurers()
-      // kick off api calls for program list from Mobx
-      await participantStore.getPrograms()
-    })()
-    if (
-      existingParticipant.id &&
-      existingVisit.id &&
-      existingVisit.program &&
-      existingVisit.service
-    ) {
-      // preload chosen services based on visit programs
-      participantStore.setServiceList(
-        programList.find(program => program.id === existingVisit.program)
-          .services
-      )
-    }
+    // kick off api calls for insurance list from Mobx
+    participantStore.getInsurers()
+    // kick off api calls for program list from Mobx
+    participantStore.getPrograms()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
   // set store stuff here and update Mobx on submit
   const handleSubmit = e => {
     e.preventDefault()
@@ -137,9 +123,10 @@ const ParticipantInfo = observer(() => {
   }
   // set service listings based on chosen program
   const findAndSaveServiceListings = e => {
-    participantStore.setServiceList(
-      programList.find(program => program.id === e.target.value).services
+    const serviceListing = programList.find(
+      program => program.id === e.target.value
     )
+    participantStore.setServiceList(serviceListing.services)
   }
 
   const classes = useStyles()

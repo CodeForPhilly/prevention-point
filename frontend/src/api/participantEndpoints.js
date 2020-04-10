@@ -12,7 +12,7 @@ const removeEmptyParams = params => {
 export const getParticipants = api => async params => {
   const queryParams = queryString.stringify(removeEmptyParams(params))
   return await api.get(
-    queryParams ? `participants?${queryParams}` : "participants"
+    queryParams ? `participants/?${queryParams}` : "participants/"
   )
 }
 
