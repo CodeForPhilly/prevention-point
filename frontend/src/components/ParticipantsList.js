@@ -56,6 +56,9 @@ const ParticipantsList = observer(() => {
   const handleParticipant = (e, participant) => {
     participantStore.setParticipant(participant)
     participantStore.setDefaultVisit()
+    participantStore.setVisit({
+      participant: participant.id,
+    })
   }
 
   return (

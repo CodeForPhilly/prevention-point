@@ -24,6 +24,7 @@ export class ParticipantStore {
   // flag for triggering route to Queue table once Participant Info has bee sent
   @observable routeToQueueTable = false
   @observable services = []
+  @observable visitList = []
 
   // computed
   // if user has input a value for search, enable search else disable search
@@ -35,6 +36,11 @@ export class ParticipantStore {
         ? true
         : false
     return !hasSearchString
+  }
+  @computed get hasVisit() {
+    return this.visitList.map(visit => {
+      return visit.participant === this.participant.id ? true : false
+    })
   }
 
   // Setters
@@ -148,6 +154,9 @@ export class ParticipantStore {
   @action setServiceList = data => {
     this.services = data
   }
+  @action setVisitsList = data => {
+    this.visitList = data
+  }
 
   // Utils
   createStartDate = () => {
@@ -236,6 +245,16 @@ export class ParticipantStore {
       }
     } catch (error) {
       throw "ParticipantStore:  getFrontEndDeskEvents() Failed  =>  " + error
+    }
+  })
+  getVisits = flow(function*() {
+    try {
+      const { ok, data } = yield api.getVisits()
+      if (ok && data) {
+        this.setVisitsList(data)
+      }
+    } catch (error) {
+      throw "ParticipantStore:  getVisits() Failed  =>  " + error
     }
   })
   // called on  =>  ParticipantInfo.js

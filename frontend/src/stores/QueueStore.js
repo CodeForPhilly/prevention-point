@@ -20,6 +20,8 @@ export class QueueStore {
     8: [],
     9: [],
   }
+  // TODO: refactor after v1.0.0 release
+  @observable participantWithPrograms = []
 
   //Set tab order here
   @computed get queueStats() {
@@ -75,6 +77,16 @@ export class QueueStore {
   @action
   setQueue(queueIndex, data) {
     this.queues[queueIndex] = data.sort((a, b) => +b.urgency[1] - +a.urgency[1])
+    // TODO: refactor after v1.0.0 release
+    this.participantWithPrograms = [
+      ...this.participantWithPrograms,
+      ...data.map(queueItem => {
+        return {
+          id: queueItem.participant.id,
+          programs: { id: queueItem.program.id, name: queueItem.program.name },
+        }
+      }),
+    ]
   }
 
   //Return the longest wait time in minutes
