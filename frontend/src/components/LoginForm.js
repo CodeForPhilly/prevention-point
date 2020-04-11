@@ -10,6 +10,7 @@ import FormControl from "@material-ui/core/FormControl"
 import InputLabel from "@material-ui/core/InputLabel"
 import Input from "@material-ui/core/Input"
 import Button from "@material-ui/core/Button"
+import Typography from "@material-ui/core/Typography"
 
 const LoginForm = observer(({ location }) => {
   const rootStore = useContext(rootStoreContext)
@@ -40,6 +41,7 @@ const LoginForm = observer(({ location }) => {
               type="username"
               value={username}
               onChange={changeUsername}
+              error={rootStore.authStore.error}
               required
             />
           </FormControl>
@@ -53,6 +55,7 @@ const LoginForm = observer(({ location }) => {
               value={password}
               type="password"
               onChange={changePassword}
+              error={rootStore.authStore.error}
               required
             />
           </FormControl>
@@ -60,6 +63,16 @@ const LoginForm = observer(({ location }) => {
         <Button type="submit" variant="contained" style={{ marginTop: "10px" }}>
           Sign In
         </Button>
+        {rootStore.authStore.error && (
+          <Typography
+            className="login-form__error"
+            component="p"
+            variant="body2"
+            gutterBottom
+          >
+            Incorrect Username or password
+          </Typography>
+        )}
       </form>
     </div>
   )

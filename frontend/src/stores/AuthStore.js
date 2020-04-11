@@ -10,6 +10,7 @@ export class AuthStore {
   @observable isAuthenticated = null
   @observable username = null
   @observable email = null
+  @observable error = null
 
   @action
   setIsAuthenticated(auth) {
@@ -22,6 +23,10 @@ export class AuthStore {
   @action
   setEmail(email) {
     this.username = email
+  }
+  @action
+  setError(error) {
+    this.error = error
   }
   @action
   logout() {
@@ -39,9 +44,12 @@ export class AuthStore {
         this.setIsAuthenticated(true)
         this.setUsername(data.username)
         this.setEmail(data.email)
+        this.setError(data.null)
+      } else {
+        throw new Error()
       }
     } catch (error) {
-      throw "AuthStore:  login() Failed  =>  " + error
+      this.setError(true)
     }
   })
 }
