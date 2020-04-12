@@ -56,5 +56,5 @@ jobs:
     - name: test
       run: |
         cd frontend
-        yarn test -u -t="UpdateSnapshot"
+        yarn test
 
