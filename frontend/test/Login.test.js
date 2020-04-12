@@ -53,6 +53,7 @@ describe("<LoginForm />", () => {
 
     it("should have the expected props on the username field", () => {
       expect(usernameInput.props()).toEqual({
+        error: null,
         id: "username",
         name: "username",
         value: "",
@@ -68,6 +69,7 @@ describe("<LoginForm />", () => {
 
     it("should have the expected props on the password field", () => {
       expect(passwordInput.props()).toEqual({
+        error: null,
         id: "password",
         name: "password",
         value: "",
@@ -83,12 +85,11 @@ describe("<LoginForm />", () => {
 
     it("should have the expected props on the button", () => {
       expect(signInButton.props()).toEqual({
-        type: "button",
+        type: "submit",
         variant: "contained",
-        style: expect.objectContaining({
+        style: {
           marginTop: "10px",
-        }),
-        onClick: expect.any(Function),
+        },
         children: "Sign In",
       })
     })
