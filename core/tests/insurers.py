@@ -18,11 +18,11 @@ class InsurersTestCase(BaseTestCase):
         Ensure we can create a new insurer
         """
         headers = self.auth_headers_for_user('front_desk')
-        url = reverse('insurer-list')
-        data = {'name': "InsureCo", 'is_active': true}
+        url = reversed('insurer-list')
+        data = {'name': "InsureCo", 'is_active': True}
         response = self.client.post(url, data, format='json',follow=True, **headers)
 
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.status_code, 201)
         self.assertEqual(Insurer.objects.count(), 1)
 
     def test_insurers_api_when_authed_as_front_desk(self):
