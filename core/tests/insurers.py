@@ -19,7 +19,7 @@ class InsurersTestCase(BaseTestCase):
         """
         headers = self.auth_headers_for_user('front_desk')
         url = reverse('insurer-list')
-        data = {'name': "InsureCo, 'is_active': true}
+        data = {'name': "InsureCo", 'is_active': true}
         response = self.client.post(url, data, format='json',follow=True, **headers)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
