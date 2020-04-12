@@ -55,5 +55,6 @@ jobs:
         yarn lint
     - name: test
       run: |
+        cd frontend
         yarn test -u -t="UpdateSnapshot"
 
