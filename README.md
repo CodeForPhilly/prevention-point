@@ -25,8 +25,24 @@ This is a Code for Philly project operating under their code of conduct.
 This project implements the [Scripts To Rule Them All](https://github.com/github/scripts-to-rule-them-all) interface for developers:
 
 **Starting Locally**
-1. `script/server` — Brings a fully working environment up at [localhost:8080](http://localhost:8080)
-2. `script/setup` — Run after `script/server` to initialize local database with seed data
+
+Run the command below to bring a fully working environment up at [localhost:8080](http://localhost:8080).
+
+```
+./script/server
+```
+
+**Seeding Database with Data**
+
+Run the command below to initialize local database with seed data
+
+```
+# this makes sure server is running
+./script/server
+
+# adds a test user account, and seed data
+./script/setup
+```
 
 **Updating Running Version**
 * `script/update` — Run after changing code or switching branches to refresh server
