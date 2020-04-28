@@ -5,7 +5,7 @@ import Navbar from "../components/Navbar"
 import LoginForm from "../components/LoginForm"
 import MainLayout from "../layouts/MainLayout"
 import ParticipantsList from "../components/ParticipantsList"
-import AllQueues from "../components/AllQueues"
+import AllQueues from "../components/QueueComponent/AllQueues"
 import ParticipantInfo from "../components/ParticipantInfo"
 
 const Routes = () => {

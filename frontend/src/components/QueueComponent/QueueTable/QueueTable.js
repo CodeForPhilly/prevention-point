@@ -8,11 +8,15 @@ import CheckIcon from "@material-ui/icons/Check"
 import IconButton from "@material-ui/core/IconButton"
 import MaterialTable from "material-table"
 import moment from "moment"
-import QueueTableDropdown from "./QueueTableDropdown"
-import { QueueStoreContext } from "../stores/QueueStore"
-import { rootStoreContext } from "../stores/RootStore"
-import NotesDialog from "./NotesDialog"
+import QueueTableDropdown from "./QueueTableDropdown/QueueTableDropdown"
+import { QueueStoreContext } from "../../../stores/QueueStore"
+import { rootStoreContext } from "../../../stores/RootStore"
+import NotesDialog from "../../NotesDialog"
 import { useHistory } from "react-router-dom"
+import {
+  STATUS_OPTIONS,
+  URGENCY_OPTIONS,
+} from "../../../constants/GlobalConstants"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -46,20 +50,6 @@ const QueueTable = observer(queueData => {
   const seenHandler = id => {
     queueStore.updateStatus(queueData.queueData, id.id, "SEEN")
   }
-
-  const statusOptions = [
-    { value: "ARRIVED", name: "Waiting" },
-    { value: "STEPPED_OUT", name: "Stepped Out" },
-    { value: "LEFT", name: "Left" },
-  ]
-
-  const urgencyOptions = [
-    { value: "_1", name: 1 },
-    { value: "_2", name: 2 },
-    { value: "_3", name: 3 },
-    { value: "_4", name: 4 },
-    { value: "_5", name: 5 },
-  ]
 
   const NotesButton = visitId => {
     return (
@@ -145,7 +135,7 @@ const QueueTable = observer(queueData => {
               <QueueTableDropdown
                 id={id}
                 initialValue={urgency}
-                items={urgencyOptions}
+                items={URGENCY_OPTIONS}
                 queueData={queueData.queueData}
                 column="urgency"
               />
@@ -169,7 +159,7 @@ const QueueTable = observer(queueData => {
               <QueueTableDropdown
                 id={id}
                 initialValue={status}
-                items={statusOptions}
+                items={STATUS_OPTIONS}
                 queueData={queueData.queueData}
                 column="status"
               />

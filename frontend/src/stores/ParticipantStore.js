@@ -25,6 +25,9 @@ export class ParticipantStore {
   @observable routeToQueueTable = false
   @observable services = []
   @observable visitList = []
+  // User search
+  @observable errorState = false
+  @observable errorMessage = ""
 
   // computed
   // if user has input a value for search, enable search else disable search
@@ -156,6 +159,12 @@ export class ParticipantStore {
   }
   @action setVisitsList = data => {
     this.visitList = data
+  }
+  @action setErrorStateForUserSearch = state => {
+    this.errorState = state
+  }
+  @action setErrorMessageForUserSearch = message => {
+    this.errorMessage = message
   }
 
   // Utils

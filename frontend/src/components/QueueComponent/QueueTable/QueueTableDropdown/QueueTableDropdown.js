@@ -2,21 +2,22 @@ import React, { useContext } from "react"
 import PropTypes, { oneOfType, string, number } from "prop-types"
 import MenuItem from "@material-ui/core/MenuItem"
 import Select from "@material-ui/core/Select"
-import { QueueStoreContext } from "../stores/QueueStore"
+import { QueueStoreContext } from "../../../../stores/QueueStore"
 
 const QueueTableDropdown = props => {
   const queueStore = useContext(QueueStoreContext)
   let value = props.initialValue
   const col = props.column
-  function handleChange(event) {
-    value = event.target.value
+
+  const handleChange = e => {
+    value = e.target.value
     if (col === "urgency") {
       queueStore.patchVisit(props.queueData, props.id, {
-        [col]: event.target.value,
+        [col]: e.target.value,
       })
     }
     if (col === "status") {
-      queueStore.updateStatus(props.queueData, props.id, event.target.value)
+      queueStore.updateStatus(props.queueData, props.id, e.target.value)
     }
   }
   return (
