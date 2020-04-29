@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react"
+import React, { useContext } from "react"
 import { rootStoreContext } from "../stores/RootStore"
 import "../scss/participant-search.scss"
 import FormGroup from "@material-ui/core/FormGroup"
@@ -13,8 +13,6 @@ import { observer } from "mobx-react-lite"
 const UserSearch = observer(() => {
   const rootStore = useContext(rootStoreContext)
   const participantsStore = rootStore.ParticipantStore
-  const [errorState, setErrorState] = useState(false)
-  const [errorMessage, setErrorMessage] = useState("")
   const history = useHistory()
 
   const handleSubmit = e => {
@@ -23,8 +21,10 @@ const UserSearch = observer(() => {
     }
     // Validate that a user id or a first name last name paring exist on the form
     if (!participantsStore.params) {
-      setErrorMessage("Need to enter a user id or a name")
-      setErrorState(true)
+      participantsStore.setErrorMessageForUserSearch(
+        "Need to enter a user id or a name"
+      )
+      participantsStore.setErrorMessageForUserSearch(true)
     } else {
       participantsStore.getParticipants()
       history.push("/participants")
@@ -59,7 +59,7 @@ const UserSearch = observer(() => {
                 name="user_id"
                 value={participantsStore.params.userId}
                 onChange={e => participantsStore.setUserIdParam(e.target.value)}
-                className={errorState ? "error" : ""}
+                className={participantsStore.errorState ? "error" : ""}
               />
             </FormControl>
           </FormGroup>
@@ -81,7 +81,7 @@ const UserSearch = observer(() => {
                 onChange={e =>
                   participantsStore.setFirstNameParam(e.target.value)
                 }
-                className={errorState ? "error" : ""}
+                className={participantsStore.errorState ? "error" : ""}
               />
             </FormControl>
           </FormGroup>
@@ -95,11 +95,11 @@ const UserSearch = observer(() => {
                 onChange={e =>
                   participantsStore.setLastNameParam(e.target.value)
                 }
-                className={errorState ? "error" : ""}
+                className={participantsStore.errorState ? "error" : ""}
               />
             </FormControl>
           </FormGroup>
-          <p className="error-message">{errorMessage}</p>
+          <p className="error-message">{participantsStore.errorMessage}</p>
           <Button
             type="submit"
             variant="contained"

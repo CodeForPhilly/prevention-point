@@ -22,6 +22,7 @@ export class QueueStore {
   }
   // TODO: refactor after v1.0.0 release
   @observable participantWithPrograms = []
+  @observable participantNotes = ""
 
   //Set tab order here
   @computed get queueStats() {
@@ -88,6 +89,10 @@ export class QueueStore {
       }),
     ]
   }
+  @action
+  setParticipantNotes = notes => {
+    this.participantNotes = notes
+  }
 
   //Return the longest wait time in minutes
   longestWait(queue) {
@@ -102,36 +107,39 @@ export class QueueStore {
   }
 
   getQueue = flow(function*(queueIndex) {
-    const { ok, data } = yield api.getQueue(queueIndex)
-    if (ok) {
-      this.setQueue(queueIndex, data)
-    } else {
-      // TODO: Handle error
-      //console.log("Error in getQueue")
+    try {
+      const { ok, data } = yield api.getQueue(queueIndex)
+      if (ok) {
+        this.setQueue(queueIndex, data)
+      }
+    } catch (error) {
+      throw "QueueStore:  getQueue() Failed  =>  " + error
     }
   })
 
   patchVisit = flow(function*(queueIndex, visitIndex, data) {
-    const { ok } = yield api.patchVisit(visitIndex, data)
-    if (ok) {
-      this.getQueue(queueIndex)
-    } else {
-      // TODO: Handle error
-      //console.log("Error in patchVisit")
+    try {
+      const { ok } = yield api.patchVisit(visitIndex, data)
+      if (ok) {
+        this.getQueue(queueIndex)
+      }
+    } catch (error) {
+      throw "QueueStore:  patchVisit() Failed  =>  " + error
     }
   })
 
   updateStatus = flow(function*(queueIndex, visitIndex, eventType) {
-    const body = {
-      visit: visitIndex,
-      event_type: eventType,
-    }
-    const { ok } = yield api.postFrontDeskEvent(body)
-    if (ok) {
-      this.getQueue(queueIndex)
-    } else {
-      // TODO: Handle error
-      //console.log("Error in updateStatus")
+    try {
+      const body = {
+        visit: visitIndex,
+        event_type: eventType,
+      }
+      const { ok } = yield api.postFrontDeskEvent(body)
+      if (ok) {
+        this.getQueue(queueIndex)
+      }
+    } catch (error) {
+      throw "QueueStore:  updateStatus() Failed  =>  " + error
     }
   })
 

@@ -11,15 +11,17 @@ import { QueueStoreContext } from "../stores/QueueStore"
 
 function NotesDialog({ visibleDialog, toggleVisibleDialog, queueData, id }) {
   const queueStore = useContext(QueueStoreContext)
-  const [participantNotes, setParticipantNotes] = React.useState("")
+  // const [participantNotes, setParticipantNotes] = React.useState("")
 
   const handleSubmit = (queueId, visitId) => {
-    queueStore.patchVisit(queueId, visitId, { notes: participantNotes })
+    queueStore.patchVisit(queueId, visitId, {
+      notes: queueStore.participantNotes,
+    })
     toggleVisibleDialog()
   }
 
   useEffect(() => {
-    setParticipantNotes(queueStore.getNotes(queueData, id))
+    queueStore.setParticipantNotes(queueStore.getNotes(queueData, id))
   }, [queueStore, queueStore.getNotes, queueData, id])
 
   return (
@@ -41,8 +43,8 @@ function NotesDialog({ visibleDialog, toggleVisibleDialog, queueData, id }) {
           autoFocus
           fullWidth
           multiline
-          onChange={e => setParticipantNotes(e.target.value)}
-          value={participantNotes}
+          onChange={e => queueStore.setParticipantNotes(e.target.value)}
+          value={queueStore.participantNotes}
         />
         <DialogActions>
           <Button id="cancel" onClick={toggleVisibleDialog}>
@@ -50,7 +52,9 @@ function NotesDialog({ visibleDialog, toggleVisibleDialog, queueData, id }) {
           </Button>
           <Button
             id="submit"
-            onClick={() => handleSubmit(queueData, id, participantNotes)}
+            onClick={() =>
+              handleSubmit(queueData, id, queueStore.participantNotes)
+            }
             color="primary"
           >
             Submit

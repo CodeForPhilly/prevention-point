@@ -49,8 +49,8 @@ const NavHeader = observer(() => {
     </Menu>
   ))
 
-  function handleProfileMenuOpen(event) {
-    setAnchorEl(event.currentTarget)
+  function handleProfileMenuOpen(e) {
+    setAnchorEl(e.currentTarget)
   }
 
   function handleMenuClose() {
