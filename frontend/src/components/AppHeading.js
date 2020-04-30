@@ -1,0 +1,27 @@
+import React from "react"
+import PropTypes from "prop-types"
+import Typography from "@material-ui/core/Typography"
+
+const AppHeading = props => {
+  // Theme styling applied with createMuiTheme.
+  // can add modifiers with a class selector, for things like margin or color
+  const { children, className } = props
+
+  return (
+    <Typography
+      display="block"
+      component="h2"
+      variant="h2"
+      className={className}
+    >
+      {children}
+    </Typography>
+  )
+}
+
+AppHeading.propTypes = {
+  children: PropTypes.string || PropTypes.node,
+  className: PropTypes.string,
+}
+
+export default AppHeading

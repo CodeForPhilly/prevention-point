@@ -1,10 +1,11 @@
 /* eslint-disable quotes */
 import React from "react"
 import { shallow, configure } from "enzyme"
-import LoginForm from "../src/components/LoginForm"
-import Button from "@material-ui/core/Button"
-import Adapter from "enzyme-adapter-react-16"
 import { render, fireEvent, cleanup } from "@testing-library/react"
+import Adapter from "enzyme-adapter-react-16"
+
+import LoginForm from "../src/components/LoginForm"
+import AppButton from "../src/components/AppButton"
 
 configure({ adapter: new Adapter() })
 
@@ -33,7 +34,7 @@ describe("<LoginForm />", () => {
       wrapper = shallow(<LoginForm {...initialProps} />)
       usernameInput = wrapper.find("#username")
       passwordInput = wrapper.find("#password")
-      signInButton = wrapper.find(Button)
+      signInButton = wrapper.find(AppButton)
     })
 
     // what to do after each test
@@ -85,12 +86,12 @@ describe("<LoginForm />", () => {
 
     it("should have the expected props on the button", () => {
       expect(signInButton.props()).toEqual({
-        type: "submit",
-        variant: "contained",
-        style: {
-          marginTop: "10px",
-        },
+        large: false,
+        submit: true,
+        disabled: false,
+        color: "primary",
         children: "Sign In",
+        onClick: expect.any(Function),
       })
     })
   })
@@ -128,7 +129,7 @@ describe("<LoginForm />", () => {
     it("Test button submit", () => {
       const mockLogin = jest.fn()
 
-      const button = shallow(<Button onClick={mockLogin} />)
+      const button = shallow(<AppButton onClick={mockLogin} />)
 
       button.simulate("click")
 

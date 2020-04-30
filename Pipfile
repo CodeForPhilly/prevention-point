@@ -22,3 +22,6 @@ psycopg2-binary = "*"
 
 [requires]
 python_version = "3.7"
+
+[scripts]
+drs = "python manage.py runserver"

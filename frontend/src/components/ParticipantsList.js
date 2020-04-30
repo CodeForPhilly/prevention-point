@@ -1,43 +1,46 @@
 import React, { Fragment, useContext, useEffect } from "react"
-import { rootStoreContext } from "../stores/RootStore"
-import Breadcrumbs from "@material-ui/core/Breadcrumbs"
-import Typography from "@material-ui/core/Typography"
+import { Link } from "react-router-dom"
+import { observer } from "mobx-react-lite"
+import { makeStyles } from "@material-ui/core/styles"
+
+import Fab from "@material-ui/core/Fab"
 import Table from "@material-ui/core/Table"
+import TableRow from "@material-ui/core/TableRow"
 import TableBody from "@material-ui/core/TableBody"
 import TableCell from "@material-ui/core/TableCell"
 import TableHead from "@material-ui/core/TableHead"
-import TableRow from "@material-ui/core/TableRow"
-import Fab from "@material-ui/core/Fab"
-import AssignmentIndIcon from "@material-ui/icons/AssignmentInd"
-import { observer } from "mobx-react-lite"
-import { Link } from "react-router-dom"
-import BottomNavigation from "@material-ui/core/BottomNavigation"
+import Breadcrumbs from "@material-ui/core/Breadcrumbs"
 import PersonAddIcon from "@material-ui/icons/PersonAdd"
-import { makeStyles } from "@material-ui/core/styles"
-import Grid from "@material-ui/core/Grid"
+import AssignmentIndIcon from "@material-ui/icons/AssignmentInd"
+import BottomNavigation from "@material-ui/core/BottomNavigation"
+
+import AppCopy from "./AppCopy"
+import AppTitle from "./AppTitle"
+import AppHeading from "./AppHeading"
+import { rootStoreContext } from "../stores/RootStore"
 
 const ParticipantsList = observer(() => {
   const useStyles = makeStyles({
+    participantsListHeading: {
+      color: "#086375",
+    },
     addParticipantNav: {
       width: "100%",
       position: "fixed",
+      right: 0,
       bottom: 0,
       left: 0,
-      right: 0,
       backgroundColor: "#d4d4d4",
       height: "auto",
     },
-    addParticipant: {
-      float: "right",
+    addParticipantLink: {
+      display: "flex",
+      alignItems: "center",
+      padding: 20,
+      color: "#086375",
     },
-    addParticipantText: {
-      float: "left",
-      color: "primary",
-      fontWeight: "bold",
-      marginRight: "1em",
-      display: "inline-block",
-      verticalAlign: "middle",
-      lineHeight: "normal",
+    addParticipantIcon: {
+      marginLeft: 10,
     },
   })
   const classes = useStyles()
@@ -68,35 +71,35 @@ const ParticipantsList = observer(() => {
           <Link color="inherit" to="/">
             Home
           </Link>
-          <Typography color="textPrimary">Search Results</Typography>
+          <AppCopy>Search Results</AppCopy>
         </Breadcrumbs>
-        <Typography variant="h5" color="textPrimary">
+        <AppHeading className={classes.participantsListHeading}>
           Participants
-        </Typography>
+        </AppHeading>
         <div className="participants">
           <Table>
             <TableHead>
               <TableRow>
                 <TableCell>
-                  <Typography>PPID</Typography>
+                  <AppTitle>PPID</AppTitle>
                 </TableCell>
                 <TableCell>
-                  <Typography>First Name</Typography>
+                  <AppTitle>First Name</AppTitle>
                 </TableCell>
                 <TableCell>
-                  <Typography>Last Name</Typography>
+                  <AppTitle>Last Name</AppTitle>
                 </TableCell>
                 <TableCell>
-                  <Typography>Gender</Typography>
+                  <AppTitle>Gender</AppTitle>
                 </TableCell>
                 <TableCell>
-                  <Typography>DOB</Typography>
+                  <AppTitle>DOB</AppTitle>
                 </TableCell>
                 <TableCell>
-                  <Typography>Race</Typography>
+                  <AppTitle>Race</AppTitle>
                 </TableCell>
                 <TableCell>
-                  <Typography>Edit Participant</Typography>
+                  <AppTitle>Edit Participant</AppTitle>
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -110,22 +113,22 @@ const ParticipantsList = observer(() => {
                   onClick={e => handleParticipant(e, participant)}
                 >
                   <TableCell>
-                    <Typography>{participant.pp_id} </Typography>
+                    <AppCopy>{participant.pp_id} </AppCopy>
                   </TableCell>
                   <TableCell>
-                    <Typography>{participant.first_name}</Typography>
+                    <AppCopy>{participant.first_name}</AppCopy>
                   </TableCell>
                   <TableCell>
-                    <Typography>{participant.last_name}</Typography>
+                    <AppCopy>{participant.last_name}</AppCopy>
                   </TableCell>
                   <TableCell>
-                    <Typography>{participant.gender}</Typography>
+                    <AppCopy>{participant.gender}</AppCopy>
                   </TableCell>
                   <TableCell>
-                    <Typography>{participant.date_of_birth}</Typography>
+                    <AppCopy>{participant.date_of_birth}</AppCopy>
                   </TableCell>
                   <TableCell>
-                    <Typography>{participant.race}</Typography>
+                    <AppCopy>{participant.race}</AppCopy>
                   </TableCell>
                   <TableCell>
                     <Link to="/participantInfo">
@@ -141,6 +144,7 @@ const ParticipantsList = observer(() => {
         </div>
         <BottomNavigation showLabels className={classes.addParticipantNav}>
           <Link
+            className={classes.addParticipantLink}
             to="/participantInfo"
             onClick={() => {
               participantStore.setDefaultParticipant()
@@ -148,17 +152,8 @@ const ParticipantsList = observer(() => {
               participantStore.setServiceList([])
             }}
           >
-            <Grid container>
-              <Grid container item justify="flex-end">
-                <Typography
-                  color="primary"
-                  style={{ fontSize: 28, paddingRight: "0.75em" }}
-                >
-                  Add Participant
-                </Typography>
-                <PersonAddIcon color="primary" style={{ fontSize: 50 }} />
-              </Grid>
-            </Grid>
+            <AppHeading>Add Participant</AppHeading>
+            <PersonAddIcon className={classes.addParticipantIcon} />
           </Link>
         </BottomNavigation>
       </div>

@@ -1,14 +1,17 @@
-import React, { useContext } from "react"
-import { rootStoreContext } from "../stores/RootStore"
-import "../scss/participant-search.scss"
-import FormGroup from "@material-ui/core/FormGroup"
-import FormControl from "@material-ui/core/FormControl"
-import InputLabel from "@material-ui/core/InputLabel"
-import Input from "@material-ui/core/Input"
-import Button from "@material-ui/core/Button"
-import Typography from "@material-ui/core/Typography"
-import { useHistory } from "react-router-dom"
+import React, { useState, useContext } from "react"
 import { observer } from "mobx-react-lite"
+import { useHistory } from "react-router-dom"
+
+import Input from "@material-ui/core/Input"
+import Container from "@material-ui/core/Container"
+import FormGroup from "@material-ui/core/FormGroup"
+import InputLabel from "@material-ui/core/InputLabel"
+import FormControl from "@material-ui/core/FormControl"
+
+import AppCopy from "./AppCopy"
+import AppButton from "./AppButton"
+import AppHeading from "./AppHeading"
+import { rootStoreContext } from "../stores/RootStore"
 
 const UserSearch = observer(() => {
   const rootStore = useContext(rootStoreContext)
@@ -32,24 +35,15 @@ const UserSearch = observer(() => {
   }
 
   return (
-    <div className="participant-search">
-      <div align="center">
-        <Typography
-          className="participant-head"
-          component="h5"
-          variant="h5"
-          gutterBottom
-        >
-          <b>Participant Search</b>
-        </Typography>
-        <Typography
-          className="participant-reminder"
-          variant="body2"
-          gutterBottom
-        >
+    <Container className="participant-search">
+      <div>
+        <AppHeading className="participant-search__heading">
+          Participant Search
+        </AppHeading>
+        <AppCopy className="participant-search__copy">
           <b>Reminder:</b> Search for participant profile prior to creating a
           new profile
-        </Typography>
+        </AppCopy>
         <form className="participant-search__form" onSubmit={handleSubmit}>
           <FormGroup className="participant-search__input">
             <FormControl>
@@ -63,14 +57,7 @@ const UserSearch = observer(() => {
               />
             </FormControl>
           </FormGroup>
-          <Typography
-            className="participant-head"
-            component="h5"
-            variant="h5"
-            gutterBottom
-          >
-            <b>Or</b>
-          </Typography>
+          <AppHeading className="participant-search__heading">Or</AppHeading>
           <FormGroup className="participant-search__input">
             <FormControl>
               <InputLabel htmlFor="first_name">First Name</InputLabel>
@@ -99,18 +86,13 @@ const UserSearch = observer(() => {
               />
             </FormControl>
           </FormGroup>
-          <p className="error-message">{participantsStore.errorMessage}</p>
-          <Button
-            type="submit"
-            variant="contained"
-            disabled={participantsStore.toggleSearch}
-            style={{ marginTop: 30 }}
-          >
+          <p className="error-message">{errorMessage}</p>
+          <AppButton submit disabled={participantsStore.toggleSearch}>
             Submit
-          </Button>
+          </AppButton>
         </form>
       </div>
-    </div>
+    </Container>
   )
 })
 
