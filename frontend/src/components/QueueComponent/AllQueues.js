@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
-import PropTypes from "prop-types"
 import { makeStyles } from "@material-ui/styles"
 import { Tabs, Button } from "@material-ui/core"
 import QueueTab from "./QueueTab/QueueTab"
@@ -26,17 +25,11 @@ const useStyles = makeStyles(() => ({
 
 const AllQueues = observer(() => {
   const queueStore = useContext(QueueStoreContext)
-  const queueSize = Object.keys(queueStore.queues).length
   const classes = useStyles()
   const [tabValue, setTabValue] = useState(0)
   const [btnState, setBtnState] = useState({ disabled: false, isFrozen: false })
   function handleChange(event, newValue) {
     setTabValue(newValue)
-  }
-
-  const getProgram = async () => {
-    let { data } = await api.getProgram(tabValue + 1)
-    setBtnState({ ...btnState, isFrozen: data.is_frozen })
   }
 
   const toggleFreeze = async () => {
@@ -57,24 +50,15 @@ const AllQueues = observer(() => {
 
   //Update all queues on first rendering
   useEffect(() => {
-    for (let i = 1; i <= queueSize; i++) queueStore.getQueue(i)
-    getProgram()
-    //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    Object.entries(queueStore.queueStats).map((_, i) => queueStore.getQueue(i))
+  }, [queueStore])
 
-  //Update queue of selected tab
   useEffect(() => {
-    queueStore.getQueue(tabValue + 1)
-    getProgram()
-    //eslint-disable-next-line react-hooks/exhaustive-deps
+    ;(async () => {
+      let { data } = await api.getProgram(tabValue + 1)
+      setBtnState(prev => ({ ...prev, isFrozen: data.is_frozen }))
+    })()
   }, [tabValue])
-
-  const tabArray = []
-  for (let i = 1; i <= queueSize; i++) {
-    tabArray.push(
-      <QueueTab className={classes.queueTab} queueData={i} key={i} />
-    )
-  }
 
   return (
     <div className={classes.root}>
@@ -88,7 +72,13 @@ const AllQueues = observer(() => {
           textColor="primary"
           aria-label="scrollable force tabs example"
         >
-          {tabArray}
+          {Object.entries(queueStore.queueStats).map(([_, value]) => (
+            <QueueTab
+              className={classes.queueTab}
+              {...value}
+              key={value.name}
+            />
+          ))}
         </Tabs>
       </AppBar>
       <QueueTable queueData={tabValue + 1} />
@@ -106,10 +96,5 @@ const AllQueues = observer(() => {
     </div>
   )
 })
-
-AllQueues.propTypes = {
-  queueData: PropTypes.string,
-  classes: PropTypes.object,
-}
 
 export default AllQueues
