@@ -1,6 +1,7 @@
 import React from "react"
 import { makeStyles } from "@material-ui/core/styles"
 import Button from "@material-ui/core/Button"
+import { Link } from "react-router-dom"
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -13,15 +14,19 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default function GsTitle() {
+const GsTitle = () => {
   const classes = useStyles()
 
   return (
-    <div>
+    <>
       Welcome to
-      <Button variant="contained" href="/" className={classes.button}>
-        General Services
-      </Button>
-    </div>
+      <Link to="/">
+        <Button variant="contained" className={classes.button}>
+          General Services
+        </Button>
+      </Link>
+    </>
   )
 }
+
+export default GsTitle
