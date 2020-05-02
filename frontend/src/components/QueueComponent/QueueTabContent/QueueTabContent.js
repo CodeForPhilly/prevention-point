@@ -1,10 +1,9 @@
-import React, { useContext } from "react"
+import React from "react"
 import PropTypes from "prop-types"
 import { makeStyles } from "@material-ui/styles"
 import { Typography, Button } from "@material-ui/core"
 import PersonIcon from "@material-ui/icons/Person"
 import TimelapseIcon from "@material-ui/icons/Timelapse"
-import { QueueStoreContext } from "../../../stores/QueueStore"
 
 const useStyles = makeStyles(theme => ({
   heading: {
@@ -29,39 +28,40 @@ const useStyles = makeStyles(theme => ({
 }))
 
 //Forward ref used with MUI BaseButton. Does not allow observer.
-const QueueTabContent = React.forwardRef(({ onClick, queueData }, _ref) => {
-  const queueStore = useContext(QueueStoreContext)
-  const classes = useStyles()
+const QueueTabContent = React.forwardRef(
+  ({ onClick, name, length, waitTime }, _ref) => {
+    const classes = useStyles()
 
-  return (
-    <Button onClick={onClick} className={classes.queueTab}>
-      <div>
-        <Typography className={classes.heading}>
-          {queueStore.queueStats[queueData].name}
-        </Typography>
-        <div className={classes.queueTabContent}>
-          <div className={classes.queueTabStat}>
-            <PersonIcon className={classes.queueTabIcon} />
-            <Typography className={classes.queueTabStatValue}>
-              {queueStore.queueStats[queueData].length}
-            </Typography>
-          </div>
-          <div className={classes.queueTabStat}>
-            <TimelapseIcon className={classes.queueTabIcon} />
-            <Typography className={classes.queueTabStatValue}>
-              {queueStore.queueStats[queueData].waitTime}
-            </Typography>
+    return (
+      <Button onClick={onClick} className={classes.queueTab}>
+        <div>
+          <Typography className={classes.heading}>{name}</Typography>
+          <div className={classes.queueTabContent}>
+            <div className={classes.queueTabStat}>
+              <PersonIcon className={classes.queueTabIcon} />
+              <Typography className={classes.queueTabStatValue}>
+                {length}
+              </Typography>
+            </div>
+            <div className={classes.queueTabStat}>
+              <TimelapseIcon className={classes.queueTabIcon} />
+              <Typography className={classes.queueTabStatValue}>
+                {waitTime}
+              </Typography>
+            </div>
           </div>
         </div>
-      </div>
-    </Button>
-  )
-})
+      </Button>
+    )
+  }
+)
 
 QueueTabContent.displayName = "QueueTabContent"
 QueueTabContent.propTypes = {
   onClick: PropTypes.func,
-  queueData: PropTypes.number,
+  name: PropTypes.string,
+  length: PropTypes.number,
+  waitTime: PropTypes.number,
 }
 
 export default QueueTabContent
