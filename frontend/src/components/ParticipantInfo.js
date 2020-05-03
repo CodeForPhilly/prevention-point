@@ -73,8 +73,9 @@ const useStyles = makeStyles(theme => ({
 
 const ParticipantInfo = observer(() => {
   const rootStore = useContext(rootStoreContext)
-  // particiant store derived from root store
+  // participant store derived from root store
   const participantStore = rootStore.ParticipantStore
+
   const [insurers, setInsurers] = React.useState([])
   // list of all programs
   const [programList, setProgramList] = React.useState([])
@@ -284,6 +285,7 @@ const ParticipantInfo = observer(() => {
                         Select Gender
                       </InputLabel>
                       <Select
+                        data-testid="gender-select"
                         open={open.gender}
                         onClose={handleClose.gender}
                         onOpen={handleOpen.gender}
@@ -294,7 +296,7 @@ const ParticipantInfo = observer(() => {
                         }
                         inputProps={{
                           name: "gender",
-                          id: "demo-controlled-open-select",
+                          id: "gender-select",
                         }}
                       >
                         <MenuItem value={"male"}>Male</MenuItem>
