@@ -1,16 +1,17 @@
 import React, { useState, useContext } from "react"
 import PropTypes from "prop-types"
-import { Redirect } from "react-router-dom"
 import { observer } from "mobx-react-lite"
-import { rootStoreContext } from "../stores/RootStore"
+import { Redirect } from "react-router-dom"
 
-import "../scss/login-form.scss"
-import FormGroup from "@material-ui/core/FormGroup"
-import FormControl from "@material-ui/core/FormControl"
-import InputLabel from "@material-ui/core/InputLabel"
 import Input from "@material-ui/core/Input"
-import Button from "@material-ui/core/Button"
-import Typography from "@material-ui/core/Typography"
+import Container from "@material-ui/core/Container"
+import FormGroup from "@material-ui/core/FormGroup"
+import InputLabel from "@material-ui/core/InputLabel"
+import FormControl from "@material-ui/core/FormControl"
+import PrevPointButton from "./PrevPointButton"
+
+import PrevPointCopy from "./Typography/PrevPointCopy"
+import { rootStoreContext } from "../stores/RootStore"
 
 const LoginForm = observer(({ location }) => {
   const rootStore = useContext(rootStoreContext)
@@ -30,7 +31,7 @@ const LoginForm = observer(({ location }) => {
   if (rootStore.authStore.isAuthenticated) return <Redirect to={from} />
 
   return (
-    <div className="login-form">
+    <Container className="login-form">
       <form className="login-form__form" onSubmit={login}>
         <FormGroup className="login-form__input">
           <FormControl>
@@ -60,21 +61,14 @@ const LoginForm = observer(({ location }) => {
             />
           </FormControl>
         </FormGroup>
-        <Button type="submit" variant="contained" style={{ marginTop: "10px" }}>
-          Sign In
-        </Button>
+        <PrevPointButton type="submit">Sign In</PrevPointButton>
         {rootStore.authStore.error && (
-          <Typography
-            className="login-form__error"
-            component="p"
-            variant="body2"
-            gutterBottom
-          >
+          <PrevPointCopy className="login-form__error">
             Incorrect Username or password
-          </Typography>
+          </PrevPointCopy>
         )}
       </form>
-    </div>
+    </Container>
   )
 })
 

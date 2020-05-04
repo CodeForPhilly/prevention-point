@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { makeStyles } from "@material-ui/styles"
-import { Tabs, Button } from "@material-ui/core"
+import { Tabs } from "@material-ui/core"
 import QueueTab from "../components/QueueComponent/QueueTab/QueueTab"
 import AppBar from "@material-ui/core/AppBar"
 import { QueueStoreContext } from "../stores/QueueStore"
 import QueueTable from "../components/QueueComponent/QueueTable/QueueTable"
 import api from "../api"
+import PrevPointButton from "../components/PrevPointButton"
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -81,14 +82,13 @@ const AllQueues = observer(() => {
       <QueueTable queueData={tabValue + 1} />
 
       <div className={classes.freezeQueueContainer}>
-        <Button
-          variant="contained"
+        <PrevPointButton
           color="secondary"
           onClick={toggleFreeze}
           disabled={btnState.disabled}
         >
           {btnState.isFrozen ? "Unfreeze" : "Freeze"}
-        </Button>
+        </PrevPointButton>
       </div>
     </div>
   )

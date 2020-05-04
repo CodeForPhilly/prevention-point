@@ -8,11 +8,9 @@
 /* eslint-disable indent */
 import React, { useContext, useEffect } from "react"
 import { rootStoreContext } from "../stores/RootStore"
-import "../scss/participant-search.scss"
 import FormGroup from "@material-ui/core/FormGroup"
 import FormControl from "@material-ui/core/FormControl"
 import InputLabel from "@material-ui/core/InputLabel"
-import Typography from "@material-ui/core/Typography"
 import Grid from "@material-ui/core/Grid"
 import TextField from "@material-ui/core/TextField"
 import Container from "@material-ui/core/Container"
@@ -23,11 +21,12 @@ import Radio from "@material-ui/core/Radio"
 import RadioGroup from "@material-ui/core/RadioGroup"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
 import FormLabel from "@material-ui/core/FormLabel"
-import Button from "@material-ui/core/Button"
 import { observer } from "mobx-react-lite"
 import { useHistory } from "react-router-dom"
 import { autorun, toJS } from "mobx"
 import PrevPointInput from "./PrevPointInput"
+import PrevPointButton from "./PrevPointButton"
+import PrevPointHeading from "./Typography/PrevPointHeading"
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -75,6 +74,10 @@ const useStyles = makeStyles(theme => ({
   },
   noLabel: {
     marginTop: theme.spacing(3),
+  },
+  submitWrapper: {
+    display: "flex",
+    justifyContent: "flex-end",
   },
 }))
 
@@ -166,15 +169,7 @@ const ParticipantInfo = observer(() => {
       className="participant-info-component"
     >
       <Container maxWidth="sm">
-        <Typography
-          style={{ textAlign: "left" }}
-          component="h5"
-          variant="h5"
-          gutterBottom
-        >
-          1. Participant Information
-        </Typography>
-
+        <PrevPointHeading>1. Participant Information</PrevPointHeading>
         <form className="participant-info-form" onSubmit={e => handleSubmit(e)}>
           <Grid container>
             <FormGroup className="participant-info">
@@ -381,149 +376,128 @@ const ParticipantInfo = observer(() => {
             </div>
           </Grid>
 
-          <div>
-            <Typography
-              style={{ textAlign: "left" }}
-              component="h5"
-              variant="h5"
-              gutterBottom
-            >
+          <Grid container>
+            <PrevPointHeading>
               <br />
               <br />
               2. Check In Participant
-            </Typography>
+            </PrevPointHeading>
             <Grid container>
-              <FormGroup className="participant-info">
-                <Grid container>
-                  <Grid item xs>
-                    <FormControl className={classes.formControl}>
-                      <InputLabel htmlFor="demo-controlled-open-select">
-                        Choose Program
-                      </InputLabel>
-                      <Select
-                        required
-                        value={existingVisit.program}
-                        onChange={e => {
-                          participantStore.setVisitProgram(e.target.value)
-                          findAndSaveServiceListings(e)
-                        }}
-                        inputProps={{
-                          name: "program",
-                          id: "demo-controlled-open-select",
-                        }}
-                      >
-                        {programList.map(program => (
-                          <MenuItem
-                            key={program.id}
-                            value={
-                              programList && programList.length > 0
-                                ? program.id
-                                : ""
-                            }
-                          >
-                            {programList && programList.length > 0
-                              ? program.name
-                              : ""}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  </Grid>
-
-                  <Grid item xs>
-                    <FormControl className={classes.formControl}>
-                      <InputLabel htmlFor="demo-controlled-open-select">
-                        Select Service
-                      </InputLabel>
-                      {existingVisit.program && serviceList.length > 0 ? (
-                        <Select
-                          required
-                          value={existingVisit.service}
-                          onChange={e =>
-                            participantStore.setVisitService(e.target.value)
-                          }
-                          inputProps={{
-                            name: "service",
-                            id: "demo-controlled-open-select",
-                          }}
-                        >
-                          {serviceList.map(service => (
-                            <MenuItem
-                              key={service.id}
-                              value={
-                                serviceList && serviceList.length > 0
-                                  ? service.id
-                                  : ""
-                              }
-                            >
-                              {serviceList && serviceList.length > 0
-                                ? service.name
-                                : ""}
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      ) : null}
-                    </FormControl>
-                  </Grid>
-                  <br />
-                  <Grid item xs>
-                    <FormControl className={classes.formControl}>
-                      <InputLabel htmlFor="demo-controlled-open-select">
-                        Select Priority Level
-                      </InputLabel>
-                      <Select
-                        value={existingVisit.urgency}
-                        onChange={e =>
-                          participantStore.setVisitUrgency(e.target.value)
-                        }
-                        inputProps={{
-                          name: "priorityLevel",
-                          id: "demo-controlled-open-select",
-                        }}
-                      >
-                        <MenuItem value={"_1"}>1 (Lowest)</MenuItem>
-                        <MenuItem value={"_2"}>2</MenuItem>
-                        <MenuItem value={"_3"}>3</MenuItem>
-                        <MenuItem value={"_4"}>4</MenuItem>
-                        <MenuItem value={"_5"}>5 (Highest)</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                  <br />
-                  <TextField
-                    id="standard-full-width"
-                    style={{ margin: 8, marginTop: 40 }}
-                    placeholder="Add a note"
-                    onChange={e =>
-                      participantStore.setVisitNotes(e.target.value)
-                    }
-                    value={existingVisit.notes}
-                    fullWidth
-                    margin="normal"
-                    InputLabelProps={{
-                      shrink: true,
+              <Grid item xs>
+                <FormControl className={classes.formControl}>
+                  <InputLabel htmlFor="demo-controlled-open-select">
+                    Choose Program
+                  </InputLabel>
+                  <Select
+                    required
+                    value={existingVisit.program}
+                    onChange={e => {
+                      participantStore.setVisitProgram(e.target.value)
+                      findAndSaveServiceListings(e)
                     }}
-                  />
-                </Grid>
-              </FormGroup>
-            </Grid>
-          </div>
+                    inputProps={{
+                      name: "program",
+                      id: "demo-controlled-open-select",
+                    }}
+                  >
+                    {programList.map(program => (
+                      <MenuItem
+                        key={program.id}
+                        value={
+                          programList && programList.length > 0
+                            ? program.id
+                            : ""
+                        }
+                      >
+                        {programList && programList.length > 0
+                          ? program.name
+                          : ""}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
 
-          <Button
-            style={{
-              alignSelf: "flex-end",
-              marginTop: 20,
-              float: "right",
-              marginBottom: 100,
-            }}
-            variant="outlined"
-            size="large"
-            color="primary"
-            className={classes.margin}
-            type="submit"
-          >
-            Add to Queue
-          </Button>
+              <Grid item xs>
+                <FormControl className={classes.formControl}>
+                  <InputLabel htmlFor="demo-controlled-open-select">
+                    Select Service
+                  </InputLabel>
+                  {existingVisit.program && serviceList.length > 0 ? (
+                    <Select
+                      required
+                      value={existingVisit.service}
+                      onChange={e =>
+                        participantStore.setVisitService(e.target.value)
+                      }
+                      inputProps={{
+                        name: "service",
+                        id: "demo-controlled-open-select",
+                      }}
+                    >
+                      {serviceList.map(service => (
+                        <MenuItem
+                          key={service.id}
+                          value={
+                            serviceList && serviceList.length > 0
+                              ? service.id
+                              : ""
+                          }
+                        >
+                          {serviceList && serviceList.length > 0
+                            ? service.name
+                            : ""}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  ) : null}
+                </FormControl>
+              </Grid>
+              <br />
+              <Grid item xs>
+                <FormControl className={classes.formControl}>
+                  <InputLabel htmlFor="demo-controlled-open-select">
+                    Select Priority Level
+                  </InputLabel>
+                  <Select
+                    value={existingVisit.urgency}
+                    onChange={e =>
+                      participantStore.setVisitUrgency(e.target.value)
+                    }
+                    inputProps={{
+                      name: "priorityLevel",
+                      id: "demo-controlled-open-select",
+                    }}
+                  >
+                    <MenuItem value={"_1"}>1 (Lowest)</MenuItem>
+                    <MenuItem value={"_2"}>2</MenuItem>
+                    <MenuItem value={"_3"}>3</MenuItem>
+                    <MenuItem value={"_4"}>4</MenuItem>
+                    <MenuItem value={"_5"}>5 (Highest)</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <br />
+              <TextField
+                id="standard-full-width"
+                style={{ margin: 8, marginTop: 40 }}
+                placeholder="Add a note"
+                onChange={e => participantStore.setVisitNotes(e.target.value)}
+                value={existingVisit.notes}
+                fullWidth
+                margin="normal"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Grid>
+            {/* </FormGroup> */}
+            <Grid item xs className={classes.submitWrapper}>
+              <PrevPointButton type="submit" large>
+                Add to Queue
+              </PrevPointButton>
+            </Grid>
+          </Grid>
         </form>
       </Container>
     </div>

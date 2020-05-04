@@ -1,43 +1,46 @@
 import React, { Fragment, useContext, useEffect } from "react"
-import { rootStoreContext } from "../stores/RootStore"
-import Breadcrumbs from "@material-ui/core/Breadcrumbs"
-import Typography from "@material-ui/core/Typography"
+import { Link } from "react-router-dom"
+import { observer } from "mobx-react-lite"
+import { makeStyles } from "@material-ui/core/styles"
+
+import Fab from "@material-ui/core/Fab"
 import Table from "@material-ui/core/Table"
+import TableRow from "@material-ui/core/TableRow"
 import TableBody from "@material-ui/core/TableBody"
 import TableCell from "@material-ui/core/TableCell"
 import TableHead from "@material-ui/core/TableHead"
-import TableRow from "@material-ui/core/TableRow"
-import Fab from "@material-ui/core/Fab"
-import AssignmentIndIcon from "@material-ui/icons/AssignmentInd"
-import { observer } from "mobx-react-lite"
-import { Link } from "react-router-dom"
-import BottomNavigation from "@material-ui/core/BottomNavigation"
+import Breadcrumbs from "@material-ui/core/Breadcrumbs"
 import PersonAddIcon from "@material-ui/icons/PersonAdd"
-import { makeStyles } from "@material-ui/core/styles"
-import Grid from "@material-ui/core/Grid"
+import AssignmentIndIcon from "@material-ui/icons/AssignmentInd"
+import BottomNavigation from "@material-ui/core/BottomNavigation"
+
+import PrevPointCopy from "./Typography/PrevPointCopy"
+import PrevPointTitle from "./Typography/PrevPointTitle"
+import PrevPointHeading from "./Typography/PrevPointHeading"
+import { rootStoreContext } from "../stores/RootStore"
 
 const ParticipantsList = observer(() => {
   const useStyles = makeStyles({
+    participantsListHeading: {
+      color: "#086375",
+    },
     addParticipantNav: {
       width: "100%",
       position: "fixed",
+      right: 0,
       bottom: 0,
       left: 0,
-      right: 0,
       backgroundColor: "#d4d4d4",
       height: "auto",
     },
-    addParticipant: {
-      float: "right",
+    addParticipantLink: {
+      display: "flex",
+      alignItems: "center",
+      padding: 20,
+      color: "#086375",
     },
-    addParticipantText: {
-      float: "left",
-      color: "primary",
-      fontWeight: "bold",
-      marginRight: "1em",
-      display: "inline-block",
-      verticalAlign: "middle",
-      lineHeight: "normal",
+    addParticipantIcon: {
+      marginLeft: 10,
     },
   })
   const classes = useStyles()
@@ -68,35 +71,35 @@ const ParticipantsList = observer(() => {
           <Link color="inherit" to="/">
             Home
           </Link>
-          <Typography color="textPrimary">Search Results</Typography>
+          <PrevPointCopy>Search Results</PrevPointCopy>
         </Breadcrumbs>
-        <Typography variant="h5" color="textPrimary">
+        <PrevPointHeading className={classes.participantsListHeading}>
           Participants
-        </Typography>
+        </PrevPointHeading>
         <div className="participants">
           <Table>
             <TableHead>
               <TableRow>
                 <TableCell>
-                  <Typography>PPID</Typography>
+                  <PrevPointTitle>PPID</PrevPointTitle>
                 </TableCell>
                 <TableCell>
-                  <Typography>First Name</Typography>
+                  <PrevPointTitle>First Name</PrevPointTitle>
                 </TableCell>
                 <TableCell>
-                  <Typography>Last Name</Typography>
+                  <PrevPointTitle>Last Name</PrevPointTitle>
                 </TableCell>
                 <TableCell>
-                  <Typography>Gender</Typography>
+                  <PrevPointTitle>Gender</PrevPointTitle>
                 </TableCell>
                 <TableCell>
-                  <Typography>DOB</Typography>
+                  <PrevPointTitle>DOB</PrevPointTitle>
                 </TableCell>
                 <TableCell>
-                  <Typography>Race</Typography>
+                  <PrevPointTitle>Race</PrevPointTitle>
                 </TableCell>
                 <TableCell>
-                  <Typography>Edit Participant</Typography>
+                  <PrevPointTitle>Edit Participant</PrevPointTitle>
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -110,22 +113,22 @@ const ParticipantsList = observer(() => {
                   onClick={e => handleParticipant(e, participant)}
                 >
                   <TableCell>
-                    <Typography>{participant.pp_id} </Typography>
+                    <PrevPointCopy>{participant.pp_id} </PrevPointCopy>
                   </TableCell>
                   <TableCell>
-                    <Typography>{participant.first_name}</Typography>
+                    <PrevPointCopy>{participant.first_name}</PrevPointCopy>
                   </TableCell>
                   <TableCell>
-                    <Typography>{participant.last_name}</Typography>
+                    <PrevPointCopy>{participant.last_name}</PrevPointCopy>
                   </TableCell>
                   <TableCell>
-                    <Typography>{participant.gender}</Typography>
+                    <PrevPointCopy>{participant.gender}</PrevPointCopy>
                   </TableCell>
                   <TableCell>
-                    <Typography>{participant.date_of_birth}</Typography>
+                    <PrevPointCopy>{participant.date_of_birth}</PrevPointCopy>
                   </TableCell>
                   <TableCell>
-                    <Typography>{participant.race}</Typography>
+                    <PrevPointCopy>{participant.race}</PrevPointCopy>
                   </TableCell>
                   <TableCell>
                     <Link to="/participantInfo">
@@ -141,6 +144,7 @@ const ParticipantsList = observer(() => {
         </div>
         <BottomNavigation showLabels className={classes.addParticipantNav}>
           <Link
+            className={classes.addParticipantLink}
             to="/participantInfo"
             onClick={() => {
               participantStore.setDefaultParticipant()
@@ -148,17 +152,8 @@ const ParticipantsList = observer(() => {
               participantStore.setServiceList([])
             }}
           >
-            <Grid container>
-              <Grid container item justify="flex-end">
-                <Typography
-                  color="primary"
-                  style={{ fontSize: 28, paddingRight: "0.75em" }}
-                >
-                  Add Participant
-                </Typography>
-                <PersonAddIcon color="primary" style={{ fontSize: 50 }} />
-              </Grid>
-            </Grid>
+            <PrevPointHeading>Add Participant</PrevPointHeading>
+            <PersonAddIcon className={classes.addParticipantIcon} />
           </Link>
         </BottomNavigation>
       </div>
