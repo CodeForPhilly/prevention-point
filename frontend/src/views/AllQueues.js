@@ -2,11 +2,11 @@ import React, { useContext, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { makeStyles } from "@material-ui/styles"
 import { Tabs, Button } from "@material-ui/core"
-import QueueTab from "./QueueTab/QueueTab"
+import QueueTab from "../components/QueueComponent/QueueTab/QueueTab"
 import AppBar from "@material-ui/core/AppBar"
-import { QueueStoreContext } from "../../stores/QueueStore"
-import QueueTable from "./QueueTable/QueueTable"
-import api from "../../api"
+import { QueueStoreContext } from "../stores/QueueStore"
+import QueueTable from "../components/QueueComponent/QueueTable/QueueTable"
+import api from "../api"
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -28,10 +28,7 @@ const AllQueues = observer(() => {
   const classes = useStyles()
   const [tabValue, setTabValue] = useState(0)
   const [btnState, setBtnState] = useState({ disabled: false, isFrozen: false })
-  function handleChange(event, newValue) {
-    setTabValue(newValue)
-  }
-
+  const handleChange = (event, newValue) => setTabValue(newValue)
   const toggleFreeze = async () => {
     setBtnState({ ...btnState, disabled: true })
     try {

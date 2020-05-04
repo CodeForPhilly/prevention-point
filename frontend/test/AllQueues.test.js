@@ -17,7 +17,7 @@ api.getQueue = jest.fn().mockResolvedValue({ ok: true, data: [] })
 api.patchProgram = jest.fn().mockResolvedValue({ ok: true })
 
 import AppBar from "@material-ui/core/AppBar"
-import AllQueues from "../src/components/QueueComponent/AllQueues"
+import AllQueues from "../src/views/AllQueues"
 
 configure({ adapter: new Adapter() })
 
