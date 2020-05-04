@@ -8,9 +8,9 @@ import Container from "@material-ui/core/Container"
 import FormGroup from "@material-ui/core/FormGroup"
 import InputLabel from "@material-ui/core/InputLabel"
 import FormControl from "@material-ui/core/FormControl"
-import AppButton from "./AppButton"
+import PrevPointButton from "./PrevPointButton"
 
-import AppCopy from "./AppCopy"
+import PrevPointCopy from "./Typography/PrevPointCopy"
 import { rootStoreContext } from "../stores/RootStore"
 
 const LoginForm = observer(({ location }) => {
@@ -61,11 +61,11 @@ const LoginForm = observer(({ location }) => {
             />
           </FormControl>
         </FormGroup>
-        <AppButton submit>Sign In</AppButton>
+        <PrevPointButton type="submit">Sign In</PrevPointButton>
         {rootStore.authStore.error && (
-          <AppCopy className="login-form__error">
+          <PrevPointCopy className="login-form__error">
             Incorrect Username or password
-          </AppCopy>
+          </PrevPointCopy>
         )}
       </form>
     </Container>

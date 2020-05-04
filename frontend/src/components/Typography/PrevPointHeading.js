@@ -2,17 +2,16 @@ import React from "react"
 import PropTypes from "prop-types"
 import Typography from "@material-ui/core/Typography"
 
-const AppCopy = props => {
+const PrevPointHeading = props => {
   // Theme styling applied with createMuiTheme.
   // can add modifiers with a class selector, for things like margin or color
-
   const { children, className } = props
 
   return (
     <Typography
       display="block"
-      component="p"
-      variant="body1"
+      component="h2"
+      variant="h2"
       className={className}
     >
       {children}
@@ -20,13 +19,9 @@ const AppCopy = props => {
   )
 }
 
-AppCopy.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.node,
-    PropTypes.array,
-  ]),
+PrevPointHeading.propTypes = {
+  children: PropTypes.string || PropTypes.node,
   className: PropTypes.string,
 }
 
-export default AppCopy
+export default PrevPointHeading

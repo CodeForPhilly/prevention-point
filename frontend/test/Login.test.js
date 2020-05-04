@@ -5,7 +5,7 @@ import { render, fireEvent, cleanup } from "@testing-library/react"
 import Adapter from "enzyme-adapter-react-16"
 
 import LoginForm from "../src/components/LoginForm"
-import AppButton from "../src/components/AppButton"
+import PrevPointButton from "../src/components/PrevPointButton"
 
 configure({ adapter: new Adapter() })
 
@@ -34,7 +34,7 @@ describe("<LoginForm />", () => {
       wrapper = shallow(<LoginForm {...initialProps} />)
       usernameInput = wrapper.find("#username")
       passwordInput = wrapper.find("#password")
-      signInButton = wrapper.find(AppButton)
+      signInButton = wrapper.find(PrevPointButton)
     })
 
     // what to do after each test
@@ -87,7 +87,7 @@ describe("<LoginForm />", () => {
     it("should have the expected props on the button", () => {
       expect(signInButton.props()).toEqual({
         large: false,
-        submit: true,
+        type: "submit",
         disabled: false,
         color: "primary",
         children: "Sign In",
@@ -129,7 +129,7 @@ describe("<LoginForm />", () => {
     it("Test button submit", () => {
       const mockLogin = jest.fn()
 
-      const button = shallow(<AppButton onClick={mockLogin} />)
+      const button = shallow(<PrevPointButton onClick={mockLogin} />)
 
       button.simulate("click")
 

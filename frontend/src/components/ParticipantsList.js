@@ -14,9 +14,9 @@ import PersonAddIcon from "@material-ui/icons/PersonAdd"
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd"
 import BottomNavigation from "@material-ui/core/BottomNavigation"
 
-import AppCopy from "./AppCopy"
-import AppTitle from "./AppTitle"
-import AppHeading from "./AppHeading"
+import PrevPointCopy from "./Typography/PrevPointCopy"
+import PrevPointTitle from "./Typography/PrevPointTitle"
+import PrevPointHeading from "./Typography/PrevPointHeading"
 import { rootStoreContext } from "../stores/RootStore"
 
 const ParticipantsList = observer(() => {
@@ -71,35 +71,35 @@ const ParticipantsList = observer(() => {
           <Link color="inherit" to="/">
             Home
           </Link>
-          <AppCopy>Search Results</AppCopy>
+          <PrevPointCopy>Search Results</PrevPointCopy>
         </Breadcrumbs>
-        <AppHeading className={classes.participantsListHeading}>
+        <PrevPointHeading className={classes.participantsListHeading}>
           Participants
-        </AppHeading>
+        </PrevPointHeading>
         <div className="participants">
           <Table>
             <TableHead>
               <TableRow>
                 <TableCell>
-                  <AppTitle>PPID</AppTitle>
+                  <PrevPointTitle>PPID</PrevPointTitle>
                 </TableCell>
                 <TableCell>
-                  <AppTitle>First Name</AppTitle>
+                  <PrevPointTitle>First Name</PrevPointTitle>
                 </TableCell>
                 <TableCell>
-                  <AppTitle>Last Name</AppTitle>
+                  <PrevPointTitle>Last Name</PrevPointTitle>
                 </TableCell>
                 <TableCell>
-                  <AppTitle>Gender</AppTitle>
+                  <PrevPointTitle>Gender</PrevPointTitle>
                 </TableCell>
                 <TableCell>
-                  <AppTitle>DOB</AppTitle>
+                  <PrevPointTitle>DOB</PrevPointTitle>
                 </TableCell>
                 <TableCell>
-                  <AppTitle>Race</AppTitle>
+                  <PrevPointTitle>Race</PrevPointTitle>
                 </TableCell>
                 <TableCell>
-                  <AppTitle>Edit Participant</AppTitle>
+                  <PrevPointTitle>Edit Participant</PrevPointTitle>
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -113,22 +113,22 @@ const ParticipantsList = observer(() => {
                   onClick={e => handleParticipant(e, participant)}
                 >
                   <TableCell>
-                    <AppCopy>{participant.pp_id} </AppCopy>
+                    <PrevPointCopy>{participant.pp_id} </PrevPointCopy>
                   </TableCell>
                   <TableCell>
-                    <AppCopy>{participant.first_name}</AppCopy>
+                    <PrevPointCopy>{participant.first_name}</PrevPointCopy>
                   </TableCell>
                   <TableCell>
-                    <AppCopy>{participant.last_name}</AppCopy>
+                    <PrevPointCopy>{participant.last_name}</PrevPointCopy>
                   </TableCell>
                   <TableCell>
-                    <AppCopy>{participant.gender}</AppCopy>
+                    <PrevPointCopy>{participant.gender}</PrevPointCopy>
                   </TableCell>
                   <TableCell>
-                    <AppCopy>{participant.date_of_birth}</AppCopy>
+                    <PrevPointCopy>{participant.date_of_birth}</PrevPointCopy>
                   </TableCell>
                   <TableCell>
-                    <AppCopy>{participant.race}</AppCopy>
+                    <PrevPointCopy>{participant.race}</PrevPointCopy>
                   </TableCell>
                   <TableCell>
                     <Link to="/participantInfo">
@@ -152,7 +152,7 @@ const ParticipantsList = observer(() => {
               participantStore.setServiceList([])
             }}
           >
-            <AppHeading>Add Participant</AppHeading>
+            <PrevPointHeading>Add Participant</PrevPointHeading>
             <PersonAddIcon className={classes.addParticipantIcon} />
           </Link>
         </BottomNavigation>

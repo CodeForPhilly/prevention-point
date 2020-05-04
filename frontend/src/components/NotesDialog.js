@@ -7,7 +7,7 @@ import DialogContentText from "@material-ui/core/DialogContentText"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import TextField from "@material-ui/core/TextField"
 
-import AppButton from "./AppButton"
+import PrevPointButton from "./PrevPointButton"
 import { QueueStoreContext } from "../stores/QueueStore"
 
 function NotesDialog({ visibleDialog, toggleVisibleDialog, queueData, id }) {
@@ -48,14 +48,16 @@ function NotesDialog({ visibleDialog, toggleVisibleDialog, queueData, id }) {
           value={queueStore.participantNotes}
         />
         <DialogActions>
-          <AppButton color="default" onClick={toggleVisibleDialog}>
+          <PrevPointButton color="default" onClick={toggleVisibleDialog}>
             Cancel
-          </AppButton>
-          <AppButton
-            onClick={() => handleSubmit(queueData, id, participantNotes)}
+          </PrevPointButton>
+          <PrevPointButton
+            onClick={() =>
+              handleSubmit(queueData, id, queueStore.participantNotes)
+            }
           >
             Submit
-          </AppButton>
+          </PrevPointButton>
         </DialogActions>
       </DialogContent>
     </Dialog>

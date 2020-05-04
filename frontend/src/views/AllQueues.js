@@ -7,7 +7,7 @@ import AppBar from "@material-ui/core/AppBar"
 import { QueueStoreContext } from "../stores/QueueStore"
 import QueueTable from "../components/QueueComponent/QueueTable/QueueTable"
 import api from "../api"
-import AppButton from "./AppButton"
+import PrevPointButton from "../PrevPointButton"
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -82,13 +82,13 @@ const AllQueues = observer(() => {
       <QueueTable queueData={tabValue + 1} />
 
       <div className={classes.freezeQueueContainer}>
-        <AppButton
+        <PrevPointButton
           color="secondary"
           onClick={toggleFreeze}
           disabled={btnState.disabled}
         >
           {btnState.isFrozen ? "Unfreeze" : "Freeze"}
-        </AppButton>
+        </PrevPointButton>
       </div>
     </div>
   )

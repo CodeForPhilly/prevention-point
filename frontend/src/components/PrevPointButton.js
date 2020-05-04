@@ -5,24 +5,24 @@ import clsx from "clsx"
 import Button from "@material-ui/core/Button"
 
 const useStyles = makeStyles(() => ({
-  appButton: {
+  PrevPointButton: {
     marginTop: 20,
   },
 }))
 
-const AppButton = props => {
-  // submit, disabled, and large a booleans. can add a class where button is imported
+const PrevPointButton = props => {
+  // disabled and large are booleans. can add a class where button is imported
   const classes = useStyles()
-  const { submit, children, disabled, large, color, onClick, className } = props
+  const { type, children, disabled, large, color, onClick, className } = props
 
   return (
     <Button
       color={color}
       variant="contained"
       disabled={disabled}
-      className={clsx(classes.appButton, className)}
+      className={clsx(classes.PrevPointButton, className)}
       size={large ? "large" : "small"}
-      type={submit ? "submit" : "button"}
+      type={type}
       onClick={onClick}
     >
       {children}
@@ -30,8 +30,7 @@ const AppButton = props => {
   )
 }
 
-AppButton.propTypes = {
-  submit: PropTypes.bool,
+PrevPointButton.propTypes = {
   large: PropTypes.bool,
   type: PropTypes.string,
   color: PropTypes.string,
@@ -45,12 +44,12 @@ AppButton.propTypes = {
   className: PropTypes.string,
 }
 
-AppButton.defaultProps = {
+PrevPointButton.defaultProps = {
   large: false,
-  submit: false,
+  type: "button",
   disabled: false,
   color: "primary",
   onClick: () => {},
 }
 
-export default AppButton
+export default PrevPointButton

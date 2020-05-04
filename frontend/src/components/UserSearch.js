@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react"
+import React, { useContext } from "react"
 import { observer } from "mobx-react-lite"
 import { useHistory } from "react-router-dom"
 
@@ -8,9 +8,9 @@ import FormGroup from "@material-ui/core/FormGroup"
 import InputLabel from "@material-ui/core/InputLabel"
 import FormControl from "@material-ui/core/FormControl"
 
-import AppCopy from "./AppCopy"
-import AppButton from "./AppButton"
-import AppHeading from "./AppHeading"
+import PrevPointCopy from "./Typography/PrevPointCopy"
+import PrevPointButton from "./PrevPointButton"
+import PrevPointHeading from "./Typography/PrevPointHeading"
 import { rootStoreContext } from "../stores/RootStore"
 
 const UserSearch = observer(() => {
@@ -37,13 +37,13 @@ const UserSearch = observer(() => {
   return (
     <Container className="participant-search">
       <div>
-        <AppHeading className="participant-search__heading">
+        <PrevPointHeading className="participant-search__heading">
           Participant Search
-        </AppHeading>
-        <AppCopy className="participant-search__copy">
+        </PrevPointHeading>
+        <PrevPointCopy className="participant-search__copy">
           <b>Reminder:</b> Search for participant profile prior to creating a
           new profile
-        </AppCopy>
+        </PrevPointCopy>
         <form className="participant-search__form" onSubmit={handleSubmit}>
           <FormGroup className="participant-search__input">
             <FormControl>
@@ -57,7 +57,9 @@ const UserSearch = observer(() => {
               />
             </FormControl>
           </FormGroup>
-          <AppHeading className="participant-search__heading">Or</AppHeading>
+          <PrevPointHeading className="participant-search__heading">
+            Or
+          </PrevPointHeading>
           <FormGroup className="participant-search__input">
             <FormControl>
               <InputLabel htmlFor="first_name">First Name</InputLabel>
@@ -86,10 +88,15 @@ const UserSearch = observer(() => {
               />
             </FormControl>
           </FormGroup>
-          <p className="error-message">{errorMessage}</p>
-          <AppButton submit disabled={participantsStore.toggleSearch}>
+          <PrevPointCopy className="error-message">
+            {participantsStore.errorMessage}
+          </PrevPointCopy>
+          <PrevPointButton
+            type="submit"
+            disabled={participantsStore.toggleSearch}
+          >
             Submit
-          </AppButton>
+          </PrevPointButton>
         </form>
       </div>
     </Container>

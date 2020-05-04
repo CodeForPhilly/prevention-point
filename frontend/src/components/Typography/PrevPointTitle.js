@@ -2,7 +2,7 @@ import React from "react"
 import PropTypes from "prop-types"
 import Typography from "@material-ui/core/Typography"
 
-const AppTitle = props => {
+const PrevPointTitle = props => {
   const { children } = props
 
   return (
@@ -12,7 +12,7 @@ const AppTitle = props => {
   )
 }
 
-AppTitle.propTypes = {
+PrevPointTitle.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.node,
@@ -20,6 +20,6 @@ AppTitle.propTypes = {
   ]),
 }
 
-AppTitle.defaultProps = {}
+PrevPointTitle.defaultProps = {}
 
-export default AppTitle
+export default PrevPointTitle

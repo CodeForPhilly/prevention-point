@@ -25,8 +25,8 @@ import { observer } from "mobx-react-lite"
 import { useHistory } from "react-router-dom"
 import { autorun, toJS } from "mobx"
 import PrevPointInput from "./PrevPointInput"
-import AppButton from "./AppButton"
-import AppHeading from "./AppHeading"
+import PrevPointButton from "./PrevPointButton"
+import PrevPointHeading from "./Typography/PrevPointHeading"
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -169,7 +169,7 @@ const ParticipantInfo = observer(() => {
       className="participant-info-component"
     >
       <Container maxWidth="sm">
-        <AppHeading>1. Participant Information</AppHeading>
+        <PrevPointHeading>1. Participant Information</PrevPointHeading>
         <form className="participant-info-form" onSubmit={e => handleSubmit(e)}>
           <Grid container>
             <FormGroup className="participant-info">
@@ -377,11 +377,11 @@ const ParticipantInfo = observer(() => {
           </Grid>
 
           <Grid container>
-            <AppHeading>
+            <PrevPointHeading>
               <br />
               <br />
               2. Check In Participant
-            </AppHeading>
+            </PrevPointHeading>
             <Grid container>
               <Grid item xs>
                 <FormControl className={classes.formControl}>
@@ -493,9 +493,9 @@ const ParticipantInfo = observer(() => {
             </Grid>
             {/* </FormGroup> */}
             <Grid item xs className={classes.submitWrapper}>
-              <AppButton submit large>
+              <PrevPointButton type="submit" large>
                 Add to Queue
-              </AppButton>
+              </PrevPointButton>
             </Grid>
           </Grid>
         </form>

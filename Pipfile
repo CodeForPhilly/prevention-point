@@ -25,3 +25,5 @@ python_version = "3.7"
 
 [scripts]
 drs = "python manage.py runserver"
+test = "python manage.py test"
+seed = "python manage.py seed"
