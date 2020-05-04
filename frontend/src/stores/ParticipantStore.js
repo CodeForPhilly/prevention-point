@@ -121,7 +121,7 @@ export class ParticipantStore {
     this.participant.pp_id = data
   }
   @action setLastFourSSN = data => {
-    this.participant.last_four_ssn = data
+    this.participant.last_four_ssn = data.substr(2)
   }
   @action setRace = data => {
     this.participant.race = data
