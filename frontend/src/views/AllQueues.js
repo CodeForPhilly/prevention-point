@@ -7,7 +7,7 @@ import AppBar from "@material-ui/core/AppBar"
 import { QueueStoreContext } from "../stores/QueueStore"
 import QueueTable from "../components/QueueComponent/QueueTable/QueueTable"
 import api from "../api"
-import PrevPointButton from "../PrevPointButton"
+import PrevPointButton from "../components/PrevPointButton"
 
 const useStyles = makeStyles(() => ({
   root: {
