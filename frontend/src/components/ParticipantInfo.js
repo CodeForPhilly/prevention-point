@@ -12,7 +12,6 @@ import "../scss/participant-search.scss"
 import FormGroup from "@material-ui/core/FormGroup"
 import FormControl from "@material-ui/core/FormControl"
 import InputLabel from "@material-ui/core/InputLabel"
-import Input from "@material-ui/core/Input"
 import Typography from "@material-ui/core/Typography"
 import Grid from "@material-ui/core/Grid"
 import TextField from "@material-ui/core/TextField"
@@ -28,6 +27,7 @@ import Button from "@material-ui/core/Button"
 import { observer } from "mobx-react-lite"
 import { useHistory } from "react-router-dom"
 import { autorun, toJS } from "mobx"
+import PrevPointInput from "./PrevPointInput"
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -154,6 +154,11 @@ const ParticipantInfo = observer(() => {
     participantStore.setServiceList(serviceListing.services)
   }
 
+  const setPPIdAndSSN = e => {
+    participantStore.setPPId(e.target.value)
+    participantStore.setLastFourSSN(+e.target.value.substr(2))
+  }
+
   const classes = useStyles()
   return (
     <div
@@ -177,28 +182,28 @@ const ParticipantInfo = observer(() => {
                 <Grid item xs>
                   <FormControl className={classes.formControl}>
                     <InputLabel htmlFor="user_id">First name</InputLabel>
-                    <Input
+                    <PrevPointInput
                       id="user_first-name"
                       name="user_first-name"
                       value={existingParticipant.first_name}
                       onChange={e =>
                         participantStore.setFirstName(e.target.value)
                       }
-                      required
+                      required={true}
                     />
                   </FormControl>
                 </Grid>
                 <Grid item xs>
                   <FormControl className={classes.formControl}>
                     <InputLabel htmlFor="user_id">Last name</InputLabel>
-                    <Input
+                    <PrevPointInput
                       id="user_last-name"
                       name="user_last-name"
                       value={existingParticipant.last_name}
                       onChange={e =>
                         participantStore.setLastName(e.target.value)
                       }
-                      required
+                      required={true}
                     />
                   </FormControl>
                 </Grid>
@@ -229,17 +234,12 @@ const ParticipantInfo = observer(() => {
                     style={{ marginTop: 32 }}
                   >
                     <InputLabel htmlFor="user_id">UUID</InputLabel>
-                    <Input
+                    <PrevPointInput
                       id="uuid"
                       name="uuid"
                       value={existingParticipant.pp_id}
-                      onChange={e => {
-                        participantStore.setPPId(e.target.value)
-                        participantStore.setLastFourSSN(
-                          +e.target.value.substr(2)
-                        )
-                      }}
-                      required
+                      onChange={e => setPPIdAndSSN(e)}
+                      required={true}
                     />
                   </FormControl>
                 </Grid>
