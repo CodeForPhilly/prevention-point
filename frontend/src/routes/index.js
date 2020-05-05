@@ -4,7 +4,7 @@ import PrivateRoute from "../routes/PrivateRoute"
 import Navbar from "../components/Navbar"
 import LoginForm from "../views/LoginForm"
 import MainLayout from "../layouts/MainLayout"
-import ParticipantsList from "../components/ParticipantsList"
+import ParticipantsList from "../views/ParticipantsList"
 import AllQueues from "../views/AllQueues"
 import ParticipantInfo from "../components/ParticipantInfo"
 

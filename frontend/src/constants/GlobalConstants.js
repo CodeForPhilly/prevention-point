@@ -12,3 +12,13 @@ export const URGENCY_OPTIONS = [
   { value: "_4", name: 4 },
   { value: "_5", name: 5 },
 ]
+
+export const PARTICIPANT_LIST_TABLE_TITLES = [
+  "PPID",
+  "First Name",
+  "Last Name",
+  "Gender",
+  "DOB",
+  "Race",
+  "Edit Participant",
+]
