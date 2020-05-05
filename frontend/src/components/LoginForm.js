@@ -1,17 +1,15 @@
 import React, { useState, useContext } from "react"
 import PropTypes from "prop-types"
 import { observer } from "mobx-react-lite"
+import { rootStoreContext } from "../stores/RootStore"
 import { Redirect } from "react-router-dom"
-
-import Input from "@material-ui/core/Input"
 import Container from "@material-ui/core/Container"
 import FormGroup from "@material-ui/core/FormGroup"
 import InputLabel from "@material-ui/core/InputLabel"
+import PrevPointInput from "./PrevPointInput"
 import FormControl from "@material-ui/core/FormControl"
 import PrevPointButton from "./PrevPointButton"
-
 import PrevPointCopy from "./Typography/PrevPointCopy"
-import { rootStoreContext } from "../stores/RootStore"
 
 const LoginForm = observer(({ location }) => {
   const rootStore = useContext(rootStoreContext)
@@ -36,28 +34,28 @@ const LoginForm = observer(({ location }) => {
         <FormGroup className="login-form__input">
           <FormControl>
             <InputLabel htmlFor="username">Username</InputLabel>
-            <Input
+            <PrevPointInput
               id="username"
               name="username"
               type="username"
               value={username}
               onChange={changeUsername}
               error={rootStore.authStore.error}
-              required
+              required={true}
             />
           </FormControl>
         </FormGroup>
         <FormGroup className="login-form__input">
           <FormControl>
             <InputLabel htmlFor="password">Password</InputLabel>
-            <Input
+            <PrevPointInput
               id="password"
               name="password"
               value={password}
               type="password"
               onChange={changePassword}
               error={rootStore.authStore.error}
-              required
+              required={true}
             />
           </FormControl>
         </FormGroup>
