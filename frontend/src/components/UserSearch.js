@@ -1,17 +1,15 @@
 import React, { useContext } from "react"
 import { observer } from "mobx-react-lite"
 import { useHistory } from "react-router-dom"
-
-import Input from "@material-ui/core/Input"
 import Container from "@material-ui/core/Container"
 import FormGroup from "@material-ui/core/FormGroup"
 import InputLabel from "@material-ui/core/InputLabel"
 import FormControl from "@material-ui/core/FormControl"
-
+import PrevPointInput from "./PrevPointInput"
+import { rootStoreContext } from "../stores/RootStore"
 import PrevPointCopy from "./Typography/PrevPointCopy"
 import PrevPointButton from "./PrevPointButton"
 import PrevPointHeading from "./Typography/PrevPointHeading"
-import { rootStoreContext } from "../stores/RootStore"
 
 const UserSearch = observer(() => {
   const rootStore = useContext(rootStoreContext)
@@ -48,7 +46,7 @@ const UserSearch = observer(() => {
           <FormGroup className="participant-search__input">
             <FormControl>
               <InputLabel htmlFor="user_id">User ID</InputLabel>
-              <Input
+              <PrevPointInput
                 id="user_id"
                 name="user_id"
                 value={participantsStore.params.userId}
@@ -63,7 +61,7 @@ const UserSearch = observer(() => {
           <FormGroup className="participant-search__input">
             <FormControl>
               <InputLabel htmlFor="first_name">First Name</InputLabel>
-              <Input
+              <PrevPointInput
                 id="first_name"
                 name="first_name"
                 value={participantsStore.params.firstName}
@@ -77,7 +75,7 @@ const UserSearch = observer(() => {
           <FormGroup className="participant-search__input">
             <FormControl>
               <InputLabel htmlFor="last_name">Last Name</InputLabel>
-              <Input
+              <PrevPointInput
                 id="last_name"
                 name="last_name"
                 value={participantsStore.params.lastName}

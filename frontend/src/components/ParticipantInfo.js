@@ -178,7 +178,6 @@ const ParticipantInfo = observer(() => {
                   <FormControl className={classes.formControl}>
                     <InputLabel htmlFor="user_id">First name</InputLabel>
                     <PrevPointInput
-                      id="user_first-name"
                       name="user_first-name"
                       value={existingParticipant.first_name}
                       onChange={e =>
@@ -192,7 +191,6 @@ const ParticipantInfo = observer(() => {
                   <FormControl className={classes.formControl}>
                     <InputLabel htmlFor="user_id">Last name</InputLabel>
                     <PrevPointInput
-                      id="user_last-name"
                       name="user_last-name"
                       value={existingParticipant.last_name}
                       onChange={e =>
@@ -230,7 +228,6 @@ const ParticipantInfo = observer(() => {
                   >
                     <InputLabel htmlFor="user_id">UUID</InputLabel>
                     <PrevPointInput
-                      id="uuid"
                       name="uuid"
                       value={existingParticipant.pp_id}
                       onChange={e => setPPIdAndSSN(e)}
@@ -273,7 +270,6 @@ const ParticipantInfo = observer(() => {
                       </Select>
                     </FormControl>
                   </Grid>
-
                   <Grid item xs>
                     <FormControl className={classes.formControl}>
                       <InputLabel htmlFor="demo-controlled-open-select">
