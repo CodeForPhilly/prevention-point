@@ -33,7 +33,7 @@ const QueueTabContent = React.forwardRef(
     const classes = useStyles()
 
     return (
-      <Button onClick={onClick} className={classes.queueTab}>
+      <Button onClick={onClick} className={classes.queueTab} ref={_ref}>
         <div>
           <Typography className={classes.heading}>{name}</Typography>
           <div className={classes.queueTabContent}>
