@@ -31,7 +31,6 @@ const useStyles = makeStyles(theme => ({
 const QueueTabContent = React.forwardRef(
   ({ onClick, name, length, waitTime }, _ref) => {
     const classes = useStyles()
-
     return (
       <Button onClick={onClick} className={classes.queueTab} ref={_ref}>
         <div>
