@@ -13,6 +13,9 @@ jest.mock("../src/api")
 api.getProgram = jest
   .fn()
   .mockResolvedValue({ ok: true, data: { is_frozen: false } })
+api.getPrograms = jest
+  .fn()
+  .mockResolvedValue({ ok: true, data: [{ name: "test", participants: [] }] })
 api.getQueue = jest.fn().mockResolvedValue({ ok: true, data: [] })
 api.patchProgram = jest.fn().mockResolvedValue({ ok: true })
 
@@ -53,6 +56,7 @@ describe("<AllQueues />", () => {
           </ThemeProvider>
         )
       })
+      wrapper.update()
       bar = wrapper.find(AppBar)
       buttons = bar.find("button")
       testingButton = buttons.at(0)
@@ -64,12 +68,12 @@ describe("<AllQueues />", () => {
 
     // what to do after each test
     afterEach(() => {
-      //mount.cleanup()
+      mount.cleanUp()
       jest.clearAllMocks()
     })
 
     // UI Integrity test
-    it("should have 1 AppBar", () => {
+    it.only("should have 1 AppBar", () => {
       expect(bar.length).toEqual(1)
     })
 
