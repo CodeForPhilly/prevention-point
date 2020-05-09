@@ -13,9 +13,20 @@ jest.mock("../src/api")
 api.getProgram = jest
   .fn()
   .mockResolvedValue({ ok: true, data: { is_frozen: false } })
-api.getPrograms = jest
-  .fn()
-  .mockResolvedValue({ ok: true, data: [{ name: "test", participants: [] }] })
+api.getPrograms = jest.fn().mockResolvedValue({
+  ok: true,
+  data: [
+    { name: "TESTING", participants: [] },
+    { name: "CM", participants: [], waitTime: 0, length: 0 },
+    { name: "SSHP", participants: [] },
+    { name: "LEGAL", participants: [] },
+    { name: "CRAFT", participants: [] },
+    { name: "PHAN", participants: [] },
+    { name: "STEP", participants: [] },
+    { name: "BIENSTAR", participants: [] },
+    { name: "SKWC", participants: [] },
+  ],
+})
 api.getQueue = jest.fn().mockResolvedValue({ ok: true, data: [] })
 api.patchProgram = jest.fn().mockResolvedValue({ ok: true })
 
@@ -73,7 +84,7 @@ describe("<AllQueues />", () => {
     })
 
     // UI Integrity test
-    it.only("should have 1 AppBar", () => {
+    it("should have 1 AppBar", () => {
       expect(bar.length).toEqual(1)
     })
 
