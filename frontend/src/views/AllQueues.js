@@ -65,7 +65,7 @@ const AllQueues = observer(() => {
         setBtnState(prev => ({ ...prev, isFrozen: data.is_frozen }))
       })
     }
-  }, [tabValue])
+  }, [tabValue, queueStore.queues])
 
   return (
     <div className={classes.root}>
