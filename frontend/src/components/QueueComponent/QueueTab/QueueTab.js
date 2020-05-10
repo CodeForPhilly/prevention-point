@@ -4,9 +4,10 @@ import QueueTabContent from "./../QueueTabContent/QueueTabContent"
 
 const QueueTab = props => (
   <Tab
+    {...props}
+    disableRipple
     component={QueueTabContent}
     onClick={e => e.preventDefault()}
-    {...props}
   />
 )
 
