@@ -4,7 +4,7 @@ import { shallow, configure } from "enzyme"
 import { render, fireEvent, cleanup } from "@testing-library/react"
 import Adapter from "enzyme-adapter-react-16"
 
-import LoginForm from "../src/components/LoginForm"
+import LoginForm from "../src/views/LoginForm"
 import PrevPointButton from "../src/components/PrevPointButton"
 
 configure({ adapter: new Adapter() })
@@ -32,8 +32,8 @@ describe("<LoginForm />", () => {
     beforeEach(() => {
       // Render the login form component, pass in props. (Shallow method renders the component without its children, good for unit tests.)
       wrapper = shallow(<LoginForm {...initialProps} />)
-      usernameInput = wrapper.find("#username")
-      passwordInput = wrapper.find("#password")
+      usernameInput = wrapper.find("[name='username']")
+      passwordInput = wrapper.find("[name='password']")
       signInButton = wrapper.find(PrevPointButton)
     })
 

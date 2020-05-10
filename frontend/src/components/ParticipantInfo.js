@@ -29,33 +29,6 @@ import PrevPointButton from "./PrevPointButton"
 import PrevPointHeading from "./Typography/PrevPointHeading"
 
 const useStyles = makeStyles(theme => ({
-  paper: {
-    position: "absolute",
-    width: 400,
-    backgroundColor: theme.palette.background.paper,
-    border: "2px solid #000",
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-  },
-  card: {
-    float: "right",
-    width: "25%",
-    marginRight: "35px",
-  },
-  hidden: {
-    display: "none",
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
   root: {
     display: "flex",
     flexWrap: "wrap",
@@ -64,20 +37,6 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(1),
     minWidth: 200,
     maxWidth: 300,
-  },
-  chips: {
-    display: "flex",
-    flexWrap: "wrap",
-  },
-  chip: {
-    margin: 2,
-  },
-  noLabel: {
-    marginTop: theme.spacing(3),
-  },
-  submitWrapper: {
-    display: "flex",
-    justifyContent: "flex-end",
   },
 }))
 

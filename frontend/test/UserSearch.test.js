@@ -41,15 +41,15 @@ describe("<UserSearch />", () => {
   })
 
   it("should have a users id", () => {
-    expect(wrapper.exists("#user_id")).toEqual(true)
+    expect(wrapper.exists('[name="user_id"]')).toEqual(true)
   })
 
   it("should have a first name", () => {
-    expect(wrapper.exists("#first_name")).toEqual(true)
+    expect(wrapper.exists('[name="first_name"]')).toEqual(true)
   })
 
   it("should have a last name", () => {
-    expect(wrapper.exists("#last_name")).toEqual(true)
+    expect(wrapper.exists('[name="last_name"]')).toEqual(true)
   })
 
   it("should have a submit button", () => {
