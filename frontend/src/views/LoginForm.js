@@ -26,47 +26,47 @@ const LoginForm = observer(({ location }) => {
 
   return (
     <Container className="login-form">
-        <Grid
-          container
-          component="form"
-          className="login-form__form"
-          onSubmit={login}
-        >
-          <Grid item xs={12}>
-            <FormControl error={rootStore.authStore.error}>
-              <InputLabel htmlFor="username">Username</InputLabel>
-              <PrevPointInput
-                id="username"
-                name="username"
-                type="username"
-                value={username}
-                onChange={e => setUsername(e.target.value)}
-                required
-              />
-            </FormControl>
-          </Grid>
-          <Grid item xs={12}>
-            <FormControl error={rootStore.authStore.error}>
-              <InputLabel htmlFor="password">Password</InputLabel>
-              <PrevPointInput
-                id="password"
-                name="password"
-                type="password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                required
-              />
-            </FormControl>
-          </Grid>
-          <Grid item xs={12}>
-            <PrevPointButton type="submit">Sign In</PrevPointButton>
-            {rootStore.authStore.error && (
-              <PrevPointCopy className="login-form__error">
-                Incorrect Username or password
-              </PrevPointCopy>
-            )}
-          </Grid>
+      <Grid
+        container
+        component="form"
+        className="login-form__form"
+        onSubmit={login}
+      >
+        <Grid item xs={12}>
+          <FormControl error={rootStore.authStore.error}>
+            <InputLabel htmlFor="username">Username</InputLabel>
+            <PrevPointInput
+              id="username"
+              name="username"
+              type="username"
+              value={username}
+              onChange={e => setUsername(e.target.value)}
+              required
+            />
+          </FormControl>
         </Grid>
+        <Grid item xs={12}>
+          <FormControl error={rootStore.authStore.error}>
+            <InputLabel htmlFor="password">Password</InputLabel>
+            <PrevPointInput
+              id="password"
+              name="password"
+              type="password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              required
+            />
+          </FormControl>
+        </Grid>
+        <Grid item xs={12}>
+          <PrevPointButton type="submit">Sign In</PrevPointButton>
+          {rootStore.authStore.error && (
+            <PrevPointCopy className="login-form__error">
+              Incorrect Username or password
+            </PrevPointCopy>
+          )}
+        </Grid>
+      </Grid>
     </Container>
   )
 })

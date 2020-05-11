@@ -34,16 +34,17 @@ const UserSearch = observer(() => {
     <Container className="participant-search">
       <Grid
         container
-        className="participant-search__form"
+        component="form"
         onSubmit={handleSubmit}
-        component='form'
+        className="participant-search__form"
       >
         <Grid item xs={12}>
           <PrevPointHeading className="participant-search__heading">
             Participant Search
           </PrevPointHeading>
           <PrevPointCopy className="participant-search__copy">
-            <b>Reminder:</b> Search for participant profile prior to creating a new profile
+            <b>Reminder:</b> Search for participant profile prior to creating a
+            new profile
           </PrevPointCopy>
         </Grid>
         <Grid item xs={12}>
