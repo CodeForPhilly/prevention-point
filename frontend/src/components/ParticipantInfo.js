@@ -328,7 +328,7 @@ const ParticipantInfo = observer(() => {
           </FormControl>
         </Grid>
         <Grid item xs={12}>
-          <PrevPointButton type="submit" large>
+          <PrevPointButton type="submit" size="large">
             Add to Queue
           </PrevPointButton>
         </Grid>

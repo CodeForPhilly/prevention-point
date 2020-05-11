@@ -13,13 +13,12 @@ const useStyles = makeStyles(() => ({
 const PrevPointButton = props => {
   // disabled and large are booleans. can add a class where button is imported
   const classes = useStyles()
-  const { children, large, className } = props
+  const { children, className } = props
 
   return (
     <Button
       {...props}
       className={clsx(classes.PrevPointButton, className)}
-      size={large ? "large" : "small"}
       variant="contained"
     >
       {children}
@@ -42,7 +41,7 @@ PrevPointButton.propTypes = {
 }
 
 PrevPointButton.defaultProps = {
-  large: false,
+  size: "small",
   type: "button",
   disabled: false,
   color: "primary",
