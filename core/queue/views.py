@@ -40,14 +40,13 @@ class QueueViewSet(viewsets.ViewSet):
 
         front_desk_events = FrontDeskEvent.objects.select_related("visit").filter(
             visit__in=[dict(x)["id"] for x in todays_visit_data]
-        ).values("id", "visit", "event_type", "created_at")
+        ).order_by("-created_at").values("id", "visit", "event_type", "created_at")
 
         # for each visit, get the most recent front desk event, to glean current visit status
         for visit in todays_visit_data:
             events = list(
                 filter(lambda x: x.get("visit") is visit.get("id"), front_desk_events)
             )
-            events.sort(key=lambda x: x.get("created_at"), reverse=True)
             event = events[0]
 
             event_type = event.get("event_type")
@@ -62,4 +61,5 @@ class QueueViewSet(viewsets.ViewSet):
                 # then add it to the 'active visits queue'
                 active_visits_queue.append(visit)
 
+        print(len(active_visits_queue))
         return Response(active_visits_queue)
