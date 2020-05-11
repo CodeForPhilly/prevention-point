@@ -1,11 +1,3 @@
-// TODO:
-/**
- * 1. Breakup into participant and visit child components
- * 2. Break fields into smaller individual components for re-use in other forms
- * 3. Break up state in MobX for field re-use
- */
-
-/* eslint-disable indent */
 import React, { useContext, useEffect } from "react"
 import { autorun, toJS } from "mobx"
 import { observer } from "mobx-react-lite"
@@ -21,7 +13,7 @@ import InputLabel from "@material-ui/core/InputLabel"
 import RadioGroup from "@material-ui/core/RadioGroup"
 import FormControl from "@material-ui/core/FormControl"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
-import PrevPointInput from "./PrevPointInput"
+import PrevPointInput from "./Input/PrevPointInput"
 import PrevPointButton from "./PrevPointButton"
 import { rootStoreContext } from "../stores/RootStore"
 import PrevPointHeading from "./Typography/PrevPointHeading"
