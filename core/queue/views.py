@@ -47,19 +47,18 @@ class QueueViewSet(viewsets.ViewSet):
             events = list(
                 filter(lambda x: x.get("visit") is visit.get("id"), front_desk_events)
             )
-            event = events[0]
+            if events:
+                event = events[0]
+                event_type = event.get("event_type")
 
-            event_type = event.get("event_type")
+                if event_type in [
+                    FrontDeskEventType.ARRIVED.name,
+                    FrontDeskEventType.STEPPED_OUT.name,
+                    FrontDeskEventType.CAME_BACK.name,
+                ]:
+                    # if most recent front desk event is an 'active' status add it to visit object
+                    visit["status"] = event
+                    # then add it to the 'active visits queue'
+                    active_visits_queue.append(visit)
 
-            if event_type in [
-                FrontDeskEventType.ARRIVED.name,
-                FrontDeskEventType.STEPPED_OUT.name,
-                FrontDeskEventType.CAME_BACK.name,
-            ]:
-                # if most recent front desk event is an 'active' status add it to visit object
-                visit["status"] = event
-                # then add it to the 'active visits queue'
-                active_visits_queue.append(visit)
-
-        print(len(active_visits_queue))
         return Response(active_visits_queue)
