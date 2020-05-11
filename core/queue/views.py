@@ -2,7 +2,6 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from core.models import Visit, FrontDeskEvent, FrontDeskEventType
 from core.visits.serializer import VisitWithPopulationSerializer
-from core.front_desk_events.serializer import FrontDeskEventForQueueSerializer
 from core.permissions import FRONT_DESK, CASE_MANAGER, ADMIN, HasGroupPermission
 from rest_framework.permissions import IsAuthenticated
 import datetime
@@ -25,40 +24,42 @@ class QueueViewSet(viewsets.ViewSet):
       """
 
         # filter by visits that are happening today in a certain program
-        visits_queryset = Visit.objects.filter(
-            program_service_map__program_id=program_id,
-            created_at__date=datetime.date.today(),
-        ).order_by("urgency", "-created_at")
+        visits_queryset = (
+            Visit.objects.select_related("participant", "program_service_map")
+            .filter(
+                program_service_map__program_id=program_id,
+                created_at__date=datetime.date.today(),
+            )
+            .order_by("urgency", "-created_at")
+        )
 
         todays_visit_data = VisitWithPopulationSerializer(
-            visits_queryset, many=True, context={'request': request}
+            visits_queryset, many=True, context={"request": request}
         ).data
         active_visits_queue = []
 
+        front_desk_events = FrontDeskEvent.objects.select_related("visit").filter(
+            visit__in=[dict(x)["id"] for x in todays_visit_data]
+        ).values("id", "visit", "event_type", "created_at")
+
         # for each visit, get the most recent front desk event, to glean current visit status
         for visit in todays_visit_data:
-            front_desk_events_queryset = FrontDeskEvent.objects.filter(
-                visit_id=visit["id"]
-            ).order_by(
-                "-created_at"
-            )  # -created_at for 'decending'
+            events = list(
+                filter(lambda x: x.get("visit") is visit.get("id"), front_desk_events)
+            )
+            events.sort(key=lambda x: x.get("created_at"), reverse=True)
+            event = events[0]
 
-            # checks to see if visit has front desk events before proceeding. may cause silent failure
-            if front_desk_events_queryset.exists():
+            event_type = event.get("event_type")
 
-                visit_event_data = FrontDeskEventForQueueSerializer(
-                    front_desk_events_queryset, many=True, context={'request': request}
-                ).data
-                event_type = visit_event_data[0]["event_type"]
-
-                if event_type in (
-                    FrontDeskEventType.ARRIVED.name,
-                    FrontDeskEventType.STEPPED_OUT.name,
-                    FrontDeskEventType.CAME_BACK.name,
-                ):
-                    # if most recent front desk event is an 'active' status add it to visit object
-                    visit["status"] = visit_event_data[0]
-                    # then add it to the 'active visits queue'
-                    active_visits_queue.append(visit)
+            if event_type in [
+                FrontDeskEventType.ARRIVED.name,
+                FrontDeskEventType.STEPPED_OUT.name,
+                FrontDeskEventType.CAME_BACK.name,
+            ]:
+                # if most recent front desk event is an 'active' status add it to visit object
+                visit["status"] = event
+                # then add it to the 'active visits queue'
+                active_visits_queue.append(visit)
 
         return Response(active_visits_queue)
