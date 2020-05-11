@@ -30,34 +30,20 @@ const ParticipantInfo = observer(() => {
   const rootStore = useContext(rootStoreContext)
   // particiant store derived from root store
   const participantStore = rootStore.ParticipantStore
-  // TODO: refactor after v1.0.0 release
-  const queueStore = rootStore.QueueStore
   // set up history for routing pushes
   const history = useHistory()
-  // get existing participant if applicable else its undefined
-  const existingParticipant = toJS(participantStore.participant)
-  // get existing visit if applicable else its undefined
-  const existingVisit = toJS(participantStore.visit)
   const insurers = toJS(participantStore.insurers)
   let programList = toJS(participantStore.programs)
   const serviceList = toJS(participantStore.services)
 
-  // TODO: refactor after v1.0.0 release
-  if (existingParticipant.id && !existingVisit.id) {
-    let filterThesePrograms = []
-    queueStore.participantWithPrograms.forEach(currentparticipantprograms => {
-      if (existingParticipant.id === currentparticipantprograms.id) {
-        filterThesePrograms.push(toJS(currentparticipantprograms.programs.name))
-      }
-    })
-    if (programList.length > 0) {
-      programList = programList.filter(
-        program =>
-          program.name !==
-          filterThesePrograms[filterThesePrograms.indexOf(program.name)]
-      )
-    }
+  // default values need to be set for the Select components to work
+  if (!Object.keys(participantStore.participant).length) {
+    participantStore.setDefaultParticipant()
   }
+  if (!Object.keys(participantStore.visit).length) {
+    participantStore.setDefaultVisit()
+  }
+
   // -----------------------------------
 
   useEffect(() => {
@@ -65,9 +51,6 @@ const ParticipantInfo = observer(() => {
     participantStore.getInsurers()
     // kick off api calls for program list from Mobx
     participantStore.getPrograms()
-    // TODO: refactor after v1.0.0 release
-    const queueSize = Object.keys(queueStore.queues).length
-    for (let i = 1; i <= queueSize; i++) queueStore.getQueue(i)
     // -----------------------------------
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -76,11 +59,11 @@ const ParticipantInfo = observer(() => {
   const handleSubmit = e => {
     e.preventDefault()
     // if existing participant and vist we are coming from QueueTable, so update particiapnt and visit
-    if (existingParticipant.id && existingVisit.id) {
+    if (participantStore.participant.id && participantStore.visit.id) {
       participantStore.updateParticipant()
       participantStore.updateVisit()
       // if existing participant and no vist we are coming from search, so update particiapnt only
-    } else if (existingParticipant.id && !existingVisit.id) {
+    } else if (participantStore.participant.id && !participantStore.visit.id) {
       participantStore.updateParticipant()
       participantStore.createVisit()
       // otherwise we are adding a new participant because both participant and visit will be undefined
@@ -104,7 +87,7 @@ const ParticipantInfo = observer(() => {
 
   const setPPIdAndSSN = e => {
     participantStore.setPPId(e.target.value)
-    participantStore.setLastFourSSN(+e.target.value.substr(2))
+    participantStore.setLastFourSSN(e.target.value.slice(2))
   }
 
   return (
@@ -123,7 +106,7 @@ const ParticipantInfo = observer(() => {
             <InputLabel htmlFor="first-name">First name</InputLabel>
             <PrevPointInput
               name="first-name"
-              value={existingParticipant.first_name}
+              value={participantStore.participant.first_name}
               onChange={e => participantStore.setFirstName(e.target.value)}
               required
             />
@@ -134,7 +117,7 @@ const ParticipantInfo = observer(() => {
             <InputLabel htmlFor="last-name">Last name</InputLabel>
             <PrevPointInput
               name="last-name"
-              value={existingParticipant.last_name}
+              value={participantStore.participant.last_name}
               onChange={e => participantStore.setLastName(e.target.value)}
               required
             />
@@ -147,7 +130,7 @@ const ParticipantInfo = observer(() => {
             type="date"
             required
             fullWidth
-            value={existingParticipant.date_of_birth}
+            value={participantStore.participant.date_of_birth}
             onChange={e => participantStore.setDateOfBirth(e.target.value)}
             InputLabelProps={{
               shrink: true,
@@ -159,7 +142,7 @@ const ParticipantInfo = observer(() => {
             <InputLabel htmlFor="uuid">UUID</InputLabel>
             <PrevPointInput
               name="uuid"
-              value={existingParticipant.pp_id}
+              value={participantStore.participant.pp_id}
               onChange={e => setPPIdAndSSN(e)}
               required
             />
@@ -170,7 +153,7 @@ const ParticipantInfo = observer(() => {
             <InputLabel id="participant-race">Select Race</InputLabel>
             <Select
               required
-              value={existingParticipant.race}
+              value={participantStore.participant.race}
               onChange={e => participantStore.setRace(e.target.value)}
               labelId="participant-race"
             >
@@ -192,7 +175,7 @@ const ParticipantInfo = observer(() => {
             <InputLabel id="participant-gender">Select Gender</InputLabel>
             <Select
               required
-              value={existingParticipant.gender}
+              value={participantStore.participant.gender}
               onChange={e => participantStore.setGender(e.target.value)}
               labelId="participant-gender"
             >
@@ -211,7 +194,7 @@ const ParticipantInfo = observer(() => {
             <RadioGroup
               aria-label="insurance"
               name="hasInsurance"
-              value={existingParticipant.is_insured ? "yes" : "no"}
+              value={participantStore.participant.is_insured ? "yes" : "no"}
               onChange={e =>
                 participantStore.setIsInsured(
                   e.target.value === "yes" ? true : false
@@ -228,7 +211,7 @@ const ParticipantInfo = observer(() => {
           <FormControl>
             <InputLabel id="insurance-select">Select Insurance</InputLabel>
             <Select
-              value={existingParticipant.insurer}
+              value={participantStore.participant.insurer}
               onChange={e => participantStore.setInsurer(e.target.value)}
               labelId="insurance-select"
             >
@@ -255,7 +238,7 @@ const ParticipantInfo = observer(() => {
             <InputLabel id="program-select">Choose Program</InputLabel>
             <Select
               required
-              value={existingVisit.program}
+              value={participantStore.visit.program}
               onChange={e => {
                 participantStore.setVisitProgram(e.target.value)
                 findAndSaveServiceListings(e)
@@ -278,10 +261,10 @@ const ParticipantInfo = observer(() => {
         <Grid item xs={12} sm={6}>
           <FormControl>
             <InputLabel id="service-select">Select Service</InputLabel>
-            {existingVisit.program && serviceList.length > 0 ? (
+            {participantStore.visit.program && serviceList.length > 0 ? (
               <Select
                 required
-                value={existingVisit.service}
+                value={participantStore.visit.service}
                 onChange={e => participantStore.setVisitService(e.target.value)}
                 labelId="service-select"
               >
@@ -304,7 +287,7 @@ const ParticipantInfo = observer(() => {
             <InputLabel id="priority-level">Select Priority Level</InputLabel>
             <Select
               name="priority-level"
-              value={existingVisit.urgency}
+              value={participantStore.visit.urgency}
               onChange={e => participantStore.setVisitUrgency(e.target.value)}
               labelId="priority-level"
             >
@@ -322,7 +305,7 @@ const ParticipantInfo = observer(() => {
             <TextField
               name="visit-notes"
               placeholder="Add a note"
-              value={existingVisit.notes}
+              value={participantStore.visit.notes}
               onChange={e => participantStore.setVisitNotes(e.target.value)}
             />
           </FormControl>

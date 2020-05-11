@@ -13,11 +13,7 @@ const PrevPointTitle = props => {
 }
 
 PrevPointTitle.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.node,
-    PropTypes.array,
-  ]),
+  children: PropTypes.node,
 }
 
 PrevPointTitle.defaultProps = {}

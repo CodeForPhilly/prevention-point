@@ -32,8 +32,8 @@ describe("<LoginForm />", () => {
     beforeEach(() => {
       // Render the login form component, pass in props. (Shallow method renders the component without its children, good for unit tests.)
       wrapper = shallow(<LoginForm {...initialProps} />)
-      usernameInput = wrapper.find("[name='username']")
-      passwordInput = wrapper.find("[name='password']")
+      usernameInput = wrapper.find("#username")
+      passwordInput = wrapper.find("#password")
       signInButton = wrapper.find(PrevPointButton)
     })
 
@@ -54,7 +54,6 @@ describe("<LoginForm />", () => {
 
     it("should have the expected props on the username field", () => {
       expect(usernameInput.props()).toEqual({
-        error: null,
         id: "username",
         name: "username",
         value: "",
@@ -70,7 +69,6 @@ describe("<LoginForm />", () => {
 
     it("should have the expected props on the password field", () => {
       expect(passwordInput.props()).toEqual({
-        error: null,
         id: "password",
         name: "password",
         value: "",
@@ -86,7 +84,7 @@ describe("<LoginForm />", () => {
 
     it("should have the expected props on the button", () => {
       expect(signInButton.props()).toEqual({
-        large: false,
+        size: "small",
         type: "submit",
         disabled: false,
         color: "primary",

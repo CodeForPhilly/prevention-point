@@ -21,11 +21,7 @@ const PrevPointCopy = props => {
 }
 
 PrevPointCopy.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.node,
-    PropTypes.array,
-  ]),
+  children: PropTypes.node,
   className: PropTypes.string,
 }
 
