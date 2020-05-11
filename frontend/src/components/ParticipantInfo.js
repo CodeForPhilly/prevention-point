@@ -7,112 +7,43 @@
 
 /* eslint-disable indent */
 import React, { useContext, useEffect } from "react"
-import { rootStoreContext } from "../stores/RootStore"
-import FormGroup from "@material-ui/core/FormGroup"
-import FormControl from "@material-ui/core/FormControl"
-import InputLabel from "@material-ui/core/InputLabel"
-import Grid from "@material-ui/core/Grid"
-import TextField from "@material-ui/core/TextField"
-import Container from "@material-ui/core/Container"
-import MenuItem from "@material-ui/core/MenuItem"
-import Select from "@material-ui/core/Select"
-import { makeStyles } from "@material-ui/core/styles"
-import Radio from "@material-ui/core/Radio"
-import RadioGroup from "@material-ui/core/RadioGroup"
-import FormControlLabel from "@material-ui/core/FormControlLabel"
-import FormLabel from "@material-ui/core/FormLabel"
+import { autorun, toJS } from "mobx"
 import { observer } from "mobx-react-lite"
 import { useHistory } from "react-router-dom"
-import { autorun, toJS } from "mobx"
+import Grid from "@material-ui/core/Grid"
+import Radio from "@material-ui/core/Radio"
+import Select from "@material-ui/core/Select"
+import MenuItem from "@material-ui/core/MenuItem"
+import Container from "@material-ui/core/Container"
+import TextField from "@material-ui/core/TextField"
+import FormLabel from "@material-ui/core/FormLabel"
+import InputLabel from "@material-ui/core/InputLabel"
+import RadioGroup from "@material-ui/core/RadioGroup"
+import FormControl from "@material-ui/core/FormControl"
+import FormControlLabel from "@material-ui/core/FormControlLabel"
 import PrevPointInput from "./PrevPointInput"
 import PrevPointButton from "./PrevPointButton"
+import { rootStoreContext } from "../stores/RootStore"
 import PrevPointHeading from "./Typography/PrevPointHeading"
-
-const useStyles = makeStyles(theme => ({
-  paper: {
-    position: "absolute",
-    width: 400,
-    backgroundColor: theme.palette.background.paper,
-    border: "2px solid #000",
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-  },
-  card: {
-    float: "right",
-    width: "25%",
-    marginRight: "35px",
-  },
-  hidden: {
-    display: "none",
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-  root: {
-    display: "flex",
-    flexWrap: "wrap",
-  },
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 200,
-    maxWidth: 300,
-  },
-  chips: {
-    display: "flex",
-    flexWrap: "wrap",
-  },
-  chip: {
-    margin: 2,
-  },
-  noLabel: {
-    marginTop: theme.spacing(3),
-  },
-  submitWrapper: {
-    display: "flex",
-    justifyContent: "flex-end",
-  },
-}))
 
 const ParticipantInfo = observer(() => {
   const rootStore = useContext(rootStoreContext)
   // particiant store derived from root store
   const participantStore = rootStore.ParticipantStore
-  // TODO: refactor after v1.0.0 release
-  const queueStore = rootStore.QueueStore
   // set up history for routing pushes
   const history = useHistory()
-  // get existing participant if applicable else its undefined
-  const existingParticipant = toJS(participantStore.participant)
-  // get existing visit if applicable else its undefined
-  const existingVisit = toJS(participantStore.visit)
   const insurers = toJS(participantStore.insurers)
   let programList = toJS(participantStore.programs)
   const serviceList = toJS(participantStore.services)
 
-  // TODO: refactor after v1.0.0 release
-  if (existingParticipant.id && !existingVisit.id) {
-    let filterThesePrograms = []
-    queueStore.participantWithPrograms.forEach(currentparticipantprograms => {
-      if (existingParticipant.id === currentparticipantprograms.id) {
-        filterThesePrograms.push(toJS(currentparticipantprograms.programs.name))
-      }
-    })
-    if (programList.length > 0) {
-      programList = programList.filter(
-        program =>
-          program.name !==
-          filterThesePrograms[filterThesePrograms.indexOf(program.name)]
-      )
-    }
+  // default values need to be set for the Select components to work
+  if (!Object.keys(participantStore.participant).length) {
+    participantStore.setDefaultParticipant()
   }
+  if (!Object.keys(participantStore.visit).length) {
+    participantStore.setDefaultVisit()
+  }
+
   // -----------------------------------
 
   useEffect(() => {
@@ -120,9 +51,6 @@ const ParticipantInfo = observer(() => {
     participantStore.getInsurers()
     // kick off api calls for program list from Mobx
     participantStore.getPrograms()
-    // TODO: refactor after v1.0.0 release
-    const queueSize = Object.keys(queueStore.queues).length
-    for (let i = 1; i <= queueSize; i++) queueStore.getQueue(i)
     // -----------------------------------
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -131,11 +59,11 @@ const ParticipantInfo = observer(() => {
   const handleSubmit = e => {
     e.preventDefault()
     // if existing participant and vist we are coming from QueueTable, so update particiapnt and visit
-    if (existingParticipant.id && existingVisit.id) {
+    if (participantStore.participant.id && participantStore.visit.id) {
       participantStore.updateParticipant()
       participantStore.updateVisit()
       // if existing participant and no vist we are coming from search, so update particiapnt only
-    } else if (existingParticipant.id && !existingVisit.id) {
+    } else if (participantStore.participant.id && !participantStore.visit.id) {
       participantStore.updateParticipant()
       participantStore.createVisit()
       // otherwise we are adding a new participant because both participant and visit will be undefined
@@ -159,344 +87,236 @@ const ParticipantInfo = observer(() => {
 
   const setPPIdAndSSN = e => {
     participantStore.setPPId(e.target.value)
-    participantStore.setLastFourSSN(+e.target.value.substr(2))
+    participantStore.setLastFourSSN(e.target.value.slice(2))
   }
 
-  const classes = useStyles()
   return (
-    <div
-      style={{ marginTop: 50, marginBottom: 50 }}
-      className="participant-info-component"
-    >
-      <Container maxWidth="sm">
-        <PrevPointHeading>1. Participant Information</PrevPointHeading>
-        <form className="participant-info-form" onSubmit={e => handleSubmit(e)}>
-          <Grid container>
-            <FormGroup className="participant-info">
-              <Grid container>
-                <Grid item xs>
-                  <FormControl className={classes.formControl}>
-                    <InputLabel htmlFor="user_id">First name</InputLabel>
-                    <PrevPointInput
-                      name="user_first-name"
-                      value={existingParticipant.first_name}
-                      onChange={e =>
-                        participantStore.setFirstName(e.target.value)
-                      }
-                      required={true}
-                    />
-                  </FormControl>
-                </Grid>
-                <Grid item xs>
-                  <FormControl className={classes.formControl}>
-                    <InputLabel htmlFor="user_id">Last name</InputLabel>
-                    <PrevPointInput
-                      name="user_last-name"
-                      value={existingParticipant.last_name}
-                      onChange={e =>
-                        participantStore.setLastName(e.target.value)
-                      }
-                      required={true}
-                    />
-                  </FormControl>
-                </Grid>
-              </Grid>
-            </FormGroup>
-            <FormGroup className="participant-info">
-              <Grid container>
-                <Grid item xs>
-                  <FormControl className={classes.formControl}>
-                    <InputLabel htmlFor="user_id">Date of birth</InputLabel>
-                    <TextField
-                      id="user_birth-date"
-                      name="user_birth-date"
-                      value={existingParticipant.date_of_birth}
-                      onChange={e =>
-                        participantStore.setDateOfBirth(e.target.value)
-                      }
-                      required
-                      style={{ marginTop: 40 }}
-                      type="date"
-                    />
-                  </FormControl>
-                </Grid>
-
-                <Grid item xs>
-                  <FormControl
-                    className={classes.formControl}
-                    style={{ marginTop: 32 }}
-                  >
-                    <InputLabel htmlFor="user_id">UUID</InputLabel>
-                    <PrevPointInput
-                      name="uuid"
-                      value={existingParticipant.pp_id}
-                      onChange={e => setPPIdAndSSN(e)}
-                      required={true}
-                    />
-                  </FormControl>
-                </Grid>
-              </Grid>
-              <br />
-            </FormGroup>
-            <div className={classes.root}>
-              <FormGroup className="participant-info">
-                <Grid container>
-                  <Grid item xs>
-                    <FormControl className={classes.formControl}>
-                      <InputLabel htmlFor="demo-controlled-open-select">
-                        Select Race
-                      </InputLabel>
-                      <Select
-                        required
-                        value={existingParticipant.race}
-                        onChange={e => participantStore.setRace(e.target.value)}
-                        inputProps={{
-                          name: "race",
-                          id: "demo-controlled-open-select",
-                        }}
-                      >
-                        <MenuItem value={"asian pi"}>Asian</MenuItem>
-                        <MenuItem value={"black (african american)"}>
-                          Black or African American
-                        </MenuItem>
-                        <MenuItem value={"latino"}>Hispanic or Latino</MenuItem>
-                        <MenuItem value={"native american"}>
-                          Native American
-                        </MenuItem>
-                        <MenuItem value={"white (caucasian)"}>
-                          White or Caucasian
-                        </MenuItem>
-                        <MenuItem value={"other"}>Other</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs>
-                    <FormControl className={classes.formControl}>
-                      <InputLabel htmlFor="demo-controlled-open-select">
-                        Select Gender
-                      </InputLabel>
-                      <Select
-                        required
-                        value={existingParticipant.gender}
-                        onChange={e =>
-                          participantStore.setGender(e.target.value)
-                        }
-                        inputProps={{
-                          name: "gender",
-                          id: "demo-controlled-open-select",
-                        }}
-                      >
-                        <MenuItem value={"male"}>Male</MenuItem>
-                        <MenuItem value={"female"}>Female</MenuItem>
-                        <MenuItem value={"mtf"}>Male to Female</MenuItem>
-                        <MenuItem value={"ftm"}>Female to Male</MenuItem>
-                        <MenuItem value={"gender queer"}>Gender Queer</MenuItem>
-                        <MenuItem value={"other"}>Other</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                </Grid>
-                <br />
-              </FormGroup>
-            </div>
-
-            <div className={classes.root}>
-              <FormGroup className="participant-info">
-                <Grid container>
-                  <Grid item xs>
-                    <FormControl
-                      component="fieldset"
-                      className={classes.formControl}
-                    >
-                      <FormLabel component="legend">Has Insurance?</FormLabel>
-                      <RadioGroup
-                        aria-label="insurance"
-                        name="hasInsurance"
-                        className={classes.group}
-                        value={
-                          existingParticipant.is_insured === true ? "yes" : "no"
-                        }
-                        onChange={e =>
-                          participantStore.setIsInsured(
-                            e.target.value === "yes" ? true : false
-                          )
-                        }
-                        style={{ display: "inline" }}
-                      >
-                        <FormControlLabel
-                          value="yes"
-                          control={<Radio />}
-                          label="Yes"
-                        />
-                        <FormControlLabel
-                          value="no"
-                          control={<Radio />}
-                          label="No"
-                        />
-                      </RadioGroup>
-                    </FormControl>
-                  </Grid>
-
-                  <Grid item xs>
-                    <FormControl className={classes.formControl}>
-                      <InputLabel htmlFor="demo-controlled-open-select">
-                        Select Insurance
-                      </InputLabel>
-                      <Select
-                        value={existingParticipant.insurer}
-                        onChange={e =>
-                          participantStore.setInsurer(e.target.value)
-                        }
-                        inputProps={{
-                          name: "insuranceType",
-                          id: "demo-controlled-open-select",
-                        }}
-                      >
-                        {insurers.map((company, index) => (
-                          <MenuItem
-                            key={index}
-                            value={
-                              insurers && insurers.length > 0 ? company.id : ""
-                            }
-                          >
-                            {insurers && insurers.length > 0
-                              ? company.name
-                              : ""}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                </Grid>
-              </FormGroup>
-            </div>
-          </Grid>
-
-          <Grid container>
-            <PrevPointHeading>
-              <br />
-              <br />
-              2. Check In Participant
-            </PrevPointHeading>
-            <Grid container>
-              <Grid item xs>
-                <FormControl className={classes.formControl}>
-                  <InputLabel htmlFor="demo-controlled-open-select">
-                    Choose Program
-                  </InputLabel>
-                  <Select
-                    required
-                    value={existingVisit.program}
-                    onChange={e => {
-                      participantStore.setVisitProgram(e.target.value)
-                      findAndSaveServiceListings(e)
-                    }}
-                    inputProps={{
-                      name: "program",
-                      id: "demo-controlled-open-select",
-                    }}
-                  >
-                    {programList.map(program => (
-                      <MenuItem
-                        key={program.id}
-                        value={
-                          programList && programList.length > 0
-                            ? program.id
-                            : ""
-                        }
-                      >
-                        {programList && programList.length > 0
-                          ? program.name
-                          : ""}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-
-              <Grid item xs>
-                <FormControl className={classes.formControl}>
-                  <InputLabel htmlFor="demo-controlled-open-select">
-                    Select Service
-                  </InputLabel>
-                  {existingVisit.program && serviceList.length > 0 ? (
-                    <Select
-                      required
-                      value={existingVisit.service}
-                      onChange={e =>
-                        participantStore.setVisitService(e.target.value)
-                      }
-                      inputProps={{
-                        name: "service",
-                        id: "demo-controlled-open-select",
-                      }}
-                    >
-                      {serviceList.map(service => (
-                        <MenuItem
-                          key={service.id}
-                          value={
-                            serviceList && serviceList.length > 0
-                              ? service.id
-                              : ""
-                          }
-                        >
-                          {serviceList && serviceList.length > 0
-                            ? service.name
-                            : ""}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  ) : null}
-                </FormControl>
-              </Grid>
-              <br />
-              <Grid item xs>
-                <FormControl className={classes.formControl}>
-                  <InputLabel htmlFor="demo-controlled-open-select">
-                    Select Priority Level
-                  </InputLabel>
-                  <Select
-                    value={existingVisit.urgency}
-                    onChange={e =>
-                      participantStore.setVisitUrgency(e.target.value)
+    <Container maxWidth="md">
+      <Grid
+        container
+        spacing={2}
+        component="form"
+        onSubmit={e => handleSubmit(e)}
+      >
+        <Grid item xs={12}>
+          <PrevPointHeading>1. Participant Information</PrevPointHeading>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <FormControl>
+            <InputLabel htmlFor="first-name">First name</InputLabel>
+            <PrevPointInput
+              name="first-name"
+              value={participantStore.participant.first_name}
+              onChange={e => participantStore.setFirstName(e.target.value)}
+              required
+            />
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <FormControl>
+            <InputLabel htmlFor="last-name">Last name</InputLabel>
+            <PrevPointInput
+              name="last-name"
+              value={participantStore.participant.last_name}
+              onChange={e => participantStore.setLastName(e.target.value)}
+              required
+            />
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            label="Date of Birth"
+            name="dob"
+            type="date"
+            required
+            fullWidth
+            value={participantStore.participant.date_of_birth}
+            onChange={e => participantStore.setDateOfBirth(e.target.value)}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <FormControl>
+            <InputLabel htmlFor="uuid">UUID</InputLabel>
+            <PrevPointInput
+              name="uuid"
+              value={participantStore.participant.pp_id}
+              onChange={e => setPPIdAndSSN(e)}
+              required
+            />
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <FormControl>
+            <InputLabel id="participant-race">Select Race</InputLabel>
+            <Select
+              required
+              value={participantStore.participant.race}
+              onChange={e => participantStore.setRace(e.target.value)}
+              labelId="participant-race"
+            >
+              <MenuItem value={"asian pi"}>Asian</MenuItem>
+              <MenuItem value={"black (african american)"}>
+                Black or African American
+              </MenuItem>
+              <MenuItem value={"latino"}>Hispanic or Latino</MenuItem>
+              <MenuItem value={"native american"}>Native American</MenuItem>
+              <MenuItem value={"white (caucasian)"}>
+                White or Caucasian
+              </MenuItem>
+              <MenuItem value={"other"}>Other</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <FormControl>
+            <InputLabel id="participant-gender">Select Gender</InputLabel>
+            <Select
+              required
+              value={participantStore.participant.gender}
+              onChange={e => participantStore.setGender(e.target.value)}
+              labelId="participant-gender"
+            >
+              <MenuItem value={"male"}>Male</MenuItem>
+              <MenuItem value={"female"}>Female</MenuItem>
+              <MenuItem value={"mtf"}>Male to Female</MenuItem>
+              <MenuItem value={"ftm"}>Female to Male</MenuItem>
+              <MenuItem value={"gender queer"}>Gender Queer</MenuItem>
+              <MenuItem value={"other"}>Other</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <FormControl component="fieldset">
+            <FormLabel component="legend">Has Insurance?</FormLabel>
+            <RadioGroup
+              aria-label="insurance"
+              name="hasInsurance"
+              value={participantStore.participant.is_insured ? "yes" : "no"}
+              onChange={e =>
+                participantStore.setIsInsured(
+                  e.target.value === "yes" ? true : false
+                )
+              }
+              style={{ display: "inline" }}
+            >
+              <FormControlLabel value="yes" control={<Radio />} label="Yes" />
+              <FormControlLabel value="no" control={<Radio />} label="No" />
+            </RadioGroup>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <FormControl>
+            <InputLabel id="insurance-select">Select Insurance</InputLabel>
+            <Select
+              value={participantStore.participant.insurer}
+              onChange={e => participantStore.setInsurer(e.target.value)}
+              labelId="insurance-select"
+            >
+              {insurers.map((company, index) => (
+                <MenuItem
+                  key={index}
+                  value={insurers && insurers.length > 0 ? company.id : ""}
+                >
+                  {insurers && insurers.length > 0 ? company.name : ""}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12}>
+          <PrevPointHeading>
+            <br />
+            <br />
+            2. Check In Participant
+          </PrevPointHeading>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <FormControl>
+            <InputLabel id="program-select">Choose Program</InputLabel>
+            <Select
+              required
+              value={participantStore.visit.program}
+              onChange={e => {
+                participantStore.setVisitProgram(e.target.value)
+                findAndSaveServiceListings(e)
+              }}
+              labelId="program-select"
+            >
+              {programList.map(program => (
+                <MenuItem
+                  key={program.id}
+                  value={
+                    programList && programList.length > 0 ? program.id : ""
+                  }
+                >
+                  {programList && programList.length > 0 ? program.name : ""}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <FormControl>
+            <InputLabel id="service-select">Select Service</InputLabel>
+            {participantStore.visit.program && serviceList.length > 0 ? (
+              <Select
+                required
+                value={participantStore.visit.service}
+                onChange={e => participantStore.setVisitService(e.target.value)}
+                labelId="service-select"
+              >
+                {serviceList.map(service => (
+                  <MenuItem
+                    key={service.id}
+                    value={
+                      serviceList && serviceList.length > 0 ? service.id : ""
                     }
-                    inputProps={{
-                      name: "priorityLevel",
-                      id: "demo-controlled-open-select",
-                    }}
                   >
-                    <MenuItem value={"_1"}>1 (Lowest)</MenuItem>
-                    <MenuItem value={"_2"}>2</MenuItem>
-                    <MenuItem value={"_3"}>3</MenuItem>
-                    <MenuItem value={"_4"}>4</MenuItem>
-                    <MenuItem value={"_5"}>5 (Highest)</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-              <br />
-              <TextField
-                id="standard-full-width"
-                style={{ margin: 8, marginTop: 40 }}
-                placeholder="Add a note"
-                onChange={e => participantStore.setVisitNotes(e.target.value)}
-                value={existingVisit.notes}
-                fullWidth
-                margin="normal"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </Grid>
-            {/* </FormGroup> */}
-            <Grid item xs className={classes.submitWrapper}>
-              <PrevPointButton type="submit" large>
-                Add to Queue
-              </PrevPointButton>
-            </Grid>
-          </Grid>
-        </form>
-      </Container>
-    </div>
+                    {serviceList && serviceList.length > 0 ? service.name : ""}
+                  </MenuItem>
+                ))}
+              </Select>
+            ) : null}
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <FormControl>
+            <InputLabel id="priority-level">Select Priority Level</InputLabel>
+            <Select
+              name="priority-level"
+              value={participantStore.visit.urgency}
+              onChange={e => participantStore.setVisitUrgency(e.target.value)}
+              labelId="priority-level"
+            >
+              <MenuItem value={"_1"}>1 (Lowest)</MenuItem>
+              <MenuItem value={"_2"}>2</MenuItem>
+              <MenuItem value={"_3"}>3</MenuItem>
+              <MenuItem value={"_4"}>4</MenuItem>
+              <MenuItem value={"_5"}>5 (Highest)</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12}>
+          <FormControl>
+            <InputLabel htmlFor="visit-notes">Add a Note</InputLabel>
+            <TextField
+              name="visit-notes"
+              placeholder="Add a note"
+              value={participantStore.visit.notes}
+              onChange={e => participantStore.setVisitNotes(e.target.value)}
+            />
+          </FormControl>
+        </Grid>
+        <Grid item xs={12}>
+          <PrevPointButton type="submit" size="large">
+            Add to Queue
+          </PrevPointButton>
+        </Grid>
+      </Grid>
+    </Container>
   )
 })
 

@@ -20,7 +20,7 @@ const PrevPointHeading = props => {
 }
 
 PrevPointHeading.propTypes = {
-  children: PropTypes.string || PropTypes.node,
+  children: PropTypes.node,
   className: PropTypes.string,
 }
 

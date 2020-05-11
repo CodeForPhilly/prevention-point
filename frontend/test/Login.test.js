@@ -4,7 +4,7 @@ import { shallow, configure } from "enzyme"
 import { render, fireEvent, cleanup } from "@testing-library/react"
 import Adapter from "enzyme-adapter-react-16"
 
-import LoginForm from "../src/components/LoginForm"
+import LoginForm from "../src/views/LoginForm"
 import PrevPointButton from "../src/components/PrevPointButton"
 
 configure({ adapter: new Adapter() })
@@ -54,7 +54,6 @@ describe("<LoginForm />", () => {
 
     it("should have the expected props on the username field", () => {
       expect(usernameInput.props()).toEqual({
-        error: null,
         id: "username",
         name: "username",
         value: "",
@@ -70,7 +69,6 @@ describe("<LoginForm />", () => {
 
     it("should have the expected props on the password field", () => {
       expect(passwordInput.props()).toEqual({
-        error: null,
         id: "password",
         name: "password",
         value: "",
@@ -86,7 +84,7 @@ describe("<LoginForm />", () => {
 
     it("should have the expected props on the button", () => {
       expect(signInButton.props()).toEqual({
-        large: false,
+        size: "small",
         type: "submit",
         disabled: false,
         color: "primary",

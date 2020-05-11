@@ -22,6 +22,12 @@ const theme = createMuiTheme({
       fontWeight: 400,
     },
   },
+  props: {
+    MuiFormControl: {
+      fullWidth: true,
+      margin: "normal",
+    },
+  },
 })
 
 export default theme

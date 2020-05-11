@@ -1,15 +1,13 @@
-@media all and (min-width: 480px) {
-  .login-form {
-    padding: 60px 0;
+.login-form {
+  padding: 60px 0;
 
-    &__form {
-      margin: 0 auto;
-      max-width: 320px;
-    }
+  &__form {
+    margin: 0 auto;
+    max-width: 400px;
   }
+}
 
-  .login-form__error {
-    color: #ff000f;
-    padding-top: 10px;
-  }
+.login-form__error {
+  color: #ff000f;
+  padding-top: 10px;
 }

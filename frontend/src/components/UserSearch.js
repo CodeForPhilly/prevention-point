@@ -1,102 +1,99 @@
 import React, { useContext } from "react"
 import { observer } from "mobx-react-lite"
 import { useHistory } from "react-router-dom"
+import Grid from "@material-ui/core/Grid"
 import Container from "@material-ui/core/Container"
-import FormGroup from "@material-ui/core/FormGroup"
 import InputLabel from "@material-ui/core/InputLabel"
 import FormControl from "@material-ui/core/FormControl"
 import PrevPointInput from "./PrevPointInput"
-import { rootStoreContext } from "../stores/RootStore"
-import PrevPointCopy from "./Typography/PrevPointCopy"
 import PrevPointButton from "./PrevPointButton"
+import PrevPointCopy from "./Typography/PrevPointCopy"
+import { rootStoreContext } from "../stores/RootStore"
 import PrevPointHeading from "./Typography/PrevPointHeading"
 
 const UserSearch = observer(() => {
   const rootStore = useContext(rootStoreContext)
-  const participantsStore = rootStore.ParticipantStore
+  const participantStore = rootStore.ParticipantStore
   const history = useHistory()
 
   const handleSubmit = e => {
-    if (e) {
-      e.preventDefault()
-    }
+    e.preventDefault()
     // Validate that a user id or a first name last name paring exist on the form
-    if (!participantsStore.params) {
-      participantsStore.setErrorMessageForUserSearch(
+    if (!Object.keys(participantStore.params).length) {
+      participantStore.setErrorMessageForUserSearch(
         "Need to enter a user id or a name"
       )
-      participantsStore.setErrorMessageForUserSearch(true)
+      participantStore.setErrorStateForUserSearch(true)
     } else {
-      participantsStore.getParticipants()
+      participantStore.getParticipants()
       history.push("/participants")
     }
   }
 
   return (
     <Container className="participant-search">
-      <div>
-        <PrevPointHeading className="participant-search__heading">
-          Participant Search
-        </PrevPointHeading>
-        <PrevPointCopy className="participant-search__copy">
-          <b>Reminder:</b> Search for participant profile prior to creating a
-          new profile
-        </PrevPointCopy>
-        <form className="participant-search__form" onSubmit={handleSubmit}>
-          <FormGroup className="participant-search__input">
-            <FormControl>
-              <InputLabel htmlFor="user_id">User ID</InputLabel>
-              <PrevPointInput
-                id="user_id"
-                name="user_id"
-                value={participantsStore.params.userId}
-                onChange={e => participantsStore.setUserIdParam(e.target.value)}
-                className={participantsStore.errorState ? "error" : ""}
-              />
-            </FormControl>
-          </FormGroup>
+      <Grid
+        container
+        component="form"
+        onSubmit={handleSubmit}
+        className="participant-search__form"
+      >
+        <Grid item xs={12}>
+          <PrevPointHeading className="participant-search__heading">
+            Participant Search
+          </PrevPointHeading>
+          <PrevPointCopy className="participant-search__copy">
+            <b>Reminder:</b> Search for participant profile prior to creating a
+            new profile
+          </PrevPointCopy>
+        </Grid>
+        <Grid item xs={12}>
+          <FormControl error={participantStore.errorState}>
+            <InputLabel htmlFor="user_id">User ID</InputLabel>
+            <PrevPointInput
+              name="user_id"
+              value={participantStore.params.userId}
+              onChange={e => participantStore.setUserIdParam(e.target.value)}
+            />
+          </FormControl>
+        </Grid>
+        <Grid item xs={12}>
           <PrevPointHeading className="participant-search__heading">
             Or
           </PrevPointHeading>
-          <FormGroup className="participant-search__input">
-            <FormControl>
-              <InputLabel htmlFor="first_name">First Name</InputLabel>
-              <PrevPointInput
-                id="first_name"
-                name="first_name"
-                value={participantsStore.params.firstName}
-                onChange={e =>
-                  participantsStore.setFirstNameParam(e.target.value)
-                }
-                className={participantsStore.errorState ? "error" : ""}
-              />
-            </FormControl>
-          </FormGroup>
-          <FormGroup className="participant-search__input">
-            <FormControl>
-              <InputLabel htmlFor="last_name">Last Name</InputLabel>
-              <PrevPointInput
-                id="last_name"
-                name="last_name"
-                value={participantsStore.params.lastName}
-                onChange={e =>
-                  participantsStore.setLastNameParam(e.target.value)
-                }
-                className={participantsStore.errorState ? "error" : ""}
-              />
-            </FormControl>
-          </FormGroup>
-          <PrevPointCopy className="error-message">
-            {participantsStore.errorMessage}
-          </PrevPointCopy>
+        </Grid>
+        <Grid item xs={12}>
+          <FormControl error={participantStore.errorState}>
+            <InputLabel htmlFor="first_name">First Name</InputLabel>
+            <PrevPointInput
+              name="first_name"
+              value={participantStore.params.firstName}
+              onChange={e => participantStore.setFirstNameParam(e.target.value)}
+            />
+          </FormControl>
+        </Grid>
+        <Grid item xs={12}>
+          <FormControl error={participantStore.errorState}>
+            <InputLabel htmlFor="last_name">Last Name</InputLabel>
+            <PrevPointInput
+              name="last_name"
+              value={participantStore.params.lastName}
+              onChange={e => participantStore.setLastNameParam(e.target.value)}
+            />
+          </FormControl>
+        </Grid>
+        <Grid item xs={12}>
           <PrevPointButton
             type="submit"
-            disabled={participantsStore.toggleSearch}
+            disabled={participantStore.toggleSearch}
           >
             Submit
           </PrevPointButton>
-        </form>
-      </div>
+          <PrevPointCopy className="error-message">
+            {participantStore.errorMessage}
+          </PrevPointCopy>
+        </Grid>
+      </Grid>
     </Container>
   )
 })
