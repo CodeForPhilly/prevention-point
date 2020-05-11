@@ -31,7 +31,6 @@
   },
   "plugins": ["react", "prettier", "jest", "react-hooks"],
   "rules": {
-    "indent": ["error", 2],
     "linebreak-style": 0,
     "quotes": ["error", "double"],
     "semi": ["error", "never"],

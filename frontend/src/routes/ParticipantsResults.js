@@ -1,10 +1,10 @@
 import React from "react"
-import ParticipantsList from "../components/ParticipantsList"
+import ParticipantList from "../components/ParticipantList"
 
 const ParticipantsResults = () => {
   return (
     <div>
-      <ParticipantsList />
+      <ParticipantList />
     </div>
   )
 }

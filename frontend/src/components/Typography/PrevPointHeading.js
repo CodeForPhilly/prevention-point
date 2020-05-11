@@ -9,6 +9,7 @@ const PrevPointHeading = props => {
 
   return (
     <Typography
+      aria-label="heading"
       display="block"
       component="h2"
       variant="h2"
