@@ -44,8 +44,7 @@ class VisitWithPopulationSerializer(serializers.ModelSerializer):
         representation = super().to_representation(obj)
         try:
             profile_representation = representation.pop("program_service_map")
-            for key in profile_representation:
-                representation[key] = profile_representation[key]
+            representation.update(profile_representation)
             return representation
         except TypeError:
             # TODO the program_service_map FK needs to be required, but right now is not, hence this exception
