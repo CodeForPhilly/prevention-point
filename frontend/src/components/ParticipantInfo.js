@@ -292,15 +292,13 @@ const ParticipantInfo = observer(() => {
           </FormControl>
         </Grid>
         <Grid item xs={12}>
-          <FormControl>
-            <InputLabel htmlFor="visit-notes">Add a Note</InputLabel>
-            <TextField
-              name="visit-notes"
-              placeholder="Add a note"
-              value={participantStore.visit.notes}
-              onChange={e => participantStore.setVisitNotes(e.target.value)}
-            />
-          </FormControl>
+          <TextField
+            label="Add a Note"
+            fullWidth
+            name="visit-notes"
+            value={participantStore.visit.notes}
+            onChange={e => participantStore.setVisitNotes(e.target.value)}
+          />
         </Grid>
         <Grid item xs={12}>
           <PrevPointButton type="submit" size="large">
