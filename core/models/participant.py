@@ -22,10 +22,10 @@ class Participant(models.Model):
     GENDER_CHOICES = [(key.value, key.value.title()) for key in Gender]
     RACE_CHOICES = [(key.value, key.value.title()) for key in Race]
 
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=100)
+    first_name = models.CharField(db_index=True, max_length=50)
+    last_name = models.CharField(db_index=True, max_length=100)
     last_four_ssn = models.CharField(max_length=4, verbose_name="Last 4 of SSN")
-    pp_id = models.CharField(max_length=200, verbose_name="Prevention Point ID")
+    pp_id = models.CharField(db_index=True, max_length=200, verbose_name="Prevention Point ID")
     gender = models.CharField(choices=GENDER_CHOICES, max_length=12)
     race = models.CharField(choices=RACE_CHOICES, max_length=24)
     date_of_birth = models.DateField()
