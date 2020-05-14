@@ -52,12 +52,7 @@ class VisitTests(BaseTestCase):
         """
         # create a visit
         headers = self.auth_headers_for_user("front_desk")
-        data = {
-            "participant": 1,
-            "program": 1,
-            "service": 1,
-            "urgency": "_2",
-        }
+        data = {"participant": 1, "program": 1, "service": 1, "urgency": "_2"}
         create_response = self.client.post(
             "/api/visits/", data, format="json", **headers
         )
@@ -68,10 +63,7 @@ class VisitTests(BaseTestCase):
 
         visit_id = json.loads(create_response.content)["id"]
 
-        data = {
-            "id": visit_id, 
-            "notes": new_note,
-        }
+        data = {"id": visit_id, "notes": new_note}
         update_response = self.client.patch(
             f"/api/visits/{visit_id}/", data, format="json", **headers
         )
@@ -86,12 +78,7 @@ class VisitTests(BaseTestCase):
         """
         # create a visit
         headers = self.auth_headers_for_user("front_desk")
-        data = {
-            "participant": 1,
-            "program": 1,
-            "service": 1,
-            "urgency": "_2",
-        }
+        data = {"participant": 1, "program": 1, "service": 1, "urgency": "_2"}
         create_response = self.client.post(
             "/api/visits/", data, format="json", **headers
         )
@@ -102,10 +89,7 @@ class VisitTests(BaseTestCase):
 
         visit_id = json.loads(create_response.content)["id"]
 
-        data = {
-            "id": visit_id, 
-            "urgency": new_urgency,
-        }
+        data = {"id": visit_id, "urgency": new_urgency}
         update_response = self.client.patch(
             f"/api/visits/{visit_id}/", data, format="json", **headers
         )
@@ -120,12 +104,7 @@ class VisitTests(BaseTestCase):
         """
         # create a visit
         headers = self.auth_headers_for_user("front_desk")
-        data = {
-            "participant": 1,
-            "program": 1,
-            "service": 1,
-            "urgency": "_2",
-        }
+        data = {"participant": 1, "program": 1, "service": 1, "urgency": "_2"}
         create_response = self.client.post(
             "/api/visits/", data, format="json", **headers
         )
@@ -134,11 +113,7 @@ class VisitTests(BaseTestCase):
         headers = self.auth_headers_for_user("internal_provider")
         visit_id = json.loads(create_response.content)["id"]
 
-        data = {
-            "id": visit_id, 
-            "program":2,
-            "service":6,
-        }
+        data = {"id": visit_id, "program": 2, "service": 6}
         update_response = self.client.patch(
             f"/api/visits/{visit_id}/", data, format="json", **headers
         )
@@ -147,11 +122,7 @@ class VisitTests(BaseTestCase):
         self.assertEqual(Visit.objects.count(), 1)
         self.assertEqual(Visit.objects.get(id=visit_id).program_service_map.id, 6)
 
-        data = {
-            "id": visit_id, 
-            "program":3,
-            "service":10,
-        }
+        data = {"id": visit_id, "program": 3, "service": 10}
         update_response = self.client.patch(
             f"/api/visits/{visit_id}/", data, format="json", **headers
         )
@@ -182,17 +153,15 @@ class VisitTests(BaseTestCase):
         get_response = self.client.get(url, **headers)
         self.assertEqual(get_response.status_code, status.HTTP_200_OK)
 
+    def test_get_visit_authorization(self):
+        """
+        Ensure front desk cannot retrieve visits
+        """
+        headers = self.auth_headers_for_user("front_desk")
+        url = reverse("visit-list")
 
-    # DO WE WANT TO TEST THIS ??
-    # def test_get_visit_authorization(self):
-    #     """
-    #     Ensure front desk cannot retrieve visits
-    #     """
-    #     headers = self.auth_headers_for_user("front_desk")
-    #     url = reverse("visit-list")
-
-    #     get_response = self.client.get(url, **headers)
-    #     self.assertEqual(get_response.status_code, status.HTTP_403_FORBIDDEN)
+        get_response = self.client.get(url, **headers)
+        self.assertEqual(get_response.status_code, status.HTTP_403_FORBIDDEN)
 
 
 class VisitMedicalRelationsTests(BaseTestCase):
@@ -276,4 +245,3 @@ class VisitMedicalRelationsTests(BaseTestCase):
         self.assertEqual(case_mgmt.visit_id, visit.pk)
         self.assertEqual(health_notes.visit_id, visit.pk)
         self.assertEqual(hcv_notes.visit_id, visit.pk)
-

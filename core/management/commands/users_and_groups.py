@@ -147,7 +147,6 @@ FRONT_DESK_PERMISSIONS = [
     "view_programservicemap",
     "add_visit",
     "change_visit",
-    "view_visit",
     "add_appointment",
     "change_appointment",
     "view_appointment",
