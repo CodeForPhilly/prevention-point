@@ -80,6 +80,7 @@ const QueueTable = observer(queueData => {
           last: x.participant.last_name,
           uid: x.participant.pp_id,
           timeElapsed: moment(x.status.created_at).format("LT"),
+          waitTime: moment(x.status.created_at).fromNow(true),
           status: x.status.event_type,
           service: x.service.name,
           seen: false,
@@ -151,6 +152,10 @@ const QueueTable = observer(queueData => {
             customSort: (a, b) =>
               new Date("1970/01/01 " + a.timeElapsed) -
               new Date("1970/01/01 " + b.timeElapsed),
+          },
+          {
+            title: "Wait Time",
+            field: "waitTime",
           },
           {
             title: "Status",
