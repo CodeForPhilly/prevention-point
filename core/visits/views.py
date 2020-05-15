@@ -5,7 +5,6 @@ from rest_framework import status
 from core.viewsets import ModelViewSet
 from core.models import Visit
 from core.visits.serializer import VisitSerializer, VisitWithPopulationSerializer
-from core.permissions import FRONT_DESK, ADMIN, CASE_MANAGER
 from core.models import ProgramServiceMap
 
 
@@ -16,13 +15,6 @@ class VisitViewSet(ModelViewSet):
 
     queryset = Visit.objects.all()
     serializer_class = VisitWithPopulationSerializer
-    permission_groups = {
-        "create": [FRONT_DESK, CASE_MANAGER, ADMIN],
-        "list": [CASE_MANAGER, ADMIN],
-        "retrieve": [CASE_MANAGER, ADMIN],
-        "update": [CASE_MANAGER, ADMIN],
-        "partial_update": [CASE_MANAGER, ADMIN],
-    }
 
     def create(self, req):
         """

@@ -1,37 +1,7 @@
 - model: auth.user
-  pk: 10
+  pk: 1
   fields:
-    password: pbkdf2_sha256$150000$ujJE8Q5X2qjw$Hv5cs1CPhH2datXARzDMZhkJCS0PWXBt/tVTNi5o0yk=
-    last_login: null
-    is_superuser: false
-    username: front_desk
-    first_name: ''
-    last_name: ''
-    email: front_desk@front_desk.com
-    is_staff: false
-    is_active: true
-    groups:
-    - 22
-    user_permissions: []
-- model: auth.user
-  pk: 11
-  fields:
-    password: pbkdf2_sha256$150000$I0w67hZqIpI1$Lj4ypGHVzi1qSqtn5PqSC6+JDReukO+O1iYw6k9AeUs=
-    last_login: null
-    is_superuser: false
-    username: case_manager
-    first_name: ''
-    last_name: ''
-    email: case_manager@case_manager.com
-    is_staff: false
-    is_active: true
-    groups:
-    - 23
-    user_permissions: []
-- model: auth.user
-  pk: 12
-  fields:
-    password: pbkdf2_sha256$150000$J4LBgseyQzMD$6BZ5+mepn1AdvNr1XFatFX1gzCyT1CIlG0sA7XQ3aEU=
+    password: pbkdf2_sha256$150000$Ji3ll9tb36zn$vphVTD9FETSdkf57rj9nSgTdMQFKpiV10SjpSck5KUE=
     last_login: null
     is_superuser: true
     username: admin
@@ -41,5 +11,50 @@
     is_staff: true
     is_active: true
     groups:
-    - 24
+    - 1
+    user_permissions: []
+- model: auth.user
+  pk: 2
+  fields:
+    password: pbkdf2_sha256$150000$EkvzmLvqUVli$F1hbwXTgOlaWEHlVrzCmfHv4O+4L2q4CBooIFIme00A=
+    last_login: null
+    is_superuser: false
+    username: internal_provider
+    first_name: ''
+    last_name: ''
+    email: internal_provider@internal_provider.com
+    is_staff: false
+    is_active: true
+    groups:
+    - 2
+    user_permissions: []
+- model: auth.user
+  pk: 3
+  fields:
+    password: pbkdf2_sha256$150000$7fDaqneCJzq4$cL/oTxlUDh2O7HimcVkkbuEj/HLDLMcfarcUmyvW/Ts=
+    last_login: null
+    is_superuser: false
+    username: front_desk
+    first_name: ''
+    last_name: ''
+    email: front_desk@front_desk.com
+    is_staff: false
+    is_active: true
+    groups:
+    - 3
+    user_permissions: []
+- model: auth.user
+  pk: 4
+  fields:
+    password: pbkdf2_sha256$150000$SwNB8HB4lnNK$ATweCHs8RzQx4BSnc7EH0HH7T4A8KSlrSZyu7l8y4SM=
+    last_login: null
+    is_superuser: false
+    username: uds_provider
+    first_name: ''
+    last_name: ''
+    email: uds_provider@uds_provider.com
+    is_staff: false
+    is_active: true
+    groups:
+    - 4
     user_permissions: []

@@ -1,35 +1,33 @@
 import random, pytz, datetime
 
-
 from django.utils import timezone
-from django.core.management.base import BaseCommand
 from django.core.management import call_command
-from django.contrib.auth.models import Group, User
+from django.core.management.base import BaseCommand
+from django.contrib.auth.models import Group, User, Permission
 
 from faker import Faker
 from faker.providers import BaseProvider
 
 from core.models import (
-    UrineDrugScreen,
-    Medication,
-    Participant,
-    Gender,
     Race,
+    Visit,
+    Gender,
+    Insurer,
     Program,
     Service,
-    Visit,
-    ProgramServiceMap,
+    Medication,
+    Participant,
     UrgencyLevel,
-    ProgramAvailability
+    FrontDeskEvent,
+    UrineDrugScreen,
+    ProgramServiceMap,
+    FrontDeskEventType, 
+    ProgramAvailability,
 )
-from core.permissions import CASE_MANAGER, FRONT_DESK, ADMIN
-from core.models.front_desk_event import FrontDeskEventType, FrontDeskEvent
-from core.models.insurer import Insurer
+
 
 fake = Faker()
 
-DEFAULT_DEV_ENV_PASS = "password123"
-DEFAULT_GROUPS = [FRONT_DESK, CASE_MANAGER, ADMIN]
 DEFAULT_NUMBER_PARTICIPANTS = 1000
 DEFAULT_NUMBER_VISITS = 100
 DEFAULT_NUMBER_INSURERS = 10
@@ -121,47 +119,13 @@ fake.add_provider(AvailabilityWindowProvider)
 def run_seed(self):
     call_command("migrate", interactive=False)
     call_command("flush", interactive=False)
-    create_groups(output=False)
-    create_users(output=False)
-    add_users_to_groups(output=False)
+    call_command("users_and_groups")
     create_insurers(output=False)
     create_participants()
     create_programs(output=False)
     create_visits(output=False)
     create_program_availability(output=False)
 
-def create_users(output=True):
-    for group in DEFAULT_GROUPS:
-        email = "{}@{}.com".format(group, group)
-        u = User.objects.create_user(username=group, email=email)
-        u.set_password(DEFAULT_DEV_ENV_PASS)
-
-        if group == ADMIN:
-            u.is_superuser = True
-            u.is_staff = True
-
-        u.save()
-
-        if output:
-            print("Created user: {}".format(email))
-
-
-def create_groups(output=True):
-    for group in DEFAULT_GROUPS:
-        Group.objects.get_or_create(name=group)
-        if output:
-            print("Created group: {}".format(group))
-
-
-def add_users_to_groups(output=True):
-    """
-    adds user to group of same name
-    """
-
-    for group in DEFAULT_GROUPS:
-        user = User.objects.get(username=group)
-        role_title = Group.objects.get(name=group)
-        user.groups.add(role_title)
 
 
 def create_insurers(output=True):

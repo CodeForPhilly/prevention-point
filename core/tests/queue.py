@@ -7,21 +7,21 @@ from core.models import FrontDeskEventType
 
 class QueueTests(BaseTestCase):
     fixtures = [
-        "participants.yaml",
-        "visits.yaml",
-        "groups.yaml",
-        "programs.yaml",
-        "program_service_map.yaml",
-        "services.yaml",
         "users.yaml",
+        "groups.yaml",
+        "visits.yaml",
+        "programs.yaml",
+        "services.yaml",
+        "participants.yaml",
         "front_desk_events.yaml",
+        "program_service_map.yaml",
     ]
 
     def test_get_queue_by_program_id(self):
         """
         Ensure we can get queue by program id
         """
-        headers = self.auth_headers_for_user("case_manager")
+        headers = self.auth_headers_for_user("internal_provider")
         headers["format"] = "json"
 
         # for program in range(1,4):
@@ -40,7 +40,7 @@ class QueueTests(BaseTestCase):
         """
         Ensure queue gets updated
         """
-        headers = self.auth_headers_for_user("case_manager")
+        headers = self.auth_headers_for_user("internal_provider")
         headers["format"] = "json"
 
         response = self.client.get("/api/programs/1/queue/", **headers)
@@ -77,7 +77,7 @@ class EmptyQueueTests(BaseTestCase):
         """
         Ensure we can get an empty queue
         """
-        headers = self.auth_headers_for_user("case_manager")
+        headers = self.auth_headers_for_user("internal_provider")
         headers["format"] = "json"
 
         response = self.client.get(f"/api/programs/1/queue/", **headers)

@@ -12,7 +12,7 @@ class ProgramAvailabilityTests(BaseTestCase):
         Ensure we can get a list of availabilities, only for a specific program
         """
        
-        headers = self.auth_headers_for_user('case_manager')
+        headers = self.auth_headers_for_user('internal_provider')
         response = self.client.get('/api/programs/1/program-availability/', **headers)
         content = json.loads(response.content)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -25,7 +25,7 @@ class ProgramAvailabilityTests(BaseTestCase):
         """
         Ensure we can update an availability time
         """
-        headers = self.auth_headers_for_user('case_manager')
+        headers = self.auth_headers_for_user('internal_provider')
         headers['format'] = 'json'
 
         data = {

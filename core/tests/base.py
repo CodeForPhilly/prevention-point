@@ -1,5 +1,6 @@
 from rest_framework.test import APITestCase
-from core.management.commands.seed import (
+
+from core.management.commands.users_and_groups import (
         create_groups,
         create_users,
         add_users_to_groups,

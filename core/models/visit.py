@@ -1,6 +1,6 @@
 from django.db import models
-from core.models.participant import Participant
-from core.models.program_service_map import ProgramServiceMap
+from core.models import Participant
+from core.models import ProgramServiceMap
 from django.utils import timezone
 from enum import Enum
 

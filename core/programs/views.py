@@ -3,7 +3,6 @@ from rest_framework.response import Response
 from core.models import Program, ProgramServiceMap, Service
 from core.programs.serializer import ProgramSerializer
 from core.services.serializers import ServiceSerializer
-from core.permissions import FRONT_DESK, CASE_MANAGER, ADMIN
 
 
 def build_service_list(subset):
@@ -18,12 +17,6 @@ def build_service_list(subset):
 class ProgramViewSet(ModelViewSet):
     queryset = Program.objects.all()
     serializer_class = ProgramSerializer
-    permission_groups = {
-        "retrieve": [FRONT_DESK, CASE_MANAGER, ADMIN],
-        "list": [FRONT_DESK, CASE_MANAGER, ADMIN],
-        "update": [CASE_MANAGER, ADMIN],
-        "partial_update": [CASE_MANAGER, ADMIN],
-    }
 
     def list(self, request):
         programs = Program.objects.all()
