@@ -11,7 +11,7 @@ const useStyles = makeStyles(() => ({
 }))
 
 const PrevPointButton = props => {
-  // disabled and large are booleans. can add a class where button is imported
+  // can add a class where button is imported
   const classes = useStyles()
   const { children, className } = props
 
@@ -27,16 +27,11 @@ const PrevPointButton = props => {
 }
 
 PrevPointButton.propTypes = {
-  large: PropTypes.bool,
   type: PropTypes.string,
   color: PropTypes.string,
-  disabled: PropTypes.bool,
   onClick: PropTypes.func,
-  children: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.node,
-    PropTypes.array,
-  ]),
+  children: PropTypes.node,
+  disabled: PropTypes.bool,
   className: PropTypes.string,
 }
 

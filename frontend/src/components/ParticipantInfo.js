@@ -24,11 +24,9 @@ const ParticipantInfo = observer(() => {
   const participantStore = rootStore.ParticipantStore
   // set up history for routing pushes
   const history = useHistory()
-  const insurers = toJS(participantStore.insurers)
-  let programList = toJS(participantStore.programs)
-  const serviceList = toJS(participantStore.services)
 
   // default values need to be set for the Select components to work
+  // set these before assigning global state to component variables
   if (!Object.keys(participantStore.participant).length) {
     participantStore.setDefaultParticipant()
   }
@@ -36,6 +34,11 @@ const ParticipantInfo = observer(() => {
     participantStore.setDefaultVisit()
   }
 
+  const existingParticipant = toJS(participantStore.participant)
+  const existingVisit = toJS(participantStore.visit)
+  const insurers = toJS(participantStore.insurers)
+  const programList = toJS(participantStore.programs)
+  const serviceList = toJS(participantStore.services)
   // -----------------------------------
 
   useEffect(() => {
@@ -51,11 +54,11 @@ const ParticipantInfo = observer(() => {
   const handleSubmit = e => {
     e.preventDefault()
     // if existing participant and vist we are coming from QueueTable, so update particiapnt and visit
-    if (participantStore.participant.id && participantStore.visit.id) {
+    if (existingParticipant.id && participantStore.visit.id) {
       participantStore.updateParticipant()
       participantStore.updateVisit()
       // if existing participant and no vist we are coming from search, so update particiapnt only
-    } else if (participantStore.participant.id && !participantStore.visit.id) {
+    } else if (existingParticipant.id && !participantStore.visit.id) {
       participantStore.updateParticipant()
       participantStore.createVisit()
       // otherwise we are adding a new participant because both participant and visit will be undefined
@@ -98,7 +101,7 @@ const ParticipantInfo = observer(() => {
             <InputLabel htmlFor="first-name">First name</InputLabel>
             <PrevPointInput
               name="first-name"
-              value={participantStore.participant.first_name}
+              value={existingParticipant.first_name}
               onChange={e => participantStore.setFirstName(e.target.value)}
               required
             />
@@ -109,7 +112,7 @@ const ParticipantInfo = observer(() => {
             <InputLabel htmlFor="last-name">Last name</InputLabel>
             <PrevPointInput
               name="last-name"
-              value={participantStore.participant.last_name}
+              value={existingParticipant.last_name}
               onChange={e => participantStore.setLastName(e.target.value)}
               required
             />
@@ -122,7 +125,7 @@ const ParticipantInfo = observer(() => {
             type="date"
             required
             fullWidth
-            value={participantStore.participant.date_of_birth}
+            value={existingParticipant.date_of_birth}
             onChange={e => participantStore.setDateOfBirth(e.target.value)}
             InputLabelProps={{
               shrink: true,
@@ -134,7 +137,7 @@ const ParticipantInfo = observer(() => {
             <InputLabel htmlFor="uuid">UUID</InputLabel>
             <PrevPointInput
               name="uuid"
-              value={participantStore.participant.pp_id}
+              value={existingParticipant.pp_id}
               onChange={e => setPPIdAndSSN(e)}
               required
             />
@@ -145,7 +148,7 @@ const ParticipantInfo = observer(() => {
             <InputLabel id="participant-race">Select Race</InputLabel>
             <Select
               required
-              value={participantStore.participant.race}
+              value={existingParticipant.race}
               onChange={e => participantStore.setRace(e.target.value)}
               labelId="participant-race"
             >
@@ -167,7 +170,7 @@ const ParticipantInfo = observer(() => {
             <InputLabel id="participant-gender">Select Gender</InputLabel>
             <Select
               required
-              value={participantStore.participant.gender}
+              value={existingParticipant.gender}
               onChange={e => participantStore.setGender(e.target.value)}
               labelId="participant-gender"
             >
@@ -186,7 +189,7 @@ const ParticipantInfo = observer(() => {
             <RadioGroup
               aria-label="insurance"
               name="hasInsurance"
-              value={participantStore.participant.is_insured ? "yes" : "no"}
+              value={existingParticipant.is_insured ? "yes" : "no"}
               onChange={e =>
                 participantStore.setIsInsured(
                   e.target.value === "yes" ? true : false
@@ -203,7 +206,7 @@ const ParticipantInfo = observer(() => {
           <FormControl>
             <InputLabel id="insurance-select">Select Insurance</InputLabel>
             <Select
-              value={participantStore.participant.insurer}
+              value={existingParticipant.insurer}
               onChange={e => participantStore.setInsurer(e.target.value)}
               labelId="insurance-select"
             >
@@ -230,9 +233,10 @@ const ParticipantInfo = observer(() => {
             <InputLabel id="program-select">Choose Program</InputLabel>
             <Select
               required
-              value={participantStore.visit.program}
+              value={existingVisit.program}
               onChange={e => {
                 participantStore.setVisitProgram(e.target.value)
+                participantStore.setVisitService("")
                 findAndSaveServiceListings(e)
               }}
               labelId="program-select"
@@ -253,10 +257,10 @@ const ParticipantInfo = observer(() => {
         <Grid item xs={12} sm={6}>
           <FormControl>
             <InputLabel id="service-select">Select Service</InputLabel>
-            {participantStore.visit.program && serviceList.length > 0 ? (
+            {existingVisit.program && serviceList.length > 0 ? (
               <Select
                 required
-                value={participantStore.visit.service}
+                value={existingVisit.service}
                 onChange={e => participantStore.setVisitService(e.target.value)}
                 labelId="service-select"
               >
@@ -279,7 +283,7 @@ const ParticipantInfo = observer(() => {
             <InputLabel id="priority-level">Select Priority Level</InputLabel>
             <Select
               name="priority-level"
-              value={participantStore.visit.urgency}
+              value={existingVisit.urgency}
               onChange={e => participantStore.setVisitUrgency(e.target.value)}
               labelId="priority-level"
             >
@@ -292,15 +296,13 @@ const ParticipantInfo = observer(() => {
           </FormControl>
         </Grid>
         <Grid item xs={12}>
-          <FormControl>
-            <InputLabel htmlFor="visit-notes">Add a Note</InputLabel>
-            <TextField
-              name="visit-notes"
-              placeholder="Add a note"
-              value={participantStore.visit.notes}
-              onChange={e => participantStore.setVisitNotes(e.target.value)}
-            />
-          </FormControl>
+          <TextField
+            fullWidth
+            label="Add a Note"
+            name="visit-notes"
+            value={existingVisit.notes}
+            onChange={e => participantStore.setVisitNotes(e.target.value)}
+          />
         </Grid>
         <Grid item xs={12}>
           <PrevPointButton type="submit" size="large">
