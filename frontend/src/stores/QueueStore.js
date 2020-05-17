@@ -8,7 +8,6 @@ export class QueueStore {
     this.rootStore = rootStore
   }
 
-  //@observable queueStats = []
   @observable queues = []
 
   // TODO: refactor after v1.0.0 release
