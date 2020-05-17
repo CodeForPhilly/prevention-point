@@ -184,7 +184,6 @@ export class ParticipantStore {
       throw "ParticipantStore:  getInsurers() Failed  =>  " + error
     }
   })
-  // called on  =>  QueueTable.js
   getPrograms = flow(function*() {
     try {
       const { ok, data } = yield api.getPrograms()
@@ -225,7 +224,6 @@ export class ParticipantStore {
       const { ok, data } = yield api.createParticipant(toJS(this.participant))
       if (ok && data) {
         this.setParticipant(data)
-        this.setVisitParticipantId(data.id)
         this.createVisit()
       }
     } catch (error) {
@@ -234,6 +232,7 @@ export class ParticipantStore {
   })
   createVisit = flow(function*() {
     try {
+      this.setVisitParticipantId(this.participant.id)
       const { ok, data } = yield api.createVisits(toJS(this.visit))
       if (ok && data) {
         this.setVisit(data)

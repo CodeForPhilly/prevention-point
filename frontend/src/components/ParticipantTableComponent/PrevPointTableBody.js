@@ -15,11 +15,7 @@ const PrevPointTableBody = props => {
         <h5>Sorry no participants found</h5>
       ) : (
         props.participants.map(participant => (
-          <TableRow
-            key={participant.id}
-            onClick={() => props.handleClick(participant)}
-            aria-label="trow"
-          >
+          <TableRow key={participant.id} aria-label="trow">
             <TableCell aria-label="tcell">
               <PrevPointCopy>{participant.pp_id} </PrevPointCopy>
             </TableCell>
@@ -39,7 +35,10 @@ const PrevPointTableBody = props => {
               <PrevPointCopy>{participant.race}</PrevPointCopy>
             </TableCell>
             <TableCell aria-label="tcell">
-              <Link to="/participantInfo">
+              <Link
+                to="/participantInfo"
+                onClick={() => props.handleClick(participant)}
+              >
                 <Fab color="primary" size="small" aria-label="add">
                   <AssignmentIndIcon />
                 </Fab>
