@@ -54,11 +54,11 @@ const ParticipantInfo = observer(() => {
   const handleSubmit = e => {
     e.preventDefault()
     // if existing participant and vist we are coming from QueueTable, so update particiapnt and visit
-    if (existingParticipant.id && participantStore.visit.id) {
+    if (existingParticipant.id && existingVisit.id) {
       participantStore.updateParticipant()
       participantStore.updateVisit()
       // if existing participant and no vist we are coming from search, so update particiapnt only
-    } else if (existingParticipant.id && !participantStore.visit.id) {
+    } else if (existingParticipant.id && !existingVisit.id) {
       participantStore.updateParticipant()
       participantStore.createVisit()
       // otherwise we are adding a new participant because both participant and visit will be undefined

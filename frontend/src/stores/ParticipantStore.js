@@ -184,7 +184,6 @@ export class ParticipantStore {
       throw "ParticipantStore:  getInsurers() Failed  =>  " + error
     }
   })
-
   getPrograms = flow(function*() {
     try {
       const { ok, data } = yield api.getPrograms()
@@ -208,7 +207,7 @@ export class ParticipantStore {
       throw "ParticipantStore:  getPrograms() Failed  =>  " + error
     }
   })
-
+  // called on  =>  ParticipantList.js
   getParticipants = flow(function*() {
     try {
       const { ok, data } = yield api.getParticipants(toJS(this.params))
