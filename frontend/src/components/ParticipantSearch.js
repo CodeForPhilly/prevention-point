@@ -11,19 +11,19 @@ import PrevPointCopy from "./Typography/PrevPointCopy"
 import { rootStoreContext } from "../stores/RootStore"
 import PrevPointHeading from "./Typography/PrevPointHeading"
 
-const UserSearch = observer(() => {
+const ParticipantSearch = observer(() => {
   const rootStore = useContext(rootStoreContext)
   const participantStore = rootStore.ParticipantStore
   const history = useHistory()
 
   const handleSubmit = e => {
     e.preventDefault()
-    // Validate that a user id or a first name last name paring exist on the form
+    // Validate that a participant id or a first name last name paring exist on the form
     if (!Object.keys(participantStore.params).length) {
-      participantStore.setErrorMessageForUserSearch(
-        "Need to enter a user id or a name"
+      participantStore.setErrorMessageForParticipantSearch(
+        "Need to enter a participant id or a name"
       )
-      participantStore.setErrorStateForUserSearch(true)
+      participantStore.setErrorStateForParticipantSearch(true)
     } else {
       participantStore.getParticipants()
       history.push("/participants")
@@ -49,11 +49,13 @@ const UserSearch = observer(() => {
         </Grid>
         <Grid item xs={12}>
           <FormControl error={participantStore.errorState}>
-            <InputLabel htmlFor="user_id">User ID</InputLabel>
+            <InputLabel htmlFor="participant_id">Participant ID</InputLabel>
             <PrevPointInput
-              name="user_id"
-              value={participantStore.params.userId}
-              onChange={e => participantStore.setUserIdParam(e.target.value)}
+              name="participant_id"
+              value={participantStore.params.pp_id}
+              onChange={e =>
+                participantStore.setParticipantIdParam(e.target.value)
+              }
             />
           </FormControl>
         </Grid>
@@ -98,4 +100,4 @@ const UserSearch = observer(() => {
   )
 })
 
-export default UserSearch
+export default ParticipantSearch

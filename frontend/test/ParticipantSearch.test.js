@@ -5,13 +5,13 @@ import { createMount } from "@material-ui/core/test-utils"
 import Adapter from "enzyme-adapter-react-16"
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles"
 
-import UserSearch from "../src/components/UserSearch"
+import ParticipantSearch from "../src/components/ParticipantSearch"
 
 configure({ adapter: new Adapter() })
 
 const theme = createMuiTheme({})
 
-describe("<UserSearch />", () => {
+describe("<ParticipantSearch />", () => {
   let wrapper
   let mount
 
@@ -22,7 +22,7 @@ describe("<UserSearch />", () => {
     mount = createMount()
     wrapper = mount(
       <ThemeProvider theme={theme}>
-        <UserSearch {...initialProps} />
+        <ParticipantSearch {...initialProps} />
       </ThemeProvider>
     )
   })
@@ -33,15 +33,15 @@ describe("<UserSearch />", () => {
   })
 
   it("should work", () => {
-    wrapper = mount(<UserSearch />)
+    wrapper = mount(<ParticipantSearch />)
   })
 
   it("should match the snapshot", () => {
     expect(wrapper.html()).toMatchSnapshot()
   })
 
-  it("should have a users id", () => {
-    expect(wrapper.exists('[name="user_id"]')).toEqual(true)
+  it("should have a participants id", () => {
+    expect(wrapper.exists('[name="participant_id"]')).toEqual(true)
   })
 
   it("should have a first name", () => {

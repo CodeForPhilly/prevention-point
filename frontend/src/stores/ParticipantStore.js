@@ -25,12 +25,12 @@ export class ParticipantStore {
   @observable routeToQueueTable = false
   @observable services = []
   @observable visitList = []
-  // User search
+  // participant search
   @observable errorState = false
   @observable errorMessage = ""
 
   // computed
-  // if user has input a value for search, enable search else disable search
+  // if participant has input a value for search, enable search else disable search
   @computed get toggleSearch() {
     // if the params obj has any new prop with a length > 0 and its ppId or fName or lName, then enable
     let hasSearchString =
@@ -84,8 +84,8 @@ export class ParticipantStore {
   @action setVisit = data => {
     this.visit = data
   }
-  // User Search Actions
-  @action setUserIdParam = data => {
+  // Participant Search Actions
+  @action setParticipantIdParam = data => {
     this.params.pp_id = data.toUpperCase()
   }
   @action setFirstNameParam = data => {
@@ -160,10 +160,10 @@ export class ParticipantStore {
   @action setVisitsList = data => {
     this.visitList = data
   }
-  @action setErrorStateForUserSearch = state => {
+  @action setErrorStateForParticipantSearch = state => {
     this.errorState = state
   }
-  @action setErrorMessageForUserSearch = message => {
+  @action setErrorMessageForParticipantSearch = message => {
     this.errorMessage = message
   }
 
