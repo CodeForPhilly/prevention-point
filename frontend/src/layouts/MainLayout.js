@@ -11,7 +11,7 @@ import MenuIcon from "@material-ui/icons/Menu"
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
 import ChevronRightIcon from "@material-ui/icons/ChevronRight"
 import Navbar from "../components/Navbar"
-import UserSearch from "../components/UserSearch"
+import ParticipantSearch from "../components/ParticipantSearch"
 import PropTypes from "prop-types"
 import { withRouter } from "react-router-dom"
 
@@ -134,7 +134,7 @@ const PersistentDrawerLeft = props => {
           </IconButton>
         </div>
         <Divider />
-        <UserSearch />
+        <ParticipantSearch />
       </Drawer>
       <main
         className={clsx(classes.content, {
