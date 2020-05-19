@@ -5,7 +5,7 @@ import { BrowserRouter } from "react-router-dom"
 
 const mockParticipantsList = [
   {
-    id: null,
+    id: "c4ca1",
     first_name: "John",
     last_name: "Doe",
     last_four_ssn: 1234,
@@ -19,7 +19,7 @@ const mockParticipantsList = [
     insurer: "",
   },
   {
-    id: null,
+    id: "c81e2",
     first_name: "Jane",
     last_name: "Doe",
     last_four_ssn: 1234,
@@ -33,14 +33,23 @@ const mockParticipantsList = [
     insurer: "",
   },
 ]
-const table = document.createElement("table")
+let table
+let tableContainer
 
 describe("<PrevPointTableBody />", () => {
+  beforeEach(() => {
+    table = document.createElement("table")
+    tableContainer = {
+      container: document.body.appendChild(table),
+    }
+  })
+
   it("should render a PrevPointTableBody component", () => {
     render(
       <BrowserRouter>
         <PrevPointTableBody participants={mockParticipantsList} />
-      </BrowserRouter>
+      </BrowserRouter>,
+      tableContainer
     )
   })
 
@@ -49,7 +58,8 @@ describe("<PrevPointTableBody />", () => {
     const { getByText } = render(
       <BrowserRouter>
         <PrevPointTableBody participants={[]} />
-      </BrowserRouter>
+      </BrowserRouter>,
+      tableContainer
     )
     const tableBodyError = getByText(errorMessage)
     expect(tableBodyError).toBeInTheDocument()
@@ -61,9 +71,7 @@ describe("<PrevPointTableBody />", () => {
       <BrowserRouter>
         <PrevPointTableBody participants={mockParticipantsList} />
       </BrowserRouter>,
-      {
-        container: document.body.appendChild(table),
-      }
+      tableContainer
     )
     const tableBodyElement = getByLabelText(/tbody/i)
     expect(tableBodyElement).toBeInTheDocument()
@@ -74,9 +82,7 @@ describe("<PrevPointTableBody />", () => {
       <BrowserRouter>
         <PrevPointTableBody participants={mockParticipantsList} />
       </BrowserRouter>,
-      {
-        container: document.body.appendChild(table),
-      }
+      tableContainer
     )
     const tableRows = getAllByLabelText("trow")
     const tableCellList = getAllByLabelText("tcell")

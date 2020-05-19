@@ -2,14 +2,19 @@ import { render } from "@testing-library/react"
 import React from "react"
 import PrevPointTableHead from "./../src/components/ParticipantTableComponent/PrevPointTableHead"
 
-const table = document.createElement("table")
-const tableContainer = {
-  container: document.body.appendChild(table),
-}
+let table
+let tableContainer
 
 describe("<PrevPointTableHead />", () => {
+  beforeEach(() => {
+    table = document.createElement("table")
+    tableContainer = {
+      container: document.body.appendChild(table),
+    }
+  })
+
   it("should render a PrevPointTableHead component", () => {
-    render(<PrevPointTableHead />)
+    render(<PrevPointTableHead />, tableContainer)
   })
 
   it("should render a PrevPointTableHead and have a TableHead element", () => {
