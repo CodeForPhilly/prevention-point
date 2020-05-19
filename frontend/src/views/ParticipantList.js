@@ -4,12 +4,12 @@ import { observer } from "mobx-react-lite"
 import { makeStyles } from "@material-ui/core/styles"
 import Breadcrumbs from "@material-ui/core/Breadcrumbs"
 import PersonAddIcon from "@material-ui/icons/PersonAdd"
-import BottomNavigation from "@material-ui/core/BottomNavigation"
 import PrevPointCopy from "../components/Typography/PrevPointCopy"
 import PrevPointHeading from "../components/Typography/PrevPointHeading"
 import { rootStoreContext } from "../stores/RootStore"
 import PrevPointTable from "../components/ParticipantTableComponent/PrevPointTable"
 import { PARTICIPANT_LIST_TABLE_TITLES } from "../constants/GlobalConstants"
+import Grid from "@material-ui/core/Grid"
 
 const ParticipantList = observer(() => {
   const useStyles = makeStyles({
@@ -26,13 +26,17 @@ const ParticipantList = observer(() => {
       height: "auto",
     },
     addParticipantLink: {
-      display: "flex",
+      display: "inline-flex",
       alignItems: "center",
       padding: 20,
       color: "#086375",
     },
     addParticipantIcon: {
       marginLeft: 10,
+    },
+    linkWrapper: {
+      display: "flex",
+      justifyContent: "center",
     },
   })
   const classes = useStyles()
@@ -71,24 +75,26 @@ const ParticipantList = observer(() => {
           handleClick={handleParticipant}
         />
       </div>
-      <BottomNavigation
+      <Grid
+        container
         aria-label="bottomNav"
-        showLabels
         className={classes.addParticipantNav}
       >
-        <Link
-          className={classes.addParticipantLink}
-          to="/participantInfo"
-          onClick={() => {
-            participantStore.setDefaultParticipant()
-            participantStore.setDefaultVisit()
-            participantStore.setServiceList([])
-          }}
-        >
-          <PrevPointHeading>Add Participant</PrevPointHeading>
-          <PersonAddIcon className={classes.addParticipantIcon} />
-        </Link>
-      </BottomNavigation>
+        <Grid className={classes.linkWrapper} item xs={12}>
+          <Link
+            className={classes.addParticipantLink}
+            to="/participantInfo"
+            onClick={() => {
+              participantStore.setDefaultParticipant()
+              participantStore.setDefaultVisit()
+              participantStore.setServiceList([])
+            }}
+          >
+            <PrevPointHeading>Add Participant</PrevPointHeading>
+            <PersonAddIcon className={classes.addParticipantIcon} />
+          </Link>
+        </Grid>
+      </Grid>
     </Fragment>
   )
 })

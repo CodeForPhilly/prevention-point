@@ -12,7 +12,9 @@ const PrevPointTableBody = props => {
   return (
     <TableBody aria-label="tbody">
       {props.participants.length < 1 ? (
-        <h5>Sorry no participants found</h5>
+        <TableRow aria-label="trow">
+          <TableCell aria-label="tcell">Sorry no participants found</TableCell>
+        </TableRow>
       ) : (
         props.participants.map(participant => (
           <TableRow key={participant.id} aria-label="trow">
