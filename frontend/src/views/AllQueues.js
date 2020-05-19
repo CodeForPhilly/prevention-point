@@ -79,7 +79,7 @@ const AllQueues = observer(() => {
               scrollButtons="on"
               indicatorColor="primary"
               textColor="primary"
-              aria-label="scrollable force tabs example"
+              aria-label="Queue selector tabs"
             >
               {queueStore.queues.map(item => (
                 <QueueTab
