@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom"
 import PrivateRoute from "../routes/PrivateRoute"
 import Navbar from "../components/Navbar"
 import LoginForm from "../views/LoginForm"
-import MainLayout from "../layouts/MainLayout"
+import ParticipantSearchDrawer from "../views/ParticipantSearchDrawer/ParticipantSearchDrawer"
 import ParticipantList from "../views/ParticipantList"
 import AllQueues from "../views/AllQueues"
 import ParticipantInfo from "../components/ParticipantInfo"
@@ -13,7 +13,7 @@ const Routes = () => {
     <BrowserRouter>
       <Navbar />
       <Route path="/login" component={LoginForm} />
-      <MainLayout>
+      <ParticipantSearchDrawer>
         <Switch>
           <PrivateRoute exact path="/" component={AllQueues} />
           <PrivateRoute
@@ -27,7 +27,7 @@ const Routes = () => {
             component={ParticipantInfo}
           />
         </Switch>
-      </MainLayout>
+      </ParticipantSearchDrawer>
     </BrowserRouter>
   )
 }

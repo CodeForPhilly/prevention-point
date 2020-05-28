@@ -11,9 +11,8 @@ import PrevPointCopy from "./Typography/PrevPointCopy"
 import { rootStoreContext } from "../stores/RootStore"
 import PrevPointHeading from "./Typography/PrevPointHeading"
 
-const ParticipantSearch = observer(() => {
-  const rootStore = useContext(rootStoreContext)
-  const participantStore = rootStore.ParticipantStore
+const ParticipantSearch = observer(props => {
+  const participantStore = useContext(rootStoreContext).ParticipantStore
   const history = useHistory()
 
   const handleSubmit = e => {
@@ -35,7 +34,7 @@ const ParticipantSearch = observer(() => {
       <Grid
         container
         component="form"
-        onSubmit={handleSubmit}
+        onSubmit={e => (handleSubmit(e), props.handleToggle())}
         className="participant-search__form"
       >
         <Grid item xs={12}>
