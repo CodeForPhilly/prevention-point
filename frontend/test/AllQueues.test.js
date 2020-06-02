@@ -13,6 +13,20 @@ jest.mock("../src/api")
 api.getProgram = jest
   .fn()
   .mockResolvedValue({ ok: true, data: { is_frozen: false } })
+api.getPrograms = jest.fn().mockResolvedValue({
+  ok: true,
+  data: [
+    { name: "TESTING", participants: [] },
+    { name: "CM", participants: [], waitTime: 0, length: 0 },
+    { name: "SSHP", participants: [] },
+    { name: "LEGAL", participants: [] },
+    { name: "CRAFT", participants: [] },
+    { name: "PHAN", participants: [] },
+    { name: "STEP", participants: [] },
+    { name: "BIENSTAR", participants: [] },
+    { name: "SKWC", participants: [] },
+  ],
+})
 api.getQueue = jest.fn().mockResolvedValue({ ok: true, data: [] })
 api.patchProgram = jest.fn().mockResolvedValue({ ok: true })
 
@@ -53,6 +67,7 @@ describe("<AllQueues />", () => {
           </ThemeProvider>
         )
       })
+      wrapper.update()
       bar = wrapper.find(AppBar)
       buttons = bar.find("button")
       testingButton = buttons.at(0)
@@ -64,7 +79,7 @@ describe("<AllQueues />", () => {
 
     // what to do after each test
     afterEach(() => {
-      //mount.cleanup()
+      mount.cleanUp()
       jest.clearAllMocks()
     })
 

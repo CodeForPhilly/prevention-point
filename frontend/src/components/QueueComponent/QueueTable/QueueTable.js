@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const QueueTable = observer(queueData => {
+const QueueTable = observer(({ queueData }) => {
   const queueStore = useContext(QueueStoreContext)
   const rootStore = useContext(rootStoreContext)
   const participantStore = rootStore.ParticipantStore
@@ -48,7 +48,7 @@ const QueueTable = observer(queueData => {
   }
 
   const seenHandler = id => {
-    queueStore.updateStatus(queueData.queueData, id.id, "SEEN")
+    queueStore.updateStatus(queueData, id.id, "SEEN")
   }
 
   const NotesButton = visitId => {
@@ -70,11 +70,11 @@ const QueueTable = observer(queueData => {
   return (
     <Paper className={classes.root}>
       <MaterialTable
-        title={queueStore.queueStats[queueData.queueData].name}
+        title={queueStore.queues[queueData].name}
         className={classes.table}
         localization={{ body: { emptyDataSourceMessage: "Queue is empty" } }}
         options={{ search: false, sorting: true }}
-        data={queueStore.queues[queueData.queueData].map(x => ({
+        data={queueStore.queues[queueData].participants.map(x => ({
           urgency: x.urgency,
           first: x.participant.first_name,
           last: x.participant.last_name,
@@ -137,7 +137,7 @@ const QueueTable = observer(queueData => {
                 id={id}
                 initialValue={urgency}
                 items={URGENCY_OPTIONS}
-                queueData={queueData.queueData}
+                queueData={queueData}
                 column="urgency"
               />
             ),
@@ -165,7 +165,7 @@ const QueueTable = observer(queueData => {
                 id={id}
                 initialValue={status}
                 items={STATUS_OPTIONS}
-                queueData={queueData.queueData}
+                queueData={queueData}
                 column="status"
               />
             ),
@@ -186,7 +186,7 @@ const QueueTable = observer(queueData => {
       <NotesDialog
         visibleDialog={visibleDialog}
         toggleVisibleDialog={toggleVisibleDialog}
-        queueData={queueData.queueData}
+        queueData={queueData}
         id={notesVisit.id}
       />
     </Paper>

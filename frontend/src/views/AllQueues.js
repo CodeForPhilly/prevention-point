@@ -27,9 +27,10 @@ const useStyles = makeStyles(() => ({
 const AllQueues = observer(() => {
   const queueStore = useContext(QueueStoreContext)
   const classes = useStyles()
+  const [queuesLoaded, setQueuesLoaded] = useState(false)
   const [tabValue, setTabValue] = useState(0)
   const [btnState, setBtnState] = useState({ disabled: false, isFrozen: false })
-  const handleChange = (event, newValue) => setTabValue(newValue)
+
   const toggleFreeze = async () => {
     setBtnState({ ...btnState, disabled: true })
     try {
@@ -48,48 +49,59 @@ const AllQueues = observer(() => {
 
   //Update all queues on first rendering
   useEffect(() => {
-    Object.entries(queueStore.queueStats).map((_, i) => queueStore.getQueue(i))
+    api
+      .getPrograms()
+      .then(({ data }) => {
+        data.sort((a, b) => a.id - b.id)
+        queueStore.setQueues(data)
+        return Promise.all(data.map(item => queueStore.getQueue(item.id)))
+      })
+      .then(() => setQueuesLoaded(true))
   }, [queueStore])
 
   useEffect(() => {
-    ;(async () => {
-      let { data } = await api.getProgram(tabValue + 1)
-      setBtnState(prev => ({ ...prev, isFrozen: data.is_frozen }))
-    })()
-  }, [tabValue])
+    if (queueStore.queues[tabValue]) {
+      api.getProgram(queueStore.queues[tabValue].id).then(({ data }) => {
+        setBtnState(prev => ({ ...prev, isFrozen: data.is_frozen }))
+      })
+    }
+  }, [tabValue, queueStore.queues])
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" color="default">
-        <Tabs
-          value={tabValue}
-          onChange={handleChange}
-          variant="scrollable"
-          scrollButtons="on"
-          indicatorColor="primary"
-          textColor="primary"
-          aria-label="scrollable force tabs example"
-        >
-          {Object.entries(queueStore.queueStats).map(([_, value]) => (
-            <QueueTab
-              className={classes.queueTab}
-              {...value}
-              key={value.name}
-            />
-          ))}
-        </Tabs>
-      </AppBar>
-      <QueueTable queueData={tabValue + 1} />
-
-      <div className={classes.freezeQueueContainer}>
-        <PrevPointButton
-          color="secondary"
-          onClick={toggleFreeze}
-          disabled={btnState.disabled}
-        >
-          {btnState.isFrozen ? "Unfreeze" : "Freeze"}
-        </PrevPointButton>
-      </div>
+      {queuesLoaded && (
+        <>
+          <AppBar position="static" color="default">
+            <Tabs
+              value={tabValue}
+              onChange={(event, value) => setTabValue(value)}
+              variant="scrollable"
+              scrollButtons="on"
+              indicatorColor="primary"
+              textColor="primary"
+              aria-label="Queue selector tabs"
+            >
+              {queueStore.queues.map(item => (
+                <QueueTab
+                  className={classes.queueTab}
+                  key={item.name}
+                  {...item}
+                />
+              ))}
+            </Tabs>
+          </AppBar>
+          <QueueTable name={queueStore.queues[tabValue]} queueData={tabValue} />
+          <div className={classes.freezeQueueContainer}>
+            <PrevPointButton
+              color="secondary"
+              onClick={toggleFreeze}
+              disabled={btnState.disabled}
+            >
+              {btnState.isFrozen ? "Unfreeze" : "Freeze"}
+            </PrevPointButton>
+          </div>
+        </>
+      )}
     </div>
   )
 })
