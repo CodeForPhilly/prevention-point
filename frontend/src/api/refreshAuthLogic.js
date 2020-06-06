@@ -1,9 +1,11 @@
+import cookieValue, { setAuthCookie } from "./cookies"
+
 const refreshAuthLogic = api => async failedRequest => {
-  const refreshToken = localStorage.getItem("JWT_REFRESH")
+  const refreshToken = cookieValue("JWT_REFRESH")
   const tokenRefreshResponse = await api.post("/token/refresh/", {
     refresh: refreshToken,
   })
-  localStorage.setItem("JWT_ACCESS", tokenRefreshResponse.data.access)
+  setAuthCookie("JWT_ACCESS", tokenRefreshResponse.data.access)
   failedRequest.response.config.baseURL = ""
 
   // the refreshed token should be in the post data for this url

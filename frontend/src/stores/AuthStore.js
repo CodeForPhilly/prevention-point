@@ -30,8 +30,8 @@ export class AuthStore {
   }
   @action
   logout() {
-    localStorage.removeItem("JWT_ACCESS")
-    localStorage.removeItem("JWT_REFRESH")
+    document.cookie = "JWT_ACCESS=; expires=Thu, 01 Jan 1970 00:00:01 GMT;"
+    document.cookie = "JWT_REFRESH=; expires=Thu, 01 Jan 1970 00:00:01 GMT;"
     this.isAuthenticated = false
     this.username = null
     this.email = null
