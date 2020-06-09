@@ -2,7 +2,6 @@ from .insurer import *
 from .participant import *
 from .program import *
 from .service import *
-from .program_service_map import *
 from .visit import *
 from .hcv_notes import *
 from .medication import *

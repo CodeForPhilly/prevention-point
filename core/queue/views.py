@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
 from core.permissions import  DjangoModelPermissions
-from core.visits.serializer import VisitWithPopulationSerializer
+from core.visits.serializer import VisitSerializer
 from core.models import Visit, FrontDeskEvent, FrontDeskEventType
 from core.front_desk_events.serializer import FrontDeskEventForQueueSerializer
 from django.contrib.auth.models import User
@@ -30,15 +30,15 @@ class QueueViewSet(viewsets.ViewSet):
 
         # filter by visits that are happening today in a certain program
         visits_queryset = (
-            Visit.objects.select_related("participant", "program_service_map")
+            Visit.objects.select_related("participant", "program")
             .filter(
-                program_service_map__program_id=program_id,
+                program=program_id,
                 created_at__date=datetime.date.today(),
             )
             .order_by("urgency", "-created_at")
         )
 
-        todays_visit_data = VisitWithPopulationSerializer(
+        todays_visit_data = VisitSerializer(
             visits_queryset, many=True, context={"request": request}
         ).data
         active_visits_queue = []

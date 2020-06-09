@@ -20,8 +20,7 @@ from core.models import (
     UrgencyLevel,
     FrontDeskEvent,
     UrineDrugScreen,
-    ProgramServiceMap,
-    FrontDeskEventType, 
+    FrontDeskEventType,
     ProgramAvailability,
 )
 
@@ -111,7 +110,7 @@ class AvailabilityWindowProvider(BaseProvider):
         window_begin = random.randint(start_hour, end_hour - 2)
         end_hour = random.randint(window_begin + 1, end_hour)
         return datetime.time(hour=window_begin), datetime.time(hour=end_hour)
-       
+
 
 fake.add_provider(AvailabilityWindowProvider)
 
@@ -119,13 +118,14 @@ fake.add_provider(AvailabilityWindowProvider)
 def run_seed(self):
     call_command("migrate", interactive=False)
     call_command("flush", interactive=False)
+    print("seeding database...")
     call_command("users_and_groups")
     create_insurers(output=False)
     create_participants()
     create_programs(output=False)
     create_visits(output=False)
     create_program_availability(output=False)
-
+    print("seed complete!")
 
 
 def create_insurers(output=True):
@@ -236,12 +236,9 @@ def create_programs(output=True):
             s = Service()
             s.name = service
             s.available = random_bool()
+            s.program = p
             s.full_clean()
             s.save()
-            psm = ProgramServiceMap()
-            psm.service = s
-            psm.program = p
-            psm.save()
 
             if output:
                 print("Created {}: '{}'".format(p.name, s.name))
@@ -250,14 +247,16 @@ def create_programs(output=True):
 def create_visits(output=True, uds=True, medication=True):
     """Create fake visits and front desk events, depending on Participants and Programs. Visits are created using now(), i.e. today"""
     participants = Participant.objects.all()
-    p_s_maps = ProgramServiceMap.objects.all()
+    services = Service.objects.all().select_related()
 
     for _ in range(DEFAULT_NUMBER_VISITS):
         v = Visit()
         v.participant = random.choice(participants)
         # v.created_at = pytz.utc.localize(fake.date_time())
         v.created_at = timezone.now()
-        v.program_service_map = random.choice(p_s_maps)
+        service = random.choice(services)
+        v.service = service
+        v.program = service.program
         v.urgency = random.choice(list(UrgencyLevel)).name
         v.notes = fake.sentence(nb_words=10, variable_nb_words=True, ext_word_list=None)
         v.full_clean()
@@ -316,7 +315,7 @@ def create_program_availability(output=True):
                     availability_two.save()
 
     if output:
-        for availability in ProgramAvailability.objects.all().order_by('program'): 
+        for availability in ProgramAvailability.objects.all().order_by('program'):
             print(f"Created program availability: {availability.program.name} {availability.day_of_week} {availability.start_time} {availability.end_time}")
 
 

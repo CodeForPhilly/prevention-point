@@ -1,4 +1,4 @@
-# from django.contrib.auth.models import Group, User
+from django.forms.models import model_to_dict
 from core.tests.base import BaseTestCase
 from django.core.management import call_command
 from core.models import Service
@@ -7,9 +7,9 @@ import random
 import json
 
 def get_random_service():
-#gets random service from DB
-    random_pk = random.randint(1, 6)
-    return Service.objects.filter(pk__exact=random_pk).values()[0]
+    #gets random service from DB
+    random_pk = random.randint(1, 40)
+    return model_to_dict(Service.objects.get(pk=random_pk))
 
 class ServicesTests(BaseTestCase):
     fixtures = ['services.yaml', 'programs.yaml']

@@ -19,7 +19,6 @@ class VisitTests(BaseTestCase):
         "participants.yaml",
         "programs.yaml",
         "services.yaml",
-        "program_service_map.yaml",
     ]
 
 
@@ -40,8 +39,8 @@ class VisitTests(BaseTestCase):
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Visit.objects.count(), 1)
-        self.assertEqual(json.loads(response.content)["participant"]["id"], 1)
-        self.assertEqual(json.loads(response.content)["program"]["id"], 1)
+        self.assertEqual(json.loads(response.content)["participant"], 1)
+        self.assertEqual(json.loads(response.content)["program"], 1)
 
     def test_update_visit_notes(self):
         """
@@ -97,7 +96,7 @@ class VisitTests(BaseTestCase):
 
     def test_update_visit_program_service(self):
         """
-        Ensure we can update notes on a visit
+        Ensure we can update program and service on a visit
         """
         # create a visit
         headers = self.auth_headers_for_user("front_desk")
@@ -117,14 +116,23 @@ class VisitTests(BaseTestCase):
 
         self.assertEqual(update_response.status_code, status.HTTP_200_OK)
         self.assertEqual(Visit.objects.count(), 1)
-        self.assertEqual(Visit.objects.get(id=visit_id).program_service_map.id, 6)
+        self.assertEqual(Visit.objects.get(id=visit_id).program.id, 2)
+        self.assertEqual(Visit.objects.get(id=visit_id).service.id, 6)
 
-        data = {"id": visit_id, "program": 3, "service": 10}
-        update_response = self.client.patch(
-            f"/api/visits/{visit_id}/", data, format="json", **headers
+
+    def test_failure_visit_post_invalid_program_service_combination (self):
+        """
+        Ensure we cannot update program/service on a visit when they are unrelated
+        """
+
+        headers = self.auth_headers_for_user("front_desk")
+        data = {"participant": 1, "program": 3, "service": 10, "urgency": "_1"}
+        create_response = self.client.post(
+            "/api/visits/", data, format="json", **headers
         )
 
-        self.assertEqual(update_response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        self.assertEqual(create_response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_get_visits(self):
         """
@@ -166,7 +174,6 @@ class VisitMedicalRelationsTests(BaseTestCase):
         "participants.yaml",
         "programs.yaml",
         "services.yaml",
-        "program_service_map.yaml",
     ]
 
 
@@ -176,7 +183,8 @@ class VisitMedicalRelationsTests(BaseTestCase):
         """
         new_visit = {
             "participant_id": 1,
-            "program_service_map_id": 1,
+            "program_id": 1,
+            "service_id": 1,
             "notes": "hello prevention point",
             "urgency": "_2",
         }

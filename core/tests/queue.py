@@ -12,8 +12,11 @@ class QueueTests(BaseTestCase):
         "services.yaml",
         "participants.yaml",
         "front_desk_events.yaml",
-        "program_service_map.yaml",
     ]
+
+    def setUp(self):
+        super().setUp()
+        self.seed_fake_users()
 
     def test_get_queue_by_program_id(self):
         """
@@ -22,7 +25,6 @@ class QueueTests(BaseTestCase):
         headers = self.auth_headers_for_user("internal_provider")
         headers["format"] = "json"
 
-        # for program in range(1,4):
         program = 1
         response = self.client.get(f"/api/programs/{program}/queue/", **headers)
         self.assertEqual(response.status_code, status.HTTP_200_OK)

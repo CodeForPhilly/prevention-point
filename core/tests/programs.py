@@ -1,12 +1,13 @@
 from core.tests.base import BaseTestCase
 from django.core.management import call_command
-from core.models import Service, Program, ProgramServiceMap
+from core.models import Service, Program
 from rest_framework import status
 import random
 import json
 
 class ProgramsTests(BaseTestCase):
-    fixtures = ['services.yaml', 'programs.yaml', 'program_service_map.yaml']
+    fixtures = ['services.yaml', 'programs.yaml',]
+
 
     def test_get_programs_list(self):
         """
@@ -18,30 +19,30 @@ class ProgramsTests(BaseTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Program.objects.count(), 9)
 
-    def test_services_populate_on_programs(self):
-        """
-        Ensures that all associated services populate on program objects
-        """
-        headers = self.auth_headers_for_user('admin')
-        random_pk = random.randint(1, 9)
-        random_program = Program.objects.filter(pk__exact=random_pk).values()[0]
+    # def test_services_populate_on_programs(self):
+    #     """
+    #     Ensures that all associated services populate on program objects
+    #     """
+    #     headers = self.auth_headers_for_user('admin')
+    #     random_pk = random.randint(1, 9)
+    #     random_program = Program.objects.filter(pk__exact=random_pk).values()[0]
 
-        #get list of all services with important info
-        program_service_ids = list(ProgramServiceMap.objects.values())
-        services = []
+    #     #get list of all services with important info
+    #     program_service_ids = list(ProgramServiceMap.objects.values())
+    #     services = []
 
-        for program_service_pair in program_service_ids:
-        # filter service list by program id
-            if program_service_pair['program_id'] == random_program['id']:
-                service_name = Service.objects.get(pk=program_service_pair['service_id']).name
-                services.append(service_name)
-        route ='/api/programs/{}'.format(random_program['id'])
-        response = self.client.get(route , follow=True, **headers)
+    #     for program_service_pair in program_service_ids:
+    #     # filter service list by program id
+    #         if program_service_pair['program_id'] == random_program['id']:
+    #             service_name = Service.objects.get(pk=program_service_pair['service_id']).name
+    #             services.append(service_name)
+    #     route ='/api/programs/{}'.format(random_program['id'])
+    #     response = self.client.get(route , follow=True, **headers)
 
-        for service in services:
-        # check that response contains substring of each service name
-            self.assertContains(response, service)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+    #     for service in services:
+    #     # check that response contains substring of each service name
+    #         self.assertContains(response, service)
+    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 
     def test_is_closed_is_updated(self):

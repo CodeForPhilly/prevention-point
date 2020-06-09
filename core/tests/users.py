@@ -50,12 +50,11 @@ class UsersTests(BaseTestCase):
 
 class UserPermissionsTests(BaseTestCase):
     fixtures = [
-        "visits.yaml",
+        "participants.yaml",
         "programs.yaml",
         "services.yaml",
-        "participants.yaml",
+        "visits.yaml",
         "front_desk_events.yaml",
-        "program_service_map.yaml",
     ]
 
     def test_front_desk_can_access_queue(self):

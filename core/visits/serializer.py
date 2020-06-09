@@ -1,51 +1,22 @@
 from rest_framework import serializers
 from core.models import Visit
 from core.participants.serializers import ParticipantSerializer
-from core.program_service_map.serializer import ProgramServiceMapSerializer
-
+from core.services.serializers import ServiceForProgramSerializer
 
 class VisitSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Visit
         fields = (
             "id",
-            "participant",
-            "program_service_map",
-            "created_at",
             "notes",
+            "service",
+            "program",
             "urgency",
+            "created_at",
+            "participant",
         )
 
-
-class VisitWithPopulationSerializer(serializers.ModelSerializer):
-    """
-    This is the visit object that is flattened and populated. intended to only
-    only be for list/retrieve
-    """
-
-    program_service_map = ProgramServiceMapSerializer(read_only=True)
+class PopulatedVisitSerializer(VisitSerializer):
     participant = ParticipantSerializer(read_only=True)
-
-    class Meta:
-        model = Visit
-        fields = (
-            "id",
-            "participant",
-            "program_service_map",
-            "created_at",
-            "notes",
-            "urgency",
-        )
-
-    def to_representation(self, obj):
-        """
-        flatten response object, removing program service map key and just returning its dicts, service and program
-        """
-        representation = super().to_representation(obj)
-        try:
-            profile_representation = representation.pop("program_service_map")
-            representation.update(profile_representation)
-            return representation
-        except TypeError:
-            # TODO the program_service_map FK needs to be required, but right now is not, hence this exception
-            return representation
+    service = ServiceForProgramSerializer(read_only=True) # TODO, remove this and get service data from queues[i].services[i].id on the front end

@@ -11,8 +11,10 @@ class FrontDeskEventTests(BaseTestCase):
         "services.yaml",
         "programs.yaml",
         "participants.yaml",
-        "program_service_map.yaml",
     ]
+
+    def setUp(self):
+        super().setUp()
 
     def test_create_front_desk_event(self):
         """
