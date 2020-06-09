@@ -7,9 +7,6 @@ import json
 
 class ProgramsTests(BaseTestCase):
     fixtures = ['services.yaml', 'programs.yaml', 'program_service_map.yaml']
-    def setUp(self):
-        super().setUp()
-        self.seed_fake_users()
 
     def test_get_programs_list(self):
         """
@@ -36,7 +33,7 @@ class ProgramsTests(BaseTestCase):
         for program_service_pair in program_service_ids:
         # filter service list by program id
             if program_service_pair['program_id'] == random_program['id']:
-                service_name = Service.objects.get(pk=program_service_pair['service_id']).name  
+                service_name = Service.objects.get(pk=program_service_pair['service_id']).name
                 services.append(service_name)
         route ='/api/programs/{}'.format(random_program['id'])
         response = self.client.get(route , follow=True, **headers)

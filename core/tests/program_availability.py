@@ -5,19 +5,19 @@ from core.models import ProgramAvailability
 
 
 class ProgramAvailabilityTests(BaseTestCase):
-    fixtures = ['program_availability.yaml', 'programs.yaml', 'users.yaml', 'groups.yaml']
+    fixtures = ['program_availability.yaml', 'programs.yaml']
 
     def test_list_of_availabilities(self):
         """
         Ensure we can get a list of availabilities, only for a specific program
         """
-       
+
         headers = self.auth_headers_for_user('internal_provider')
         response = self.client.get('/api/programs/1/program-availability/', **headers)
         content = json.loads(response.content)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(ProgramAvailability.objects.filter(program_id=1)), len(content))
-        
+
         for availability_object in content:
             self.assertEqual(availability_object['program'], 1)
 

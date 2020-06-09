@@ -6,7 +6,7 @@ from core.models.insurer import Insurer
 class ParticipantsTestCase(BaseTestCase):
     def setUp(self):
         super().setUp()
-        self.seed_fake_users()
+
         self.insurer = Insurer.objects.create(
             name="InsureCo",
             is_active=True,
@@ -21,7 +21,7 @@ class ParticipantsTestCase(BaseTestCase):
             date_of_birth="1949-08-23",
             start_date="2019-01-01",
             is_insured=True,
-            insurer=self.insurer, 
+            insurer=self.insurer,
         )
 
     def test_participants_api_when_authed_as_front_desk(self):

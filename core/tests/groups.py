@@ -7,9 +7,6 @@ from core.management.commands.users_and_groups import DEFAULT_DEV_ENV_PASS
 
 
 class GroupsTests(BaseTestCase):
-    def setUp(self):
-        super().setUp()
-        self.seed_fake_users()
 
     def test_get_groups_list(self):
         """
@@ -27,9 +24,6 @@ class GroupsTests(BaseTestCase):
 
 
 class GroupPermissionsTests(BaseTestCase):
-    def setUp(self):
-        super().setUp()
-        self.seed_fake_users()
 
     def create_new_user_and_group(self):
         """

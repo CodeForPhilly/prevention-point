@@ -7,8 +7,6 @@ from core.models import FrontDeskEventType
 
 class QueueTests(BaseTestCase):
     fixtures = [
-        "users.yaml",
-        "groups.yaml",
         "visits.yaml",
         "programs.yaml",
         "services.yaml",
@@ -71,7 +69,7 @@ class QueueTests(BaseTestCase):
 
 
 class EmptyQueueTests(BaseTestCase):
-    fixtures = ["participants.yaml", "groups.yaml", "programs.yaml", "users.yaml"]
+    fixtures = ["participants.yaml", "programs.yaml"]
 
     def test_get_empty_queue(self):
         """

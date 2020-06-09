@@ -6,7 +6,7 @@ from core.models import ProgramServiceMap, Service
 
 
 class ProgramServiceMapTests(BaseTestCase):
-    fixtures = ['users.yaml', 'groups.yaml','services.yaml', 'programs.yaml','program_service_map.yaml']
+    fixtures = ['services.yaml', 'programs.yaml','program_service_map.yaml']
 
     def test_map_objects_have_expected_pairs(self):
       """
@@ -22,7 +22,7 @@ class ProgramServiceMapTests(BaseTestCase):
         self.assertEqual(service_id, map_object.service_id)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-   
+
     def test_service_on_map_object_present_on_program_route(self):
       """
       ensure that services on programs are populated
@@ -33,6 +33,6 @@ class ProgramServiceMapTests(BaseTestCase):
         service_name = Service.objects.get(pk=map_object.service_id).name
         response = self.client.get('/api/programs/{}/'.format(map_object.program_id), follow=True, **headers)
         self.assertContains(response, service_name)
-     
+
 
 
