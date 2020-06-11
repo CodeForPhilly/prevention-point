@@ -17,6 +17,7 @@ import {
 } from "./visitEndpoints"
 import { getInsurers } from "./insurersEndpoints"
 import { getPrograms, getProgram, patchProgram } from "./programEndpoints"
+import cookieValue from "./cookies"
 
 const create = () => {
   const api = apisauce.create({
@@ -27,7 +28,7 @@ const create = () => {
 
   api.addRequestTransform(request => {
     if (!["/token/", "/token/verify/"].includes(request.url)) {
-      const jwtAccess = localStorage.getItem("JWT_ACCESS")
+      const jwtAccess = cookieValue("JWT_ACCESS")
       if (jwtAccess) {
         request.headers.Authorization = `Bearer ${jwtAccess}`
       }
