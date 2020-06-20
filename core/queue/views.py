@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
 from core.permissions import  DjangoModelPermissions
-from core.visits.serializer import VisitSerializer
+from core.visits.serializer import PopulatedVisitSerializer
 from core.models import Visit, FrontDeskEvent, FrontDeskEventType
 from core.front_desk_events.serializer import FrontDeskEventForQueueSerializer
 from django.contrib.auth.models import User
@@ -38,7 +38,7 @@ class QueueViewSet(viewsets.ViewSet):
             .order_by("urgency", "-created_at")
         )
 
-        todays_visit_data = VisitSerializer(
+        todays_visit_data = PopulatedVisitSerializer(
             visits_queryset, many=True, context={"request": request}
         ).data
         active_visits_queue = []
