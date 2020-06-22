@@ -7,8 +7,6 @@ from core.models import FrontDeskEvent, FrontDeskEventType
 
 class FrontDeskEventTests(BaseTestCase):
     fixtures = [
-        "users.yaml",
-        "groups.yaml",
         "visits.yaml",
         "services.yaml",
         "programs.yaml",

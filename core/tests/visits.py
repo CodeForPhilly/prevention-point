@@ -22,9 +22,6 @@ class VisitTests(BaseTestCase):
         "program_service_map.yaml",
     ]
 
-    def setUp(self):
-        super().setUp()
-        self.seed_fake_users()
 
     def test_create_visit(self):
         """
@@ -172,9 +169,6 @@ class VisitMedicalRelationsTests(BaseTestCase):
         "program_service_map.yaml",
     ]
 
-    def setUp(self):
-        super().setUp()
-        self.seed_fake_users()
 
     def test_create_visit_and_medical_data(self):
         """

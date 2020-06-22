@@ -13,9 +13,7 @@ def get_random_service():
 
 class ServicesTests(BaseTestCase):
     fixtures = ['services.yaml', 'programs.yaml']
-    def setUp(self):
-        super().setUp()
-        self.seed_fake_users()
+
 
     def test_get_services_list(self):
         """

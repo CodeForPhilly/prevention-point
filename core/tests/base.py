@@ -1,17 +1,22 @@
 from rest_framework.test import APITestCase
 
 from core.management.commands.users_and_groups import (
-        create_groups,
-        create_users,
-        add_users_to_groups,
-        DEFAULT_DEV_ENV_PASS
-    )
+    create_users,
+    create_groups,
+    add_users_to_groups,
+    DEFAULT_DEV_ENV_PASS,
+)
+
 
 class BaseTestCase(APITestCase):
     def setUp(self):
         self.auth_tokens_for_users = {}
 
-    def seed_fake_users(self):
+    @classmethod
+    def setUpTestData(cls):
+        """
+        Runs once per TestCase. speeds up permission seed
+        """
         create_groups(output=False)
         create_users(output=False)
         add_users_to_groups(output=False)
@@ -33,4 +38,3 @@ class BaseTestCase(APITestCase):
             token = res.data['access']
             self.auth_tokens_for_users[uname] = token
             return token
-
