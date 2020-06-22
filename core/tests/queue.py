@@ -14,9 +14,6 @@ class QueueTests(BaseTestCase):
         "front_desk_events.yaml",
     ]
 
-    def setUp(self):
-        super().setUp()
-        self.seed_fake_users()
 
     def test_get_queue_by_program_id(self):
         """
