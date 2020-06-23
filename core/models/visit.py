@@ -6,11 +6,19 @@ from core.models import Program, Service, Participant
 
 
 class UrgencyLevel(Enum):
-    _1 = 1
-    _2 = 2
-    _3 = 3
-    _4 = 4
-    _5 = 5
+    """
+    the REST endpoint for a visit uses the the enum value (integer),
+    while the Django ORM, Visit.objects... , uses the enum name (string)
+
+    in tests/visits.py, and visits/serializers.py,
+    `UrgencyLevel.<level>.name` and `UrgencyLevel.<level>.value` are both used,
+    depending on the context
+    """
+
+    CRISIS = 4
+    URGENT = 3
+    BRIEF_VISIT = 2
+    TIME_SENSITIVE = 1
 
 
 class Visit(models.Model):
@@ -21,7 +29,7 @@ class Visit(models.Model):
     service = models.ForeignKey(Service, null=True, on_delete=models.CASCADE)
     notes = models.TextField("Visit Notes", null=True, blank=True)
     urgency = models.CharField(
-        choices=URGENCY_LEVEL, max_length=20, default=UrgencyLevel._1
+        choices=URGENCY_LEVEL, max_length=20, default=UrgencyLevel.TIME_SENSITIVE.name
     )
 
     def __str__(self):

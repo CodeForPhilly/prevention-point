@@ -22,9 +22,9 @@ export class QueueStore {
   @action
   setQueue(id, data) {
     let program = this.queues.find(item => item.id === id)
-    program.participants = [...data].sort(
-      (a, b) => +b.urgency[1] - +a.urgency[1]
-    )
+    program.participants = [...data].sort((a, b) => {
+      return +b.urgency - +a.urgency
+    })
     program.waitTime = this.longestWait(data)
     program.length = data.length
 
@@ -57,11 +57,12 @@ export class QueueStore {
     }
   }
 
-  getQueue = flow(function*(queueIndex) {
+  getQueue = flow(function*(programId) {
+    // takes programId, not queueIndex
     try {
-      const { ok, data } = yield api.getQueue(queueIndex)
+      const { ok, data } = yield api.getQueue(programId)
       if (ok) {
-        this.setQueue(queueIndex, data)
+        this.setQueue(programId, data)
       }
     } catch (error) {
       throw "QueueStore:  getQueue() Failed  =>  " + error
@@ -72,7 +73,8 @@ export class QueueStore {
     try {
       const { ok } = yield api.patchVisit(visitIndex, data)
       if (ok) {
-        this.getQueue(queueIndex)
+        const programId = this.queues[queueIndex].id
+        this.getQueue(programId)
       }
     } catch (error) {
       throw "QueueStore:  patchVisit() Failed  =>  " + error
@@ -87,16 +89,17 @@ export class QueueStore {
       }
       const { ok } = yield api.postFrontDeskEvent(body)
       if (ok) {
-        this.getQueue(queueIndex)
+        const programId = this.queues[queueIndex].id
+        this.getQueue(programId)
       }
     } catch (error) {
       throw "QueueStore:  updateStatus() Failed  =>  " + error
     }
   })
 
-  getNotes(queueIndex, visitIndex) {
+  getNotes(queueIndex, visitId) {
     const array = this.queues[queueIndex].participants.filter(
-      x => x.id === visitIndex
+      x => x.id === visitId
     )
     if (array.length === 1) {
       return array[0].notes
