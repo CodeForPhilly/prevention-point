@@ -19,5 +19,10 @@
 
 ## Metabase
 
-* [Untitled](metabase/untitled.md)
+* [What is Metabase?](metabase/untitled.md)
+* [Business Intelligence](metabase/business-intelligence.md)
+* [How to Use](metabase/how-to-use/README.md)
+  * [Understand the Data](metabase/how-to-use/understand-the-data.md)
+  * [Visualizations](metabase/how-to-use/visualizations.md)
+  * [Asking Questions](metabase/how-to-use/asking-questions.md)
 
