@@ -7,6 +7,7 @@ from core.models import ProgramAvailability
 class ProgramAvailabilityTests(BaseTestCase):
     fixtures = ['program_availability.yaml', 'programs.yaml']
 
+
     def test_list_of_availabilities(self):
         """
         Ensure we can get a list of availabilities, only for a specific program

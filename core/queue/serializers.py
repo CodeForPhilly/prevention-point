@@ -6,5 +6,4 @@ from core.models import Program
 class QueueSerializer(serializers.ModelSerializer):
     class Meta:
         model = Program
-        fields = ('id', 'name', 'service_set') # backwards nested relationship uses '_set'
-
+        fields = ("id", "name", "services")
