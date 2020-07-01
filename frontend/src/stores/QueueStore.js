@@ -11,7 +11,6 @@ export class QueueStore {
   @observable queues = []
 
   // TODO: refactor after v1.0.0 release
-  @observable participantWithPrograms = []
   @observable participantNotes = ""
 
   @action
@@ -27,17 +26,6 @@ export class QueueStore {
     })
     program.waitTime = this.longestWait(data)
     program.length = data.length
-
-    // TODO: refactor after v1.0.0 release
-    this.participantWithPrograms = [
-      ...this.participantWithPrograms,
-      ...data.map(queueItem => {
-        return {
-          id: queueItem.participant.id,
-          programs: { id: queueItem.program.id, name: queueItem.program.name },
-        }
-      }),
-    ]
   }
 
   @action

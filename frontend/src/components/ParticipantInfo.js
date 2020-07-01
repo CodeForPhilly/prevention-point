@@ -17,6 +17,7 @@ import PrevPointInput from "./Input/PrevPointInput"
 import PrevPointButton from "./PrevPointButton"
 import { rootStoreContext } from "../stores/RootStore"
 import PrevPointHeading from "./Typography/PrevPointHeading"
+import { URGENCY_OPTIONS } from "../constants/GlobalConstants"
 
 const ParticipantInfo = observer(() => {
   const rootStore = useContext(rootStoreContext)
@@ -287,11 +288,11 @@ const ParticipantInfo = observer(() => {
               onChange={e => participantStore.setVisitUrgency(e.target.value)}
               labelId="priority-level"
             >
-              <MenuItem value={"_1"}>1 (Lowest)</MenuItem>
-              <MenuItem value={"_2"}>2</MenuItem>
-              <MenuItem value={"_3"}>3</MenuItem>
-              <MenuItem value={"_4"}>4</MenuItem>
-              <MenuItem value={"_5"}>5 (Highest)</MenuItem>
+              {URGENCY_OPTIONS.map(urgency => (
+                <MenuItem key={urgency.value} value={urgency.value}>
+                  {urgency.name}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
         </Grid>
