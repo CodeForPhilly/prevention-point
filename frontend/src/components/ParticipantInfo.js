@@ -3,21 +3,17 @@ import { autorun, toJS } from "mobx"
 import { observer } from "mobx-react-lite"
 import { useHistory } from "react-router-dom"
 import Grid from "@material-ui/core/Grid"
-import Radio from "@material-ui/core/Radio"
 import Select from "@material-ui/core/Select"
 import MenuItem from "@material-ui/core/MenuItem"
 import Container from "@material-ui/core/Container"
 import TextField from "@material-ui/core/TextField"
-import FormLabel from "@material-ui/core/FormLabel"
 import InputLabel from "@material-ui/core/InputLabel"
-import RadioGroup from "@material-ui/core/RadioGroup"
 import FormControl from "@material-ui/core/FormControl"
-import FormControlLabel from "@material-ui/core/FormControlLabel"
-import PrevPointInput from "./Input/PrevPointInput"
 import PrevPointButton from "./PrevPointButton"
 import { rootStoreContext } from "../stores/RootStore"
 import PrevPointHeading from "./Typography/PrevPointHeading"
-import { URGENCY_OPTIONS } from "../constants/GlobalConstants"
+import ParticipantForm from "./ParticipantForm"
+import { URGENCY_OPTIONS } from "../constants"
 
 const ParticipantInfo = observer(() => {
   const rootStore = useContext(rootStoreContext)
@@ -81,11 +77,6 @@ const ParticipantInfo = observer(() => {
     participantStore.setServiceList(serviceListing.services)
   }
 
-  const setPPIdAndSSN = e => {
-    participantStore.setPPId(e.target.value)
-    participantStore.setLastFourSSN(e.target.value.slice(2))
-  }
-
   return (
     <Container maxWidth="md">
       <Grid
@@ -94,134 +85,18 @@ const ParticipantInfo = observer(() => {
         component="form"
         onSubmit={e => handleSubmit(e)}
       >
-        <Grid item xs={12}>
-          <PrevPointHeading>1. Participant Information</PrevPointHeading>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormControl>
-            <InputLabel htmlFor="first-name">First name</InputLabel>
-            <PrevPointInput
-              name="first-name"
-              value={existingParticipant.first_name}
-              onChange={e => participantStore.setFirstName(e.target.value)}
-              required
-            />
-          </FormControl>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormControl>
-            <InputLabel htmlFor="last-name">Last name</InputLabel>
-            <PrevPointInput
-              name="last-name"
-              value={existingParticipant.last_name}
-              onChange={e => participantStore.setLastName(e.target.value)}
-              required
-            />
-          </FormControl>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            label="Date of Birth"
-            name="dob"
-            type="date"
-            required
-            fullWidth
-            value={existingParticipant.date_of_birth}
-            onChange={e => participantStore.setDateOfBirth(e.target.value)}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormControl>
-            <InputLabel htmlFor="uuid">UUID</InputLabel>
-            <PrevPointInput
-              name="uuid"
-              value={existingParticipant.pp_id}
-              onChange={e => setPPIdAndSSN(e)}
-              required
-            />
-          </FormControl>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormControl>
-            <InputLabel id="participant-race">Select Race</InputLabel>
-            <Select
-              required
-              value={existingParticipant.race}
-              onChange={e => participantStore.setRace(e.target.value)}
-              labelId="participant-race"
-            >
-              <MenuItem value={"asian pi"}>Asian</MenuItem>
-              <MenuItem value={"black (african american)"}>
-                Black or African American
-              </MenuItem>
-              <MenuItem value={"latino"}>Hispanic or Latino</MenuItem>
-              <MenuItem value={"native american"}>Native American</MenuItem>
-              <MenuItem value={"white (caucasian)"}>
-                White or Caucasian
-              </MenuItem>
-              <MenuItem value={"other"}>Other</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormControl>
-            <InputLabel id="participant-gender">Select Gender</InputLabel>
-            <Select
-              required
-              value={existingParticipant.gender}
-              onChange={e => participantStore.setGender(e.target.value)}
-              labelId="participant-gender"
-            >
-              <MenuItem value={"male"}>Male</MenuItem>
-              <MenuItem value={"female"}>Female</MenuItem>
-              <MenuItem value={"mtf"}>Male to Female</MenuItem>
-              <MenuItem value={"ftm"}>Female to Male</MenuItem>
-              <MenuItem value={"gender queer"}>Gender Queer</MenuItem>
-              <MenuItem value={"other"}>Other</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormControl component="fieldset">
-            <FormLabel component="legend">Has Insurance?</FormLabel>
-            <RadioGroup
-              aria-label="insurance"
-              name="hasInsurance"
-              value={existingParticipant.is_insured ? "yes" : "no"}
-              onChange={e =>
-                participantStore.setIsInsured(
-                  e.target.value === "yes" ? true : false
-                )
-              }
-              style={{ display: "inline" }}
-            >
-              <FormControlLabel value="yes" control={<Radio />} label="Yes" />
-              <FormControlLabel value="no" control={<Radio />} label="No" />
-            </RadioGroup>
-          </FormControl>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormControl>
-            <InputLabel id="insurance-select">Select Insurance</InputLabel>
-            <Select
-              value={existingParticipant.insurer}
-              onChange={e => participantStore.setInsurer(e.target.value)}
-              labelId="insurance-select"
-            >
-              {insurers.map((company, index) => (
-                <MenuItem
-                  key={index}
-                  value={insurers && insurers.length > 0 ? company.id : ""}
-                >
-                  {insurers && insurers.length > 0 ? company.name : ""}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
+        <ParticipantForm
+          insurers={insurers}
+          participantInfo={existingParticipant}
+          setRace={value => participantStore.setRace(value)}
+          setPPId={value => participantStore.setPPId(value)}
+          setGender={value => participantStore.setGender(value)}
+          setInsurer={value => participantStore.setInsurer(value)}
+          setLastName={value => participantStore.setLastName(value)}
+          setIsInsured={value => participantStore.setIsInsured(value)}
+          setFirstName={value => participantStore.setFirstName(value)}
+          setDateOfBirth={value => participantStore.setDateOfBirth(value)}
+        />
         <Grid item xs={12}>
           <PrevPointHeading>
             <br />

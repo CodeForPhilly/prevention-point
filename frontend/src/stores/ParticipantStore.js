@@ -119,6 +119,7 @@ export class ParticipantStore {
   }
   @action setPPId = data => {
     this.participant.pp_id = data
+    this.setLastFourSSN(data.slice(2))
   }
   @action setLastFourSSN = data => {
     this.participant.last_four_ssn = data
@@ -219,12 +220,16 @@ export class ParticipantStore {
     }
   })
   // called on  =>  ParticipantInfo.js
-  createParticipant = flow(function*() {
+  // andVisit temporary hack, this logic should be seperated out when creating VisitView
+  createParticipant = flow(function*(andVisit = true) {
     try {
       const { ok, data } = yield api.createParticipant(toJS(this.participant))
       if (ok && data) {
         this.setParticipant(data)
-        this.createVisit()
+        if (andVisit) {
+          return this.createVisit()
+        }
+        this.setRouteToQueue(true)
       }
     } catch (error) {
       throw "ParticipantStore:  createParticipant() Failed  =>  " + error
