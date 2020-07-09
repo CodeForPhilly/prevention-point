@@ -8,7 +8,7 @@ import PrevPointCopy from "../components/Typography/PrevPointCopy"
 import PrevPointHeading from "../components/Typography/PrevPointHeading"
 import { rootStoreContext } from "../stores/RootStore"
 import PrevPointTable from "../components/ParticipantTableComponent/PrevPointTable"
-import { PARTICIPANT_LIST_TABLE_TITLES } from "../constants/GlobalConstants"
+import { PARTICIPANT_LIST_TABLE_TITLES } from "../constants"
 import Grid from "@material-ui/core/Grid"
 
 const ParticipantList = observer(() => {
@@ -83,7 +83,7 @@ const ParticipantList = observer(() => {
         <Grid className={classes.linkWrapper} item xs={12}>
           <Link
             className={classes.addParticipantLink}
-            to="/participantInfo"
+            to="/newParticipant"
             onClick={() => {
               participantStore.setDefaultParticipant()
               participantStore.setDefaultVisit()

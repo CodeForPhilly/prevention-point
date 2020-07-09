@@ -13,10 +13,7 @@ import { QueueStoreContext } from "../../../stores/QueueStore"
 import { rootStoreContext } from "../../../stores/RootStore"
 import NotesDialog from "../../NotesDialog"
 import { useHistory } from "react-router-dom"
-import {
-  STATUS_OPTIONS,
-  URGENCY_OPTIONS,
-} from "../../../constants/GlobalConstants"
+import { STATUS_OPTIONS, URGENCY_OPTIONS } from "../../../constants"
 
 const useStyles = makeStyles(theme => ({
   root: {
