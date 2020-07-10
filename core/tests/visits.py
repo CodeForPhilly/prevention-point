@@ -33,7 +33,7 @@ class VisitTests(BaseTestCase):
             "program": 1,
             "service": 1,
             "notes": "hello prevention point",
-            "urgency": "_1",
+            "urgency": UrgencyLevel.TIME_SENSITIVE.value,
         }
         response = self.client.post(url, data, format="json", follow=True, **headers)
 
@@ -48,7 +48,7 @@ class VisitTests(BaseTestCase):
         """
         # create a visit
         headers = self.auth_headers_for_user("front_desk")
-        data = {"participant": 1, "program": 1, "service": 1, "urgency": "_2"}
+        data = {"participant": 1, "program": 1, "service": 1, "urgency": UrgencyLevel.URGENT.value}
         create_response = self.client.post(
             "/api/visits/", data, format="json", **headers
         )
@@ -68,31 +68,68 @@ class VisitTests(BaseTestCase):
         self.assertEqual(Visit.objects.count(), 1)
         self.assertEqual(Visit.objects.get(id=visit_id).notes, new_note)
 
+
     def test_update_visit_urgency(self):
         """
         Ensure we can update urgency on a visit
         """
         # create a visit
         headers = self.auth_headers_for_user("front_desk")
-        data = {"participant": 1, "program": 1, "service": 1, "urgency": "_2"}
+        data = {"participant": 1, "program": 1, "service": 1, "urgency": UrgencyLevel.BRIEF_VISIT.value}
         create_response = self.client.post(
             "/api/visits/", data, format="json", **headers
         )
         self.assertEqual(create_response.status_code, status.HTTP_201_CREATED)
 
         headers = self.auth_headers_for_user("internal_provider")
-        new_urgency = "_3"
+        new_urgency = UrgencyLevel.CRISIS
 
         visit_id = json.loads(create_response.content)["id"]
 
-        data = {"id": visit_id, "urgency": new_urgency}
+        data = {"id": visit_id, "urgency": new_urgency.value}
         update_response = self.client.patch(
             f"/api/visits/{visit_id}/", data, format="json", **headers
         )
 
         self.assertEqual(update_response.status_code, status.HTTP_200_OK)
         self.assertEqual(Visit.objects.count(), 1)
-        self.assertEqual(Visit.objects.get(id=visit_id).urgency, new_urgency)
+        self.assertEqual(Visit.objects.get(id=visit_id).urgency, new_urgency.name)
+
+
+    def test_invalid_urgency_value_rejected(self):
+        """
+        Ensure invalid urgency values are rejected
+        """
+        # create a visit
+        headers = self.auth_headers_for_user("front_desk")
+        invalid_urgency = 100
+        data = {"participant": 1, "program": 1, "service": 1, "urgency": invalid_urgency}
+
+        create_response = self.client.post(
+            "/api/visits/", data, format="json", **headers
+        )
+        self.assertEqual(create_response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+    def test_string_urgency_value_rejected(self):
+        """
+        Ensure invalid urgency values are rejected
+        """
+        # create a visit
+        headers = self.auth_headers_for_user("front_desk")
+
+        data = {"participant": 1, "program": 1, "service": 1, "urgency": 'TIME_SENSITIVE'}
+        create_response = self.client.post(
+            "/api/visits/", data, format="json", **headers
+        )
+        self.assertEqual(create_response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        data_b = {"participant": 1, "program": 1, "service": 1, "urgency": '1'}
+        create_response_b = self.client.post(
+            "/api/visits/", data_b, format="json", **headers
+        )
+        self.assertEqual(create_response_b.status_code, status.HTTP_400_BAD_REQUEST)
+
 
     def test_update_visit_program_service(self):
         """
@@ -100,7 +137,7 @@ class VisitTests(BaseTestCase):
         """
         # create a visit
         headers = self.auth_headers_for_user("front_desk")
-        data = {"participant": 1, "program": 1, "service": 1, "urgency": "_2"}
+        data = {"participant": 1, "program": 1, "service": 1, "urgency": UrgencyLevel.BRIEF_VISIT.value}
         create_response = self.client.post(
             "/api/visits/", data, format="json", **headers
         )
@@ -126,7 +163,7 @@ class VisitTests(BaseTestCase):
         """
 
         headers = self.auth_headers_for_user("front_desk")
-        data = {"participant": 1, "program": 3, "service": 10, "urgency": "_1"}
+        data = {"participant": 1, "program": 3, "service": 10, "urgency": UrgencyLevel.TIME_SENSITIVE.value}
         create_response = self.client.post(
             "/api/visits/", data, format="json", **headers
         )
@@ -148,7 +185,7 @@ class VisitTests(BaseTestCase):
                 "program": 1,
                 "service": 2,
                 "notes": "hello prevention point",
-                "urgency": "_3",
+                "urgency": UrgencyLevel.URGENT.value,
             }
             post_response = self.client.post(url, data, format="json", **headers)
             self.assertEqual(post_response.status_code, status.HTTP_201_CREATED)
@@ -186,7 +223,7 @@ class VisitMedicalRelationsTests(BaseTestCase):
             "program_id": 1,
             "service_id": 1,
             "notes": "hello prevention point",
-            "urgency": "_2",
+            "urgency": UrgencyLevel.BRIEF_VISIT.name,
         }
 
         visit = Visit.objects.create(**new_visit)

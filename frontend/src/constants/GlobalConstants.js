@@ -5,12 +5,12 @@ export const STATUS_OPTIONS = [
   { value: "LEFT", name: "Left" },
 ]
 
+// urgency values, 1 is least urgent
 export const URGENCY_OPTIONS = [
-  { value: "_1", name: 1 },
-  { value: "_2", name: 2 },
-  { value: "_3", name: 3 },
-  { value: "_4", name: 4 },
-  { value: "_5", name: 5 },
+  { value: 1, name: "Time Sensitive" },
+  { value: 2, name: "Brief Visit" },
+  { value: 3, name: "Urgent" },
+  { value: 4, name: "Crisis" },
 ]
 
 export const PARTICIPANT_LIST_TABLE_TITLES = [

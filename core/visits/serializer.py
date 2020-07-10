@@ -1,9 +1,27 @@
 from rest_framework import serializers
-from core.models import Visit
+from core.models import Visit, UrgencyLevel
 from core.participants.serializers import ParticipantSerializer
 from core.services.serializers import ServiceForProgramSerializer
 
+class EnumField(serializers.Field):
+    """
+    custom serializer field that handles the io of enum values
+    """
+
+    def to_representation(self, value):
+        return  UrgencyLevel[value].value
+
+    def to_internal_value(self, data):
+        try:
+            return UrgencyLevel(data).name
+        except ValueError:
+            raise serializers.ValidationError(
+                'Urgency Value out of range. Must be an integer between 1 and 4.'
+            )
+
+
 class VisitSerializer(serializers.ModelSerializer):
+    urgency = EnumField()
 
     class Meta:
         model = Visit

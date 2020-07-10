@@ -86,7 +86,7 @@ const QueueTable = observer(({ queueData }) => {
           seen: false,
           notes: x.notes,
           id: x.id,
-          programId: x.program.id,
+          programId: x.program, // program is just an id on this object
           serviceId: x.service.id,
           participantId: x.participant.id,
           last_four_ssn: x.participant.last_four_ssn,
@@ -141,7 +141,7 @@ const QueueTable = observer(({ queueData }) => {
                 column="urgency"
               />
             ),
-            customSort: (a, b) => +a.urgency[1] - +b.urgency[1],
+            customSort: (a, b) => +a.urgency - +b.urgency,
           },
           { title: "First", field: "first" },
           { title: "Last", field: "last" },
