@@ -6,8 +6,8 @@ import MenuItem from "@material-ui/core/MenuItem"
 import TextField from "@material-ui/core/TextField"
 import InputLabel from "@material-ui/core/InputLabel"
 import FormControl from "@material-ui/core/FormControl"
-import { PrevPointHeading } from "./Typography"
-import { URGENCY_OPTIONS } from "../constants"
+import { PrevPointHeading } from "../Typography"
+import { URGENCY_OPTIONS } from "../../constants"
 
 function VisitForm(props) {
   const {
@@ -34,6 +34,7 @@ function VisitForm(props) {
           <InputLabel id="program-select">Choose Program</InputLabel>
           <Select
             required
+            name="program"
             value={visitInfo.program}
             onChange={e => setVisitProgram(e.target.value)}
             labelId="program-select"
@@ -55,6 +56,7 @@ function VisitForm(props) {
           {visitInfo.program && serviceList.length > 0 ? (
             <Select
               required
+              name="service"
               value={visitInfo.service}
               onChange={e => setVisitService(e.target.value)}
               labelId="service-select"
@@ -75,12 +77,12 @@ function VisitForm(props) {
       </Grid>
       <Grid item xs={12} sm={6}>
         <FormControl>
-          <InputLabel id="priority-level">Select Priority Level</InputLabel>
+          <InputLabel id="urgency-level">Select Urgency Level</InputLabel>
           <Select
-            name="priority-level"
+            name="urgency"
             value={visitInfo.urgency}
             onChange={e => setVisitUrgency(e.target.value)}
-            labelId="priority-level"
+            labelId="urgency-level"
           >
             {URGENCY_OPTIONS.map(urgency => (
               <MenuItem key={urgency.value} value={urgency.value}>
@@ -94,7 +96,7 @@ function VisitForm(props) {
         <TextField
           fullWidth
           label="Add a Note"
-          name="visit-notes"
+          name="notes"
           value={visitInfo.notes}
           onChange={e => setVisitNotes(e.target.value)}
         />

@@ -80,6 +80,7 @@ export class ParticipantStore {
   }
 
   @action setIsEditing = isEditing => {
+    // boolean
     this.isEditing = isEditing
   }
   // Full Participant and Visit Assignment Actions

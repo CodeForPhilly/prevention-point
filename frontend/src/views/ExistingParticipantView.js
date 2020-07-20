@@ -1,20 +1,33 @@
 import React, { useContext, useEffect } from "react"
-import { autorun, toJS } from "mobx"
+import { toJS } from "mobx"
 import { observer } from "mobx-react-lite"
-import { useHistory } from "react-router-dom"
+import { useHistory, Link } from "react-router-dom"
 import { makeStyles } from "@material-ui/styles"
 import Grid from "@material-ui/core/Grid"
 import Container from "@material-ui/core/Container"
 import PrevPointButton from "../components/PrevPointButton"
 import { rootStoreContext } from "../stores/RootStore"
-import WithSubmit from "../components/WithSubmit"
 import ParticipantForm from "../components/ParticipantForm"
-import VisitForm from "../components/VisitForm"
+import VisitRouter from "../components/VisitRouter"
 
 const useStyles = makeStyles(() => ({
   ButtonWrapper: {
     display: "flex",
     justifyContent: "space-between",
+  },
+  ButtonCenter: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: "20px",
+  },
+
+  TempNav: {
+    marginTop: "40px",
+    marginBottom: "40px",
+    border: "1px solid black",
+    borderLeftColor: "transparent",
+    borderRightColor: "transparent",
   },
 }))
 
@@ -27,10 +40,7 @@ const ExistingParticipantView = observer(() => {
   const history = useHistory()
 
   const existingParticipant = toJS(participantStore.participant)
-  const existingVisit = toJS(participantStore.visit)
   const insurers = toJS(participantStore.insurers)
-  const programList = toJS(participantStore.programs)
-  const serviceList = toJS(participantStore.services)
 
   useEffect(() => {
     // kick off api calls for insurance list from Mobx
@@ -38,13 +48,11 @@ const ExistingParticipantView = observer(() => {
     // kick off api calls for program list from Mobx
     participantStore.getPrograms()
     // -----------------------------------
+
+    // return to /participants page if "current participant" is not set
+    // add participants in NewParticipantView
     if (!Object.keys(participantStore.participant).length) {
       history.push("/participants")
-    }
-
-    // set these before assigning global state to component variables
-    if (!Object.keys(participantStore.visit).length) {
-      participantStore.setDefaultVisit()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -55,35 +63,12 @@ const ExistingParticipantView = observer(() => {
     participantStore.updateParticipant()
   }
 
-  // set store stuff here and update Mobx on submit
-  const handleSubmitVisit = () => {
-    // if existing  visit we are coming from QueueTable, so update visit
-    if (existingVisit.id) {
-      participantStore.updateVisit()
-    } else {
-      participantStore.createVisit()
-    }
-    // after all api calls for submit have been completed route to QueueTable
-    autorun(() => {
-      if (participantStore.routeToQueueTable) {
-        history.push("/")
-      }
-    })
-  }
-
-  // set service listings based on chosen program
-  const handleSetVisitProgram = value => {
-    const serviceListing = programList.find(program => program.id === value)
-    participantStore.setServiceList(serviceListing.services)
-    participantStore.setVisitProgram(value)
-    participantStore.setVisitService("")
-  }
-
   return (
-    <Container maxWidth="md">
-      {Object.keys(participantStore.participant).length ? (
+    <>
+      <Container maxWidth="md">
         <Grid
           container
+          aria-label="Participant Form"
           component="form"
           onSubmit={e => handleUpdateParticipant(e)}
           spacing={2}
@@ -103,14 +88,14 @@ const ExistingParticipantView = observer(() => {
           />
 
           <Grid className={classes.ButtonWrapper} item xs={12}>
+            {/* Disable the fields until 'edit' is clicked. hide  submit button until isEditing is true */}
             <PrevPointButton
               type="button"
-              size="large"
               onClick={() =>
                 participantStore.setIsEditing(!participantStore.isEditing)
               }
             >
-              {participantStore.isEditing ? "cancel" : "edit"}
+              {participantStore.isEditing ? "cancel" : "Edit Participant Info"}
             </PrevPointButton>
             {participantStore.isEditing ? (
               <PrevPointButton type="submit" size="large">
@@ -119,23 +104,21 @@ const ExistingParticipantView = observer(() => {
             ) : null}
           </Grid>
         </Grid>
-      ) : null}
-
-      {Object.keys(participantStore.visit).length ? (
-        <WithSubmit
-          component={VisitForm}
-          handleSubmit={handleSubmitVisit}
-          submitText={existingVisit.id ? "Update Visit" : "Create Visit"}
-          visitInfo={existingVisit}
-          programList={programList}
-          serviceList={serviceList}
-          setVisitProgram={value => handleSetVisitProgram(value)}
-          setVisitService={value => participantStore.setVisitService(value)}
-          setVisitUrgency={value => participantStore.setVisitUrgency(value)}
-          setVisitNotes={value => participantStore.setVisitNotes(value)}
-        />
-      ) : null}
-    </Container>
+        <Grid container spacing={2} className={classes.TempNav}>
+          <Grid item xs={12} sm={6} className={classes.ButtonCenter}>
+            <PrevPointButton component={Link} to="/existingParticipant">
+              Visit Form
+            </PrevPointButton>
+          </Grid>
+          <Grid item xs={12} sm={6} className={classes.ButtonCenter}>
+            <PrevPointButton component={Link} to="/existingParticipant/visits">
+              All Visits Table
+            </PrevPointButton>
+          </Grid>
+        </Grid>
+      </Container>
+      <VisitRouter />
+    </>
   )
 })
 

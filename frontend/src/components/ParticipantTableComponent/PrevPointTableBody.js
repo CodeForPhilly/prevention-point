@@ -38,7 +38,7 @@ const PrevPointTableBody = props => {
             </TableCell>
             <TableCell aria-label="tcell">
               <Link
-                to="/existingParticipant"
+                to="/existingParticipant/visits"
                 onClick={() => props.handleClick(participant)}
               >
                 <Fab color="primary" size="small" aria-label="add">
