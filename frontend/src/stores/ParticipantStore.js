@@ -85,6 +85,15 @@ export class ParticipantStore {
     this.visit = data
   }
   // Participant Search Actions
+  @action handleParamChange = event => {
+    switch (event.target.name) {
+      case "pp_id":
+        this.setParticipantIdParam(event.target.value)
+        break
+      default:
+        this.params[event.target.name] = event.target.value
+    }
+  }
   @action setParticipantIdParam = data => {
     this.params.pp_id = data.toUpperCase()
   }
@@ -108,6 +117,18 @@ export class ParticipantStore {
     this.routeToQueueTable = data
   }
   // Participant State Actions
+  @action handleParticipantChange = event => {
+    switch (event.target.name) {
+      case "is_insured":
+        this.participant.is_insured = event.target.value === "true"
+        break
+      case "pp_id":
+        this.setPPId(event.target.value)
+        break
+      default:
+        this.participant[event.target.name] = event.target.value
+    }
+  }
   @action setFirstName = data => {
     this.participant.first_name = data
   }
@@ -140,6 +161,9 @@ export class ParticipantStore {
     this.participant.start_date = format(new Date(), "yyyy-MM-dd")
   }
   // Visit State Actions
+  @action handleVisitChange = event => {
+    this.visit[event.target.name] = event.target.value
+  }
   @action setVisitProgram = data => {
     this.visit.program = data
   }

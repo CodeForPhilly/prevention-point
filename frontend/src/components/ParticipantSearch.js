@@ -51,11 +51,10 @@ const ParticipantSearch = observer(() => {
           <FormControl error={participantStore.errorState}>
             <InputLabel htmlFor="participant_id">Participant ID</InputLabel>
             <PrevPointInput
-              name="participant_id"
+              id="participant_id"
+              name="pp_id"
               value={participantStore.params.pp_id}
-              onChange={e =>
-                participantStore.setParticipantIdParam(e.target.value)
-              }
+              onChange={e => participantStore.handleParamChange(e)}
             />
           </FormControl>
         </Grid>
@@ -68,9 +67,10 @@ const ParticipantSearch = observer(() => {
           <FormControl error={participantStore.errorState}>
             <InputLabel htmlFor="first_name">First Name</InputLabel>
             <PrevPointInput
+              id="first_name"
               name="first_name"
               value={participantStore.params.firstName}
-              onChange={e => participantStore.setFirstNameParam(e.target.value)}
+              onChange={e => participantStore.handleParamChange(e)}
             />
           </FormControl>
         </Grid>
@@ -78,9 +78,10 @@ const ParticipantSearch = observer(() => {
           <FormControl error={participantStore.errorState}>
             <InputLabel htmlFor="last_name">Last Name</InputLabel>
             <PrevPointInput
+              id="last_name"
               name="last_name"
               value={participantStore.params.lastName}
-              onChange={e => participantStore.setLastNameParam(e.target.value)}
+              onChange={e => participantStore.handleParamChange(e)}
             />
           </FormControl>
         </Grid>

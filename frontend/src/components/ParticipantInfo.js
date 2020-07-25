@@ -88,14 +88,9 @@ const ParticipantInfo = observer(() => {
         <ParticipantForm
           insurers={insurers}
           participantInfo={existingParticipant}
-          setRace={value => participantStore.setRace(value)}
-          setPPId={value => participantStore.setPPId(value)}
-          setGender={value => participantStore.setGender(value)}
-          setInsurer={value => participantStore.setInsurer(value)}
-          setLastName={value => participantStore.setLastName(value)}
-          setIsInsured={value => participantStore.setIsInsured(value)}
-          setFirstName={value => participantStore.setFirstName(value)}
-          setDateOfBirth={value => participantStore.setDateOfBirth(value)}
+          handleParticipantChange={event =>
+            participantStore.handleParticipantChange(event)
+          }
         />
         <Grid item xs={12}>
           <PrevPointHeading>
@@ -110,8 +105,9 @@ const ParticipantInfo = observer(() => {
             <Select
               required
               value={existingVisit.program}
+              name="program"
               onChange={e => {
-                participantStore.setVisitProgram(e.target.value)
+                participantStore.handleVisitChange(e)
                 participantStore.setVisitService("")
                 findAndSaveServiceListings(e)
               }}
@@ -136,8 +132,9 @@ const ParticipantInfo = observer(() => {
             {existingVisit.program && serviceList.length > 0 ? (
               <Select
                 required
+                name="service"
                 value={existingVisit.service}
-                onChange={e => participantStore.setVisitService(e.target.value)}
+                onChange={e => participantStore.handleVisitChange(e)}
                 labelId="service-select"
               >
                 {serviceList.map(service => (
@@ -158,9 +155,9 @@ const ParticipantInfo = observer(() => {
           <FormControl>
             <InputLabel id="priority-level">Select Priority Level</InputLabel>
             <Select
-              name="priority-level"
+              name="urgency"
               value={existingVisit.urgency}
-              onChange={e => participantStore.setVisitUrgency(e.target.value)}
+              onChange={e => participantStore.handleVisitChange(e)}
               labelId="priority-level"
             >
               {URGENCY_OPTIONS.map(urgency => (
@@ -175,9 +172,9 @@ const ParticipantInfo = observer(() => {
           <TextField
             fullWidth
             label="Add a Note"
-            name="visit-notes"
+            name="notes"
             value={existingVisit.notes}
-            onChange={e => participantStore.setVisitNotes(e.target.value)}
+            onChange={e => participantStore.handleVisitChange(e)}
           />
         </Grid>
         <Grid item xs={12}>
