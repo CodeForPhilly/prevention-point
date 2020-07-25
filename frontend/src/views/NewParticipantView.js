@@ -43,8 +43,8 @@ const NewParticipantView = observer(() => {
           submitText="Add Participant"
           insurers={insurers}
           participantInfo={participantInfo}
-          handleParticipantChange={event =>
-            participantStore.handleParticipantChange(event)
+          handleParticipantChange={eventTarget =>
+            participantStore.handleParticipantChange(eventTarget)
           }
         />
       )}

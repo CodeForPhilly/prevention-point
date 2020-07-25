@@ -32,7 +32,7 @@ function ParticipantForm(props) {
             id="firstName"
             name="first_name"
             value={participantInfo.first_name}
-            onChange={e => handleParticipantChange(e)}
+            onChange={e => handleParticipantChange(e.target)}
             required
           />
         </FormControl>
@@ -44,7 +44,7 @@ function ParticipantForm(props) {
             id="lastName"
             name="last_name"
             value={participantInfo.last_name}
-            onChange={e => handleParticipantChange(e)}
+            onChange={e => handleParticipantChange(e.target)}
             required
           />
         </FormControl>
@@ -57,7 +57,7 @@ function ParticipantForm(props) {
           required
           fullWidth
           value={participantInfo.date_of_birth}
-          onChange={e => handleParticipantChange(e)}
+          onChange={e => handleParticipantChange(e.target)}
           InputLabelProps={{
             shrink: true,
           }}
@@ -70,7 +70,7 @@ function ParticipantForm(props) {
             id="uuid"
             name="pp_id"
             value={participantInfo.pp_id}
-            onChange={e => handleParticipantChange(e)}
+            onChange={e => handleParticipantChange(e.target)}
             required
           />
         </FormControl>
@@ -82,7 +82,7 @@ function ParticipantForm(props) {
             required
             name="race"
             value={participantInfo.race}
-            onChange={e => handleParticipantChange(e)}
+            onChange={e => handleParticipantChange(e.target)}
             labelId="race"
           >
             {PARTICIPANT_RACE_OPTIONS.map((race, index) => (
@@ -100,7 +100,7 @@ function ParticipantForm(props) {
             required
             name="gender"
             value={participantInfo.gender}
-            onChange={e => handleParticipantChange(e)}
+            onChange={e => handleParticipantChange(e.target)}
             labelId="participant-gender"
           >
             {PARTICIPANT_GENDER_OPTIONS.map((gender, index) => (
@@ -118,7 +118,7 @@ function ParticipantForm(props) {
             aria-label="insurance"
             name="is_insured"
             value={participantInfo.is_insured}
-            onChange={e => handleParticipantChange(e)}
+            onChange={e => handleParticipantChange(e.target)}
             style={{ display: "inline" }}
           >
             <FormControlLabel value={true} control={<Radio />} label="Yes" />
@@ -132,7 +132,7 @@ function ParticipantForm(props) {
           <Select
             name="insurer"
             value={participantInfo.insurer}
-            onChange={e => handleParticipantChange(e)}
+            onChange={e => handleParticipantChange(e.target)}
             labelId="insurance-select"
           >
             {insurers.map((company, index) => (

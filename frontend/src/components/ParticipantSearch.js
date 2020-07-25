@@ -54,7 +54,7 @@ const ParticipantSearch = observer(() => {
               id="participant_id"
               name="pp_id"
               value={participantStore.params.pp_id}
-              onChange={e => participantStore.handleParamChange(e)}
+              onChange={e => participantStore.handleParamChange(e.target)}
             />
           </FormControl>
         </Grid>
@@ -70,7 +70,7 @@ const ParticipantSearch = observer(() => {
               id="first_name"
               name="first_name"
               value={participantStore.params.firstName}
-              onChange={e => participantStore.handleParamChange(e)}
+              onChange={e => participantStore.handleParamChange(e.target)}
             />
           </FormControl>
         </Grid>
@@ -81,7 +81,7 @@ const ParticipantSearch = observer(() => {
               id="last_name"
               name="last_name"
               value={participantStore.params.lastName}
-              onChange={e => participantStore.handleParamChange(e)}
+              onChange={e => participantStore.handleParamChange(e.target)}
             />
           </FormControl>
         </Grid>

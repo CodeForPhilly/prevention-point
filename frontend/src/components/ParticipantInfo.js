@@ -88,8 +88,8 @@ const ParticipantInfo = observer(() => {
         <ParticipantForm
           insurers={insurers}
           participantInfo={existingParticipant}
-          handleParticipantChange={event =>
-            participantStore.handleParticipantChange(event)
+          handleParticipantChange={eventTarget =>
+            participantStore.handleParticipantChange(eventTarget)
           }
         />
         <Grid item xs={12}>
@@ -107,7 +107,7 @@ const ParticipantInfo = observer(() => {
               value={existingVisit.program}
               name="program"
               onChange={e => {
-                participantStore.handleVisitChange(e)
+                participantStore.handleVisitChange(e.target)
                 participantStore.setVisitService("")
                 findAndSaveServiceListings(e)
               }}
@@ -134,7 +134,7 @@ const ParticipantInfo = observer(() => {
                 required
                 name="service"
                 value={existingVisit.service}
-                onChange={e => participantStore.handleVisitChange(e)}
+                onChange={e => participantStore.handleVisitChange(e.target)}
                 labelId="service-select"
               >
                 {serviceList.map(service => (
@@ -157,7 +157,7 @@ const ParticipantInfo = observer(() => {
             <Select
               name="urgency"
               value={existingVisit.urgency}
-              onChange={e => participantStore.handleVisitChange(e)}
+              onChange={e => participantStore.handleVisitChange(e.target)}
               labelId="priority-level"
             >
               {URGENCY_OPTIONS.map(urgency => (
@@ -174,7 +174,7 @@ const ParticipantInfo = observer(() => {
             label="Add a Note"
             name="notes"
             value={existingVisit.notes}
-            onChange={e => participantStore.handleVisitChange(e)}
+            onChange={e => participantStore.handleVisitChange(e.target)}
           />
         </Grid>
         <Grid item xs={12}>
