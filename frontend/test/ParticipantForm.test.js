@@ -63,27 +63,27 @@ describe("<ParticipantForm />", () => {
     })
 
     it("should have a firstname input", () => {
-      let input = wrapper.find('[name="firstName"]')
+      let input = wrapper.find('[name="first_name"]')
       expect(input.length).toEqual(1)
     })
 
     it("should have a last name input", () => {
-      let input = wrapper.find('[name="lastName"]')
+      let input = wrapper.find('[name="last_name"]')
       expect(input.length).toEqual(1)
     })
 
     it("should have a date of birth input", () => {
-      let input = wrapper.find('[name="dob"]')
+      let input = wrapper.find('[name="date_of_birth"]')
       expect(input.length).toEqual(1)
     })
 
     it("should have a has insurance input", () => {
-      let input = wrapper.find('[name="hasInsurance"]')
+      let input = wrapper.find('[name="is_insured"]')
       expect(input.length).toEqual(1)
     })
 
     it("should have a insurance input", () => {
-      let input = wrapper.find('[name="insurance"]')
+      let input = wrapper.find('[name="insurer"]')
       expect(input.length).toEqual(1)
     })
 

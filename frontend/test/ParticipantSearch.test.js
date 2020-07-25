@@ -41,7 +41,7 @@ describe("<ParticipantSearch />", () => {
   })
 
   it("should have a participants id", () => {
-    expect(wrapper.exists('[name="participant_id"]')).toEqual(true)
+    expect(wrapper.exists('[name="pp_id"]')).toEqual(true)
   })
 
   it("should have a first name", () => {

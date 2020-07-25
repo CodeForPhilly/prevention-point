@@ -18,18 +18,7 @@ import {
 } from "../constants"
 
 function ParticipantForm(props) {
-  const {
-    participantInfo,
-    insurers,
-    setRace,
-    setPPId,
-    setGender,
-    setInsurer,
-    setLastName,
-    setIsInsured,
-    setFirstName,
-    setDateOfBirth,
-  } = props
+  const { participantInfo, insurers, handleParticipantChange } = props
 
   return (
     <Fragment>
@@ -41,9 +30,9 @@ function ParticipantForm(props) {
           <InputLabel htmlFor="firstName">First Name</InputLabel>
           <PrevPointInput
             id="firstName"
-            name="firstName"
+            name="first_name"
             value={participantInfo.first_name}
-            onChange={e => setFirstName(e.target.value)}
+            onChange={e => handleParticipantChange(e.target)}
             required
           />
         </FormControl>
@@ -53,9 +42,9 @@ function ParticipantForm(props) {
           <InputLabel htmlFor="lastName">Last Name</InputLabel>
           <PrevPointInput
             id="lastName"
-            name="lastName"
+            name="last_name"
             value={participantInfo.last_name}
-            onChange={e => setLastName(e.target.value)}
+            onChange={e => handleParticipantChange(e.target)}
             required
           />
         </FormControl>
@@ -63,12 +52,12 @@ function ParticipantForm(props) {
       <Grid item xs={12} sm={6}>
         <TextField
           label="Date of Birth"
-          name="dob"
+          name="date_of_birth"
           type="date"
           required
           fullWidth
           value={participantInfo.date_of_birth}
-          onChange={e => setDateOfBirth(e.target.value)}
+          onChange={e => handleParticipantChange(e.target)}
           InputLabelProps={{
             shrink: true,
           }}
@@ -78,9 +67,10 @@ function ParticipantForm(props) {
         <FormControl>
           <InputLabel htmlFor="uuid">UUID</InputLabel>
           <PrevPointInput
-            name="uuid"
+            id="uuid"
+            name="pp_id"
             value={participantInfo.pp_id}
-            onChange={e => setPPId(e.target.value)}
+            onChange={e => handleParticipantChange(e.target)}
             required
           />
         </FormControl>
@@ -92,7 +82,7 @@ function ParticipantForm(props) {
             required
             name="race"
             value={participantInfo.race}
-            onChange={e => setRace(e.target.value)}
+            onChange={e => handleParticipantChange(e.target)}
             labelId="race"
           >
             {PARTICIPANT_RACE_OPTIONS.map((race, index) => (
@@ -110,7 +100,7 @@ function ParticipantForm(props) {
             required
             name="gender"
             value={participantInfo.gender}
-            onChange={e => setGender(e.target.value)}
+            onChange={e => handleParticipantChange(e.target)}
             labelId="participant-gender"
           >
             {PARTICIPANT_GENDER_OPTIONS.map((gender, index) => (
@@ -126,15 +116,13 @@ function ParticipantForm(props) {
           <FormLabel component="legend">Has Insurance?</FormLabel>
           <RadioGroup
             aria-label="insurance"
-            name="hasInsurance"
-            value={participantInfo.is_insured ? "yes" : "no"}
-            onChange={e =>
-              setIsInsured(e.target.value === "yes" ? true : false)
-            }
+            name="is_insured"
+            value={participantInfo.is_insured}
+            onChange={e => handleParticipantChange(e.target)}
             style={{ display: "inline" }}
           >
-            <FormControlLabel value="yes" control={<Radio />} label="Yes" />
-            <FormControlLabel value="no" control={<Radio />} label="No" />
+            <FormControlLabel value={true} control={<Radio />} label="Yes" />
+            <FormControlLabel value={false} control={<Radio />} label="No" />
           </RadioGroup>
         </FormControl>
       </Grid>
@@ -142,9 +130,9 @@ function ParticipantForm(props) {
         <FormControl>
           <InputLabel id="insurance-select">Select Insurance</InputLabel>
           <Select
-            name="insurance"
+            name="insurer"
             value={participantInfo.insurer}
-            onChange={e => setInsurer(e.target.value)}
+            onChange={e => handleParticipantChange(e.target)}
             labelId="insurance-select"
           >
             {insurers.map((company, index) => (
@@ -165,14 +153,7 @@ function ParticipantForm(props) {
 ParticipantForm.propTypes = {
   participantInfo: PropTypes.object,
   insurers: PropTypes.array,
-  setRace: PropTypes.func,
-  setPPId: PropTypes.func,
-  setGender: PropTypes.func,
-  setInsurer: PropTypes.func,
-  setLastName: PropTypes.func,
-  setIsInsured: PropTypes.func,
-  setFirstName: PropTypes.func,
-  setDateOfBirth: PropTypes.func,
+  handleParticipantChange: PropTypes.func,
 }
 
 export default ParticipantForm

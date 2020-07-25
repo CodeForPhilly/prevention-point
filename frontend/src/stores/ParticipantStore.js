@@ -85,18 +85,19 @@ export class ParticipantStore {
     this.visit = data
   }
   // Participant Search Actions
+  @action handleParamChange = ({ name, value }) => {
+    switch (name) {
+      case "pp_id":
+        this.setParticipantIdParam(value)
+        break
+      default:
+        this.params[name] = value
+    }
+  }
   @action setParticipantIdParam = data => {
     this.params.pp_id = data.toUpperCase()
   }
-  @action setFirstNameParam = data => {
-    this.params.first_name = data
-  }
-  @action setLastNameParam = data => {
-    this.params.last_name = data
-  }
-  @action setIdParam = data => {
-    this.participant.id = data
-  }
+
   // Insurance and Programs Actions
   @action setInsurers = data => {
     this.insurers = data
@@ -108,14 +109,17 @@ export class ParticipantStore {
     this.routeToQueueTable = data
   }
   // Participant State Actions
-  @action setFirstName = data => {
-    this.participant.first_name = data
-  }
-  @action setLastName = data => {
-    this.participant.last_name = data
-  }
-  @action setDateOfBirth = data => {
-    this.participant.date_of_birth = data
+  @action handleParticipantChange = ({ name, value }) => {
+    switch (name) {
+      case "is_insured":
+        this.participant.is_insured = value === "true"
+        break
+      case "pp_id":
+        this.setPPId(value)
+        break
+      default:
+        this.participant[name] = value
+    }
   }
   @action setPPId = data => {
     this.participant.pp_id = data
@@ -124,33 +128,13 @@ export class ParticipantStore {
   @action setLastFourSSN = data => {
     this.participant.last_four_ssn = data
   }
-  @action setRace = data => {
-    this.participant.race = data
-  }
-  @action setGender = data => {
-    this.participant.gender = data
-  }
-  @action setIsInsured = data => {
-    this.participant.is_insured = data
-  }
-  @action setInsurer = data => {
-    this.participant.insurer = data
-  }
-  @action setStartDate = () => {
-    this.participant.start_date = format(new Date(), "yyyy-MM-dd")
-  }
+
   // Visit State Actions
-  @action setVisitProgram = data => {
-    this.visit.program = data
+  @action handleVisitChange = ({ name, value }) => {
+    this.visit[name] = value
   }
   @action setVisitService = data => {
     this.visit.service = data
-  }
-  @action setVisitUrgency = data => {
-    this.visit.urgency = data
-  }
-  @action setVisitNotes = data => {
-    this.visit.notes = data
   }
   @action setVisitParticipantId = data => {
     this.visit.participant = data
