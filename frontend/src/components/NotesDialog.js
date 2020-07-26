@@ -1,4 +1,5 @@
 import React, { useContext, useEffect } from "react"
+import { observer } from "mobx-react-lite"
 import PropTypes from "prop-types"
 import Dialog from "@material-ui/core/Dialog"
 import DialogActions from "@material-ui/core/DialogActions"
@@ -9,12 +10,10 @@ import TextField from "@material-ui/core/TextField"
 
 import PrevPointButton from "./PrevPointButton"
 import { QueueStoreContext } from "../stores/QueueStore"
-import { observer } from "mobx-react-lite"
 
 const NotesDialog = observer(
   ({ visibleDialog, toggleVisibleDialog, queueData, id }) => {
     const queueStore = useContext(QueueStoreContext)
-    // const [participantNotes, setParticipantNotes] = React.useState("")
 
     const handleSubmit = (queueId, visitId) => {
       queueStore.patchVisit(queueId, visitId, {
