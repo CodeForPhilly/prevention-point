@@ -82,6 +82,7 @@ This project implements the [Scripts To Rule Them All](https://github.com/github
 Other tools
 ## Links
 [Wiki](https://github.com/CodeForPhilly/prevention-point/wiki)
+(This includes our [branching practices](https://github.com/CodeForPhilly/prevention-point/wiki/Change-Management-Practices))
 
 [Milestones](https://github.com/CodeForPhilly/prevention-point/milestones)
 
@@ -94,3 +95,4 @@ Other tools
 `#prevpoint-pairing`
 
 [Google Drive](https://drive.google.com/drive/folders/1wIVM8ZZOVGA8uxEuVnRTM-NaVCOS3vcn)
+
