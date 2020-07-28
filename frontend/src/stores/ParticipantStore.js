@@ -25,6 +25,7 @@ export class ParticipantStore {
   @observable routeToQueueTable = false
   @observable services = []
   @observable visitList = []
+  @observable isEditing = false
   // participant search
   @observable errorState = false
   @observable errorMessage = ""
@@ -76,6 +77,10 @@ export class ParticipantStore {
   // ParticipantList Component Actions
   @action setParticipantsList = data => {
     this.participants = data
+  }
+
+  @action setIsEditing = isEditing => {
+    this.isEditing = isEditing
   }
   // Full Participant and Visit Assignment Actions
   @action setParticipant = data => {
