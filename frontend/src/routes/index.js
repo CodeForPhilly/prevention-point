@@ -11,10 +11,10 @@ import NewParticipantView from "../views/NewParticipantView"
 const Routes = () => {
   return (
     <BrowserRouter>
-      <Switch>
-        <Route path="/login" component={LoginForm} />
-        <Route>
-          <MainLayout>
+      <MainLayout>
+        <Switch>
+          <Route path="/login" component={LoginForm} />
+          <Route>
             <Switch>
               <PrivateRoute exact path="/" component={AllQueues} />
               <PrivateRoute
@@ -33,9 +33,9 @@ const Routes = () => {
                 component={NewParticipantView}
               />
             </Switch>
-          </MainLayout>
-        </Route>
-      </Switch>
+          </Route>
+        </Switch>
+      </MainLayout>
     </BrowserRouter>
   )
 }
