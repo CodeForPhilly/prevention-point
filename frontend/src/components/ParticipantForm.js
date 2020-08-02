@@ -21,8 +21,8 @@ function ParticipantForm(props) {
   const {
     participantInfo,
     insurers,
-    handleParticipantChange,
     isDisabled,
+    handleParticipantChange,
   } = props
 
   return (

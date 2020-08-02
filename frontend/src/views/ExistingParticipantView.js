@@ -77,14 +77,9 @@ const ExistingParticipantView = observer(() => {
             insurers={insurers}
             isDisabled={!participantStore.isEditing}
             participantInfo={existingParticipant}
-            setRace={value => participantStore.setRace(value)}
-            setPPId={value => participantStore.setPPId(value)}
-            setGender={value => participantStore.setGender(value)}
-            setInsurer={value => participantStore.setInsurer(value)}
-            setLastName={value => participantStore.setLastName(value)}
-            setIsInsured={value => participantStore.setIsInsured(value)}
-            setFirstName={value => participantStore.setFirstName(value)}
-            setDateOfBirth={value => participantStore.setDateOfBirth(value)}
+            handleParticipantChange={eventTarget =>
+              participantStore.handleParticipantChange(eventTarget)
+            }
           />
 
           <Grid className={classes.ButtonWrapper} item xs={12}>

@@ -10,15 +10,7 @@ import { PrevPointHeading } from "../Typography"
 import { URGENCY_OPTIONS } from "../../constants"
 
 function VisitForm(props) {
-  const {
-    visitInfo,
-    programList,
-    serviceList,
-    setVisitProgram,
-    setVisitService,
-    setVisitUrgency,
-    setVisitNotes,
-  } = props
+  const { visitInfo, programList, serviceList, handleVisitChange } = props
   return (
     <>
       <Grid item xs={12}>
@@ -36,7 +28,7 @@ function VisitForm(props) {
             required
             name="program"
             value={visitInfo.program}
-            onChange={e => setVisitProgram(e.target.value)}
+            onChange={e => handleVisitChange(e.target)}
             labelId="program-select"
           >
             {programList.map(program => (
@@ -58,7 +50,7 @@ function VisitForm(props) {
               required
               name="service"
               value={visitInfo.service}
-              onChange={e => setVisitService(e.target.value)}
+              onChange={e => handleVisitChange(e.target)}
               labelId="service-select"
             >
               {serviceList.map(service => (
@@ -81,7 +73,7 @@ function VisitForm(props) {
           <Select
             name="urgency"
             value={visitInfo.urgency}
-            onChange={e => setVisitUrgency(e.target.value)}
+            onChange={e => handleVisitChange(e.target)}
             labelId="urgency-level"
           >
             {URGENCY_OPTIONS.map(urgency => (
@@ -98,7 +90,7 @@ function VisitForm(props) {
           label="Add a Note"
           name="notes"
           value={visitInfo.notes}
-          onChange={e => setVisitNotes(e.target.value)}
+          onChange={e => handleVisitChange(e.target)}
         />
       </Grid>
     </>
@@ -108,10 +100,7 @@ VisitForm.propTypes = {
   visitInfo: PropTypes.object,
   programList: PropTypes.array,
   serviceList: PropTypes.array,
-  setVisitProgram: PropTypes.func,
-  setVisitService: PropTypes.func,
-  setVisitUrgency: PropTypes.func,
-  setVisitNotes: PropTypes.func,
+  handleVisitChange: PropTypes.func,
 }
 
 export default VisitForm
