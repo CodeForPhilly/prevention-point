@@ -1,9 +1,12 @@
 import React, { Fragment, useContext, useEffect } from "react"
-import { Link } from "react-router-dom"
+import { Link, useHistory } from "react-router-dom"
 import { observer } from "mobx-react-lite"
 import { makeStyles } from "@material-ui/core/styles"
 import Breadcrumbs from "@material-ui/core/Breadcrumbs"
 import PersonAddIcon from "@material-ui/icons/PersonAdd"
+import TextField from "@material-ui/core/TextField"
+import Autocomplete from "@material-ui/lab/Autocomplete"
+import SearchIcon from "@material-ui/icons/Search"
 import PrevPointCopy from "../components/Typography/PrevPointCopy"
 import PrevPointHeading from "../components/Typography/PrevPointHeading"
 import { rootStoreContext } from "../stores/RootStore"
@@ -12,8 +15,9 @@ import { PARTICIPANT_LIST_TABLE_TITLES } from "../constants"
 import Grid from "@material-ui/core/Grid"
 
 const ParticipantList = observer(() => {
-  const useStyles = makeStyles({
+  const useStyles = makeStyles(theme => ({
     participantsListHeading: {
+      marginBottom: theme.spacing(1),
       color: "#086375",
     },
     addParticipantNav: {
@@ -38,11 +42,23 @@ const ParticipantList = observer(() => {
       display: "flex",
       justifyContent: "center",
     },
-  })
+    autocompleteWrapper: {
+      minHeight: theme.spacing(8),
+    },
+    searchIcon: {
+      marginLeft: theme.spacing(4),
+      marginBottom: theme.spacing(1),
+    },
+    autocompleteField: {
+      width: "300px",
+      marginTop: "0",
+    },
+  }))
   const classes = useStyles()
 
   const rootStore = useContext(rootStoreContext)
   const participantStore = rootStore.ParticipantStore
+  let history = useHistory()
 
   useEffect(() => {
     ;(async () => {
@@ -65,9 +81,55 @@ const ParticipantList = observer(() => {
         </Link>
         <PrevPointCopy>Search Results</PrevPointCopy>
       </Breadcrumbs>
-      <PrevPointHeading className={classes.participantsListHeading}>
-        Participants
-      </PrevPointHeading>
+
+      <Grid
+        container
+        spacing={1}
+        alignItems="flex-end"
+        className={classes.autocompleteWrapper}
+      >
+        <Grid item>
+          <PrevPointHeading className={classes.participantsListHeading}>
+            Participants
+          </PrevPointHeading>
+        </Grid>
+
+        <Grid item>
+          {participantStore.participants.length > 0 && (
+            <Grid container spacing={1} alignItems="flex-end">
+              <Grid item>
+                <SearchIcon className={classes.searchIcon} />
+              </Grid>
+              <Grid item>
+                <Autocomplete
+                  disableClearable
+                  noOptionsText="No results found"
+                  options={participantStore.participants}
+                  getOptionLabel={participant => {
+                    return participant.first_name + " " + participant.last_name
+                  }}
+                  onChange={(event, value, reason) => {
+                    if (reason === "select-option") {
+                      handleParticipant(value)
+                      history.push("/participantInfo")
+                    }
+                  }}
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      label="Quick Search"
+                      margin="normal"
+                      className={classes.autocompleteField}
+                      InputProps={{ ...params.InputProps, type: "search" }}
+                    />
+                  )}
+                />
+              </Grid>
+            </Grid>
+          )}
+        </Grid>
+      </Grid>
+
       <div className="participants">
         <PrevPointTable
           headerTitles={PARTICIPANT_LIST_TABLE_TITLES}
