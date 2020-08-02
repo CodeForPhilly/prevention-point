@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react"
-import { withRouter } from "react-router-dom"
+import { useHistory } from "react-router-dom"
 import { rootStoreContext } from "../stores/RootStore"
 import { observer } from "mobx-react-lite"
 import { makeStyles } from "@material-ui/core/styles"
@@ -62,11 +62,12 @@ const NavHeader = observer(({ drawerOpen, handleDrawerOpen, drawerWidth }) => {
   }))
 
   const rootStore = useContext(rootStoreContext)
+  const history = useHistory()
   const [anchorEl, setAnchorEl] = useState(null)
   const isMenuOpen = Boolean(anchorEl)
   const classes = useStyles()
 
-  const AccountMenu = withRouter(({ history }) => (
+  const AccountMenu = () => (
     <Menu
       anchorEl={anchorEl}
       anchorOrigin={{ vertical: "top", horizontal: "right" }}
@@ -93,21 +94,23 @@ const NavHeader = observer(({ drawerOpen, handleDrawerOpen, drawerWidth }) => {
         </div>
       )}
     </Menu>
-  ))
-
-  const SearchMenu = withRouter(({ history }) =>
-    history.location.pathname.match(/login/) ? null : (
-      <IconButton
-        color="inherit"
-        aria-label="open drawer"
-        onClick={handleDrawerOpen}
-        edge="start"
-        className={clsx(classes.menuButton, drawerOpen && classes.hide)}
-      >
-        <MenuIcon />
-      </IconButton>
-    )
   )
+
+  const SearchMenu = () => {
+    return (
+      rootStore.authStore.isAuthenticated && (
+        <IconButton
+          color="inherit"
+          aria-label="open drawer"
+          onClick={handleDrawerOpen}
+          edge="start"
+          className={clsx(classes.menuButton, drawerOpen && classes.hide)}
+        >
+          <MenuIcon />
+        </IconButton>
+      )
+    )
+  }
 
   function handleProfileMenuOpen(e) {
     setAnchorEl(e.currentTarget)
