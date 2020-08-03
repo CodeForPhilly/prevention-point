@@ -22,11 +22,13 @@ from core.models import (
     UrineDrugScreen,
     FrontDeskEventType,
     ProgramAvailability,
+    Form
 )
 
 
 fake = Faker()
 
+DEFAULT_NUMBER_FORMS = 10
 DEFAULT_NUMBER_PARTICIPANTS = 1000
 DEFAULT_NUMBER_VISITS = 100
 DEFAULT_NUMBER_INSURERS = 10
@@ -243,6 +245,10 @@ def create_programs(output=True):
             if output:
                 print("Created {}: '{}'".format(p.name, s.name))
 
+        """ Create forms for the program """
+        for _ in range(DEFAULT_NUMBER_FORMS):
+            create_form(p)
+
 
 def create_visits(output=True, uds=True, medication=True):
     """Create fake visits and front desk events, depending on Participants and Programs. Visits are created using now(), i.e. today"""
@@ -317,6 +323,20 @@ def create_program_availability(output=True):
     if output:
         for availability in ProgramAvailability.objects.all().order_by('program'):
             print(f"Created program availability: {availability.program.name} {availability.day_of_week} {availability.start_time} {availability.end_time}")
+
+
+def create_form(program):
+    """ Create fake form """
+    form = Form(label=fake.profile()['username'], name=fake.company(), program=program)
+    form.full_clean()
+    form.save()
+
+    # if output:
+    #     print(
+    #         "Created form label: {} name: {}".format(
+    #             form.label, form.name
+    #         )
+    #     )
 
 
 def arrived(visit):
