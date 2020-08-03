@@ -22,16 +22,19 @@ from core.models import (
     UrineDrugScreen,
     FrontDeskEventType,
     ProgramAvailability,
-    Form
+    Form,
+    Question,
+    Type
 )
 
 
 fake = Faker()
 
 DEFAULT_NUMBER_FORMS = 10
-DEFAULT_NUMBER_PARTICIPANTS = 1000
-DEFAULT_NUMBER_VISITS = 100
 DEFAULT_NUMBER_INSURERS = 10
+DEFAULT_NUMBER_PARTICIPANTS = 1000
+DEFAULT_NUMBER_QUESTIONS = 3
+DEFAULT_NUMBER_VISITS = 100
 
 # Cribbed from prevpoint-backend 2 July 2019 Marieke
 DEFAULT_PROGRAMS = {
@@ -331,12 +334,25 @@ def create_form(program):
     form.full_clean()
     form.save()
 
+    create_questions(program, form)
+
     # if output:
     #     print(
     #         "Created form label: {} name: {}".format(
     #             form.label, form.name
     #         )
     #     )
+
+
+def create_questions(program, form):
+    """ Create a fake question for a form """
+    type_list = list(Type)
+    for _ in range(DEFAULT_NUMBER_QUESTIONS):
+        _type = random.choice(type_list)
+        question = Question(program=program, form=form, name=fake.profile()['username'],
+                question=fake.lexify(text='Random Question: ??????????'), type=_type.value)
+        question.full_clean()
+        question.save()
 
 
 def arrived(visit):
