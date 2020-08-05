@@ -1,0 +1,40 @@
+- model: core.option
+  pk: 1
+  fields:
+    program: 4
+    question: 8
+    form: 7
+    option: Permanently Housed
+    value: 1
+- model: core.option
+  pk: 2
+  fields:
+    program: 4
+    question: 8
+    form: 7
+    option: Temporarily Housed
+    value: 2
+- model: core.option
+  pk: 3
+  fields:
+    program: 4
+    question: 8
+    form: 7
+    option: Shelter
+    value: 3
+- model: core.option
+  pk: 4
+  fields:
+    program: 4
+    question: 8
+    form: 7
+    option: Street
+    value: 4
+- model: core.option
+  pk: 5
+  fields:
+    program: 4
+    question: 8
+    form: 7
+    option: At Risk for Homelessness
+    value: 5

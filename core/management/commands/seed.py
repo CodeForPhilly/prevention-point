@@ -24,7 +24,8 @@ from core.models import (
     ProgramAvailability,
     Form,
     Question,
-    Type
+    Type,
+    Option
 )
 
 
@@ -32,6 +33,7 @@ fake = Faker()
 
 DEFAULT_NUMBER_FORMS = 10
 DEFAULT_NUMBER_INSURERS = 10
+DEFAULT_NUMBER_OPTIONS = 3
 DEFAULT_NUMBER_PARTICIPANTS = 1000
 DEFAULT_NUMBER_QUESTIONS = 3
 DEFAULT_NUMBER_VISITS = 100
@@ -350,10 +352,20 @@ def create_questions(program, form):
     for _ in range(DEFAULT_NUMBER_QUESTIONS):
         _type = random.choice(type_list)
         question = Question(program=program, form=form, name=fake.profile()['username'],
-                question=fake.lexify(text='Random Question: ??????????'), type=_type.value)
+                            question=fake.lexify(text='Random Question: ??????????'), type=_type.value)
         question.full_clean()
         question.save()
 
+        create_options(program, form, question)
+
+
+def create_options(program, form, question):
+    """ Create fake options for a question """
+    for i in range(DEFAULT_NUMBER_OPTIONS):
+        option = Option(program=program, form=form, question=question,
+                        option=fake.lexify(text='Random Option: ??????????'), value=i)
+        option.full_clean()
+        option.save()
 
 def arrived(visit):
     """After ARRIVED, can be either LEFT, SEEN, STEPPED_OUT or pending (still in ARRIVED status)"""
