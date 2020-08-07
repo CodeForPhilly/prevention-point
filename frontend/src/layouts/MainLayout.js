@@ -134,7 +134,7 @@ const PersistentDrawerLeft = props => {
           </IconButton>
         </div>
         <Divider />
-        <ParticipantSearch />
+        <ParticipantSearch handleDrawerClose={handleDrawerClose} />
       </Drawer>
       <main
         className={clsx(classes.content, {

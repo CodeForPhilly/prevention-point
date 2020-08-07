@@ -11,7 +11,7 @@ import PrevPointCopy from "./Typography/PrevPointCopy"
 import { rootStoreContext } from "../stores/RootStore"
 import PrevPointHeading from "./Typography/PrevPointHeading"
 
-const ParticipantSearch = observer(() => {
+const ParticipantSearch = observer(({ handleDrawerClose }) => {
   const rootStore = useContext(rootStoreContext)
   const participantStore = rootStore.ParticipantStore
   const history = useHistory()
@@ -25,6 +25,7 @@ const ParticipantSearch = observer(() => {
       )
       participantStore.setErrorStateForParticipantSearch(true)
     } else {
+      handleDrawerClose()
       participantStore.getParticipants()
       history.push("/participants")
     }
