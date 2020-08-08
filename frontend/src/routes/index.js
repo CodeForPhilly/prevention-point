@@ -7,6 +7,7 @@ import ParticipantList from "../views/ParticipantList"
 import AllQueues from "../views/AllQueues"
 import ParticipantInfo from "../components/ParticipantInfo"
 import NewParticipantView from "../views/NewParticipantView"
+import Error404 from "../views/Error404Page"
 
 const Routes = () => {
   return (
@@ -25,6 +26,7 @@ const Routes = () => {
           path="/newParticipant"
           component={NewParticipantView}
         />
+        <PublicRoute path="*" component={Error404} />
       </Switch>
     </BrowserRouter>
   )
