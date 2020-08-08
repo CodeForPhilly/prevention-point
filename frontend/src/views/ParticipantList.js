@@ -106,7 +106,7 @@ const ParticipantList = observer(() => {
                   noOptionsText="No results found"
                   options={participantStore.participants}
                   getOptionLabel={participant => {
-                    return participant.first_name + " " + participant.last_name
+                    return `${participant.first_name} ${participant.last_name}`
                   }}
                   onChange={(event, value, reason) => {
                     if (reason === "select-option") {
