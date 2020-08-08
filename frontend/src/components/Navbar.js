@@ -67,51 +67,6 @@ const NavHeader = observer(({ drawerOpen, handleDrawerOpen, drawerWidth }) => {
   const isMenuOpen = Boolean(anchorEl)
   const classes = useStyles()
 
-  const AccountMenu = () => (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      {rootStore.authStore.isAuthenticated ? (
-        <div>
-          <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-          <MenuItem
-            onClick={() => {
-              handleMenuClose()
-              rootStore.authStore.logout()
-              history.push("/")
-            }}
-          >
-            Sign out
-          </MenuItem>
-        </div>
-      ) : (
-        <div>
-          <MenuItem onClick={handleMenuClose}>Sign In</MenuItem>
-        </div>
-      )}
-    </Menu>
-  )
-
-  const SearchMenu = () => {
-    return (
-      rootStore.authStore.isAuthenticated && (
-        <IconButton
-          color="inherit"
-          aria-label="open drawer"
-          onClick={handleDrawerOpen}
-          edge="start"
-          className={clsx(classes.menuButton, drawerOpen && classes.hide)}
-        >
-          <MenuIcon />
-        </IconButton>
-      )
-    )
-  }
-
   function handleProfileMenuOpen(e) {
     setAnchorEl(e.currentTarget)
   }
@@ -129,7 +84,17 @@ const NavHeader = observer(({ drawerOpen, handleDrawerOpen, drawerWidth }) => {
       })}
     >
       <Toolbar className={classes.navbarToolbar}>
-        <SearchMenu />
+        {rootStore.authStore.isAuthenticated && (
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            edge="start"
+            className={clsx(classes.menuButton, drawerOpen && classes.hide)}
+          >
+            <MenuIcon />
+          </IconButton>
+        )}
         <img
           src={PreventionPointLogo}
           alt="Prevention Point Logo"
@@ -149,7 +114,32 @@ const NavHeader = observer(({ drawerOpen, handleDrawerOpen, drawerWidth }) => {
         <IconButton onClick={handleProfileMenuOpen} color="inherit">
           <AccountCircle />
         </IconButton>
-        <AccountMenu />
+        <Menu
+          anchorEl={anchorEl}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          transformOrigin={{ vertical: "top", horizontal: "right" }}
+          open={isMenuOpen}
+          onClose={handleMenuClose}
+        >
+          {rootStore.authStore.isAuthenticated ? (
+            <div>
+              <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+              <MenuItem
+                onClick={() => {
+                  handleMenuClose()
+                  rootStore.authStore.logout()
+                  history.push("/")
+                }}
+              >
+                Sign out
+              </MenuItem>
+            </div>
+          ) : (
+            <div>
+              <MenuItem onClick={handleMenuClose}>Sign In</MenuItem>
+            </div>
+          )}
+        </Menu>
       </Toolbar>
     </AppBar>
   )
