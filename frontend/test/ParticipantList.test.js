@@ -39,7 +39,7 @@ describe("<ParticipantList />", () => {
         <ParticipantList />
       </BrowserRouter>
     )
-    const bottomNavElement = getByLabelText(/bottomNav/i)
+    const bottomNavElement = getByLabelText(/Bottom Navigation/i)
     expect(bottomNavElement).toBeInTheDOM()
   })
 })
