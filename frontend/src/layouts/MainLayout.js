@@ -1,12 +1,11 @@
 import React from "react"
 import clsx from "clsx"
-import { makeStyles, useTheme } from "@material-ui/core/styles"
+import { makeStyles } from "@material-ui/core/styles"
 import Drawer from "@material-ui/core/Drawer"
 import CssBaseline from "@material-ui/core/CssBaseline"
 import Divider from "@material-ui/core/Divider"
 import IconButton from "@material-ui/core/IconButton"
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
-import ChevronRightIcon from "@material-ui/icons/ChevronRight"
 import Navbar from "../components/Navbar"
 import ParticipantSearch from "../components/ParticipantSearch"
 import PropTypes from "prop-types"
@@ -58,7 +57,6 @@ const useStyles = makeStyles(theme => ({
 
 const PersistentDrawerLeft = props => {
   const classes = useStyles()
-  const theme = useTheme()
   const [open, setOpen] = React.useState(false)
 
   function handleDrawerOpen() {
@@ -89,11 +87,7 @@ const PersistentDrawerLeft = props => {
       >
         <div className={classes.drawerHeader}>
           <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "ltr" ? (
-              <ChevronLeftIcon />
-            ) : (
-              <ChevronRightIcon />
-            )}
+            <ChevronLeftIcon />
           </IconButton>
         </div>
         <Divider />
