@@ -47,6 +47,7 @@
   "dependencies": {
     "@material-ui/core": "^4.1.1",
     "@material-ui/icons": "^4.2.0",
+    "@material-ui/lab": "^4.0.0-alpha.56",
     "@material-ui/styles": "^4.1.1",
     "apisauce": "^1.0.2",
     "axios-auth-refresh": "^1.0.6",
