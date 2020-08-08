@@ -38,6 +38,9 @@ const ParticipantList = observer(() => {
       display: "flex",
       justifyContent: "center",
     },
+    bottomNavOffset: {
+      height: "43px",
+    },
   })
   const classes = useStyles()
 
@@ -75,9 +78,10 @@ const ParticipantList = observer(() => {
           handleClick={handleParticipant}
         />
       </div>
+      <div className={classes.bottomNavOffset}></div>
       <Grid
         container
-        aria-label="bottomNav"
+        aria-label="Bottom Navigation"
         className={classes.addParticipantNav}
       >
         <Grid className={classes.linkWrapper} item xs={12}>
