@@ -71,7 +71,7 @@ const NavHeader = observer(({ drawerOpen, handleDrawerOpen, drawerWidth }) => {
     setAnchorEl(e.currentTarget)
   }
 
-  function handleMenuClose() {
+  function handleProfileMenuClose() {
     setAnchorEl(null)
   }
 
@@ -119,14 +119,14 @@ const NavHeader = observer(({ drawerOpen, handleDrawerOpen, drawerWidth }) => {
           anchorOrigin={{ vertical: "top", horizontal: "right" }}
           transformOrigin={{ vertical: "top", horizontal: "right" }}
           open={isMenuOpen}
-          onClose={handleMenuClose}
+          onClose={handleProfileMenuClose}
         >
           {rootStore.authStore.isAuthenticated ? (
             <div>
-              <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+              <MenuItem onClick={handleProfileMenuClose}>Profile</MenuItem>
               <MenuItem
                 onClick={() => {
-                  handleMenuClose()
+                  handleProfileMenuClose()
                   rootStore.authStore.logout()
                   history.push("/")
                 }}
@@ -136,7 +136,7 @@ const NavHeader = observer(({ drawerOpen, handleDrawerOpen, drawerWidth }) => {
             </div>
           ) : (
             <div>
-              <MenuItem onClick={handleMenuClose}>Sign In</MenuItem>
+              <MenuItem onClick={handleProfileMenuClose}>Sign In</MenuItem>
             </div>
           )}
         </Menu>
