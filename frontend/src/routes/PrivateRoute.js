@@ -3,6 +3,10 @@ import PropTypes from "prop-types"
 import { Route, Redirect } from "react-router-dom"
 import { observer } from "mobx-react-lite"
 import { rootStoreContext } from "../stores/RootStore"
+import MainLayout from "../layouts/MainLayout"
+
+// to use programmatic layouts, give this custom route component a 'layout' prop,
+// and pass the layout like we are passing 'component'
 
 const PrivateRoute = observer(({ component: Component, ...rest }) => {
   const rootStore = useContext(rootStoreContext)
@@ -11,7 +15,9 @@ const PrivateRoute = observer(({ component: Component, ...rest }) => {
       {...rest}
       render={({ location, ...props }) =>
         rootStore.authStore.isAuthenticated ? (
-          <Component {...props} />
+          <MainLayout>
+            <Component {...props} />
+          </MainLayout>
         ) : (
           <Redirect
             to={{
