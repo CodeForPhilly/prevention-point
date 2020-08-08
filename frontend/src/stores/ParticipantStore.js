@@ -113,6 +113,9 @@ export class ParticipantStore {
     switch (name) {
       case "is_insured":
         this.participant.is_insured = value === "true"
+        if (!this.participant.is_insured) {
+          this.participant.insurer = ""
+        }
         break
       case "pp_id":
         this.setPPId(value)
