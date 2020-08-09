@@ -32,11 +32,8 @@ function VisitForm(props) {
             labelId="program-select"
           >
             {programList.map(program => (
-              <MenuItem
-                key={program.id}
-                value={programList && programList.length > 0 ? program.id : ""}
-              >
-                {programList && programList.length > 0 ? program.name : ""}
+              <MenuItem key={program.id} value={program.id}>
+                {program.name}
               </MenuItem>
             ))}
           </Select>
@@ -54,13 +51,8 @@ function VisitForm(props) {
               labelId="service-select"
             >
               {serviceList.map(service => (
-                <MenuItem
-                  key={service.id}
-                  value={
-                    serviceList && serviceList.length > 0 ? service.id : ""
-                  }
-                >
-                  {serviceList && serviceList.length > 0 ? service.name : ""}
+                <MenuItem key={service.id} value={service.id}>
+                  {service.name}
                 </MenuItem>
               ))}
             </Select>
