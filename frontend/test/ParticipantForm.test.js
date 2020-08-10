@@ -82,7 +82,13 @@ describe("<ParticipantForm />", () => {
       expect(input.length).toEqual(1)
     })
 
-    it("should have a insurance input", () => {
+    it("should not have an insurer input when is_insured is false", () => {
+      let input = wrapper.find('[name="insurer"]')
+      expect(input.length).toEqual(0)
+    })
+
+    it("should have an insurer input when is_insured is true", () => {
+      wrapper.setProps({ participantInfo: { is_insured: true } })
       let input = wrapper.find('[name="insurer"]')
       expect(input.length).toEqual(1)
     })

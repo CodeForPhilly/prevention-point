@@ -126,26 +126,28 @@ function ParticipantForm(props) {
           </RadioGroup>
         </FormControl>
       </Grid>
-      <Grid item xs={12} sm={6}>
-        <FormControl>
-          <InputLabel id="insurance-select">Select Insurance</InputLabel>
-          <Select
-            name="insurer"
-            value={participantInfo.insurer}
-            onChange={e => handleParticipantChange(e.target)}
-            labelId="insurance-select"
-          >
-            {insurers.map((company, index) => (
-              <MenuItem
-                key={index}
-                value={insurers && insurers.length > 0 ? company.id : ""}
-              >
-                {insurers && insurers.length > 0 ? company.name : ""}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </Grid>
+      {participantInfo.is_insured && (
+        <Grid item xs={12} sm={6}>
+          <FormControl>
+            <InputLabel id="insurance-select">Select Insurance</InputLabel>
+            <Select
+              name="insurer"
+              value={participantInfo.insurer}
+              onChange={e => handleParticipantChange(e.target)}
+              labelId="insurance-select"
+            >
+              {insurers.map((company, index) => (
+                <MenuItem
+                  key={index}
+                  value={insurers && insurers.length > 0 ? company.id : ""}
+                >
+                  {insurers && insurers.length > 0 ? company.name : ""}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+      )}
     </Fragment>
   )
 }
