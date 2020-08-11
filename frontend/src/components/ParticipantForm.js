@@ -60,6 +60,7 @@ function ParticipantForm(props) {
           name="date_of_birth"
           type="date"
           required
+          disabled={isDisabled}
           fullWidth
           value={participantInfo.date_of_birth}
           onChange={e => handleParticipantChange(e.target)}
