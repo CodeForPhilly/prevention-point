@@ -5,7 +5,7 @@ import PublicRoute from "../routes/PublicRoute"
 import LoginForm from "../views/LoginForm"
 import ParticipantList from "../views/ParticipantList"
 import AllQueues from "../views/AllQueues"
-import ParticipantInfo from "../components/ParticipantInfo"
+import ExistingParticipantView from "../views/ExistingParticipantView"
 import NewParticipantView from "../views/NewParticipantView"
 import Error404 from "../views/Error404Page"
 
@@ -17,9 +17,8 @@ const Routes = () => {
         <PrivateRoute exact path="/" component={AllQueues} />
         <PrivateRoute exact path="/participants" component={ParticipantList} />
         <PrivateRoute
-          exact
-          path="/participantInfo"
-          component={ParticipantInfo}
+          path="/existingParticipant"
+          component={ExistingParticipantView}
         />
         <PrivateRoute
           exact

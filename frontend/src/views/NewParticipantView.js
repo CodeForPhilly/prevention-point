@@ -28,7 +28,7 @@ const NewParticipantView = observer(() => {
     // after all api calls for submit have been completed route to QueueTable
     autorun(() => {
       if (participantStore.routeToQueueTable) {
-        history.push("/participantInfo")
+        history.push("/existingParticipant")
       }
     })
   }
@@ -36,7 +36,7 @@ const NewParticipantView = observer(() => {
   // once the useEffect sets the default participant, the component can  render without error
   return (
     <>
-      {Object.keys(participantInfo).length && (
+      {Object.keys(participantInfo).length ? (
         <WithSubmit
           component={ParticipantForm}
           handleSubmit={handleSubmit}
@@ -47,7 +47,7 @@ const NewParticipantView = observer(() => {
             participantStore.handleParticipantChange(eventTarget)
           }
         />
-      )}
+      ) : null}
     </>
   )
 })

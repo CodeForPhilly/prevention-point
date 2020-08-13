@@ -25,6 +25,7 @@ export class ParticipantStore {
   @observable routeToQueueTable = false
   @observable services = []
   @observable visitList = []
+  @observable isEditing = false
   // participant search
   @observable errorState = false
   @observable errorMessage = ""
@@ -76,6 +77,11 @@ export class ParticipantStore {
   // ParticipantList Component Actions
   @action setParticipantsList = data => {
     this.participants = data
+  }
+
+  @action setIsEditing = isEditing => {
+    // boolean
+    this.isEditing = isEditing
   }
   // Full Participant and Visit Assignment Actions
   @action setParticipant = data => {
@@ -132,10 +138,23 @@ export class ParticipantStore {
     this.participant.last_four_ssn = data
   }
 
-  // Visit State Actions
-  @action handleVisitChange = ({ name, value }) => {
-    this.visit[name] = value
+  @action setVisitProgram = data => {
+    this.setVisitService("")
+    const serviceListing = this.programs.find(program => program.id === data)
+    this.visit.program = data
+    this.setServiceList(serviceListing.services)
   }
+
+  @action handleVisitChange = ({ name, value }) => {
+    switch (name) {
+      case "program":
+        this.setVisitProgram(value)
+        break
+      default:
+        this.visit[name] = value
+    }
+  }
+
   @action setVisitService = data => {
     this.visit.service = data
   }
@@ -267,6 +286,7 @@ export class ParticipantStore {
       )
       if (ok && data) {
         this.setParticipant(data)
+        this.setIsEditing(false)
       }
     } catch (error) {
       throw "ParticipantStore:  updateParticipant() Failed  =>  " + error
