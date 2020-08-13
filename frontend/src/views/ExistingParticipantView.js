@@ -49,9 +49,10 @@ const ExistingParticipantView = observer(() => {
     participantStore.getPrograms()
     // -----------------------------------
 
-    // return to /participants page if "current participant" is not set
+    // return to /participants page if current participant is not verified with an id
     // add participants in NewParticipantView
-    if (!Object.keys(participantStore.participant).length) {
+    if (!participantStore.participant.id) {
+      // todo: reset to empty  object?
       history.push("/participants")
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -9,8 +9,12 @@ import FormControl from "@material-ui/core/FormControl"
 import { PrevPointHeading } from "../Typography"
 import { URGENCY_OPTIONS } from "../../constants"
 
-function VisitForm(props) {
-  const { visitInfo, programList, serviceList, handleVisitChange } = props
+const VisitForm = ({
+  visitInfo,
+  programList,
+  serviceList,
+  handleVisitChange,
+}) => {
   return (
     <>
       <Grid item xs={12}>
@@ -42,7 +46,7 @@ function VisitForm(props) {
       <Grid item xs={12} sm={6}>
         <FormControl>
           <InputLabel id="service-select">Select Service</InputLabel>
-          {visitInfo.program && serviceList.length > 0 ? (
+          {visitInfo.program ? (
             <Select
               required
               name="service"
