@@ -17,14 +17,12 @@ import {
   PARTICIPANT_RACE_OPTIONS,
 } from "../constants"
 
-function ParticipantForm(props) {
-  const {
-    participantInfo,
-    insurers,
-    isDisabled,
-    handleParticipantChange,
-  } = props
-
+const ParticipantForm = ({
+  participantInfo,
+  insurers,
+  isDisabled,
+  handleParticipantChange,
+}) => {
   return (
     <Fragment>
       <Grid item xs={12}>

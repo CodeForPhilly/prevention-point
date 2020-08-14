@@ -1,6 +1,14 @@
+/*
 // it might be easier to maintain state integrity if we put the participant id in the route
 // '/existingParticipant/:participantId/*'
 
+we will have to differentiate
+navigating a single visit's medical visitData,
+and editing the top level visit info.
+this route path could reflect that
+(or have different path for whether the visit is new or not)
+also, clear the visit data on 'componentDidUnmount'
+*/
 import React, { useContext, useEffect } from "react"
 import { autorun, toJS } from "mobx"
 import { observer } from "mobx-react-lite"
@@ -48,14 +56,6 @@ const VisitRouter = observer(() => {
 
   return (
     <Switch>
-      {/*
-          we will have to differentiate
-          navigating a single visit's medical visitData,
-          and editing the top level visit info.
-          this route path could reflect that
-          (or have different path for whether the visit is new or not)
-          also, clear the visit data on 'componentDidUnmount'
-        */}
       <Route exact path="/existingParticipant">
         {Object.keys(participantStore.visit).length ? (
           <WithSubmit
