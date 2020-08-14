@@ -5,13 +5,11 @@ import { observer } from "mobx-react-lite"
 import { makeStyles } from "@material-ui/core/styles"
 import PreventionPointLogo from "../../public/img/logo.svg"
 import AppBar from "@material-ui/core/AppBar"
-import Badge from "@material-ui/core/Badge"
 import Toolbar from "@material-ui/core/Toolbar"
 import IconButton from "@material-ui/core/IconButton"
 import Menu from "@material-ui/core/Menu"
 import MenuItem from "@material-ui/core/MenuItem"
 import AccountCircle from "@material-ui/icons/AccountCircle"
-import NotificationsIcon from "@material-ui/icons/Notifications"
 import Typography from "@material-ui/core/Typography"
 import MenuIcon from "@material-ui/icons/Menu"
 import GsTitle from "./GsTitle"
@@ -106,11 +104,6 @@ const NavHeader = observer(({ drawerOpen, handleDrawerOpen, drawerWidth }) => {
             <GsTitle />
           </Typography>
         </div>
-        <IconButton color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
         <IconButton onClick={handleProfileMenuOpen} color="inherit">
           <AccountCircle />
         </IconButton>
