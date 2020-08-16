@@ -352,7 +352,7 @@ def create_questions(form):
     for _ in range(DEFAULT_NUMBER_QUESTIONS):
         _type = random.choice(type_list)
         question = Question(form=form, name=fake.profile()['username'],
-                            question=fake.lexify(text='Random Question: ??????????'), type=_type.value)
+                            question=fake.lexify(text='Random Question: ??????????'), input_type=_type.value)
         question.full_clean()
         question.save()
 
