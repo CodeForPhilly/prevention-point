@@ -88,7 +88,7 @@ const ParticipantList = observer(() => {
           headerTitles={PARTICIPANT_LIST_TABLE_TITLES}
           participants={participantStore.participants.slice(
             50 * participantTablePage,
-            50 * participantTablePage + 49
+            50 * participantTablePage + 50
           )}
           handleClick={handleParticipant}
         />
