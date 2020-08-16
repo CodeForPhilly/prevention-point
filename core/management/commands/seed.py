@@ -336,7 +336,7 @@ def create_form(program):
     form.full_clean()
     form.save()
 
-    create_questions(program, form)
+    create_questions(form)
 
     # if output:
     #     print(
@@ -346,24 +346,23 @@ def create_form(program):
     #     )
 
 
-def create_questions(program, form):
+def create_questions(form):
     """ Create a fake question for a form """
     type_list = list(Type)
     for _ in range(DEFAULT_NUMBER_QUESTIONS):
         _type = random.choice(type_list)
-        question = Question(program=program, form=form, name=fake.profile()['username'],
+        question = Question(form=form, name=fake.profile()['username'],
                             question=fake.lexify(text='Random Question: ??????????'), type=_type.value)
         question.full_clean()
         question.save()
 
-        create_options(program, form, question)
+        create_options(question)
 
 
-def create_options(program, form, question):
+def create_options(question):
     """ Create fake options for a question """
     for i in range(DEFAULT_NUMBER_OPTIONS):
-        option = Option(program=program, form=form, question=question,
-                        option=fake.lexify(text='Random Option: ??????????'), value=i)
+        option = Option(question=question, option=fake.lexify(text='Random Option: ??????????'), value=i)
         option.full_clean()
         option.save()
 

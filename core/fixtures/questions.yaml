@@ -1,7 +1,6 @@
 - model: core.question
   pk: 1
   fields:
-    program: 4
     form: 6
     name: syringes_in
     question: Syringes Exchanged (number)
@@ -10,7 +9,6 @@
 - model: core.question
   pk: 2
   fields:
-    program: 4
     form: 6
     name: syringes_out
     question: Syringes Out (number)
@@ -19,7 +17,6 @@
 - model: core.question
   pk: 3
   fields:
-    program: 4
     form: 6
     name: no_people
     question: Exchanging For (number of people)
@@ -28,7 +25,6 @@
 - model: core.question
   pk: 4
   fields:
-    program: 4
     form: 8
     name: site_number
     question: Exchange Site
@@ -37,7 +33,6 @@
 - model: core.question
   pk: 5
   fields:
-    program: 4
     form: 6
     name: exchange_date
     question: Date of Exchange
@@ -46,7 +41,6 @@
 - model: core.question
   pk: 6
   fields:
-    program: 4
     form: 7
     name: mother_first_three
     question: First 3 Letters of Mother's First Name
@@ -55,7 +49,6 @@
 - model: core.question
   pk: 7
   fields:
-    program: 4
     form: 7
     name: sep_zip
     question: What zip code do you live in or spend the most time in?
@@ -64,7 +57,6 @@
 - model: core.question
   pk: 8
   fields:
-    program: 4
     form: 7
     name: housing
     question: Type of Housing
@@ -73,7 +65,6 @@
 - model: core.question
   pk: 9
   fields:
-    program: 4
     form: 9
     name: heroin
     question: Heroin?
@@ -82,7 +73,6 @@
 - model: core.question
   pk: 10
   fields:
-    program: 4
     form: 9
     name: cocaine
     question: Cocaine?
@@ -91,7 +81,6 @@
 - model: core.question
   pk: 11
   fields:
-    program: 4
     form: 9
     name: fentanyl
     question: Fentanyl?
@@ -100,7 +89,6 @@
 - model: core.question
   pk: 12
   fields:
-    program: 4
     form: 9
     name: crack
     question: Crack?
@@ -109,7 +97,6 @@
 - model: core.question
   pk: 13
   fields:
-    program: 4
     form: 9
     name: amphetamines
     question: Amphetamines (speed, crystal meth, ice)?
@@ -118,7 +105,6 @@
 - model: core.question
   pk: 14
   fields:
-    program: 4
     form: 9
     name: hormones
     question: Hormones?
@@ -127,7 +113,6 @@
 - model: core.question
   pk: 15
   fields:
-    program: 4
     form: 9
     name: steroids
     question: Steroids?
@@ -136,7 +121,6 @@
 - model: core.question
   pk: 16
   fields:
-    program: 4
     form: 9
     name: silicone
     question: Silicone?
@@ -145,7 +129,6 @@
 - model: core.question
   pk: 17
   fields:
-    program: 4
     form: 9
     name: botox
     question: Botox?
@@ -154,7 +137,6 @@
 - model: core.question
   pk: 18
   fields:
-    program: 4
     form: 9
     name: other
     question: Other
@@ -163,7 +145,6 @@
 - model: core.question
   pk: 19
   fields:
-    program: 4
     form: 9
     name: other_text
     question: Other (describe)
@@ -172,7 +153,6 @@
 - model: core.question
   pk: 20
   fields:
-    program: 4
     form: 9
     name: no_injected_drug
     question: Do Not Inject
