@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react"
 import PropTypes from "prop-types"
 import { observer } from "mobx-react-lite"
 import { Redirect } from "react-router-dom"
+import { makeStyles } from "@material-ui/core/styles"
 import Grid from "@material-ui/core/Grid"
 import Container from "@material-ui/core/Container"
 import InputLabel from "@material-ui/core/InputLabel"
@@ -17,6 +18,21 @@ const LoginForm = observer(({ location }) => {
   const [password, setPassword] = useState("")
   const { from } = location.state || { from: { pathname: "/" } }
 
+  const useStyles = makeStyles(theme => ({
+    root: {
+      padding: theme.spacing(6, 0, 0, 0),
+      "& .login-form__form": {
+        margin: "0 auto",
+        maxWidth: "400px",
+      },
+      "& .login-form__error": {
+        color: "#ff000f",
+        paddingTop: theme.spacing(2),
+      },
+    },
+  }))
+  const classes = useStyles()
+
   const login = event => {
     event.preventDefault()
     rootStore.authStore.login(username, password)
@@ -25,7 +41,7 @@ const LoginForm = observer(({ location }) => {
   if (rootStore.authStore.isAuthenticated) return <Redirect to={from} />
 
   return (
-    <Container className="login-form">
+    <Container className={classes.root}>
       <Grid
         container
         component="form"

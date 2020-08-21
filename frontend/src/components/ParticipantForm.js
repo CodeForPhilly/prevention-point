@@ -17,16 +17,19 @@ import {
   PARTICIPANT_RACE_OPTIONS,
 } from "../constants"
 
-function ParticipantForm(props) {
-  const { participantInfo, insurers, handleParticipantChange } = props
-
+const ParticipantForm = ({
+  participantInfo,
+  insurers,
+  isDisabled,
+  handleParticipantChange,
+}) => {
   return (
     <Fragment>
       <Grid item xs={12}>
         <PrevPointHeading>1. Participant Information</PrevPointHeading>
       </Grid>
       <Grid item xs={12} sm={6}>
-        <FormControl>
+        <FormControl disabled={isDisabled}>
           <InputLabel htmlFor="firstName">First Name</InputLabel>
           <PrevPointInput
             id="firstName"
@@ -38,7 +41,7 @@ function ParticipantForm(props) {
         </FormControl>
       </Grid>
       <Grid item xs={12} sm={6}>
-        <FormControl>
+        <FormControl disabled={isDisabled}>
           <InputLabel htmlFor="lastName">Last Name</InputLabel>
           <PrevPointInput
             id="lastName"
@@ -55,6 +58,7 @@ function ParticipantForm(props) {
           name="date_of_birth"
           type="date"
           required
+          disabled={isDisabled}
           fullWidth
           value={participantInfo.date_of_birth}
           onChange={e => handleParticipantChange(e.target)}
@@ -64,7 +68,7 @@ function ParticipantForm(props) {
         />
       </Grid>
       <Grid item xs={12} sm={6}>
-        <FormControl>
+        <FormControl disabled={isDisabled}>
           <InputLabel htmlFor="uuid">UUID</InputLabel>
           <PrevPointInput
             id="uuid"
@@ -76,7 +80,7 @@ function ParticipantForm(props) {
         </FormControl>
       </Grid>
       <Grid item xs={12} sm={6}>
-        <FormControl>
+        <FormControl disabled={isDisabled}>
           <InputLabel id="race">Select Race</InputLabel>
           <Select
             required
@@ -94,7 +98,7 @@ function ParticipantForm(props) {
         </FormControl>
       </Grid>
       <Grid item xs={12} sm={6}>
-        <FormControl>
+        <FormControl disabled={isDisabled}>
           <InputLabel id="participant-gender">Select Gender</InputLabel>
           <Select
             required
@@ -112,7 +116,7 @@ function ParticipantForm(props) {
         </FormControl>
       </Grid>
       <Grid item xs={12} sm={6}>
-        <FormControl component="fieldset">
+        <FormControl disabled={isDisabled} component="fieldset">
           <FormLabel component="legend">Has Insurance?</FormLabel>
           <RadioGroup
             aria-label="insurance"
@@ -126,34 +130,41 @@ function ParticipantForm(props) {
           </RadioGroup>
         </FormControl>
       </Grid>
-      <Grid item xs={12} sm={6}>
-        <FormControl>
-          <InputLabel id="insurance-select">Select Insurance</InputLabel>
-          <Select
-            name="insurer"
-            value={participantInfo.insurer}
-            onChange={e => handleParticipantChange(e.target)}
-            labelId="insurance-select"
-          >
-            {insurers.map((company, index) => (
-              <MenuItem
-                key={index}
-                value={insurers && insurers.length > 0 ? company.id : ""}
-              >
-                {insurers && insurers.length > 0 ? company.name : ""}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </Grid>
+      {participantInfo.is_insured && (
+        <Grid item xs={12} sm={6}>
+          <FormControl>
+            <InputLabel id="insurance-select">Select Insurance</InputLabel>
+            <Select
+              name="insurer"
+              value={participantInfo.insurer}
+              onChange={e => handleParticipantChange(e.target)}
+              labelId="insurance-select"
+            >
+              {insurers.map((company, index) => (
+                <MenuItem
+                  key={index}
+                  value={insurers && insurers.length > 0 ? company.id : ""}
+                >
+                  {insurers && insurers.length > 0 ? company.name : ""}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+      )}
     </Fragment>
   )
 }
 
 ParticipantForm.propTypes = {
   participantInfo: PropTypes.object,
+  isDisabled: PropTypes.bool,
   insurers: PropTypes.array,
   handleParticipantChange: PropTypes.func,
+}
+
+ParticipantForm.defaultProps = {
+  isDisabled: false,
 }
 
 export default ParticipantForm

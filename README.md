@@ -21,6 +21,8 @@ This project would work to migrate all of the disparate data sources into one sy
 This is a Code for Philly project operating under their code of conduct.
 
 ## Getting Started
+Instructions on how to run the project outside of a container. 
+
 ### Back-end
 - Install [docker-compose](https://docs.docker.com/compose/install/)
 - Install [pipenv](https://github.com/pypa/pipenv)
@@ -72,6 +74,7 @@ $ docker-compose down
  For more information on the front-end please see the [front-end README](./frontend/readme)
 
 ## Scripts
+Instructions on running the project inside docker. 
 
 This project implements the [Scripts To Rule Them All](https://github.com/github/scripts-to-rule-them-all) interface for developers:
 

@@ -47,6 +47,7 @@
   "dependencies": {
     "@material-ui/core": "^4.1.1",
     "@material-ui/icons": "^4.2.0",
+    "@material-ui/lab": "^4.0.0-alpha.56",
     "@material-ui/styles": "^4.1.1",
     "apisauce": "^1.0.2",
     "axios-auth-refresh": "^1.0.6",
@@ -84,8 +85,8 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^24.7.1",
     "lint-staged": "^8.1.5",
-    "node-sass": "^4.11.0",
     "mobx-react-devtools": "^6.1.1",
+    "node-sass": "^4.11.0",
     "parcel-bundler": "^1.12.3",
     "parcel-proxy-server": "^1.1.0",
     "prettier": "^1.16.4",

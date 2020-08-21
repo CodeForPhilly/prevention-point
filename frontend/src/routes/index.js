@@ -1,39 +1,32 @@
 import React from "react"
-import { BrowserRouter, Route, Switch } from "react-router-dom"
+import { BrowserRouter, Switch } from "react-router-dom"
 import PrivateRoute from "../routes/PrivateRoute"
-import Navbar from "../components/Navbar"
+import PublicRoute from "../routes/PublicRoute"
 import LoginForm from "../views/LoginForm"
-import MainLayout from "../layouts/MainLayout"
 import ParticipantList from "../views/ParticipantList"
 import AllQueues from "../views/AllQueues"
-import ParticipantInfo from "../components/ParticipantInfo"
+import ExistingParticipantView from "../views/ExistingParticipantView"
 import NewParticipantView from "../views/NewParticipantView"
+import Error404 from "../views/Error404Page"
 
 const Routes = () => {
   return (
     <BrowserRouter>
-      <Navbar />
-      <Route path="/login" component={LoginForm} />
-      <MainLayout>
-        <Switch>
-          <PrivateRoute exact path="/" component={AllQueues} />
-          <PrivateRoute
-            exact
-            path="/participants"
-            component={ParticipantList}
-          />
-          <PrivateRoute
-            exact
-            path="/participantInfo"
-            component={ParticipantInfo}
-          />
-          <PrivateRoute
-            exact
-            path="/newParticipant"
-            component={NewParticipantView}
-          />
-        </Switch>
-      </MainLayout>
+      <Switch>
+        <PublicRoute path="/login" component={LoginForm} />
+        <PrivateRoute exact path="/" component={AllQueues} />
+        <PrivateRoute exact path="/participants" component={ParticipantList} />
+        <PrivateRoute
+          path="/existingParticipant"
+          component={ExistingParticipantView}
+        />
+        <PrivateRoute
+          exact
+          path="/newParticipant"
+          component={NewParticipantView}
+        />
+        <PublicRoute path="*" component={Error404} />
+      </Switch>
     </BrowserRouter>
   )
 }

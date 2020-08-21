@@ -30,7 +30,7 @@ describe("<ParticipantList />", () => {
       </BrowserRouter>
     )
     const tableElement = getByLabelText(/table/i)
-    expect(tableElement).toBeInTheDOM()
+    expect(tableElement).toBeInTheDocument()
   })
 
   it("should render a ParticipantList component and have a bottom navigation", () => {
@@ -39,7 +39,7 @@ describe("<ParticipantList />", () => {
         <ParticipantList />
       </BrowserRouter>
     )
-    const bottomNavElement = getByLabelText(/bottomNav/i)
+    const bottomNavElement = getByLabelText(/Bottom Navigation/i)
     expect(bottomNavElement).toBeInTheDOM()
   })
 })

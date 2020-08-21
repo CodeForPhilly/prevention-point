@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect } from "react"
+import React, { Fragment, useContext, useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { observer } from "mobx-react-lite"
 import { makeStyles } from "@material-ui/core/styles"
@@ -8,6 +8,7 @@ import PrevPointCopy from "../components/Typography/PrevPointCopy"
 import PrevPointHeading from "../components/Typography/PrevPointHeading"
 import { rootStoreContext } from "../stores/RootStore"
 import PrevPointTable from "../components/ParticipantTableComponent/PrevPointTable"
+import PrevPointPagination from "../components/ParticipantTableComponent/PrevPointPagination"
 import { PARTICIPANT_LIST_TABLE_TITLES } from "../constants"
 import Grid from "@material-ui/core/Grid"
 
@@ -34,15 +35,24 @@ const ParticipantList = observer(() => {
     addParticipantIcon: {
       marginLeft: 10,
     },
+    participants: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+    },
     linkWrapper: {
       display: "flex",
       justifyContent: "center",
+    },
+    bottomNavOffset: {
+      height: "43px",
     },
   })
   const classes = useStyles()
 
   const rootStore = useContext(rootStoreContext)
   const participantStore = rootStore.ParticipantStore
+  const [participantTablePage, setParticipantTablePage] = useState(0)
 
   useEffect(() => {
     ;(async () => {
@@ -68,16 +78,30 @@ const ParticipantList = observer(() => {
       <PrevPointHeading className={classes.participantsListHeading}>
         Participants
       </PrevPointHeading>
-      <div className="participants">
+      <div className={classes.participants}>
+        <PrevPointPagination
+          participants={participantStore.participants}
+          page={participantTablePage}
+          setPage={setParticipantTablePage}
+        />
         <PrevPointTable
           headerTitles={PARTICIPANT_LIST_TABLE_TITLES}
-          participants={participantStore.participants}
+          participants={participantStore.participants.slice(
+            50 * participantTablePage,
+            50 * participantTablePage + 50
+          )}
           handleClick={handleParticipant}
         />
+        <PrevPointPagination
+          participants={participantStore.participants}
+          page={participantTablePage}
+          setPage={setParticipantTablePage}
+        />
       </div>
+      <div className={classes.bottomNavOffset}></div>
       <Grid
         container
-        aria-label="bottomNav"
+        aria-label="Bottom Navigation"
         className={classes.addParticipantNav}
       >
         <Grid className={classes.linkWrapper} item xs={12}>
