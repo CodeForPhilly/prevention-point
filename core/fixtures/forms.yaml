@@ -1,0 +1,81 @@
+- model: core.form
+  pk: 1
+  fields:
+    label: UDS
+    name: Urine Drug Screen
+    program: 1
+    active: True
+    added: '2020-08-03'
+    updated: '2020-08-03'
+- model: core.form
+  pk: 2
+  fields:
+    label: STEP_CM
+    name: STEP Case Management
+    program: 1
+    active: True
+    added: '2020-08-03'
+    updated: '2020-08-03'
+- model: core.form
+  pk: 3
+  fields:
+    label: STEP_CRS
+    name: STEP Recovery Specialist
+    program: 1
+    active: True
+    added: '2020-08-03'
+    updated: '2020-08-03'
+- model: core.form
+  pk: 4
+  fields:
+    label: STEP_PCP
+    name: STEP Provider
+    program: 1
+    active: True
+    added: '2020-08-03'
+    updated: '2020-08-03'
+- model: core.form
+  pk: 5
+  fields:
+    label: NAL_Train
+    name: Naloxone Training 
+    program: 3
+    active: True
+    added: '2020-08-03'
+    updated: '2020-08-03'
+- model: core.form
+  pk: 6
+  fields:
+    label: Exchange_Tracking
+    name: SEP Exchange Tracking
+    program: 4
+    active: True
+    added: '2020-08-03'
+    updated: '2020-08-03'
+- model: core.form
+  pk: 7
+  fields:
+    label: SEP_enrollment
+    name: SEP Enrollment Form
+    program: 4
+    active: True
+    added: '2020-08-03'
+    updated: '2020-08-03'
+- model: core.form
+  pk: 8
+  fields:
+    label: SEP_common
+    name: SEP Common Fields
+    program: 4
+    active: True
+    added: '2020-08-03'
+    updated: '2020-08-03'
+- model: core.form
+  pk: 9
+  fields:
+    label: drug_matrix
+    name: Drug Use Matrix
+    program: 5
+    active: True
+    added: '2020-08-03'
+    updated: '2020-08-03'

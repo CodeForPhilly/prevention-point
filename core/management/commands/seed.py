@@ -22,14 +22,21 @@ from core.models import (
     UrineDrugScreen,
     FrontDeskEventType,
     ProgramAvailability,
+    Form,
+    Question,
+    Type,
+    Option
 )
 
 
 fake = Faker()
 
-DEFAULT_NUMBER_PARTICIPANTS = 1000
-DEFAULT_NUMBER_VISITS = 100
+DEFAULT_NUMBER_FORMS = 10
 DEFAULT_NUMBER_INSURERS = 10
+DEFAULT_NUMBER_OPTIONS = 3
+DEFAULT_NUMBER_PARTICIPANTS = 1000
+DEFAULT_NUMBER_QUESTIONS = 3
+DEFAULT_NUMBER_VISITS = 100
 
 # Cribbed from prevpoint-backend 2 July 2019 Marieke
 DEFAULT_PROGRAMS = {
@@ -243,6 +250,10 @@ def create_programs(output=True):
             if output:
                 print("Created {}: '{}'".format(p.name, s.name))
 
+        """ Create forms for the program """
+        for _ in range(DEFAULT_NUMBER_FORMS):
+            create_form(p)
+
 
 def create_visits(output=True, uds=True, medication=True):
     """Create fake visits and front desk events, depending on Participants and Programs. Visits are created using now(), i.e. today"""
@@ -318,6 +329,42 @@ def create_program_availability(output=True):
         for availability in ProgramAvailability.objects.all().order_by('program'):
             print(f"Created program availability: {availability.program.name} {availability.day_of_week} {availability.start_time} {availability.end_time}")
 
+
+def create_form(program):
+    """ Create fake form """
+    form = Form(label=fake.profile()['username'], name=fake.company(), program=program)
+    form.full_clean()
+    form.save()
+
+    create_questions(form)
+
+    # if output:
+    #     print(
+    #         "Created form label: {} name: {}".format(
+    #             form.label, form.name
+    #         )
+    #     )
+
+
+def create_questions(form):
+    """ Create a fake question for a form """
+    type_list = list(Type)
+    for _ in range(DEFAULT_NUMBER_QUESTIONS):
+        _type = random.choice(type_list)
+        question = Question(form=form, name=fake.profile()['username'],
+                            question=fake.lexify(text='Random Question: ??????????'), input_type=_type.value)
+        question.full_clean()
+        question.save()
+
+        create_options(question)
+
+
+def create_options(question):
+    """ Create fake options for a question """
+    for i in range(DEFAULT_NUMBER_OPTIONS):
+        option = Option(question=question, option=fake.lexify(text='Random Option: ??????????'), value=i)
+        option.full_clean()
+        option.save()
 
 def arrived(visit):
     """After ARRIVED, can be either LEFT, SEEN, STEPPED_OUT or pending (still in ARRIVED status)"""
