@@ -140,12 +140,9 @@ const ParticipantForm = ({
               onChange={e => handleParticipantChange(e.target)}
               labelId="insurance-select"
             >
-              {insurers.map((company, index) => (
-                <MenuItem
-                  key={index}
-                  value={insurers && insurers.length > 0 ? company.id : ""}
-                >
-                  {insurers && insurers.length > 0 ? company.name : ""}
+              {insurers.map(company => (
+                <MenuItem key={company.id} value={company.id}>
+                  {company.name || ""}
                 </MenuItem>
               ))}
             </Select>
