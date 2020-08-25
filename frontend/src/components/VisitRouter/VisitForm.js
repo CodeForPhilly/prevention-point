@@ -85,7 +85,7 @@ const VisitForm = ({
           <InputLabel htmlFor="addANote">Add a Note</InputLabel>
           <PrevPointInput
             fullWidth
-            multiline="true"
+            multiline
             name="notes"
             id="addANote"
             value={visitInfo.notes}
