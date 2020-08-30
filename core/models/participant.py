@@ -32,6 +32,7 @@ class Participant(models.Model):
     start_date = models.DateField()
     is_insured = models.BooleanField(default=False)
     insurer = models.ForeignKey(Insurer, on_delete=models.CASCADE, null=True)
+    sep_id = models.IntegerField(null=True, unique=True)
 
     def __str__(self):
         return '%s %s' % (self.first_name, self.last_name)

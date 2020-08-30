@@ -4,11 +4,12 @@
     first_name: michael
     last_name: jordan
     last_four_ssn: 1234
-    pp_id: ppi_id
+    pp_id: pp_1234
     gender: male
     race: black (african american)
     date_of_birth: 1963-02-17
     start_date: 2019-04-21
+    sep_id: 12345
 
 - model: core.participant
   pk: 2
@@ -16,11 +17,13 @@
     first_name: wayne
     last_name: gretzky
     last_four_ssn: 1234
-    pp_id: ppi_id
+    pp_id: pp_4321
     gender: male
     race: white (caucasian)
     date_of_birth: 1961-01-26
     start_date: 2019-04-21
+    sep_id: 12346
+
 
 - model: core.participant
   pk: 3
@@ -33,3 +36,17 @@
     race: black (african american)
     date_of_birth: 1981-09-26
     start_date: 2019-04-21
+    sep_id: 123
+
+- model: core.participant
+  pk: 4
+  fields:
+    first_name: barry
+    last_name: bonds
+    last_four_ssn: 5678
+    pp_id: pp-9101
+    gender: male
+    race: black (african american)
+    date_of_birth: 1981-09-26
+    start_date: 2019-04-19
+    sep_id: 12347
