@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import Grid from "@material-ui/core/Grid"
 import Select from "@material-ui/core/Select"
 import MenuItem from "@material-ui/core/MenuItem"
-import TextField from "@material-ui/core/TextField"
+import PrevPointInput from "../Input/PrevPointInput"
 import InputLabel from "@material-ui/core/InputLabel"
 import FormControl from "@material-ui/core/FormControl"
 import { PrevPointHeading } from "../Typography"
@@ -81,13 +81,17 @@ const VisitForm = ({
         </FormControl>
       </Grid>
       <Grid item xs={12}>
-        <TextField
-          fullWidth
-          label="Add a Note"
-          name="notes"
-          value={visitInfo.notes}
-          onChange={e => handleVisitChange(e.target)}
-        />
+        <FormControl>
+          <InputLabel htmlFor="addANote">Add a Note</InputLabel>
+          <PrevPointInput
+            fullWidth
+            multiline
+            name="notes"
+            id="addANote"
+            value={visitInfo.notes}
+            onChange={e => handleVisitChange(e.target)}
+          />
+        </FormControl>
       </Grid>
     </>
   )
