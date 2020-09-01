@@ -15,9 +15,12 @@ class ParticipantViewSet(ModelViewSet):
         dob = self.request.query_params.get('dob', None)
         last_four_ssn = self.request.query_params.get('last_four_ssn', None)
         pp_id = self.request.query_params.get('pp_id', None)
+        sep_id = self.request.query_params.get('sep_id', None)
         queryset = Participant.objects.all()
         if first_name is not None:
             queryset = queryset.filter(first_name__icontains=first_name)
+        if sep_id is not None:
+            queryset = queryset.filter(sep_id__contains=sep_id)
         if last_name is not None:
             queryset = queryset.filter(last_name__icontains=last_name)
         if last_four_ssn is not None:

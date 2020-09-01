@@ -1,6 +1,7 @@
 import random, pytz, datetime
 
 from django.utils import timezone
+from django.db import IntegrityError
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import Group, User, Permission
@@ -154,8 +155,9 @@ def create_participants():
     gender_list = list(Gender)
     race_list = list(Race)
     insurers = Insurer.objects.all()
+    sep_ids = random.sample(range(1, 99999), DEFAULT_NUMBER_PARTICIPANTS)
 
-    for _ in range(DEFAULT_NUMBER_PARTICIPANTS):
+    for index in range(DEFAULT_NUMBER_PARTICIPANTS):
         last_four = fake.ssn(taxpayer_identification_number_type="SSN")[-4:]
         profile = fake.profile()
         gender = random.choice(gender_list)
@@ -167,6 +169,7 @@ def create_participants():
             pp_id=fake.password(
                 length=5, special_chars=False, digits=True, lower_case=False
             ),
+            sep_id = sep_ids[index],
             gender=gender.value,
             race=race.value,
             last_four_ssn=last_four,
@@ -177,7 +180,6 @@ def create_participants():
         )
         participant.full_clean()
         participant.save()
-
 
 def random_bool():
     return bool(random.getrandbits(1))
