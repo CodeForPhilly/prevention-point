@@ -188,7 +188,7 @@ export class ParticipantStore {
         this.setInsurers(data)
       }
     } catch (error) {
-      throw "ParticipantStore:  getInsurers() Failed  =>  " + error
+      throw `ParticipantStore:  getInsurers() Failed  =>  ${error}`
     }
   })
   getPrograms = flow(function*() {
@@ -211,7 +211,7 @@ export class ParticipantStore {
         }
       }
     } catch (error) {
-      throw "ParticipantStore:  getPrograms() Failed  =>  " + error
+      throw `ParticipantStore:  getPrograms() Failed  =>  ${error}`
     }
   })
   // called on  =>  ParticipantList.js
@@ -222,7 +222,7 @@ export class ParticipantStore {
         this.setParticipantsList(data)
       }
     } catch (error) {
-      throw "ParticipantStore:  getParticipants() Failed  =>  " + error
+      throw `ParticipantStore:  getParticipants() Failed  =>  ${error}`
     }
   })
   // called on  =>  ParticipantInfo.js
@@ -238,7 +238,7 @@ export class ParticipantStore {
         this.setRouteToQueue(true)
       }
     } catch (error) {
-      throw "ParticipantStore:  createParticipant() Failed  =>  " + error
+      throw `ParticipantStore:  createParticipant() Failed  =>  ${error}`
     }
   })
   createVisit = flow(function*() {
@@ -247,13 +247,13 @@ export class ParticipantStore {
       const { ok, data } = yield api.createVisits(toJS(this.visit))
       if (ok && data) {
         this.setVisit(data)
-        this.getFrontEndDeskEvents()
+        this.createNewFrontEndDeskEvents()
       }
     } catch (error) {
-      throw "ParticipantStore:  createVisit() Failed  =>  " + error
+      throw `ParticipantStore:  createVisit() Failed  =>  ${error}`
     }
   })
-  getFrontEndDeskEvents = flow(function*() {
+  createNewFrontEndDeskEvents = flow(function*() {
     try {
       const { ok } = yield api.postFrontDeskEvent({
         visit: this.visit.id,
@@ -263,7 +263,7 @@ export class ParticipantStore {
         this.setRouteToQueue(true)
       }
     } catch (error) {
-      throw "ParticipantStore:  getFrontEndDeskEvents() Failed  =>  " + error
+      throw `ParticipantStore:  createNewFrontEndDeskEvents() Failed  =>  ${error}`
     }
   })
   getVisits = flow(function*() {
@@ -273,7 +273,7 @@ export class ParticipantStore {
         this.setVisitsList(data)
       }
     } catch (error) {
-      throw "ParticipantStore:  getVisits() Failed  =>  " + error
+      throw `ParticipantStore:  getVisits() Failed  =>  ${error}`
     }
   })
   // called on  =>  ParticipantInfo.js
@@ -289,7 +289,7 @@ export class ParticipantStore {
         this.setIsEditing(false)
       }
     } catch (error) {
-      throw "ParticipantStore:  updateParticipant() Failed  =>  " + error
+      throw `ParticipantStore:  updateParticipant() Failed  =>  ${error}`
     }
   })
   // called on  =>  ParticipantInfo.js
@@ -300,7 +300,7 @@ export class ParticipantStore {
         this.setRouteToQueue(true)
       }
     } catch (error) {
-      throw "ParticipantStore:  updateVisit() Failed  =>  " + error
+      throw `ParticipantStore:  updateVisit() Failed  =>  ${error}`
     }
   })
 }
