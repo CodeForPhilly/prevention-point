@@ -1,4 +1,4 @@
-export const createNewFrontDeskEvent = api => async id =>
+export const getFrontDeskEvent = api => async id =>
   await api.get(`/front-desk-events/${id}/`)
 
 export const postFrontDeskEvent = api => async data =>
