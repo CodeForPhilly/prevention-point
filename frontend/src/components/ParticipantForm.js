@@ -1,5 +1,6 @@
 import React, { Fragment } from "react"
 import PropTypes from "prop-types"
+import { makeStyles } from "@material-ui/styles"
 import Grid from "@material-ui/core/Grid"
 import Radio from "@material-ui/core/Radio"
 import Select from "@material-ui/core/Select"
@@ -17,12 +18,22 @@ import {
   PARTICIPANT_RACE_OPTIONS,
 } from "../constants"
 
+const useStyles = makeStyles(() => ({
+  root: {
+    "&$disabled, & $disabled": {
+      color: "rgba(0, 0, 0, 0.85)",
+    },
+  },
+  disabled: {},
+}))
+
 const ParticipantForm = ({
   participantInfo,
   insurers,
   isDisabled,
   handleParticipantChange,
 }) => {
+  const classes = useStyles()
   return (
     <Fragment>
       <Grid item xs={12}>
@@ -37,6 +48,7 @@ const ParticipantForm = ({
             value={participantInfo.first_name}
             onChange={e => handleParticipantChange(e.target)}
             required
+            classes={{ root: classes.root, disabled: classes.disabled }}
           />
         </FormControl>
       </Grid>
@@ -49,6 +61,7 @@ const ParticipantForm = ({
             value={participantInfo.last_name}
             onChange={e => handleParticipantChange(e.target)}
             required
+            classes={{ root: classes.root, disabled: classes.disabled }}
           />
         </FormControl>
       </Grid>
@@ -65,6 +78,9 @@ const ParticipantForm = ({
           InputLabelProps={{
             shrink: true,
           }}
+          InputProps={{
+            classes: { root: classes.root, disabled: classes.disabled },
+          }}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -76,6 +92,7 @@ const ParticipantForm = ({
             value={participantInfo.pp_id}
             onChange={e => handleParticipantChange(e.target)}
             required
+            classes={{ root: classes.root, disabled: classes.disabled }}
           />
         </FormControl>
       </Grid>
@@ -88,6 +105,7 @@ const ParticipantForm = ({
             value={participantInfo.race}
             onChange={e => handleParticipantChange(e.target)}
             labelId="race"
+            classes={{ root: classes.root, disabled: classes.disabled }}
           >
             {PARTICIPANT_RACE_OPTIONS.map((race, index) => (
               <MenuItem key={index} value={race.value}>
@@ -106,6 +124,7 @@ const ParticipantForm = ({
             value={participantInfo.gender}
             onChange={e => handleParticipantChange(e.target)}
             labelId="participant-gender"
+            classes={{ root: classes.root, disabled: classes.disabled }}
           >
             {PARTICIPANT_GENDER_OPTIONS.map((gender, index) => (
               <MenuItem key={index} value={gender.value}>
@@ -124,9 +143,20 @@ const ParticipantForm = ({
             value={participantInfo.is_insured}
             onChange={e => handleParticipantChange(e.target)}
             style={{ display: "inline" }}
+            classes={{ root: classes.root }}
           >
-            <FormControlLabel value={true} control={<Radio />} label="Yes" />
-            <FormControlLabel value={false} control={<Radio />} label="No" />
+            <FormControlLabel
+              value={true}
+              control={<Radio />}
+              label="Yes"
+              classes={{ root: classes.root, disabled: classes.disabled }}
+            />
+            <FormControlLabel
+              value={false}
+              control={<Radio />}
+              label="No"
+              classes={{ root: classes.root, disabled: classes.disabled }}
+            />
           </RadioGroup>
         </FormControl>
       </Grid>
@@ -139,6 +169,7 @@ const ParticipantForm = ({
               value={participantInfo.insurer}
               onChange={e => handleParticipantChange(e.target)}
               labelId="insurance-select"
+              classes={{ root: classes.root, disabled: classes.disabled }}
             >
               {insurers.map(company => (
                 <MenuItem key={company.id} value={company.id}>
