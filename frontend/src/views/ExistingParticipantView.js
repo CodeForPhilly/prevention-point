@@ -64,6 +64,15 @@ const ExistingParticipantView = observer(() => {
     participantStore.updateParticipant()
   }
 
+  const handleCancelEditParticipant = () => {
+    if (participantStore.isEditing) {
+      participantStore.setIsEditing(false)
+      participantStore.getParticipant()
+    } else {
+      participantStore.setIsEditing(true)
+    }
+  }
+
   return (
     <>
       <Container maxWidth="md">
@@ -87,9 +96,7 @@ const ExistingParticipantView = observer(() => {
             {/* Disable the fields until 'edit' is clicked. hide  submit button until isEditing is true */}
             <PrevPointButton
               type="button"
-              onClick={() =>
-                participantStore.setIsEditing(!participantStore.isEditing)
-              }
+              onClick={() => handleCancelEditParticipant()}
             >
               {participantStore.isEditing ? "cancel" : "Edit Participant Info"}
             </PrevPointButton>
