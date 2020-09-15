@@ -240,6 +240,9 @@ export class ParticipantStore {
   // called on  =>  ParticipantInfo.js
   // andVisit temporary hack, this logic should be seperated out when creating VisitView
   createParticipant = flow(function*(andVisit = true) {
+    if (this.routeToQueueTable) {
+      this.setRouteToQueue(false)
+    }
     try {
       const { ok, data } = yield api.createParticipant(toJS(this.participant))
       if (ok && data) {
@@ -266,6 +269,9 @@ export class ParticipantStore {
     }
   })
   createNewFrontEndDeskEvents = flow(function*() {
+    if (this.routeToQueueTable) {
+      this.setRouteToQueue(false)
+    }
     try {
       const { ok } = yield api.postFrontDeskEvent({
         visit: this.visit.id,
@@ -306,6 +312,9 @@ export class ParticipantStore {
   })
   // called on  =>  ParticipantInfo.js
   updateVisit = flow(function*() {
+    if (this.routeToQueueTable) {
+      this.setRouteToQueue(false)
+    }
     try {
       const { ok } = yield api.patchVisit(toJS(this.visit.id), toJS(this.visit))
       if (ok) {
