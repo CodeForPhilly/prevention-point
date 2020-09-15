@@ -214,6 +214,18 @@ export class ParticipantStore {
       throw `ParticipantStore:  getPrograms() Failed  =>  ${error}`
     }
   })
+  getParticipant = flow(function*() {
+    try {
+      const { ok, data } = yield api.getParticipantById(
+        toJS(this.participant.id)
+      )
+      if (ok && data) {
+        this.setParticipant(data)
+      }
+    } catch (error) {
+      throw `ParticipantStore:  getParticipant() Failed  =>  ${error}`
+    }
+  })
   // called on  =>  ParticipantList.js
   getParticipants = flow(function*() {
     try {
