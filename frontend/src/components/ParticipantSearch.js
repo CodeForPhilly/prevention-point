@@ -1,6 +1,7 @@
 import React, { useContext } from "react"
 import { observer } from "mobx-react-lite"
 import { useHistory } from "react-router-dom"
+import { makeStyles } from "@material-ui/core/styles"
 import Grid from "@material-ui/core/Grid"
 import Container from "@material-ui/core/Container"
 import InputLabel from "@material-ui/core/InputLabel"
@@ -11,7 +12,31 @@ import PrevPointCopy from "./Typography/PrevPointCopy"
 import { rootStoreContext } from "../stores/RootStore"
 import PrevPointHeading from "./Typography/PrevPointHeading"
 
-const ParticipantSearch = observer(({ handleDrawerClose }) => {
+const useStyles = makeStyles({
+  root: {
+    paddingTop: "20px",
+    "& .error": {
+      borderBottom: "1px solid red",
+    },
+  },
+  form: {
+    margin: "0 auto",
+    maxWidth: "270px",
+  },
+  errorMessage: {
+    color: "red",
+  },
+  heading: {
+    padding: "2px 0",
+    color: "#086375",
+  },
+  copy: {
+    paddingTop: "20px",
+  },
+})
+
+const ParticipantSearch = observer(() => {
+  const classes = useStyles()
   const rootStore = useContext(rootStoreContext)
   const participantStore = rootStore.ParticipantStore
   const history = useHistory()
@@ -25,25 +50,24 @@ const ParticipantSearch = observer(({ handleDrawerClose }) => {
       )
       participantStore.setErrorStateForParticipantSearch(true)
     } else {
-      handleDrawerClose()
       participantStore.getParticipants()
       history.push("/participants")
     }
   }
 
   return (
-    <Container className="participant-search">
+    <Container className={classes.root}>
       <Grid
         container
         component="form"
         onSubmit={handleSubmit}
-        className="participant-search__form"
+        className={classes.form}
       >
         <Grid item xs={12}>
-          <PrevPointHeading className="participant-search__heading">
+          <PrevPointHeading className={classes.heading}>
             Participant Search
           </PrevPointHeading>
-          <PrevPointCopy className="participant-search__copy">
+          <PrevPointCopy className={classes.copy}>
             <b>Reminder:</b> Search for participant profile prior to creating a
             new profile
           </PrevPointCopy>
@@ -60,9 +84,7 @@ const ParticipantSearch = observer(({ handleDrawerClose }) => {
           </FormControl>
         </Grid>
         <Grid item xs={12}>
-          <PrevPointHeading className="participant-search__heading">
-            Or
-          </PrevPointHeading>
+          <PrevPointHeading className={classes.heading}>Or</PrevPointHeading>
         </Grid>
         <Grid item xs={12}>
           <FormControl error={participantStore.errorState}>
@@ -93,7 +115,7 @@ const ParticipantSearch = observer(({ handleDrawerClose }) => {
           >
             Submit
           </PrevPointButton>
-          <PrevPointCopy className="error-message">
+          <PrevPointCopy className={classes.errorMessage}>
             {participantStore.errorMessage}
           </PrevPointCopy>
         </Grid>

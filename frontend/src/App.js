@@ -2,7 +2,6 @@ import React, { useEffect, useContext } from "react"
 import { MuiThemeProvider } from "@material-ui/core/styles"
 import { observer } from "mobx-react-lite"
 
-import "./style/main.scss"
 import api from "./api"
 import theme from "./style/theme"
 import RoutesIndex from "./routes"

@@ -40,3 +40,7 @@ export const PARTICIPANT_GENDER_OPTIONS = [
   { value: "gender queer", name: "Gender Queer" },
   { value: "other", name: "Other" },
 ]
+
+// values for sidebarView
+export const SEARCH = "SEARCH"
+export const SEP = "SEP"

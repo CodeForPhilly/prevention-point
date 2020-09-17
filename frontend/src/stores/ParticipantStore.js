@@ -2,6 +2,7 @@ import { observable, action, flow, toJS, computed } from "mobx"
 import { createContext } from "react"
 import { format } from "date-fns"
 import api from "../api"
+import { SEARCH } from "../constants"
 
 export class ParticipantStore {
   constructor(rootStore) {
@@ -29,6 +30,7 @@ export class ParticipantStore {
   // participant search
   @observable errorState = false
   @observable errorMessage = ""
+  @observable sidebarView = SEARCH
 
   // computed
   // if participant has input a value for search, enable search else disable search
@@ -172,6 +174,9 @@ export class ParticipantStore {
   }
   @action setErrorMessageForParticipantSearch = message => {
     this.errorMessage = message
+  }
+  @action setSidebarView = sidebarView => {
+    this.sidebarView = sidebarView
   }
 
   // Utils
