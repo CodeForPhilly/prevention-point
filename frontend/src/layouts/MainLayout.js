@@ -3,11 +3,8 @@ import clsx from "clsx"
 import { makeStyles } from "@material-ui/core/styles"
 import Drawer from "@material-ui/core/Drawer"
 import CssBaseline from "@material-ui/core/CssBaseline"
-import Divider from "@material-ui/core/Divider"
-import IconButton from "@material-ui/core/IconButton"
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
 import Navbar from "../components/Navbar"
-import ParticipantSearch from "../components/ParticipantSearch"
+import Sidebar from "../components/Sidebar"
 import PropTypes from "prop-types"
 
 const drawerWidth = 300
@@ -23,13 +20,6 @@ const useStyles = makeStyles(theme => ({
   drawerPaper: {
     width: drawerWidth,
     background: theme.palette.background.default,
-  },
-  drawerHeader: {
-    display: "flex",
-    alignItems: "center",
-    padding: theme.spacing(0, 1),
-    ...theme.mixins.toolbar,
-    justifyContent: "flex-end",
   },
   content: {
     flexGrow: 1,
@@ -85,13 +75,7 @@ const PersistentDrawerLeft = props => {
           paper: classes.drawerPaper,
         }}
       >
-        <div className={classes.drawerHeader}>
-          <IconButton onClick={handleDrawerClose}>
-            <ChevronLeftIcon />
-          </IconButton>
-        </div>
-        <Divider />
-        <ParticipantSearch handleDrawerClose={handleDrawerClose} />
+        <Sidebar handleDrawerClose={handleDrawerClose} />
       </Drawer>
       <main
         className={clsx(classes.content, {
