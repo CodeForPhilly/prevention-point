@@ -38,10 +38,6 @@
       "prettier",
       "eslint",
       "git add"
-    ],
-    "*.scss": [
-      "stylelint",
-      "git add"
     ]
   },
   "dependencies": {
@@ -86,16 +82,10 @@
     "jest": "^24.7.1",
     "lint-staged": "^8.1.5",
     "mobx-react-devtools": "^6.1.1",
-    "node-sass": "^4.11.0",
     "parcel-bundler": "^1.12.3",
     "parcel-proxy-server": "^1.1.0",
     "prettier": "^1.16.4",
     "prop-types": "^15.7.2",
-    "react-test-renderer": "^16.8.6",
-    "sass": "^1.18.0",
-    "stylelint": "^9.10.1",
-    "stylelint-config-recommended": "^2.1.0",
-    "stylelint-config-recommended-scss": "^3.2.0",
-    "stylelint-scss": "^3.5.4"
+    "react-test-renderer": "^16.8.6"
   }
 }
