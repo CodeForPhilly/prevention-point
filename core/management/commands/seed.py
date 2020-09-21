@@ -26,7 +26,8 @@ from core.models import (
     Form,
     Question,
     Type,
-    Option
+    Option,
+    Sites
 )
 
 
