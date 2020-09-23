@@ -85,10 +85,11 @@ const ParticipantSearch = observer(() => {
         }}
         validationSchema={validationSchema}
         onSubmit={(values, { setSubmitting }) => {
-          participantStore.setParticipantIdParam(values.pp_id)
-          participantStore.setParticipantFirstNameParam(values.first_name)
-          participantStore.setParticipantLastNameParam(values.last_name)
-          participantStore.getParticipants()
+          participantStore.getParticipants({
+            pp_id: values.pp_id,
+            first_name: values.first_name,
+            last_name: values.last_name,
+          })
           history.push("/participants")
           setSubmitting(false)
         }}

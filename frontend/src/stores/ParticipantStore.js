@@ -79,16 +79,6 @@ export class ParticipantStore {
   @action setVisit = data => {
     this.visit = data
   }
-  // Participant Search Actions
-  @action setParticipantIdParam = data => {
-    this.params.pp_id = data.toUpperCase()
-  }
-  @action setParticipantFirstNameParam = value => {
-    this.params.first_name = value
-  }
-  @action setParticipantLastNameParam = value => {
-    this.params.last_name = value
-  }
 
   // Insurance and Programs Actions
   @action setInsurers = data => {
@@ -211,9 +201,9 @@ export class ParticipantStore {
     }
   })
   // called on  =>  ParticipantList.js
-  getParticipants = flow(function*() {
+  getParticipants = flow(function*(params) {
     try {
-      const { ok, data } = yield api.getParticipants(toJS(this.params))
+      const { ok, data } = yield api.getParticipants(toJS(params))
       if (ok && data) {
         this.setParticipantsList(data)
       }
