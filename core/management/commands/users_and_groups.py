@@ -4,84 +4,6 @@ from django.contrib.auth.models import Group, User, Permission
 
 DEFAULT_DEV_ENV_PASS = "password123"
 
-ADMIN_PERMISSIONS = [
-    "add_logentry",
-    "change_logentry",
-    "view_logentry",
-    "add_permission",
-    "change_permission",
-    "delete_permission",
-    "view_permission",
-    "add_group",
-    "change_group",
-    "delete_group",
-    "view_group",
-    "add_user",
-    "change_user",
-    "delete_user",
-    "view_user",
-    "add_contenttype",
-    "change_contenttype",
-    "delete_contenttype",
-    "view_contenttype",
-    "add_session",
-    "change_session",
-    "delete_session",
-    "view_session",
-    "add_insurer",
-    "change_insurer",
-    "delete_insurer",
-    "view_insurer",
-    "add_participant",
-    "change_participant",
-    "delete_participant",
-    "view_participant",
-    "add_program",
-    "change_program",
-    "delete_program",
-    "view_program",
-    "add_service",
-    "change_service",
-    "delete_service",
-    "view_service",
-    "add_visit",
-    "change_visit",
-    "delete_visit",
-    "view_visit",
-    "add_hcvnotes",
-    "change_hcvnotes",
-    "delete_hcvnotes",
-    "view_hcvnotes",
-    "add_medication",
-    "change_medication",
-    "delete_medication",
-    "view_medication",
-    "add_appointment",
-    "change_appointment",
-    "delete_appointment",
-    "view_appointment",
-    "add_casemanagement",
-    "change_casemanagement",
-    "delete_casemanagement",
-    "view_casemanagement",
-    "add_frontdeskevent",
-    "change_frontdeskevent",
-    "delete_frontdeskevent",
-    "view_frontdeskevent",
-    "add_urinedrugscreen",
-    "change_urinedrugscreen",
-    "delete_urinedrugscreen",
-    "view_urinedrugscreen",
-    "add_programavailability",
-    "change_programavailability",
-    "delete_programavailability",
-    "view_programavailability",
-    "add_behavioralhealthnotes",
-    "change_behavioralhealthnotes",
-    "delete_behavioralhealthnotes",
-    "view_behavioralhealthnotes",
-]
-
 INTERNAL_PROVIDER_PERMISSIONS = [
     "add_insurer",
     "change_insurer",
@@ -172,7 +94,6 @@ UDS_PROVIDER_PERMISSIONS = [
 ]
 
 DEFAULT_GROUPS = {
-    "admin": ADMIN_PERMISSIONS,
     "front_desk": FRONT_DESK_PERMISSIONS,
     "uds_provider": UDS_PROVIDER_PERMISSIONS,
     "internal_provider": INTERNAL_PROVIDER_PERMISSIONS,
@@ -188,16 +109,22 @@ class Command(BaseCommand):
         add_users_to_groups(output=False)
 
 
+def generate_email(group):
+    return f"{group}@{group}.com"
+
+
 def create_users(output=True):
+
+    admin = User.objects.create_user(username="admin", email=generate_email("admin"))
+    admin.set_password(DEFAULT_DEV_ENV_PASS)
+    admin.is_staff = True
+    admin.is_superuser = True
+    admin.save()
+
     for group in DEFAULT_GROUPS:
-        email = "{}@{}.com".format(group, group)
+        email = generate_email(group)
         u = User.objects.create_user(username=group, email=email)
         u.set_password(DEFAULT_DEV_ENV_PASS)
-
-        if group == "admin":
-            u.is_staff = True
-            u.is_superuser = True
-
         u.save()
 
         if output:
