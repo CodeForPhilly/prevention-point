@@ -95,62 +95,66 @@ const ParticipantSearch = observer(() => {
       >
         {({ errors, touched, values, handleChange, isSubmitting }) => (
           <Form>
-            <Grid item xs={12}>
-              <PrevPointHeading className={classes.heading}>
-                Participant Search
-              </PrevPointHeading>
-              <PrevPointCopy className={classes.copy}>
-                <b>Reminder:</b> Search for participant profile prior to
-                creating a new profile
-              </PrevPointCopy>
-            </Grid>
-            <Grid item xs={12}>
-              <FormControl error={errors.pp_id && touched.pp_id}>
-                <InputLabel htmlFor="participant_id">Participant ID</InputLabel>
-                <PrevPointInput
-                  id="participant_id"
-                  name="pp_id"
-                  value={values.pp_id}
-                  onChange={handleChange}
-                />
-              </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <PrevPointHeading className={classes.heading}>
-                Or
-              </PrevPointHeading>
-            </Grid>
-            <Grid item xs={12}>
-              <FormControl error={errors.first_name && touched.first_name}>
-                <InputLabel htmlFor="first_name">First Name</InputLabel>
-                <PrevPointInput
-                  id="first_name"
-                  name="first_name"
-                  value={values.firstName}
-                  onChange={handleChange}
-                />
-              </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <FormControl error={errors.last_name && touched.last_name}>
-                <InputLabel htmlFor="last_name">Last Name</InputLabel>
-                <PrevPointInput
-                  id="last_name"
-                  name="last_name"
-                  value={values.lastName}
-                  onChange={handleChange}
-                />
-              </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <PrevPointButton type="submit" disabled={isSubmitting}>
-                Submit
-              </PrevPointButton>
-              {(errors.pp_id || errors.first_name || errors.last_name) && (
-                <PrevPointCopy className={classes.errorMessage}>
-                  {errors.pp_id || errors.first_name || errors.last_name}
+            <Grid container>
+              <Grid item xs={12}>
+                <PrevPointHeading className={classes.heading}>
+                  Participant Search
+                </PrevPointHeading>
+                <PrevPointCopy className={classes.copy}>
+                  <b>Reminder:</b> Search for participant profile prior to
+                  creating a new profile
                 </PrevPointCopy>
-              )}
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl error={errors.pp_id && touched.pp_id}>
+                  <InputLabel htmlFor="participant_id">
+                    Participant ID
+                  </InputLabel>
+                  <PrevPointInput
+                    id="participant_id"
+                    name="pp_id"
+                    value={values.pp_id}
+                    onChange={handleChange}
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <PrevPointHeading className={classes.heading}>
+                  Or
+                </PrevPointHeading>
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl error={errors.first_name && touched.first_name}>
+                  <InputLabel htmlFor="first_name">First Name</InputLabel>
+                  <PrevPointInput
+                    id="first_name"
+                    name="first_name"
+                    value={values.firstName}
+                    onChange={handleChange}
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl error={errors.last_name && touched.last_name}>
+                  <InputLabel htmlFor="last_name">Last Name</InputLabel>
+                  <PrevPointInput
+                    id="last_name"
+                    name="last_name"
+                    value={values.lastName}
+                    onChange={handleChange}
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <PrevPointButton type="submit" disabled={isSubmitting}>
+                  Submit
+                </PrevPointButton>
+                {(errors.pp_id || errors.first_name || errors.last_name) && (
+                  <PrevPointCopy className={classes.errorMessage}>
+                    {errors.pp_id || errors.first_name || errors.last_name}
+                  </PrevPointCopy>
+                )}
+              </Grid>
             </Grid>
           </Form>
         )}
