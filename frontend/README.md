@@ -6,7 +6,6 @@ The frontend app for the Prevention Point Unified Reporting System (URS) project
 
 - Main Framework: [React](https://reactjs.org/)
 - UI Framework: [Material UI](https://material-ui.com/)
-- Styling: [Sass](https://sass-lang.com/)
 - Bundler: [Parcel](https://parceljs.org/)
 - Package manager: [Yarn](https://yarnpkg.com/)
 
@@ -36,8 +35,6 @@ yarn dev
   - configure Prettier settings in .prettierrc.json
 - The project uses [Husky](https://github.com/typicode/husky) to run a precommit hook to lint files before they are commited. If there are any files ESlint and/or Prettier can't fix automatically, they'll fail to commit and an error log will be displayed
 
-### SCSS
+### Styling
 
-- When possible, try to rely onn Material UI component APIs for styling
-- SCSS styling enforced by [stylelint](https://stylelint.io/)
-- When writing SCSS, try to adhere to [BEM conventions](http://getbem.com/)
+- See the Material UI [documentation](https://material-ui.com/customization/components/) on customizing the UI components
