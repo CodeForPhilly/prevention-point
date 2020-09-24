@@ -28,21 +28,8 @@ export class ParticipantStore {
   @observable visitList = []
   @observable isEditing = false
   // participant search
-  @observable errorState = false
-  @observable errorMessage = ""
   @observable sidebarView = SEARCH
 
-  // computed
-  // if participant has input a value for search, enable search else disable search
-  @computed get toggleSearch() {
-    // if the params obj has any new prop with a length > 0 and its ppId or fName or lName, then enable
-    let hasSearchString =
-      Object.keys(this.params).length > 0 &&
-      (this.params.pp_id || this.params.first_name || this.params.last_name)
-        ? true
-        : false
-    return !hasSearchString
-  }
   @computed get hasVisit() {
     return this.visitList.map(visit => {
       return visit.participant === this.participant.id ? true : false
@@ -91,19 +78,6 @@ export class ParticipantStore {
   }
   @action setVisit = data => {
     this.visit = data
-  }
-  // Participant Search Actions
-  @action handleParamChange = ({ name, value }) => {
-    switch (name) {
-      case "pp_id":
-        this.setParticipantIdParam(value)
-        break
-      default:
-        this.params[name] = value
-    }
-  }
-  @action setParticipantIdParam = data => {
-    this.params.pp_id = data.toUpperCase()
   }
 
   // Insurance and Programs Actions
@@ -169,12 +143,7 @@ export class ParticipantStore {
   @action setVisitsList = data => {
     this.visitList = data
   }
-  @action setErrorStateForParticipantSearch = state => {
-    this.errorState = state
-  }
-  @action setErrorMessageForParticipantSearch = message => {
-    this.errorMessage = message
-  }
+
   @action setSidebarView = sidebarView => {
     this.sidebarView = sidebarView
   }
@@ -232,9 +201,9 @@ export class ParticipantStore {
     }
   })
   // called on  =>  ParticipantList.js
-  getParticipants = flow(function*() {
+  getParticipants = flow(function*(params) {
     try {
-      const { ok, data } = yield api.getParticipants(toJS(this.params))
+      const { ok, data } = yield api.getParticipants(toJS(params))
       if (ok && data) {
         this.setParticipantsList(data)
       }

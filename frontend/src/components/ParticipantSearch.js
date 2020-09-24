@@ -11,6 +11,8 @@ import PrevPointButton from "./PrevPointButton"
 import PrevPointCopy from "./Typography/PrevPointCopy"
 import { rootStoreContext } from "../stores/RootStore"
 import PrevPointHeading from "./Typography/PrevPointHeading"
+import { Formik, Form } from "formik"
+import * as Yup from "yup"
 
 const useStyles = makeStyles({
   root: {
@@ -41,85 +43,123 @@ const ParticipantSearch = observer(() => {
   const participantStore = rootStore.ParticipantStore
   const history = useHistory()
 
-  const handleSubmit = e => {
-    e.preventDefault()
-    // Validate that a participant id or a first name last name paring exist on the form
-    if (!Object.keys(participantStore.params).length) {
-      participantStore.setErrorMessageForParticipantSearch(
-        "Need to enter a participant id or a name"
-      )
-      participantStore.setErrorStateForParticipantSearch(true)
-    } else {
-      participantStore.getParticipants()
-      history.push("/participants")
-    }
-  }
+  const errorMessage = "Please enter a participant id or a name"
+  const validationSchema = Yup.object().shape(
+    {
+      pp_id: Yup.string().when(["first_name", "last_name"], {
+        is: (firstName, lastName) => !firstName && !lastName,
+        then: Yup.string().required(errorMessage),
+      }),
+      first_name: Yup.string().when(["pp_id", "last_name"], {
+        is: (ppId, lastName) => !ppId && !lastName,
+        then: Yup.string().required(errorMessage),
+      }),
+      last_name: Yup.string().when(["pp_id", "first_name"], {
+        is: (ppId, firstName) => !ppId && !firstName,
+        then: Yup.string().required(errorMessage),
+      }),
+    },
+    [
+      ["pp_id", "first_name"],
+      ["pp_id", "last_name"],
+      ["first_name", "last_name"],
+    ]
+  )
 
   return (
     <Container className={classes.root}>
-      <Grid
-        container
-        component="form"
-        onSubmit={handleSubmit}
+      <Formik
         className={classes.form}
+        validateOnChange={false}
+        validateOnBlur={false}
+        initialValues={{
+          pp_id: participantStore.params.pp_id
+            ? participantStore.params.pp_id
+            : "",
+          first_name: participantStore.params.firstName
+            ? participantStore.params.firstName
+            : "",
+          last_name: participantStore.params.lastName
+            ? participantStore.params.lastName
+            : "",
+        }}
+        validationSchema={validationSchema}
+        onSubmit={(values, { setSubmitting }) => {
+          participantStore.getParticipants({
+            pp_id: values.pp_id,
+            first_name: values.first_name,
+            last_name: values.last_name,
+          })
+          history.push("/participants")
+          setSubmitting(false)
+        }}
       >
-        <Grid item xs={12}>
-          <PrevPointHeading className={classes.heading}>
-            Participant Search
-          </PrevPointHeading>
-          <PrevPointCopy className={classes.copy}>
-            <b>Reminder:</b> Search for participant profile prior to creating a
-            new profile
-          </PrevPointCopy>
-        </Grid>
-        <Grid item xs={12}>
-          <FormControl error={participantStore.errorState}>
-            <InputLabel htmlFor="participant_id">Participant ID</InputLabel>
-            <PrevPointInput
-              id="participant_id"
-              name="pp_id"
-              value={participantStore.params.pp_id}
-              onChange={e => participantStore.handleParamChange(e.target)}
-            />
-          </FormControl>
-        </Grid>
-        <Grid item xs={12}>
-          <PrevPointHeading className={classes.heading}>Or</PrevPointHeading>
-        </Grid>
-        <Grid item xs={12}>
-          <FormControl error={participantStore.errorState}>
-            <InputLabel htmlFor="first_name">First Name</InputLabel>
-            <PrevPointInput
-              id="first_name"
-              name="first_name"
-              value={participantStore.params.firstName}
-              onChange={e => participantStore.handleParamChange(e.target)}
-            />
-          </FormControl>
-        </Grid>
-        <Grid item xs={12}>
-          <FormControl error={participantStore.errorState}>
-            <InputLabel htmlFor="last_name">Last Name</InputLabel>
-            <PrevPointInput
-              id="last_name"
-              name="last_name"
-              value={participantStore.params.lastName}
-              onChange={e => participantStore.handleParamChange(e.target)}
-            />
-          </FormControl>
-        </Grid>
-        <Grid item xs={12}>
-          <PrevPointButton
-            type="submit"
-            disabled={participantStore.toggleSearch}
-          >
-            Submit
-          </PrevPointButton>
-          <PrevPointCopy className={classes.errorMessage}>
-            {participantStore.errorMessage}
-          </PrevPointCopy>
-        </Grid>
-      </Grid>
+        {({ errors, touched, values, handleChange, isSubmitting }) => (
+          <Form>
+            <Grid container>
+              <Grid item xs={12}>
+                <PrevPointHeading className={classes.heading}>
+                  Participant Search
+                </PrevPointHeading>
+                <PrevPointCopy className={classes.copy}>
+                  <b>Reminder:</b> Search for participant profile prior to
+                  creating a new profile
+                </PrevPointCopy>
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl error={errors.pp_id && touched.pp_id}>
+                  <InputLabel htmlFor="participant_id">
+                    Participant ID
+                  </InputLabel>
+                  <PrevPointInput
+                    id="participant_id"
+                    name="pp_id"
+                    value={values.pp_id}
+                    onChange={handleChange}
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <PrevPointHeading className={classes.heading}>
+                  Or
+                </PrevPointHeading>
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl error={errors.first_name && touched.first_name}>
+                  <InputLabel htmlFor="first_name">First Name</InputLabel>
+                  <PrevPointInput
+                    id="first_name"
+                    name="first_name"
+                    value={values.firstName}
+                    onChange={handleChange}
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl error={errors.last_name && touched.last_name}>
+                  <InputLabel htmlFor="last_name">Last Name</InputLabel>
+                  <PrevPointInput
+                    id="last_name"
+                    name="last_name"
+                    value={values.lastName}
+                    onChange={handleChange}
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <PrevPointButton type="submit" disabled={isSubmitting}>
+                  Submit
+                </PrevPointButton>
+                {(errors.pp_id || errors.first_name || errors.last_name) && (
+                  <PrevPointCopy className={classes.errorMessage}>
+                    {errors.pp_id || errors.first_name || errors.last_name}
+                  </PrevPointCopy>
+                )}
+              </Grid>
+            </Grid>
+          </Form>
+        )}
+      </Formik>
     </Container>
   )
 })
