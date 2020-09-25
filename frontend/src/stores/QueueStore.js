@@ -21,7 +21,7 @@ export class QueueStore {
   @action
   setQueue(id, data) {
     let program = this.queues.find(item => item.id === id)
-    program.participants = [...data].sort((a, b) => {
+    program.visits = [...data].sort((a, b) => {
       return +b.urgency - +a.urgency
     })
     program.waitTime = this.longestWait(data)
@@ -86,9 +86,7 @@ export class QueueStore {
   })
 
   getNotes(queueIndex, visitId) {
-    const array = this.queues[queueIndex].participants.filter(
-      x => x.id === visitId
-    )
+    const array = this.queues[queueIndex].visits.filter(x => x.id === visitId)
     if (array.length === 1) {
       return array[0].notes
     }

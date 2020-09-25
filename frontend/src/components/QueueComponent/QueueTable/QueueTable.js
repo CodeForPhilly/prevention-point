@@ -71,7 +71,7 @@ const QueueTable = observer(({ queueData }) => {
         className={classes.table}
         localization={{ body: { emptyDataSourceMessage: "Queue is empty" } }}
         options={{ search: false, sorting: true }}
-        data={queueStore.queues[queueData].participants.map(x => ({
+        data={queueStore.queues[queueData].visits.map(x => ({
           urgency: x.urgency,
           first: x.participant.first_name,
           last: x.participant.last_name,
