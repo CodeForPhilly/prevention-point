@@ -21,7 +21,7 @@ const QueueTableDropdown = props => {
     }
   }
   return (
-    <Select value={value} onChange={handleChange} fullWidth={true}>
+    <Select value={value} onChange={handleChange} fullWidth>
       {props.items.map((item, idx) => (
         <MenuItem key={idx} value={item.value}>
           {item.name}
