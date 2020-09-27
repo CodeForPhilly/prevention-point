@@ -170,21 +170,17 @@ const QueueTable = observer(({ queueData }) => {
           { title: "Service", field: "service" },
           {
             title: "Seen",
-            //eslint-disable-next-line
-            /* eslint-disable */
-            render: ({ id }) => <SeenButton id={id} />,
-            /* eslint-enable */
             sorting: false,
             align: "center",
+            //eslint-disable-next-line
+            render: ({ id }) => <SeenButton id={id} />,
           },
           {
             title: "Notes",
-            //eslint-disable-next-line
-            /* eslint-disable */
-            render: ({ id }) => <NotesButton id={id} />,
-            /* eslint-enable */
             sorting: false,
             align: "center",
+            //eslint-disable-next-line
+            render: ({ id }) => <NotesButton id={id} />,
           },
         ]}
       />
