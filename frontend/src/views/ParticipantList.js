@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect, useState } from "react"
+import React, { Fragment, useContext, useState } from "react"
 import { Link } from "react-router-dom"
 import { observer } from "mobx-react-lite"
 import { makeStyles } from "@material-ui/core/styles"
@@ -53,14 +53,6 @@ const ParticipantList = observer(() => {
   const rootStore = useContext(rootStoreContext)
   const participantStore = rootStore.ParticipantStore
   const [participantTablePage, setParticipantTablePage] = useState(0)
-
-  useEffect(() => {
-    ;(async () => {
-      // kick off api calls for participants from Mobx
-      await participantStore.getParticipants()
-    })()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [participantStore])
 
   const handleParticipant = participant => {
     participantStore.setParticipant(participant)
