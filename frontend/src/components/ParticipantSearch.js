@@ -12,7 +12,7 @@ import PrevPointCopy from "./Typography/PrevPointCopy"
 import { rootStoreContext } from "../stores/RootStore"
 import PrevPointHeading from "./Typography/PrevPointHeading"
 import { Formik, Form } from "formik"
-import * as Yup from "yup"
+import { searchSchema } from "../validation"
 
 const useStyles = makeStyles({
   root: {
@@ -43,29 +43,6 @@ const ParticipantSearch = observer(() => {
   const participantStore = rootStore.ParticipantStore
   const history = useHistory()
 
-  const errorMessage = "Please enter a participant id or a name"
-  const validationSchema = Yup.object().shape(
-    {
-      pp_id: Yup.string().when(["first_name", "last_name"], {
-        is: (firstName, lastName) => !firstName && !lastName,
-        then: Yup.string().required(errorMessage),
-      }),
-      first_name: Yup.string().when(["pp_id", "last_name"], {
-        is: (ppId, lastName) => !ppId && !lastName,
-        then: Yup.string().required(errorMessage),
-      }),
-      last_name: Yup.string().when(["pp_id", "first_name"], {
-        is: (ppId, firstName) => !ppId && !firstName,
-        then: Yup.string().required(errorMessage),
-      }),
-    },
-    [
-      ["pp_id", "first_name"],
-      ["pp_id", "last_name"],
-      ["first_name", "last_name"],
-    ]
-  )
-
   return (
     <Container className={classes.root}>
       <Formik
@@ -77,7 +54,7 @@ const ParticipantSearch = observer(() => {
           first_name: "",
           last_name: "",
         }}
-        validationSchema={validationSchema}
+        validationSchema={searchSchema}
         onSubmit={async (values, { setSubmitting }) => {
           await participantStore.getParticipants({
             pp_id: values.pp_id,
