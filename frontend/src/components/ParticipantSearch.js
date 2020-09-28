@@ -73,15 +73,9 @@ const ParticipantSearch = observer(() => {
         validateOnChange={false}
         validateOnBlur={false}
         initialValues={{
-          pp_id: participantStore.params.pp_id
-            ? participantStore.params.pp_id
-            : "",
-          first_name: participantStore.params.firstName
-            ? participantStore.params.firstName
-            : "",
-          last_name: participantStore.params.lastName
-            ? participantStore.params.lastName
-            : "",
+          pp_id: "",
+          first_name: "",
+          last_name: "",
         }}
         validationSchema={validationSchema}
         onSubmit={(values, { setSubmitting }) => {
