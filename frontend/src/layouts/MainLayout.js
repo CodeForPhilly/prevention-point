@@ -45,7 +45,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const PersistentDrawerLeft = props => {
+const MainLayout = props => {
   const classes = useStyles()
   const [open, setOpen] = React.useState(false)
 
@@ -89,8 +89,8 @@ const PersistentDrawerLeft = props => {
   )
 }
 
-PersistentDrawerLeft.propTypes = {
+MainLayout.propTypes = {
   children: PropTypes.element.isRequired,
 }
 
-export default PersistentDrawerLeft
+export default MainLayout
