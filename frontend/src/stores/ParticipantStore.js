@@ -18,8 +18,6 @@ export class ParticipantStore {
   @observable insurers = []
   // list of all programs with nested services fetched via api
   @observable programs = []
-  // params for participant searching
-  @observable params = {}
   // singular participant visit
   @observable visit = {}
   // flag for triggering route to Queue table once Participant Info has bee sent
