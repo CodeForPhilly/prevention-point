@@ -1,10 +1,10 @@
 from core.viewsets import ModelViewSet
 from core.models import Site
-from core.sites.serializer import SitesSerializer
+from core.site.serializer import SiteSerializer
 
-class SitesViewSet(ModelViewSet):
+class SiteViewSet(ModelViewSet):
     """
     API endpoint that allows Site data to be viewed or edited
     """
     queryset = Site.objects.all()
-    serializer_class = SitesSerializer
+    serializer_class = SiteSerializer
