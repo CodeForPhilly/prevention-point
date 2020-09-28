@@ -78,8 +78,8 @@ const ParticipantSearch = observer(() => {
           last_name: "",
         }}
         validationSchema={validationSchema}
-        onSubmit={(values, { setSubmitting }) => {
-          participantStore.getParticipants({
+        onSubmit={async (values, { setSubmitting }) => {
+          await participantStore.getParticipants({
             pp_id: values.pp_id,
             first_name: values.first_name,
             last_name: values.last_name,
