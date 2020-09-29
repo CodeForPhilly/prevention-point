@@ -16,15 +16,15 @@ api.getProgram = jest
 api.getPrograms = jest.fn().mockResolvedValue({
   ok: true,
   data: [
-    { name: "TESTING", participants: [] },
-    { name: "CM", participants: [], waitTime: 0, length: 0 },
-    { name: "SSHP", participants: [] },
-    { name: "LEGAL", participants: [] },
-    { name: "CRAFT", participants: [] },
-    { name: "PHAN", participants: [] },
-    { name: "STEP", participants: [] },
-    { name: "BIENSTAR", participants: [] },
-    { name: "SKWC", participants: [] },
+    { name: "TESTING", visits: [] },
+    { name: "CM", visits: [], waitTime: 0, length: 0 },
+    { name: "SSHP", visits: [] },
+    { name: "LEGAL", visits: [] },
+    { name: "CRAFT", visits: [] },
+    { name: "PHAN", visits: [] },
+    { name: "STEP", visits: [] },
+    { name: "BIENSTAR", visits: [] },
+    { name: "SKWC", visits: [] },
   ],
 })
 api.getQueue = jest.fn().mockResolvedValue({ ok: true, data: [] })
