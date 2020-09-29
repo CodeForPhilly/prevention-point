@@ -46,19 +46,6 @@ class SiteTests(BaseTestCase):
         self.assertNotContains(response, 'TESTING2')
         self.assertNotContains(response, 'alskdjfuuru')
 
-    # def test_admin_filter_site_by_params(self):
-    #     """
-    #     Ensure we can get a list of site by parameter search via admin
-    #     """
-    #     headers = self.auth_headers_for_user('admin')
-    #     response = self.client.get('/api/site?site_type=mobile', follow=True, **headers)
-
-    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
-    #     self.assertEqual('mobile', response.data[0]['site_type'])
-    #     self.assertEqual('mobile', response.data[1]['site_type'])
-    #     self.assertNotContains(response, 'TESTING3')
-    #     self.assertNotContains(response, 'Case management for HIV positive individuals')
-
 # UNAUTHENTICATED TEST
 
     def test_site_api_when_unauthenticated(self):
