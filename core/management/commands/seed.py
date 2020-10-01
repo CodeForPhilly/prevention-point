@@ -27,7 +27,7 @@ from core.models import (
     Question,
     Type,
     Option,
-    Sites
+    Site
 )
 
 

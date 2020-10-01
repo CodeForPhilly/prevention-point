@@ -8,3 +8,4 @@ from core.tests.programs import *
 from core.tests.queue import *
 from core.tests.program_availability  import *
 from core.tests.insurers import *
+from core.tests.site import *

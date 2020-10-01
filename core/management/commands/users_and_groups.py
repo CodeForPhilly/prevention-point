@@ -44,6 +44,7 @@ INTERNAL_PROVIDER_PERMISSIONS = [
     "add_behavioralhealthnotes",
     "change_behavioralhealthnotes",
     "view_behavioralhealthnotes",
+    "view_site",
 ]
 
 FRONT_DESK_PERMISSIONS = [
@@ -70,6 +71,7 @@ FRONT_DESK_PERMISSIONS = [
     "add_programavailability",
     "change_programavailability",
     "view_programavailability",
+    "view_site",
 ]
 
 UDS_PROVIDER_PERMISSIONS = [
@@ -91,6 +93,7 @@ UDS_PROVIDER_PERMISSIONS = [
     "add_urinedrugscreen",
     "change_urinedrugscreen",
     "view_urinedrugscreen",
+    "view_site",
 ]
 
 DEFAULT_GROUPS = {

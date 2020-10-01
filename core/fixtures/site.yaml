@@ -1,0 +1,36 @@
+- model: core.site
+  pk: 1
+  fields:
+   site_name: TESTING1
+   site_type: mobile
+   description: In building
+   address: 3rd & Girard
+   zip_code: '19134'
+   created_at: '2020-09-22 01:38:39.204290+00:00'
+- model: core.site
+  pk: 2
+  fields:
+   site_name: TESTING2
+   site_type: mobile
+   description: mobile site
+   address: "2913-15 Kensington Ave, Philadelphia, PA 19134"
+   zip_code: '19134'
+   created_at: '2020-09-23 01:38:39.204290+00:00'
+- model: core.site
+  pk: 3
+  fields:
+   site_name: TESTING3
+   site_type: headquarters
+   description: emergency packs available
+   address: Front & Wolf
+   zip_code: ""
+   created_at: '2020-09-24 01:38:39.204290+00:00'
+- model: core.site
+  pk: 4
+  fields:
+   site_name: TESTING4
+   site_type: PPP Program,MCM
+   description: Case management for HIV positive individuals
+   address: Broad & Passyunk
+   zip_code: "19148"
+   created_at: '2020-09-25 01:38:39.204290+00:00'
