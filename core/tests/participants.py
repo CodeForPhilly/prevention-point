@@ -110,3 +110,10 @@ class ParticipantsTestCase(BaseTestCase):
         )
 
         self.assertEqual(400, response_2.status_code)
+
+    def test_can_query_maiden_name(self):
+        headers = self.auth_headers_for_user('front_desk')
+        response = self.client.get('/api/participants', follow=True, **headers)
+
+        self.assertContains(response, 'maiden_name')
+        

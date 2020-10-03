@@ -19,4 +19,5 @@ class ParticipantSerializer(serializers.ModelSerializer):
             "start_date",
             "is_insured",
             "insurer",
+            "maiden_name",
         )

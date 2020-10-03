@@ -10,6 +10,7 @@
     date_of_birth: 1963-02-17
     start_date: 2019-04-21
     sep_id: 12345
+    maiden_name: momjordan
 
 - model: core.participant
   pk: 2
@@ -23,6 +24,7 @@
     date_of_birth: 1961-01-26
     start_date: 2019-04-21
     sep_id: 12346
+    maiden_name: dwayne
 
 
 - model: core.participant
@@ -37,6 +39,7 @@
     date_of_birth: 1981-09-26
     start_date: 2019-04-21
     sep_id: 123
+    maiden_name: dunbar
 
 - model: core.participant
   pk: 4
@@ -50,3 +53,4 @@
     date_of_birth: 1981-09-26
     start_date: 2019-04-19
     sep_id: 12347
+    maiden_name: baseball
