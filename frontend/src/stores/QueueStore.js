@@ -49,9 +49,10 @@ export class QueueStore {
     // takes programId, not queueIndex
     try {
       const { ok, data } = yield api.getQueue(programId)
-      if (ok) {
-        this.setQueue(programId, data)
+      if (!ok) {
+        throw "a placeholder error string!"
       }
+      this.setQueue(programId, data)
     } catch (error) {
       throw "QueueStore:  getQueue() Failed  =>  " + error
     }
@@ -60,10 +61,11 @@ export class QueueStore {
   patchVisit = flow(function*(queueIndex, visitIndex, data) {
     try {
       const { ok } = yield api.patchVisit(visitIndex, data)
-      if (ok) {
-        const programId = this.queues[queueIndex].id
-        this.getQueue(programId)
+      if (!ok) {
+        throw "a placeholder error string!"
       }
+      const programId = this.queues[queueIndex].id
+      this.getQueue(programId)
     } catch (error) {
       throw "QueueStore:  patchVisit() Failed  =>  " + error
     }
@@ -76,10 +78,11 @@ export class QueueStore {
         event_type: eventType,
       }
       const { ok } = yield api.postFrontDeskEvent(body)
-      if (ok) {
-        const programId = this.queues[queueIndex].id
-        this.getQueue(programId)
+      if (!ok) {
+        throw "a placeholder error string!"
       }
+      const programId = this.queues[queueIndex].id
+      this.getQueue(programId)
     } catch (error) {
       throw "QueueStore:  updateStatus() Failed  =>  " + error
     }

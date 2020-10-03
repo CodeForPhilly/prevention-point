@@ -40,14 +40,13 @@ export class AuthStore {
   login = flow(function*(username, password) {
     try {
       const { ok, data } = yield api.createToken(username, password)
-      if (ok) {
-        this.setIsAuthenticated(true)
-        this.setUsername(data.username)
-        this.setEmail(data.email)
-        this.setError(data.null)
-      } else {
-        throw new Error()
+      if (!ok) {
+        throw "a placeholder error string!"
       }
+      this.setIsAuthenticated(true)
+      this.setUsername(data.username)
+      this.setEmail(data.email)
+      this.setError(data.null)
     } catch (error) {
       this.setError(true)
     }
