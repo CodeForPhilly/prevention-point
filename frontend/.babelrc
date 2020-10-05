@@ -3,6 +3,7 @@
   "plugins": [
     ["@babel/plugin-transform-runtime", { "regenerator": true }],
     ["@babel/plugin-proposal-decorators", { "legacy": true }],
-    ["@babel/plugin-proposal-class-properties", { "loose": true }, "classes-alias"]
+    ["@babel/plugin-proposal-class-properties", { "loose": true }, "classes-alias"],
+    ["@babel/plugin-proposal-private-methods", { "loose": true }, "methods-alas"]
   ]
 }
