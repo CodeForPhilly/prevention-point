@@ -156,9 +156,10 @@ export class ParticipantStore {
   getInsurers = flow(function*() {
     try {
       const { ok, data } = yield api.getInsurers()
-      if (ok && data) {
-        this.setInsurers(data)
+      if (!ok || !data) {
+        throw "a placeholder error string!"
       }
+      this.setInsurers(data)
     } catch (error) {
       throw `ParticipantStore:  getInsurers() Failed  =>  ${error}`
     }
@@ -166,21 +167,22 @@ export class ParticipantStore {
   getPrograms = flow(function*() {
     try {
       const { ok, data } = yield api.getPrograms()
-      if (ok && data) {
-        this.setPrograms(data)
-        if (
-          this.participant.id &&
-          this.visit.id &&
-          this.visit.program &&
-          this.visit.service &&
-          this.programs.length > 0
-        ) {
-          // preload chosen services based on visit programs
-          const preloadedServices = this.programs.find(
-            program => program.id === this.visit.program
-          )
-          this.setServiceList(preloadedServices.services)
-        }
+      if (!ok || !data) {
+        throw "a placeholder error string!"
+      }
+      this.setPrograms(data)
+      if (
+        this.participant.id &&
+        this.visit.id &&
+        this.visit.program &&
+        this.visit.service &&
+        this.programs.length > 0
+      ) {
+        // preload chosen services based on visit programs
+        const preloadedServices = this.programs.find(
+          program => program.id === this.visit.program
+        )
+        this.setServiceList(preloadedServices.services)
       }
     } catch (error) {
       throw `ParticipantStore:  getPrograms() Failed  =>  ${error}`
@@ -191,9 +193,10 @@ export class ParticipantStore {
       const { ok, data } = yield api.getParticipantById(
         toJS(this.participant.id)
       )
-      if (ok && data) {
-        this.setParticipant(data)
+      if (!ok || !data) {
+        throw "a placeholder error string!"
       }
+      this.setParticipant(data)
     } catch (error) {
       throw `ParticipantStore:  getParticipant() Failed  =>  ${error}`
     }
@@ -202,9 +205,10 @@ export class ParticipantStore {
   getParticipants = flow(function*(params) {
     try {
       const { ok, data } = yield api.getParticipants(toJS(params))
-      if (ok && data) {
-        this.setParticipantsList(data)
+      if (!ok || !data) {
+        throw "a placeholder error string!"
       }
+      this.setParticipantsList(data)
     } catch (error) {
       throw `ParticipantStore:  getParticipants() Failed  =>  ${error}`
     }
@@ -217,13 +221,14 @@ export class ParticipantStore {
     }
     try {
       const { ok, data } = yield api.createParticipant(toJS(this.participant))
-      if (ok && data) {
-        this.setParticipant(data)
-        if (andVisit) {
-          return this.createVisit()
-        }
-        this.setRouteToQueue(true)
+      if (!ok || !data) {
+        throw "a placeholder error string!"
       }
+      this.setParticipant(data)
+      if (andVisit) {
+        return this.createVisit()
+      }
+      this.setRouteToQueue(true)
     } catch (error) {
       throw `ParticipantStore:  createParticipant() Failed  =>  ${error}`
     }
@@ -232,10 +237,11 @@ export class ParticipantStore {
     try {
       this.setVisitParticipantId(this.participant.id)
       const { ok, data } = yield api.createVisits(toJS(this.visit))
-      if (ok && data) {
-        this.setVisit(data)
-        this.createNewFrontEndDeskEvents()
+      if (!ok || !data) {
+        throw "a placeholder error string!"
       }
+      this.setVisit(data)
+      this.createNewFrontEndDeskEvents()
     } catch (error) {
       throw `ParticipantStore:  createVisit() Failed  =>  ${error}`
     }
@@ -249,9 +255,10 @@ export class ParticipantStore {
         visit: this.visit.id,
         event_type: "ARRIVED",
       })
-      if (ok) {
-        this.setRouteToQueue(true)
+      if (!ok) {
+        throw "a placeholder error string!"
       }
+      this.setRouteToQueue(true)
     } catch (error) {
       throw `ParticipantStore:  createNewFrontEndDeskEvents() Failed  =>  ${error}`
     }
@@ -259,9 +266,10 @@ export class ParticipantStore {
   getVisits = flow(function*() {
     try {
       const { ok, data } = yield api.getVisits()
-      if (ok && data) {
-        this.setVisitsList(data)
+      if (!ok || !data) {
+        throw "a placeholder error string!"
       }
+      this.setVisitsList(data)
     } catch (error) {
       throw `ParticipantStore:  getVisits() Failed  =>  ${error}`
     }
@@ -274,10 +282,11 @@ export class ParticipantStore {
         toJS(this.participant.id),
         toJS(this.participant)
       )
-      if (ok && data) {
-        this.setParticipant(data)
-        this.setIsEditing(false)
+      if (!ok || !data) {
+        throw "a placeholder error string!"
       }
+      this.setParticipant(data)
+      this.setIsEditing(false)
     } catch (error) {
       throw `ParticipantStore:  updateParticipant() Failed  =>  ${error}`
     }
@@ -289,9 +298,10 @@ export class ParticipantStore {
     }
     try {
       const { ok } = yield api.patchVisit(toJS(this.visit.id), toJS(this.visit))
-      if (ok) {
-        this.setRouteToQueue(true)
+      if (!ok) {
+        throw "a placeholder error string!"
       }
+      this.setRouteToQueue(true)
     } catch (error) {
       throw `ParticipantStore:  updateVisit() Failed  =>  ${error}`
     }
