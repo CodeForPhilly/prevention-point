@@ -25,14 +25,14 @@ const PrevPointTableHead = ({ headerTitles }) => {
       <TableRow>
         {headerTitles
           ? headerTitles.map(({ title, mobile }, index) => (
-              <TableCell
-                key={`${title}_${index}`}
-                aria-label="cell"
-                className={mobile ? "" : classes.mobileVisibility}
-              >
-                <PrevPointTitle>{name}</PrevPointTitle>
-              </TableCell>
-            ))
+            <TableCell
+              key={`${title}_${index}`}
+              aria-label="cell"
+              className={mobile ? "" : classes.mobileVisibility}
+            >
+              <PrevPointTitle>{title}</PrevPointTitle>
+            </TableCell>
+          ))
           : null}
       </TableRow>
     </TableHead>
