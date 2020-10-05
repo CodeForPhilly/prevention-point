@@ -112,8 +112,16 @@ class ParticipantsTestCase(BaseTestCase):
         self.assertEqual(400, response_2.status_code)
 
     def test_can_query_maiden_name(self):
-        headers = self.auth_headers_for_user('front_desk')
-        response = self.client.get('/api/participants', follow=True, **headers)
+        #Ensure participant is returned when maiden name is queried
+        headers = self.auth_headers_for_user("front_desk")
+        known_maiden_name = 'dwayne'
 
-        self.assertContains(response, 'maiden_name')
+        response = self.client.get(
+            f"/api/participants?maiden_name={known_maiden_name}", follow=True, **headers
+        )
+
+        content = json.loads(response.content)
+
+        self.assertEqual(200, response.status_code)
+        self.assertTrue(len(content) == 1)
         
