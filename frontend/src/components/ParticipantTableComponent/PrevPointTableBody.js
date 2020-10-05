@@ -7,8 +7,22 @@ import AssignmentIndIcon from "@material-ui/icons/AssignmentInd"
 import Fab from "@material-ui/core/Fab"
 import PrevPointCopy from "../Typography/PrevPointCopy"
 import { Link } from "react-router-dom"
+import { makeStyles } from "@material-ui/core/styles"
+
+const useStyles = makeStyles(theme => ({
+  mobileVisibility: {
+    display: "none",
+  },
+  [theme.breakpoints.up("md")]: {
+    mobileVisibility: {
+      display: "table-cell",
+    },
+  },
+}))
 
 const PrevPointTableBody = props => {
+  const classes = useStyles()
+
   return (
     <TableBody aria-label="tbody">
       {props.participants.length < 1 ? (
@@ -27,13 +41,13 @@ const PrevPointTableBody = props => {
             <TableCell aria-label="tcell">
               <PrevPointCopy>{participant.last_name}</PrevPointCopy>
             </TableCell>
-            <TableCell aria-label="tcell">
+            <TableCell aria-label="tcell" className={classes.mobileVisibility}>
               <PrevPointCopy>{participant.gender}</PrevPointCopy>
             </TableCell>
-            <TableCell aria-label="tcell">
+            <TableCell aria-label="tcell" className={classes.mobileVisibility}>
               <PrevPointCopy>{participant.date_of_birth}</PrevPointCopy>
             </TableCell>
-            <TableCell aria-label="tcell">
+            <TableCell aria-label="tcell" className={classes.mobileVisibility}>
               <PrevPointCopy>{participant.race}</PrevPointCopy>
             </TableCell>
             <TableCell aria-label="tcell">

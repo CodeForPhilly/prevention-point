@@ -4,15 +4,33 @@ import TableRow from "@material-ui/core/TableRow"
 import TableCell from "@material-ui/core/TableCell"
 import TableHead from "@material-ui/core/TableHead"
 import PrevPointTitle from "../Typography/PrevPointTitle"
+import { makeStyles } from "@material-ui/core/styles"
+
+const useStyles = makeStyles(theme => ({
+  mobileVisibility: {
+    display: "none",
+  },
+  [theme.breakpoints.up("md")]: {
+    mobileVisibility: {
+      display: "table-cell",
+    },
+  },
+}))
 
 const PrevPointTableHead = ({ headerTitles }) => {
+  const classes = useStyles()
+
   return (
-    <TableHead aria-label="thead">
+    <TableHead aria-label="table head">
       <TableRow>
-        {headerTitles && headerTitles.length > 0
-          ? headerTitles.map((title, index) => (
-              <TableCell key={`${title}_${index}`} aria-label="cell">
-                <PrevPointTitle>{title}</PrevPointTitle>
+        {headerTitles
+          ? headerTitles.map(({ name, mobile }, index) => (
+              <TableCell
+                key={`${name}_${index}`}
+                aria-label="cell"
+                className={mobile ? "" : classes.mobileVisibility}
+              >
+                <PrevPointTitle>{name}</PrevPointTitle>
               </TableCell>
             ))
           : null}
