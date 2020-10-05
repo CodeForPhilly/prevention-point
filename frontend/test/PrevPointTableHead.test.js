@@ -14,7 +14,7 @@ describe("<PrevPointTableHead />", () => {
 
   it("should render a PrevPointTableHead and have a TableHead element", () => {
     const { getByLabelText } = render(<PrevPointTableHead />, tableContainer)
-    const tableHeadElement = getByLabelText(/thead/i)
+    const tableHeadElement = getByLabelText(/table head/i)
     expect(tableHeadElement).toBeInTheDocument()
   })
 

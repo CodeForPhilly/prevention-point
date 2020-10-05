@@ -24,9 +24,9 @@ const PrevPointTableHead = ({ headerTitles }) => {
     <TableHead aria-label="table head">
       <TableRow>
         {headerTitles
-          ? headerTitles.map(({ name, mobile }, index) => (
+          ? headerTitles.map(({ title, mobile }, index) => (
               <TableCell
-                key={`${name}_${index}`}
+                key={`${title}_${index}`}
                 aria-label="cell"
                 className={mobile ? "" : classes.mobileVisibility}
               >
