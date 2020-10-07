@@ -21,7 +21,7 @@ const PrevPointTableHead = ({ headerTitles }) => {
   const classes = useStyles()
 
   return (
-    <TableHead aria-label="table head">
+    <TableHead aria-label="thead">
       <TableRow>
         {headerTitles
           ? headerTitles.map(({ title, mobile }, index) => (
