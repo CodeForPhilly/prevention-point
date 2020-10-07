@@ -45,6 +45,9 @@ INTERNAL_PROVIDER_PERMISSIONS = [
     "change_behavioralhealthnotes",
     "view_behavioralhealthnotes",
     "view_site",
+    "add_sep_data",
+    "change_sep_data",
+    "view_sep_data",
 ]
 
 FRONT_DESK_PERMISSIONS = [
@@ -72,6 +75,7 @@ FRONT_DESK_PERMISSIONS = [
     "change_programavailability",
     "view_programavailability",
     "view_site",
+    "add_sep_data",
 ]
 
 UDS_PROVIDER_PERMISSIONS = [
