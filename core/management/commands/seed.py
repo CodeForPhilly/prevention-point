@@ -172,6 +172,7 @@ def create_participants():
             ),
             sep_id = sep_ids[index],
             gender=gender.value,
+            maiden_name=fake.last_name(),
             race=race.value,
             last_four_ssn=last_four,
             date_of_birth=profile["birthdate"],
