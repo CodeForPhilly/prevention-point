@@ -70,3 +70,23 @@ class Sep_DataTestCase(BaseTestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertTrue(Sep_Data.objects.filter(pk=content["id"]).exists())
 
+    def test_post_auth(self):
+        """
+        Ensure permissions reject post from user without permission
+        """
+        headers = self.auth_headers_for_user("uds_provider")
+        url = reverse("sep_data-list")
+        data = {
+            "participant": 1,
+            "visit": 5,
+            "site": 3,
+            "needles_in": 5,
+            "needles_out": 5,
+        }
+
+        pre_post_entry_count = Sep_Data.objects.count()
+        response = self.client.post(url, data, format="json", follow=True, **headers)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(pre_post_entry_count, Sep_Data.objects.count())
+
