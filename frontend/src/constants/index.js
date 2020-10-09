@@ -14,13 +14,13 @@ export const URGENCY_OPTIONS = [
 ]
 
 export const PARTICIPANT_LIST_TABLE_TITLES = [
-  "PPID",
-  "First Name",
-  "Last Name",
-  "Gender",
-  "DOB",
-  "Race",
-  "Edit Participant",
+  { value: true, title: "PPID" },
+  { value: true, title: "First Name" },
+  { value: true, title: "Last Name" },
+  { value: false, title: "Gender" },
+  { value: false, title: "DOB" },
+  { value: false, title: "Race" },
+  { value: true, title: "Edit Participant" },
 ]
 
 export const PARTICIPANT_RACE_OPTIONS = [

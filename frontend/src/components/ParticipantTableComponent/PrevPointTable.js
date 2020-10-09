@@ -6,7 +6,7 @@ import Table from "@material-ui/core/Table"
 
 const PrevPointTable = props => {
   return (
-    <Table aria-label="table">
+    <Table aria-label="list of participants">
       <PrevPointTableHead {...props} />
       <PrevPointTableBody {...props} />
     </Table>

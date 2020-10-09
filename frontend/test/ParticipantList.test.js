@@ -29,7 +29,7 @@ describe("<ParticipantList />", () => {
         <ParticipantList />
       </BrowserRouter>
     )
-    const tableElement = getByLabelText(/table/i)
+    const tableElement = getByLabelText(/list of participants/i)
     expect(tableElement).toBeInTheDocument()
   })
 
