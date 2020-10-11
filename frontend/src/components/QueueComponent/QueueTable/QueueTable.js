@@ -107,6 +107,8 @@ const QueueTable = observer(({ queueData }) => {
                 date_of_birth: rowData.date_of_birth,
                 start_date: rowData.start_date,
                 pp_id: rowData.uid,
+                sep_id: rowData.sep_id,
+                maiden_name: rowData.maiden_name,
                 race: rowData.race,
                 gender: rowData.gender,
                 is_insured: rowData.is_insured,
