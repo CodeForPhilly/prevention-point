@@ -14,13 +14,15 @@ export const URGENCY_OPTIONS = [
 ]
 
 export const PARTICIPANT_LIST_TABLE_TITLES = [
-  { mobile: true, title: "PPID" },
-  { mobile: true, title: "First Name" },
-  { mobile: true, title: "Last Name" },
-  { mobile: false, title: "Gender" },
-  { mobile: false, title: "DOB" },
-  { mobile: false, title: "Race" },
-  { mobile: true, title: "Edit Participant" },
+  { value: true, title: "PPID" },
+  { value: true, title: "First Name" },
+  { value: true, title: "Last Name" },
+  { value: false, title: "Gender" },
+  { value: false, title: "DOB" },
+  { value: false, title: "SEP id" },
+  { value: false, title: "Maiden Name" },
+  { value: false, title: "Race" },
+  { value: true, title: "Edit Participant" },
 ]
 
 export const PARTICIPANT_RACE_OPTIONS = [
