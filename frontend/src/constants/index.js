@@ -20,7 +20,6 @@ export const PARTICIPANT_LIST_TABLE_TITLES = [
   { value: false, title: "Gender" },
   { value: false, title: "DOB" },
   { value: false, title: "SEP id" },
-  { value: false, title: "Maiden Name" },
   { value: false, title: "Race" },
   { value: true, title: "Edit Participant" },
 ]
