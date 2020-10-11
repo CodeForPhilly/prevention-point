@@ -98,6 +98,32 @@ const ParticipantForm = ({
       </Grid>
       <Grid item xs={12} sm={6}>
         <FormControl disabled={isDisabled}>
+          <InputLabel htmlFor="sep_id">SEP id</InputLabel>
+          <PrevPointInput
+            id="sep_id"
+            name="sep_id"
+            value={participantInfo.sep_id}
+            onChange={e => handleParticipantChange(e.target)}
+            required
+            classes={{ root: classes.root, disabled: classes.disabled }}
+          />
+        </FormControl>
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormControl disabled={isDisabled}>
+          <InputLabel htmlFor="maiden_name">Maiden Name</InputLabel>
+          <PrevPointInput
+            id="maiden_name"
+            name="maiden_name"
+            value={participantInfo.maiden_name}
+            onChange={e => handleParticipantChange(e.target)}
+            required
+            classes={{ root: classes.root, disabled: classes.disabled }}
+          />
+        </FormControl>
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormControl disabled={isDisabled}>
           <InputLabel id="race">Select Race</InputLabel>
           <Select
             required
