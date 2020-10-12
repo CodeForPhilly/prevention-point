@@ -31,6 +31,7 @@ from core.program_availability import views as program_availability_views
 from core.insurers import views as insurer_views
 from core.medications import views as medications_views
 from core.site import views as site_views
+from core.sep_data import views as sep_data_views
 
 admin.site.site_header = "Prevention Point Philadelphia"
 
@@ -46,6 +47,7 @@ router.register(r"programs", programs_views.ProgramViewSet)
 router.register(r"services", services_views.ServiceViewSet)
 router.register(r"insurers", insurer_views.InsurerViewSet)
 router.register(r"site", site_views.SiteViewSet)
+router.register(r"sep", sep_data_views.Sep_DataViewSet)
 
 
 schema_view = get_swagger_view(title="PreventionPoint API")
