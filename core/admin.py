@@ -2,11 +2,22 @@ from django.contrib import admin
 from core.models import *
 
 # Register your models here.
-admin.site.register(Medication)
-admin.site.register(UrineDrugScreen)
-admin.site.register(CaseManagement)
 admin.site.register(Appointment)
 admin.site.register(BehavioralHealthNotes)
+admin.site.register(CaseManagement)
+admin.site.register(Form)
+admin.site.register(FrontDeskEvent)
+admin.site.register(HCVNotes)
+admin.site.register(Insurer)
+admin.site.register(Medication)
+admin.site.register(Option)
+admin.site.register(ProgramAvailability)
+admin.site.register(Program)
+admin.site.register(Question)
+admin.site.register(Sep_Data)
+admin.site.register(Service)
+admin.site.register(Site)
+admin.site.register(UrineDrugScreen)
 admin.site.register(Visit)
 
 class BaseInline(admin.StackedInline):
