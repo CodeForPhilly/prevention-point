@@ -1,6 +1,7 @@
 import json
 from core.tests.base import BaseTestCase
 from core.models import Participant, Race, Gender
+from rest_framework import status
 
 
 class ParticipantsTestCase(BaseTestCase):
@@ -130,10 +131,20 @@ class ParticipantsTestCase(BaseTestCase):
 
     def test_return_four_oh_four(self):
         headers = self.auth_headers_for_user("front_desk")
-        known_participant_id = 100_000
+        known_participant_id = 100000
 
         response = self.client.get(
             f"/api/participants/{known_participant_id}", follow=True, **headers
         )
-
+        
         self.assertEqual(404, response.status_code)
+
+    def test_return_four_oh_four_query(self):
+        headers = self.auth_headers_for_user("front_desk")
+        known_participant_id = 100000
+
+        response = self.client.get(
+            f"/api/participants?pp_id={known_participant_id}", follow=True, **headers
+        )
+        
+        self.assertEqual(200, response.status_code)
