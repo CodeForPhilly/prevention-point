@@ -9,6 +9,7 @@ from django.contrib.auth.models import Group, User, Permission
 from faker import Faker
 from faker.providers import BaseProvider
 
+from core.settings.common import BASE_DIR
 from core.models import (
     Race,
     Visit,
@@ -63,24 +64,9 @@ DEFAULT_PROGRAMS = {
     ),
     "BIENESTAR": ("APPT DR. BAMFORD", "LABWORK", "FIBROSCAN", "MCM", "FOUND THEM!"),
     "SKWC": ("DR. MORALES", "NEW PATIENT", "SICK VISIT", "OTHER"),
-    "SEP",
+    "SEP": ("NEEDLE EXCHANGE",),
 }
 
-class Sites(BaseProvider):
-    __provider__="sites"
-    __lang__="en_US"
-
-    def sites(self):
-        with open('sep_sites.json') as json_file:
-          data = json.load(json_file)
-          for p in data['Id']['site_type']['site_name']['address']['description']:
-              id = (p['Id'])
-              site_type = (p['site_type'])
-              site_name = (p['site_name'])
-              address = (p['address'])
-              description = (p['description'])
-
-fake.add_provider(Sites)
 
 class Command(BaseCommand):
     help = "seed database for testing and development."
@@ -150,6 +136,7 @@ def run_seed(self):
     create_programs(output=False)
     create_visits(output=False)
     create_program_availability(output=False)
+    add_sites()
     print("seed complete!")
 
 
@@ -279,6 +266,7 @@ def create_visits(output=True, uds=True, medication=True):
     """Create fake visits and front desk events, depending on Participants and Programs. Visits are created using now(), i.e. today"""
     participants = Participant.objects.all()
     services = Service.objects.all().select_related()
+    sep_program_id = Program.objects.get(name="SEP").pk
 
     for _ in range(DEFAULT_NUMBER_VISITS):
         v = Visit()
@@ -292,6 +280,10 @@ def create_visits(output=True, uds=True, medication=True):
         v.notes = fake.sentence(nb_words=10, variable_nb_words=True, ext_word_list=None)
         v.full_clean()
         v.save()
+
+        if v.program.pk == sep_program_id:
+            # sep program does not have a queue. TODO: update program model to have isqueueable boolean or similar
+            continue
 
         # Create FrontDeskEvents to correspond to the Visit, which always begins with ARRIVED
         arrived(v)
@@ -404,3 +396,19 @@ def stepped_out(visit):
 
 def pending(visit):
     pass
+
+def add_sites():
+    """
+    Adds syringe exchange sites defined in management/data/sep_sites.json to database
+    """
+    with open(f"{BASE_DIR}/management/data/sep_sites.json") as json_file:
+        sites = json.load(json_file)
+
+        for site in sites:
+          Site.objects.create(
+            site_name=site["site_name"],
+            site_type=site["site_type"],
+            description=site["description"],
+            address=site.get("address", None),
+            zip_code=site.get("zip_code", None)
+          )

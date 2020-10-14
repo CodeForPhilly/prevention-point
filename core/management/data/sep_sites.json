@@ -1,184 +1,160 @@
 [
   {
-    "Id": 1,
     "site_type": "Mobile",
     "site_name": "3rd & Girard",
-    "address": "",
     "description": "Mobile Site"
   },
   {
-    "Id": 2,
     "site_type": "Mobile",
     "site_name": "10th & Fairmount",
-    "address": "",
     "description": "Mobile Site"
   },
   {
-    "Id": 3,
     "site_type": "Mobile",
     "site_name": "11th & Indiana",
-    "address": "",
     "description": "Mobile Site"
   },
   {
-    "Id": 4,
     "site_type": "Mobile",
     "site_name": "13th & Washington",
-    "address": "",
     "description": "Mobile Site"
   },
   {
-    "Id": 5,
     "site_type": "Headquarters",
     "site_name": "Headquarters - Friday",
-    "address": "2913-15 Kensington Ave, Philadelphia, PA 19134",
+    "address": "2913-15 Kensington Ave, Philadelphia, PA",
+    "zip_code": 19134,
     "description": "In Building Exchange"
   },
   {
-    "Id": 6,
     "site_type": "Mobile",
     "site_name": "37th & Brown",
-    "address": "",
     "description": "Mobile Site"
   },
   {
-    "Id": 7,
     "site_type": "Headquarters",
     "site_name": "Headquarters - Monday",
-    "address": "2913-15 Kensington Ave, Philadelphia, PA 19134",
+    "address": "2913-15 Kensington Ave, Philadelphia, PA",
+    "zip_code": 19134,
     "description": "Emergency Packs"
   },
   {
-    "Id": 8,
     "site_type": "Headquarters",
     "site_name": "Headquarters - Wednesday",
-    "address": "2913-15 Kensington Ave, Philadelphia, PA 19135",
+    "address": "2913-15 Kensington Ave, Philadelphia, PA",
+    "zip_code": 19135,
     "description": "Emergency Packs"
   },
   {
-    "Id": 9,
     "site_type": "Mobile",
     "site_name": "Broad & Passyunk",
-    "address": "",
     "description": "Mobile Site"
   },
   {
-    "Id": 10,
     "site_type": "Mobile",
     "site_name": "54th & Market",
-    "address": "",
     "description": "Mobile Site"
   },
   {
-    "Id": 11,
     "site_type": "Mobile",
     "site_name": "Bridge & Platt",
-    "address": "",
     "description": "Mobile Site"
   },
   {
-    "Id": 12,
     "site_type": "Headquarters",
     "site_name": "Headquarters - Tuesday",
-    "address": "2913-15 Kensington Ave, Philadelphia, PA 19134",
+    "address": "2913-15 Kensington Ave, Philadelphia, PA",
+    "zip_code": 19134,
     "description": "In Building Exchange"
   },
   {
-    "Id": 13,
     "site_type": "Headquarters",
     "site_name": "Headquarters - Thursday",
-    "address": "2913-15 Kensington Ave, Philadelphia, PA 19135",
+    "address": "2913-15 Kensington Ave, Philadelphia, PA",
+    "zip_code": 19135,
     "description": "Emergency Packs"
   },
   {
-    "Id": 14,
     "site_type": "Mobile",
     "site_name": "Front & Wolf",
-    "address": "",
     "description": "Mobile Site"
   },
   {
-    "Id": 15,
     "site_type": "Mobile",
     "site_name": "Ben Franklin",
-    "address": "",
     "description": "Mobile Site"
   },
   {
-    "Id": 16,
     "site_type": "Mobile",
     "site_name": "Front & Wolf",
-    "address": "",
     "description": "Mobile Site"
   },
   {
-    "Id": 17,
     "site_type": "PPP Program",
     "site_name": "MCM",
-    "address": "2913 Kensington Ave, Philadelphia, PA, 19134",
+    "address": "2913 Kensington Ave, Philadelphia, PA",
+    "zip_code": 19134,
     "description": "Case management for HIV positive individuals"
   },
   {
-    "Id": 18,
     "site_type": "PPP Program",
     "site_name": "Drop CM",
-    "address": "2913 Kensington Ave, Philadelphia, PA, 19134",
+    "address": "2913 Kensington Ave, Philadelphia, PA",
+    "zip_code": 19134,
     "description": "Case management for individuals coming in to our drop-in center"
   },
   {
-    "Id": 19,
     "site_type": "PPP Program",
     "site_name": "STEP",
-    "address": "2913 Kensington Ave, Philadelphia, PA, 19134",
+    "address": "2913 Kensington Ave, Philadelphia, PA",
+    "zip_code": 19134,
     "description": "In building Suboxone program"
   },
   {
-    "Id": 20,
     "site_type": "PPP Program",
     "site_name": "Nav Center",
-    "address": "2913 Kensington Ave, Philadelphia, PA, 19134",
+    "address": "2913 Kensington Ave, Philadelphia, PA",
+    "zip_code": 19134,
     "description": "Shelter"
   },
   {
-    "Id": 21,
     "site_type": "PPP Program",
     "site_name": "Respite",
-    "address": "2913 Kensington Ave, Philadelphia, PA, 19134",
+    "address": "2913 Kensington Ave, Philadelphia, PA",
+    "zip_code": 19134,
     "description": "Shelter"
   },
   {
-    "Id": 22,
     "site_type": "PPP Program",
     "site_name": "Testing",
-    "address": "2913 Kensington Ave, Philadelphia, PA, 19134",
+    "address": "2913 Kensington Ave, Philadelphia, PA",
+    "zip_code": 19134,
     "description": "HIV/HCV Testing"
   },
   {
-    "Id": 23,
     "site_type": "PPP Program",
     "site_name": "Mobile STEP",
-    "address": "2913 Kensington Ave, Philadelphia, PA, 19134",
+    "address": "2913 Kensington Ave, Philadelphia, PA",
+    "zip_code": 19134,
     "description": "Mobile Suboxone program"
   },
   {
-    "Id": 24,
     "site_type": "PPP Partners",
     "site_name": "SOL Collective",
-    "address": 19134,
+    "zip_code": 19134,
     "description": "Partner Oganization that does on foot outreach/syringe distribution"
   },
   {
-    "Id": 25,
     "site_type": "PPP Partners",
     "site_name": "Project SAFE",
     "address": 19134,
     "description": "FSW focused harm reduction organization"
   },
   {
-    "Id": 26,
     "site_type": "PPP Program",
     "site_name": "Wound Care",
-    "address": "2913 Kensington Ave, Philadelphia, PA, 19134",
+    "address": "2913 Kensington Ave, Philadelphia, PA",
+    "zip_code": 19134,
     "description": "Wound care operates out of mobile Suboxone clinic in Kensington"
   }
 ]
