@@ -39,7 +39,7 @@ const ParticipantForm = ({
       <Grid item xs={12}>
         <PrevPointHeading>1. Participant Information</PrevPointHeading>
       </Grid>
-      <Grid item xs={12} sm={6}>
+      <Grid item xs={12} md={6}>
         <FormControl disabled={isDisabled}>
           <InputLabel htmlFor="firstName">First Name</InputLabel>
           <PrevPointInput
@@ -52,7 +52,7 @@ const ParticipantForm = ({
           />
         </FormControl>
       </Grid>
-      <Grid item xs={12} sm={6}>
+      <Grid item xs={12} md={6}>
         <FormControl disabled={isDisabled}>
           <InputLabel htmlFor="lastName">Last Name</InputLabel>
           <PrevPointInput
@@ -65,7 +65,7 @@ const ParticipantForm = ({
           />
         </FormControl>
       </Grid>
-      <Grid item xs={12} sm={6}>
+      <Grid item xs={12} md={6}>
         <TextField
           label="Date of Birth"
           name="date_of_birth"
@@ -83,7 +83,7 @@ const ParticipantForm = ({
           }}
         />
       </Grid>
-      <Grid item xs={12} sm={6}>
+      <Grid item xs={12} md={6}>
         <FormControl disabled={isDisabled}>
           <InputLabel htmlFor="uuid">UUID</InputLabel>
           <PrevPointInput
@@ -96,7 +96,7 @@ const ParticipantForm = ({
           />
         </FormControl>
       </Grid>
-      <Grid item xs={12} sm={6}>
+      <Grid item xs={12} md={6}>
         <FormControl disabled={isDisabled}>
           <InputLabel htmlFor="sep_id">SEP id</InputLabel>
           <PrevPointInput
@@ -109,7 +109,7 @@ const ParticipantForm = ({
           />
         </FormControl>
       </Grid>
-      <Grid item xs={12} sm={6}>
+      <Grid item xs={12} md={6}>
         <FormControl disabled={isDisabled}>
           <InputLabel htmlFor="maiden_name">Maiden Name</InputLabel>
           <PrevPointInput
@@ -122,7 +122,7 @@ const ParticipantForm = ({
           />
         </FormControl>
       </Grid>
-      <Grid item xs={12} sm={6}>
+      <Grid item xs={12} md={6}>
         <FormControl disabled={isDisabled}>
           <InputLabel id="race">Select Race</InputLabel>
           <Select
@@ -141,7 +141,7 @@ const ParticipantForm = ({
           </Select>
         </FormControl>
       </Grid>
-      <Grid item xs={12} sm={6}>
+      <Grid item xs={12} md={6}>
         <FormControl disabled={isDisabled}>
           <InputLabel id="participant-gender">Select Gender</InputLabel>
           <Select
@@ -160,7 +160,7 @@ const ParticipantForm = ({
           </Select>
         </FormControl>
       </Grid>
-      <Grid item xs={12} sm={6}>
+      <Grid item xs={12} md={6}>
         <FormControl disabled={isDisabled} component="fieldset">
           <FormLabel component="legend">Has Insurance?</FormLabel>
           <RadioGroup
@@ -187,7 +187,7 @@ const ParticipantForm = ({
         </FormControl>
       </Grid>
       {participantInfo.is_insured && (
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} md={6}>
           <FormControl>
             <InputLabel id="insurance-select">Select Insurance</InputLabel>
             <Select
