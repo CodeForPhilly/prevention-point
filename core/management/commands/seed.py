@@ -1,4 +1,4 @@
-import random, pytz, datetime
+import random, pytz, datetime, json
 
 from django.utils import timezone
 from django.db import IntegrityError
@@ -63,8 +63,24 @@ DEFAULT_PROGRAMS = {
     ),
     "BIENESTAR": ("APPT DR. BAMFORD", "LABWORK", "FIBROSCAN", "MCM", "FOUND THEM!"),
     "SKWC": ("DR. MORALES", "NEW PATIENT", "SICK VISIT", "OTHER"),
+    "SEP",
 }
 
+class Sites(BaseProvider):
+    __provider__="sites"
+    __lang__="en_US"
+
+    def sites(self):
+        with open('sep_sites.json') as json_file:
+          data = json.load(json_file)
+          for p in data['Id']['site_type']['site_name']['address']['description']:
+              id = (p['Id'])
+              site_type = (p['site_type'])
+              site_name = (p['site_name'])
+              address = (p['address'])
+              description = (p['description'])
+
+fake.add_provider(Sites)
 
 class Command(BaseCommand):
     help = "seed database for testing and development."
