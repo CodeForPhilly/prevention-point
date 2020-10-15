@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { useHistory } from "react-router-dom"
 import { makeStyles } from "@material-ui/core/styles"
@@ -6,6 +6,8 @@ import Grid from "@material-ui/core/Grid"
 import Container from "@material-ui/core/Container"
 import InputLabel from "@material-ui/core/InputLabel"
 import FormControl from "@material-ui/core/FormControl"
+import FormControlLabel from "@material-ui/core/FormControlLabel"
+import Checkbox from "@material-ui/core/Checkbox"
 import PrevPointInput from "./Input/PrevPointInput"
 import PrevPointButton from "./PrevPointButton"
 import PrevPointCopy from "./Typography/PrevPointCopy"
@@ -13,6 +15,7 @@ import { rootStoreContext } from "../stores/RootStore"
 import PrevPointHeading from "./Typography/PrevPointHeading"
 import { Formik, Form } from "formik"
 import { searchSchema } from "../validation"
+import { SEP } from "../constants"
 
 const useStyles = makeStyles({
   root: {
@@ -35,6 +38,12 @@ const useStyles = makeStyles({
   copy: {
     paddingTop: "20px",
   },
+  toggle: {
+    marginTop: "20px",
+  },
+  toggleLabel: {
+    fontSize: ".875rem",
+  },
 })
 
 const ParticipantSearch = observer(() => {
@@ -42,6 +51,7 @@ const ParticipantSearch = observer(() => {
   const rootStore = useContext(rootStoreContext)
   const participantStore = rootStore.ParticipantStore
   const history = useHistory()
+  const [toggleForm, setToggleForm] = useState(false)
 
   return (
     <Container className={classes.root}>
@@ -63,6 +73,9 @@ const ParticipantSearch = observer(() => {
           })
           history.push("/participants")
           setSubmitting(false)
+          if (toggleForm) {
+            participantStore.setSidebarView(SEP)
+          }
         }}
       >
         {({ errors, touched, values, handleChange, isSubmitting }) => (
@@ -116,6 +129,19 @@ const ParticipantSearch = observer(() => {
                     onChange={handleChange}
                   />
                 </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <FormControlLabel
+                  classes={{ root: classes.toggle, label: classes.toggleLabel }}
+                  control={
+                    <Checkbox
+                      checked={toggleForm}
+                      onChange={() => setToggleForm(!toggleForm)}
+                      name="SEPToggle"
+                    />
+                  }
+                  label="toggle to SEP form on search"
+                />
               </Grid>
               <Grid item xs={12}>
                 <PrevPointButton type="submit" disabled={isSubmitting}>
