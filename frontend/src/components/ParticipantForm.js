@@ -98,7 +98,7 @@ const ParticipantForm = ({
       </Grid>
       <Grid item xs={12} md={6}>
         <FormControl disabled={isDisabled}>
-          <InputLabel htmlFor="sep_id">SEP id</InputLabel>
+          <InputLabel htmlFor="sep_id">SEP ID</InputLabel>
           <PrevPointInput
             id="sep_id"
             name="sep_id"
