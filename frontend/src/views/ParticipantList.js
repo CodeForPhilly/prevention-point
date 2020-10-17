@@ -10,10 +10,13 @@ import { rootStoreContext } from "../stores/RootStore"
 import PrevPointTable from "../components/ParticipantTableComponent/PrevPointTable"
 import PrevPointPagination from "../components/ParticipantTableComponent/PrevPointPagination"
 import { PARTICIPANT_LIST_TABLE_TITLES } from "../constants"
+import { SEARCH, SEP } from "../constants"
 import Grid from "@material-ui/core/Grid"
+import Select from "@material-ui/core/Select"
+import MenuItem from "@material-ui/core/MenuItem"
 
 const ParticipantList = observer(() => {
-  const useStyles = makeStyles({
+  const useStyles = makeStyles(theme => ({
     participantsListHeading: {
       color: "#086375",
     },
@@ -47,7 +50,14 @@ const ParticipantList = observer(() => {
     bottomNavOffset: {
       height: "43px",
     },
-  })
+    headingWrapper: {
+      marginTop: theme.spacing(1),
+      marginBottom: theme.spacing(1),
+    },
+    select: {
+      marginLeft: theme.spacing(1),
+    },
+  }))
   const classes = useStyles()
 
   const rootStore = useContext(rootStoreContext)
@@ -67,9 +77,30 @@ const ParticipantList = observer(() => {
         </Link>
         <PrevPointCopy>Search Results</PrevPointCopy>
       </Breadcrumbs>
-      <PrevPointHeading className={classes.participantsListHeading}>
-        Participants
-      </PrevPointHeading>
+      <Grid
+        container
+        spacing={1}
+        alignItems="flex-end"
+        className={classes.headingWrapper}
+      >
+        <Grid item>
+          <PrevPointHeading className={classes.participantsListHeading}>
+            Participants
+          </PrevPointHeading>
+        </Grid>
+        <Grid item>
+          <Select
+            name="sidebarForm"
+            value={participantStore.sidebarView}
+            onChange={e => participantStore.setSidebarView(e.target.value)}
+            className={classes.select}
+          >
+            <MenuItem value={SEARCH}>Participant Search</MenuItem>
+            <MenuItem value={SEP}>SEP Search</MenuItem>
+          </Select>
+        </Grid>
+      </Grid>
+
       <div className={classes.participants}>
         <PrevPointPagination
           participants={participantStore.participants}
