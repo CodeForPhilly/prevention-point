@@ -155,9 +155,9 @@ export class ParticipantStore {
   // called on  =>  QueueTable.js
   getInsurers = flow(function*() {
     try {
-      const { ok, data } = yield api.getInsurers()
+      const { ok, data, status } = yield api.getInsurers()
       if (!ok || !data) {
-        throw "a placeholder error string!"
+        throw new Error(status)
       }
       this.setInsurers(data)
     } catch (error) {
@@ -166,9 +166,9 @@ export class ParticipantStore {
   })
   getPrograms = flow(function*() {
     try {
-      const { ok, data } = yield api.getPrograms()
+      const { ok, data, status } = yield api.getPrograms()
       if (!ok || !data) {
-        throw "a placeholder error string!"
+        throw new Error(status)
       }
       this.setPrograms(data)
       if (
@@ -190,11 +190,11 @@ export class ParticipantStore {
   })
   getParticipant = flow(function*() {
     try {
-      const { ok, data } = yield api.getParticipantById(
+      const { ok, data, status } = yield api.getParticipantById(
         toJS(this.participant.id)
       )
       if (!ok || !data) {
-        throw "a placeholder error string!"
+        throw new Error(status)
       }
       this.setParticipant(data)
     } catch (error) {
@@ -204,9 +204,9 @@ export class ParticipantStore {
   // called on  =>  ParticipantList.js
   getParticipants = flow(function*(params) {
     try {
-      const { ok, data } = yield api.getParticipants(toJS(params))
+      const { ok, data, status } = yield api.getParticipants(toJS(params))
       if (!ok || !data) {
-        throw "a placeholder error string!"
+        throw new Error(status)
       }
       this.setParticipantsList(data)
     } catch (error) {
@@ -220,9 +220,11 @@ export class ParticipantStore {
       this.setRouteToQueue(false)
     }
     try {
-      const { ok, data } = yield api.createParticipant(toJS(this.participant))
+      const { ok, data, status } = yield api.createParticipant(
+        toJS(this.participant)
+      )
       if (!ok || !data) {
-        throw "a placeholder error string!"
+        throw new Error(status)
       }
       this.setParticipant(data)
       if (andVisit) {
@@ -236,9 +238,9 @@ export class ParticipantStore {
   createVisit = flow(function*() {
     try {
       this.setVisitParticipantId(this.participant.id)
-      const { ok, data } = yield api.createVisits(toJS(this.visit))
+      const { ok, data, status } = yield api.createVisits(toJS(this.visit))
       if (!ok || !data) {
-        throw "a placeholder error string!"
+        throw new Error(status)
       }
       this.setVisit(data)
       this.createNewFrontEndDeskEvents()
@@ -251,12 +253,12 @@ export class ParticipantStore {
       this.setRouteToQueue(false)
     }
     try {
-      const { ok } = yield api.postFrontDeskEvent({
+      const { ok, status } = yield api.postFrontDeskEvent({
         visit: this.visit.id,
         event_type: "ARRIVED",
       })
       if (!ok) {
-        throw "a placeholder error string!"
+        throw new Error(status)
       }
       this.setRouteToQueue(true)
     } catch (error) {
@@ -265,9 +267,9 @@ export class ParticipantStore {
   })
   getVisits = flow(function*() {
     try {
-      const { ok, data } = yield api.getVisits()
+      const { ok, data, status } = yield api.getVisits()
       if (!ok || !data) {
-        throw "a placeholder error string!"
+        throw new Error(status)
       }
       this.setVisitsList(data)
     } catch (error) {
@@ -278,12 +280,12 @@ export class ParticipantStore {
   // only update basic facts about the participant
   updateParticipant = flow(function*() {
     try {
-      const { ok, data } = yield api.updateParticipant(
+      const { ok, data, status } = yield api.updateParticipant(
         toJS(this.participant.id),
         toJS(this.participant)
       )
       if (!ok || !data) {
-        throw "a placeholder error string!"
+        throw new Error(status)
       }
       this.setParticipant(data)
       this.setIsEditing(false)
@@ -297,9 +299,12 @@ export class ParticipantStore {
       this.setRouteToQueue(false)
     }
     try {
-      const { ok } = yield api.patchVisit(toJS(this.visit.id), toJS(this.visit))
+      const { ok, status } = yield api.patchVisit(
+        toJS(this.visit.id),
+        toJS(this.visit)
+      )
       if (!ok) {
-        throw "a placeholder error string!"
+        throw new Error(status)
       }
       this.setRouteToQueue(true)
     } catch (error) {
