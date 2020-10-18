@@ -23,4 +23,50 @@ const searchSchema = Yup.object().shape(
   ]
 )
 
-export { searchSchema }
+const SEPSearchErrorMessage = "Please enter a value in at least one field"
+const SEPSearchSchema = Yup.object().shape(
+  {
+    sep_id: Yup.string().when(
+      ["last_name", "date_of_birth", "mothers_last_name"],
+      {
+        is: (lastName, dateOfBirth, MothersLastName) =>
+          !lastName && !dateOfBirth && MothersLastName,
+        then: Yup.string().required(SEPSearchErrorMessage),
+      }
+    ),
+    last_name: Yup.string().when(
+      ["sep_id", "date_of_birth", "mothers_last_name"],
+      {
+        is: (sepId, dateOfBirth, MothersLastName) =>
+          !sepId && !dateOfBirth && MothersLastName,
+        then: Yup.string().required(SEPSearchErrorMessage),
+      }
+    ),
+    date_of_birth: Yup.string().when(
+      ["last_name", "sep_id", "mothers_last_name"],
+      {
+        is: (lastName, sepId, MothersLastName) =>
+          !lastName && !sepId && MothersLastName,
+        then: Yup.string().required(SEPSearchErrorMessage),
+      }
+    ),
+    mothers_last_name: Yup.string().when(
+      ["last_name", "date_of_birth", "sep_id"],
+      {
+        is: (lastName, dateOfBirth, sepId) =>
+          !lastName && !dateOfBirth && !sepId,
+        then: Yup.string().required(SEPSearchErrorMessage),
+      }
+    ),
+  },
+  [
+    ["last_name", "date_of_birth"],
+    ["last_name", "sep_id"],
+    ["mothers_last_name", "date_of_birth"],
+    ["sep_id", "date_of_birth"],
+    ["sep_id", "mothers_last_name"],
+    ["last_name", "mothers_last_name"],
+  ]
+)
+
+export { searchSchema, SEPSearchSchema }
