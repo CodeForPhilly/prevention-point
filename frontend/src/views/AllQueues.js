@@ -60,7 +60,7 @@ const AllQueues = observer(() => {
   }, [queueStore])
 
   useEffect(() => {
-    if (queueStore.queues[tabValue]) {
+    if (queueStore.queues.length && queueStore.queues[tabValue]) {
       api.getProgram(queueStore.queues[tabValue].id).then(({ data }) => {
         setBtnState(prev => ({ ...prev, isFrozen: data.is_frozen }))
       })
