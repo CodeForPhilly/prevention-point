@@ -27,6 +27,7 @@ export class ParticipantStore {
   @observable isEditing = false
   // participant search
   @observable sidebarView = SEARCH
+  @observable site = {}
 
   @computed get hasVisit() {
     return this.visitList.map(visit => {
@@ -144,6 +145,10 @@ export class ParticipantStore {
 
   @action setSidebarView = sidebarView => {
     this.sidebarView = sidebarView
+  }
+
+  @action setSite = data => {
+    this.site = data
   }
 
   // Utils
@@ -304,6 +309,17 @@ export class ParticipantStore {
       this.setRouteToQueue(true)
     } catch (error) {
       throw `ParticipantStore:  updateVisit() Failed  =>  ${error}`
+    }
+  })
+  getSite = flow(function*() {
+    try {
+      const { ok, data } = yield api.getSite()
+      if (!ok || !data) {
+        throw "a placeholder error string!"
+      }
+      this.setSite(data)
+    } catch (error) {
+      throw `ParticipantStore:  getSite() Failed  =>  ${error}`
     }
   })
 }
