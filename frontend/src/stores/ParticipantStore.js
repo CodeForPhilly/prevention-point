@@ -27,7 +27,8 @@ export class ParticipantStore {
   @observable isEditing = false
   // participant search
   @observable sidebarView = SEARCH
-  @observable site = {}
+  @observable sites = []
+  @observable currentSite = ""
 
   @computed get hasVisit() {
     return this.visitList.map(visit => {
@@ -147,8 +148,8 @@ export class ParticipantStore {
     this.sidebarView = sidebarView
   }
 
-  @action setSite = data => {
-    this.site = data
+  @action setSites = data => {
+    this.sites = data
   }
 
   // Utils
@@ -311,15 +312,15 @@ export class ParticipantStore {
       throw `ParticipantStore:  updateVisit() Failed  =>  ${error}`
     }
   })
-  getSite = flow(function*() {
+  getSites = flow(function*() {
     try {
-      const { ok, data } = yield api.getSite()
+      const { ok, data } = yield api.getSites()
       if (!ok || !data) {
         throw "a placeholder error string!"
       }
-      this.setSite(data)
+      this.setSites(data)
     } catch (error) {
-      throw `ParticipantStore:  getSite() Failed  =>  ${error}`
+      throw `ParticipantStore:  getSites() Failed  =>  ${error}`
     }
   })
 }
