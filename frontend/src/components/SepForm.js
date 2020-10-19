@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useState, useEffect, useRef } from "react"
 import { observer } from "mobx-react-lite"
 import { rootStoreContext } from "../stores/RootStore"
 import { makeStyles } from "@material-ui/core/styles"
@@ -11,6 +11,7 @@ import MenuItem from "@material-ui/core/MenuItem"
 import PrevPointInput from "./Input/PrevPointInput"
 import PrevPointButton from "./PrevPointButton"
 import PrevPointHeading from "./Typography/PrevPointHeading"
+import PrevPointCopy from "./Typography/PrevPointCopy"
 import { Formik, Form } from "formik"
 import { SEPSearchSchema } from "../validation"
 
@@ -36,6 +37,9 @@ const useStyles = makeStyles(theme => ({
   needlesOut: {
     paddingLeft: theme.spacing(1),
   },
+  clearButton: {
+    marginLeft: theme.spacing(1),
+  },
 }))
 
 const SepForm = observer(() => {
@@ -43,6 +47,18 @@ const SepForm = observer(() => {
   const rootStore = useContext(rootStoreContext)
   const participantStore = rootStore.ParticipantStore
   const [participantId, setParticipantId] = useState()
+  const SEPFormRef = useRef()
+
+  useEffect(() => {
+    participantStore.getSites()
+  }, [])
+
+  const handleClear = () => {
+    setParticipantId(null)
+    if (SEPFormRef.current) {
+      SEPFormRef.current.resetForm()
+    }
+  }
 
   return (
     <Container className={classes.root}>
@@ -50,12 +66,13 @@ const SepForm = observer(() => {
         className={classes.form}
         validateOnChange={false}
         validateOnBlur={false}
+        innerRef={SEPFormRef}
         initialValues={{
-          site_id: participantStore.getSite,
+          site_id: participantStore.currentSite,
           sep_id: "",
           last_name: "",
           date_of_birth: "",
-          mothers_last_name: "",
+          maiden_name: "",
         }}
         validationSchema={SEPSearchSchema}
         onSubmit={async (values, { setSubmitting, setFieldValue }) => {
@@ -64,16 +81,24 @@ const SepForm = observer(() => {
             sep_id: values.sep_id,
             last_name: values.last_name,
             date_of_birth: values.date_of_birth,
-            //mothers_last_name: values.mothers_last_name,
+            maiden_name: values.maiden_name,
           })
           setSubmitting(false)
           if (participantStore.participants.length === 1) {
             setParticipantId(participantStore.participants[0].pp_id)
+            setFieldValue("sep_id", participantStore.participants[0].sep_id)
+            setFieldValue(
+              "last_name",
+              participantStore.participants[0].last_name
+            )
             setFieldValue(
               "date_of_birth",
               participantStore.participants[0].date_of_birth
             )
-            setFieldValue("sep_id", participantStore.participants[0].sep_id)
+            setFieldValue(
+              "maiden_name",
+              participantStore.participants[0].maiden_name
+            )
           }
         }}
       >
@@ -83,12 +108,13 @@ const SepForm = observer(() => {
               <Grid item xs={12}>
                 <FormControl className={classes.siteId}>
                   <InputLabel htmlFor="site_id">Site ID</InputLabel>
-                  <PrevPointInput
-                    id="site_id"
-                    name="site_id"
-                    readOnly
-                    value={values.site_id}
-                  />
+                  <Select id="site_id" name="site_id" value={values.site_id}>
+                    {participantStore.sites.map((siteId, i) => (
+                      <MenuItem key={i} value={siteId}>
+                        {siteId}
+                      </MenuItem>
+                    ))}
+                  </Select>
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
@@ -145,17 +171,17 @@ const SepForm = observer(() => {
               </Grid>
               <Grid item xs={12}>
                 <FormControl
-                  error={errors.mothers_last_name && touched.mothers_last_name}
+                  error={errors.maiden_name && touched.maiden_name}
                   disabled={participantId ? true : false}
                 >
-                  <InputLabel htmlFor="mothers_last_name">
+                  <InputLabel htmlFor="maiden_name">
                     Mother&apos;s Last Name
                   </InputLabel>
                   <PrevPointInput
-                    id="mothers_last_name"
-                    name="mothers_last_name"
+                    id="maiden_name"
+                    name="maiden_name"
                     onChange={handleChange}
-                    value={values.mothers_last_name}
+                    value={values.maiden_name}
                   />
                 </FormControl>
               </Grid>
@@ -166,6 +192,17 @@ const SepForm = observer(() => {
                 >
                   Search
                 </PrevPointButton>
+                {(errors.sep_id ||
+                  errors.last_name ||
+                  errors.date_of_birth ||
+                  errors.maiden_name) && (
+                  <PrevPointCopy className={classes.errorMessage}>
+                    {errors.sep_id ||
+                      errors.last_name ||
+                      errors.date_of_birth ||
+                      errors.maiden_name}
+                  </PrevPointCopy>
+                )}
               </Grid>
             </Grid>
           </Form>
@@ -212,10 +249,18 @@ const SepForm = observer(() => {
             </Grid>
             <Grid item xs={12}>
               <PrevPointButton
-                type="button"
+                type="submit"
                 disabled={participantId ? false : true}
               >
                 Submit
+              </PrevPointButton>
+              <PrevPointButton
+                type="button"
+                className={classes.clearButton}
+                disabled={participantId ? false : true}
+                onClick={handleClear}
+              >
+                Clear
               </PrevPointButton>
             </Grid>
           </Grid>
