@@ -1,10 +1,10 @@
 from rest_framework import serializers
-from core.models import Sep_Data
+from core.models import SepData
 
 
 class Sep_DataSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Sep_Data
+        model = SepData
         fields = (
             "id",
             "visit",

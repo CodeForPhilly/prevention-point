@@ -20,9 +20,9 @@ INTERNAL_PROVIDER_PERMISSIONS = [
     "add_visit",
     "change_visit",
     "view_visit",
-    "add_hcvnotes",
-    "change_hcvnotes",
-    "view_hcvnotes",
+    "add_hcvnote",
+    "change_hcvnote",
+    "view_hcvnote",
     "add_medication",
     "change_medication",
     "view_medication",
@@ -41,13 +41,13 @@ INTERNAL_PROVIDER_PERMISSIONS = [
     "add_programavailability",
     "change_programavailability",
     "view_programavailability",
-    "add_behavioralhealthnotes",
-    "change_behavioralhealthnotes",
-    "view_behavioralhealthnotes",
+    "add_behavioralhealthnote",
+    "change_behavioralhealthnote",
+    "view_behavioralhealthnote",
     "view_site",
-    "add_sep_data",
-    "change_sep_data",
-    "view_sep_data",
+    "add_sepdata",
+    "change_sepdata",
+    "view_sepdata",
 ]
 
 FRONT_DESK_PERMISSIONS = [
@@ -75,7 +75,7 @@ FRONT_DESK_PERMISSIONS = [
     "change_programavailability",
     "view_programavailability",
     "view_site",
-    "add_sep_data",
+    "add_sepdata",
 ]
 
 UDS_PROVIDER_PERMISSIONS = [

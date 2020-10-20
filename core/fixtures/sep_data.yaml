@@ -1,4 +1,4 @@
-- model: core.sep_data
+- model: core.sepdata
   pk: 1
   fields:
     visit: 1
@@ -6,7 +6,7 @@
     needles_in: 3
     needles_out: 4
     created_at: '2020-09-22 01:38:39.204290+00:00'
-- model: core.sep_data
+- model: core.sepdata
   pk: 2
   fields:
     visit: 2
@@ -14,7 +14,7 @@
     needles_in: 5
     needles_out: 5
     created_at: '2020-09-22 01:38:39.204290+00:00'
-- model: core.sep_data
+- model: core.sepdata
   pk: 3
   fields:
     visit: 3
