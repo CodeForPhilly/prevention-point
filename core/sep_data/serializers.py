@@ -2,7 +2,7 @@ from rest_framework import serializers
 from core.models import SepData
 
 
-class Sep_DataSerializer(serializers.ModelSerializer):
+class SepDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = SepData
         fields = (
