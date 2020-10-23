@@ -162,7 +162,8 @@ export class ParticipantStore {
       }
       this.setInsurers(data)
     } catch (error) {
-      throw handleError(error.message)
+      const errorMessage = handleError(error.message)
+      console.log(errorMessage)
     }
   })
   getPrograms = flow(function*() {
@@ -186,7 +187,8 @@ export class ParticipantStore {
         this.setServiceList(preloadedServices.services)
       }
     } catch (error) {
-      throw handleError(error.message)
+      const errorMessage = handleError(error.message)
+      console.log(errorMessage)
     }
   })
   getParticipant = flow(function*() {
@@ -199,7 +201,8 @@ export class ParticipantStore {
       }
       this.setParticipant(data)
     } catch (error) {
-      throw handleError(error.message)
+      const errorMessage = handleError(error.message)
+      console.log(errorMessage)
     }
   })
   // called on  =>  ParticipantList.js
@@ -211,7 +214,8 @@ export class ParticipantStore {
       }
       this.setParticipantsList(data)
     } catch (error) {
-      throw handleError(error.message)
+      const errorMessage = handleError(error.message)
+      console.log(errorMessage)
     }
   })
   // called on  =>  ParticipantInfo.js
@@ -233,7 +237,8 @@ export class ParticipantStore {
       }
       this.setRouteToQueue(true)
     } catch (error) {
-      throw handleError(error.message)
+      const errorMessage = handleError(error.message)
+      console.log(errorMessage)
     }
   })
   createVisit = flow(function*() {
@@ -246,7 +251,8 @@ export class ParticipantStore {
       this.setVisit(data)
       this.createNewFrontEndDeskEvents()
     } catch (error) {
-      throw handleError(error.message)
+      const errorMessage = handleError(error.message)
+      console.log(errorMessage)
     }
   })
   createNewFrontEndDeskEvents = flow(function*() {
@@ -263,7 +269,8 @@ export class ParticipantStore {
       }
       this.setRouteToQueue(true)
     } catch (error) {
-      throw handleError(error.message)
+      const errorMessage = handleError(error.message)
+      console.log(errorMessage)
     }
   })
   getVisits = flow(function*() {
@@ -274,7 +281,8 @@ export class ParticipantStore {
       }
       this.setVisitsList(data)
     } catch (error) {
-      throw handleError(error.message)
+      const errorMessage = handleError(error.message)
+      console.log(errorMessage)
     }
   })
   // called on  =>  ParticipantInfo.js
@@ -291,7 +299,8 @@ export class ParticipantStore {
       this.setParticipant(data)
       this.setIsEditing(false)
     } catch (error) {
-      throw handleError(error.message)
+      const errorMessage = handleError(error.message)
+      console.log(errorMessage)
     }
   })
   // called on  =>  ParticipantInfo.js
@@ -309,7 +318,8 @@ export class ParticipantStore {
       }
       this.setRouteToQueue(true)
     } catch (error) {
-      throw handleError(error.message)
+      const errorMessage = handleError(error.message)
+      console.log(errorMessage)
     }
   })
 }
