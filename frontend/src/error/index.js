@@ -15,7 +15,7 @@ const standardizedErrors = [
 
 function handleError(statusCode) {
   const standardizedError = standardizedErrors.find(error => {
-    if (error.status === statusCode) {
+    if (error.status === parseInt(statusCode)) {
       return error.description
     }
   })
