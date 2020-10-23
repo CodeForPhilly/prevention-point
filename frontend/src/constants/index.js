@@ -19,7 +19,7 @@ export const PARTICIPANT_LIST_TABLE_TITLES = [
   { value: true, title: "Last Name" },
   { value: false, title: "Gender" },
   { value: false, title: "DOB" },
-  { value: false, title: "SEP id" },
+  { value: false, title: "SEP ID" },
   { value: false, title: "Race" },
   { value: true, title: "Edit Participant" },
 ]
