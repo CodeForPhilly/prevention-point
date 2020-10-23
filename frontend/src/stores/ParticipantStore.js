@@ -3,6 +3,7 @@ import { createContext } from "react"
 import { format } from "date-fns"
 import api from "../api"
 import { SEARCH } from "../constants"
+import handleError from "../error"
 
 export class ParticipantStore {
   constructor(rootStore) {
@@ -161,7 +162,7 @@ export class ParticipantStore {
       }
       this.setInsurers(data)
     } catch (error) {
-      throw `ParticipantStore:  getInsurers() Failed  =>  ${error}`
+      throw handleError(error.message)
     }
   })
   getPrograms = flow(function*() {
@@ -185,7 +186,7 @@ export class ParticipantStore {
         this.setServiceList(preloadedServices.services)
       }
     } catch (error) {
-      throw `ParticipantStore:  getPrograms() Failed  =>  ${error}`
+      throw handleError(error.message)
     }
   })
   getParticipant = flow(function*() {
@@ -198,7 +199,7 @@ export class ParticipantStore {
       }
       this.setParticipant(data)
     } catch (error) {
-      throw `ParticipantStore:  getParticipant() Failed  =>  ${error}`
+      throw handleError(error.message)
     }
   })
   // called on  =>  ParticipantList.js
@@ -210,7 +211,7 @@ export class ParticipantStore {
       }
       this.setParticipantsList(data)
     } catch (error) {
-      throw `ParticipantStore:  getParticipants() Failed  =>  ${error}`
+      throw handleError(error.message)
     }
   })
   // called on  =>  ParticipantInfo.js
@@ -232,7 +233,7 @@ export class ParticipantStore {
       }
       this.setRouteToQueue(true)
     } catch (error) {
-      throw `ParticipantStore:  createParticipant() Failed  =>  ${error}`
+      throw handleError(error.message)
     }
   })
   createVisit = flow(function*() {
@@ -245,7 +246,7 @@ export class ParticipantStore {
       this.setVisit(data)
       this.createNewFrontEndDeskEvents()
     } catch (error) {
-      throw `ParticipantStore:  createVisit() Failed  =>  ${error}`
+      throw handleError(error.message)
     }
   })
   createNewFrontEndDeskEvents = flow(function*() {
@@ -262,7 +263,7 @@ export class ParticipantStore {
       }
       this.setRouteToQueue(true)
     } catch (error) {
-      throw `ParticipantStore:  createNewFrontEndDeskEvents() Failed  =>  ${error}`
+      throw handleError(error.message)
     }
   })
   getVisits = flow(function*() {
@@ -273,7 +274,7 @@ export class ParticipantStore {
       }
       this.setVisitsList(data)
     } catch (error) {
-      throw `ParticipantStore:  getVisits() Failed  =>  ${error}`
+      throw handleError(error.message)
     }
   })
   // called on  =>  ParticipantInfo.js
@@ -290,7 +291,7 @@ export class ParticipantStore {
       this.setParticipant(data)
       this.setIsEditing(false)
     } catch (error) {
-      throw `ParticipantStore:  updateParticipant() Failed  =>  ${error}`
+      throw handleError(error.message)
     }
   })
   // called on  =>  ParticipantInfo.js
@@ -308,7 +309,7 @@ export class ParticipantStore {
       }
       this.setRouteToQueue(true)
     } catch (error) {
-      throw `ParticipantStore:  updateVisit() Failed  =>  ${error}`
+      throw handleError(error.message)
     }
   })
 }
