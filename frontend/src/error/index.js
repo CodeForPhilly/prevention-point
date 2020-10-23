@@ -1,5 +1,10 @@
 const standardizedErrors = [
   {
+    status: 400,
+    description:
+      "Your submission was incorrect. Check the values for accuracy and try again.",
+  },
+  {
     status: 404,
     description: "We couldn't find what you are looking for.",
   },
