@@ -2,6 +2,7 @@ import { observable, action, flow } from "mobx"
 import { createContext } from "react"
 import moment from "moment"
 import api from "../api"
+import handleError from "../error"
 
 export class QueueStore {
   constructor(rootStore) {
@@ -48,26 +49,28 @@ export class QueueStore {
   getQueue = flow(function*(programId) {
     // takes programId, not queueIndex
     try {
-      const { ok, data } = yield api.getQueue(programId)
+      const { ok, data, status } = yield api.getQueue(programId)
       if (!ok) {
-        throw "a placeholder error string!"
+        throw new Error(status)
       }
       this.setQueue(programId, data)
     } catch (error) {
-      throw "QueueStore:  getQueue() Failed  =>  " + error
+      const errorMessage = handleError(error.message)
+      console.log(errorMessage)
     }
   })
 
   patchVisit = flow(function*(queueIndex, visitIndex, data) {
     try {
-      const { ok } = yield api.patchVisit(visitIndex, data)
+      const { ok, status } = yield api.patchVisit(visitIndex, data)
       if (!ok) {
-        throw "a placeholder error string!"
+        throw new Error(status)
       }
       const programId = this.queues[queueIndex].id
       this.getQueue(programId)
     } catch (error) {
-      throw "QueueStore:  patchVisit() Failed  =>  " + error
+      const errorMessage = handleError(error.message)
+      console.log(errorMessage)
     }
   })
 
@@ -77,14 +80,15 @@ export class QueueStore {
         visit: visitIndex,
         event_type: eventType,
       }
-      const { ok } = yield api.postFrontDeskEvent(body)
+      const { ok, status } = yield api.postFrontDeskEvent(body)
       if (!ok) {
-        throw "a placeholder error string!"
+        throw new Error(status)
       }
       const programId = this.queues[queueIndex].id
       this.getQueue(programId)
     } catch (error) {
-      throw "QueueStore:  updateStatus() Failed  =>  " + error
+      const errorMessage = handleError(error.message)
+      console.log(errorMessage)
     }
   })
 
