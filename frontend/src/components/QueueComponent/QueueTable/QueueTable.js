@@ -75,6 +75,8 @@ const QueueTable = observer(({ queueData }) => {
           urgency: x.urgency,
           first: x.participant.first_name,
           last: x.participant.last_name,
+          maiden_name: x.participant.maiden_name,
+          sep_id: x.participant.sep_id,
           uid: x.participant.pp_id,
           timeElapsed: moment(x.status.created_at).format("LT"),
           waitTime: moment(x.status.created_at).fromNow(true),
