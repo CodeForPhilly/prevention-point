@@ -18,6 +18,7 @@ import VisitData from "./VisitData"
 import VisitTable from "./VisitTable"
 import WithSubmit from "../WithSubmit"
 import { rootStoreContext } from "../../stores/RootStore"
+import validateVisitForm from "../../validation/index"
 
 const VisitRouter = observer(() => {
   const history = useHistory()
@@ -43,6 +44,7 @@ const VisitRouter = observer(() => {
     // if existing visit we are coming from QueueTable, so update visit
     if (existingVisit.id) {
       participantStore.updateVisit()
+      validateVisitForm(existingVisit)
     } else {
       participantStore.createVisit()
     }
