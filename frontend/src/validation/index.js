@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import * as Yup from "yup"
 
 const searchErrorMessage = "Please enter a participant id or a name"
@@ -42,7 +43,7 @@ const visitSchema = Yup.object().shape({
     .required()
     .positive()
     .integer(),
-  // To do: validate that only services available for each program appear:
+  // To do: validate that only services available for each program appear, using 'when' maybe?
   program: Yup.number()
     .required()
     .positive()
@@ -63,14 +64,11 @@ const visitSchema = Yup.object().shape({
 })
 
 const validateVisitForm = data => {
-  visitSchema
+  let valid = visitSchema
     .validate(data, options)
-    .then(value => {
-      return value
-    })
-    .catch(err => {
-      return err
-    })
+    .then(() => "Success")
+    .catch(err => err)
+  return valid
 }
 
 export { searchSchema, validateVisitForm }
