@@ -19,15 +19,13 @@ const standardizedErrors = [
 ]
 
 function handleError(statusCode) {
-  const standardizedError = standardizedErrors.find(error => {
-    if (error.status === parseInt(statusCode)) {
-      return error.description
-    }
-  })
-  if (!standardizedError) {
+  const { description } = standardizedErrors.find(
+    error => error.status === parseInt(statusCode)
+  )
+  if (!description) {
     return "Something went wrong"
   }
-  return standardizedError
+  return description
 }
 
 export default handleError

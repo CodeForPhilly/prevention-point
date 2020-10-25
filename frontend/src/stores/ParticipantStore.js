@@ -163,7 +163,7 @@ export class ParticipantStore {
       this.setInsurers(data)
     } catch (error) {
       const errorMessage = handleError(error.message)
-      console.log(errorMessage)
+      throw errorMessage
     }
   })
   getPrograms = flow(function*() {
@@ -188,7 +188,7 @@ export class ParticipantStore {
       }
     } catch (error) {
       const errorMessage = handleError(error.message)
-      console.log(errorMessage)
+      throw errorMessage
     }
   })
   getParticipant = flow(function*() {
@@ -202,7 +202,7 @@ export class ParticipantStore {
       this.setParticipant(data)
     } catch (error) {
       const errorMessage = handleError(error.message)
-      console.log(errorMessage)
+      throw errorMessage
     }
   })
   // called on  =>  ParticipantList.js
@@ -215,7 +215,7 @@ export class ParticipantStore {
       this.setParticipantsList(data)
     } catch (error) {
       const errorMessage = handleError(error.message)
-      console.log(errorMessage)
+      throw errorMessage
     }
   })
   // called on  =>  ParticipantInfo.js
@@ -238,7 +238,7 @@ export class ParticipantStore {
       this.setRouteToQueue(true)
     } catch (error) {
       const errorMessage = handleError(error.message)
-      console.log(errorMessage)
+      throw errorMessage
     }
   })
   createVisit = flow(function*() {
@@ -252,7 +252,7 @@ export class ParticipantStore {
       this.createNewFrontEndDeskEvents()
     } catch (error) {
       const errorMessage = handleError(error.message)
-      console.log(errorMessage)
+      throw errorMessage
     }
   })
   createNewFrontEndDeskEvents = flow(function*() {
@@ -270,7 +270,7 @@ export class ParticipantStore {
       this.setRouteToQueue(true)
     } catch (error) {
       const errorMessage = handleError(error.message)
-      console.log(errorMessage)
+      throw errorMessage
     }
   })
   getVisits = flow(function*() {
@@ -282,7 +282,7 @@ export class ParticipantStore {
       this.setVisitsList(data)
     } catch (error) {
       const errorMessage = handleError(error.message)
-      console.log(errorMessage)
+      throw errorMessage
     }
   })
   // called on  =>  ParticipantInfo.js
@@ -300,7 +300,7 @@ export class ParticipantStore {
       this.setIsEditing(false)
     } catch (error) {
       const errorMessage = handleError(error.message)
-      console.log(errorMessage)
+      throw errorMessage
     }
   })
   // called on  =>  ParticipantInfo.js
@@ -319,7 +319,7 @@ export class ParticipantStore {
       this.setRouteToQueue(true)
     } catch (error) {
       const errorMessage = handleError(error.message)
-      console.log(errorMessage)
+      throw errorMessage
     }
   })
 }

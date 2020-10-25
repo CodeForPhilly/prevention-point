@@ -50,7 +50,7 @@ export class AuthStore {
       this.setError(data.null)
     } catch (error) {
       const errorMessage = handleError(error.message)
-      console.log(errorMessage)
+      throw errorMessage
     }
   })
 }

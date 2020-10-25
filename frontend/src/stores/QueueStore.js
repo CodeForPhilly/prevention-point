@@ -56,7 +56,7 @@ export class QueueStore {
       this.setQueue(programId, data)
     } catch (error) {
       const errorMessage = handleError(error.message)
-      console.log(errorMessage)
+      throw errorMessage
     }
   })
 
@@ -70,7 +70,7 @@ export class QueueStore {
       this.getQueue(programId)
     } catch (error) {
       const errorMessage = handleError(error.message)
-      console.log(errorMessage)
+      throw errorMessage
     }
   })
 
@@ -88,7 +88,7 @@ export class QueueStore {
       this.getQueue(programId)
     } catch (error) {
       const errorMessage = handleError(error.message)
-      console.log(errorMessage)
+      throw errorMessage
     }
   })
 
