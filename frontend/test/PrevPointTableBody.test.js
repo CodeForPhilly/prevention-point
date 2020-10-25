@@ -12,6 +12,8 @@ const mockParticipantsList = [
     date_of_birth: "1994/12/01",
     start_date: "2019/04/10",
     pp_id: "JD1234",
+    sep_id: "",
+    maiden_name: "",
     race: "Other",
     gender: "Other",
     is_insured: false,
@@ -26,6 +28,8 @@ const mockParticipantsList = [
     date_of_birth: "1998/20/07",
     start_date: "2020/04/04",
     pp_id: "JD1234",
+    sep_id: "",
+    maiden_name: "",
     race: "Other",
     gender: "Other",
     is_insured: false,
@@ -81,6 +85,6 @@ describe("<PrevPointTableBody />", () => {
     const tableRows = getAllByLabelText("trow")
     const tableCellList = getAllByLabelText("tcell")
     expect(tableRows).toHaveLength(2)
-    expect(tableCellList).toHaveLength(14)
+    expect(tableCellList).toHaveLength(16)
   })
 })

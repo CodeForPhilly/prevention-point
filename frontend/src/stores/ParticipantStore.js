@@ -45,6 +45,8 @@ export class ParticipantStore {
       date_of_birth: "",
       start_date: this.createStartDate(),
       pp_id: "",
+      sep_id: "",
+      maiden_name: "",
       race: "",
       gender: "",
       is_insured: false,

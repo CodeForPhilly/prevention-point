@@ -25,7 +25,7 @@ const VisitForm = ({
         </PrevPointHeading>
       </Grid>
 
-      <Grid item xs={12} sm={6}>
+      <Grid item xs={12} md={6}>
         <FormControl>
           <InputLabel id="program-select">Choose Program</InputLabel>
           <Select
@@ -43,7 +43,7 @@ const VisitForm = ({
           </Select>
         </FormControl>
       </Grid>
-      <Grid item xs={12} sm={6}>
+      <Grid item xs={12} md={6}>
         <FormControl>
           <InputLabel id="service-select">Select Service</InputLabel>
           {visitInfo.program ? (
@@ -63,7 +63,7 @@ const VisitForm = ({
           ) : null}
         </FormControl>
       </Grid>
-      <Grid item xs={12} sm={6}>
+      <Grid item xs={12} md={6}>
         <FormControl>
           <InputLabel id="urgency-level">Select Urgency Level</InputLabel>
           <Select
