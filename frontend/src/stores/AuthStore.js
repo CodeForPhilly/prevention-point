@@ -1,6 +1,7 @@
 import { observable, action, flow } from "mobx"
 import { createContext } from "react"
 import api from "../api"
+import handleError from "../error"
 
 export class AuthStore {
   constructor(rootStore) {
@@ -39,16 +40,17 @@ export class AuthStore {
 
   login = flow(function*(username, password) {
     try {
-      const { ok, data } = yield api.createToken(username, password)
+      const { ok, data, status } = yield api.createToken(username, password)
       if (!ok) {
-        throw "a placeholder error string!"
+        throw new Error(status)
       }
       this.setIsAuthenticated(true)
       this.setUsername(data.username)
       this.setEmail(data.email)
       this.setError(data.null)
     } catch (error) {
-      this.setError(true)
+      const errorMessage = handleError(error.message)
+      throw errorMessage
     }
   })
 }
