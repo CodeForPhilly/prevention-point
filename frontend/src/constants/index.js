@@ -17,6 +17,7 @@ export const PARTICIPANT_LIST_TABLE_TITLES = [
   { mobile: true, title: "PPID" },
   { mobile: true, title: "First Name" },
   { mobile: true, title: "Last Name" },
+  { mobile: false, title: "SEP ID" },
   { mobile: false, title: "Gender" },
   { mobile: false, title: "DOB" },
   { mobile: false, title: "Race" },
