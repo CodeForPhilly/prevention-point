@@ -13,7 +13,7 @@ import PrevPointButton from "./PrevPointButton"
 import PrevPointHeading from "./Typography/PrevPointHeading"
 import PrevPointCopy from "./Typography/PrevPointCopy"
 import { Formik, Form } from "formik"
-import { SEPSearchSchema } from "../validation"
+import { SEPSearchSchema, SEPNeedleSchema } from "../validation"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -26,6 +26,10 @@ const useStyles = makeStyles(theme => ({
   heading: {
     padding: "2px 0",
     color: "#086375",
+  },
+  errorMessage: {
+    marginTop: theme.spacing(1),
+    color: "red",
   },
   siteId: {
     marginTop: "0",
@@ -46,11 +50,16 @@ const SepForm = observer(() => {
   const classes = useStyles()
   const rootStore = useContext(rootStoreContext)
   const participantStore = rootStore.ParticipantStore
+  const [sites, setSites] = useState([])
   const [participantId, setParticipantId] = useState()
   const SEPFormRef = useRef()
 
   useEffect(() => {
-    participantStore.getSites()
+    async function fetchSites() {
+      await participantStore.getSites()
+      setSites(participantStore.sites)
+    }
+    fetchSites()
   }, [])
 
   const handleClear = () => {
@@ -77,10 +86,9 @@ const SepForm = observer(() => {
         validationSchema={SEPSearchSchema}
         onSubmit={async (values, { setSubmitting, setFieldValue }) => {
           await participantStore.getParticipants({
-            //site_id: values.site_id,
             sep_id: values.sep_id,
             last_name: values.last_name,
-            date_of_birth: values.date_of_birth,
+            dob: values.date_of_birth,
             maiden_name: values.maiden_name,
           })
           setSubmitting(false)
@@ -106,15 +114,32 @@ const SepForm = observer(() => {
           <Form>
             <Grid container>
               <Grid item xs={12}>
-                <FormControl className={classes.siteId}>
+                <FormControl
+                  className={classes.siteId}
+                  error={errors.site_id && touched.site_id}
+                  disabled={participantId ? true : false}
+                >
                   <InputLabel htmlFor="site_id">Site ID</InputLabel>
-                  <Select id="site_id" name="site_id" value={values.site_id}>
-                    {participantStore.sites.map((siteId, i) => (
-                      <MenuItem key={i} value={siteId}>
-                        {siteId}
+                  <Select
+                    id="site_id"
+                    name="site_id"
+                    onChange={e => {
+                      handleChange(e)
+                      participantStore.setCurrentSite(e.target.value)
+                    }}
+                    value={values.site_id}
+                  >
+                    {sites.map((site, i) => (
+                      <MenuItem key={i} value={site.id}>
+                        {site.site_name}
                       </MenuItem>
                     ))}
                   </Select>
+                  {errors.site_id && (
+                    <PrevPointCopy className={classes.errorMessage}>
+                      {errors.site_id}
+                    </PrevPointCopy>
+                  )}
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
@@ -175,7 +200,7 @@ const SepForm = observer(() => {
                   disabled={participantId ? true : false}
                 >
                   <InputLabel htmlFor="maiden_name">
-                    Mother&apos;s Last Name
+                    Mother&apos;s Maiden Name
                   </InputLabel>
                   <PrevPointInput
                     id="maiden_name"
@@ -208,63 +233,120 @@ const SepForm = observer(() => {
           </Form>
         )}
       </Formik>
-      <Formik className={classes.form}>
-        <Form>
-          <Grid container>
-            <Grid item xs={12}>
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                  <FormControl disabled={participantId ? false : true}>
-                    <InputLabel>Needles In</InputLabel>
-                    <Select name="needles_in" value="">
-                      {[...Array(20)].map((x, i) => (
-                        <MenuItem key={i + 1} value={i + 1}>
-                          {i + 1}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={6}>
-                  <FormControl disabled={participantId ? false : true}>
-                    <InputLabel>Needles Out</InputLabel>
-                    <Select name="needles_out" value="">
-                      {[...Array(20)].map((x, i) => (
-                        <MenuItem key={i + 1} value={i + 1}>
-                          {i + 1}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
+      <Formik
+        className={classes.form}
+        validateOnChange={false}
+        validateOnBlur={false}
+        initialValues={{
+          needles_in: "",
+          needles_out: "",
+          visit_date: "",
+        }}
+        validationSchema={SEPNeedleSchema}
+        onSubmit={async (values, { setSubmitting }) => {
+          await participantStore.createSEP({
+            needles_in: values.needles_in,
+            needles_out: values.needles_out,
+            site: participantStore.currentSite,
+            participant: participantId,
+            urgency: 1,
+            program: 10,
+          })
+          setSubmitting(false)
+        }}
+      >
+        {({ errors, touched, values, handleChange, isSubmitting }) => (
+          <Form>
+            <Grid container>
+              <Grid item xs={12}>
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
+                    <FormControl
+                      error={errors.needles_in && touched.needles_in}
+                      disabled={participantId ? false : true}
+                    >
+                      <InputLabel htmlFor="needles_in">Needles In</InputLabel>
+                      <Select
+                        id="needles_in"
+                        name="needles_in"
+                        onChange={handleChange}
+                        value={values.needles_in}
+                      >
+                        {[...Array(20)].map((x, i) => (
+                          <MenuItem key={i + 1} value={i + 1}>
+                            {i + 1}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <FormControl
+                      error={errors.needles_out && touched.needles_out}
+                      disabled={participantId ? false : true}
+                    >
+                      <InputLabel htmlFor="needles_out">Needles Out</InputLabel>
+                      <Select
+                        id="needles_out"
+                        name="needles_out"
+                        onChange={handleChange}
+                        value={values.needles_out}
+                      >
+                        {[...Array(20)].map((x, i) => (
+                          <MenuItem key={i + 1} value={i + 1}>
+                            {i + 1}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Grid>
                 </Grid>
               </Grid>
+              <Grid item xs={12}>
+                <FormControl
+                  error={errors.visit_date && touched.visit_date}
+                  disabled={participantId ? false : true}
+                >
+                  <InputLabel shrink htmlFor="visit_date">
+                    Visit Date
+                  </InputLabel>
+                  <PrevPointInput
+                    id="visit_date"
+                    name="visit_date"
+                    type="date"
+                    onChange={handleChange}
+                    value={values.visit_date}
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <PrevPointButton
+                  type="submit"
+                  disabled={isSubmitting || participantId ? false : true}
+                >
+                  Submit
+                </PrevPointButton>
+                <PrevPointButton
+                  type="button"
+                  className={classes.clearButton}
+                  disabled={participantId ? false : true}
+                  onClick={handleClear}
+                >
+                  Clear
+                </PrevPointButton>
+                {(errors.needles_in ||
+                  errors.needles_out ||
+                  errors.visit_date) && (
+                  <PrevPointCopy className={classes.errorMessage}>
+                    {errors.needles_in ||
+                      errors.needles_out ||
+                      errors.visit_date}
+                  </PrevPointCopy>
+                )}
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <FormControl disabled={participantId ? false : true}>
-                <InputLabel htmlFor="visit_date">
-                  Visit Date (mm/dd/yyyy)
-                </InputLabel>
-                <PrevPointInput id="visit_date" name="visit_date" />
-              </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <PrevPointButton
-                type="submit"
-                disabled={participantId ? false : true}
-              >
-                Submit
-              </PrevPointButton>
-              <PrevPointButton
-                type="button"
-                className={classes.clearButton}
-                disabled={participantId ? false : true}
-                onClick={handleClear}
-              >
-                Clear
-              </PrevPointButton>
-            </Grid>
-          </Grid>
-        </Form>
+          </Form>
+        )}
       </Formik>
     </Container>
   )

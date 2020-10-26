@@ -24,8 +24,10 @@ const searchSchema = Yup.object().shape(
 )
 
 const SEPSearchErrorMessage = "Please enter a value in at least one field"
+const SEPSearchSiteErrorMessage = "Please select a site"
 const SEPSearchSchema = Yup.object().shape(
   {
+    site_id: Yup.number().required(SEPSearchSiteErrorMessage),
     sep_id: Yup.string().when(["last_name", "date_of_birth", "maiden_name"], {
       is: (lastName, dateOfBirth, maidenName) =>
         !lastName && !dateOfBirth && !maidenName,
@@ -55,4 +57,11 @@ const SEPSearchSchema = Yup.object().shape(
   ]
 )
 
-export { searchSchema, SEPSearchSchema }
+const SEPNeedleErrorMessage = "Please complete all fields"
+const SEPNeedleSchema = Yup.object().shape({
+  needles_in: Yup.number().required(SEPNeedleErrorMessage),
+  needles_out: Yup.number().required(SEPNeedleErrorMessage),
+  visit_date: Yup.string().required(SEPNeedleErrorMessage),
+})
+
+export { searchSchema, SEPSearchSchema, SEPNeedleSchema }
