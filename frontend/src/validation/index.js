@@ -30,7 +30,7 @@ const searchSchema = Yup.object().shape(
 // Strip unknown removes unknown values, set to false because we don't expect any unknown values
 const options = {
   strict: true,
-  abortEarly: true,
+  abortEarly: false,
   stripUnknown: false,
 }
 
@@ -64,11 +64,17 @@ const visitSchema = Yup.object().shape({
 })
 
 const validateVisitForm = data => {
-  let valid = visitSchema
+  let errors = []
+  return visitSchema
     .validate(data, options)
-    .then(() => "Success")
-    .catch(err => err)
-  return valid
+    .then(() => [])
+    .catch(err => {
+      err.inner.map(item => {
+        let obj = { name: item.path, message: item.message }
+        errors.push(obj)
+      })
+      return errors
+    })
 }
 
 export { searchSchema, validateVisitForm }

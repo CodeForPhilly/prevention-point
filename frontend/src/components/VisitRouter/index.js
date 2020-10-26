@@ -40,17 +40,25 @@ const VisitRouter = observer(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const handleSubmitVisit = () => {
+  const handleSubmitVisit = async () => {
     // TODO: logic protecting against concurrent queue entries
     // if existing visit we are coming from QueueTable, so update visit
-    if (existingVisit.id) {
-      let valid = validateVisitForm(existingVisit)
-      console.log(valid)
-      // If not error:
-      participantStore.updateVisit()
-      // If error update state:
-    } else {
-      participantStore.createVisit()
+    try {
+      let isValid = await validateVisitForm(existingVisit)
+      if (existingVisit.id) {
+        !isValid.length
+          ? participantStore.updateVisit()
+          : // To do: map error messages to state and display them in snackbar
+            console.log(`Error: ${isValid[0].message}`)
+      } else {
+        !isValid.length
+          ? participantStore.createVisit()
+          : // To do: map error messages to state and display them in snackbar
+            console.log(`Error: ${isValid[0].message}`)
+      }
+    } catch (err) {
+      // To do: make this into a more robust error statement
+      console.log(err)
     }
     // after all api calls for submit have been completed route to QueueTable
     autorun(() => {
