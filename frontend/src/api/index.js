@@ -19,6 +19,7 @@ import {
 import { getInsurers } from "./insurersEndpoints"
 import { getPrograms, getProgram, patchProgram } from "./programEndpoints"
 import { getSites } from "./siteEndpoints"
+import { createSEP } from "./sepEndpoints"
 import cookieValue from "./cookies"
 
 const create = () => {
@@ -55,6 +56,7 @@ const create = () => {
     getProgram: getProgram(api),
     patchProgram: patchProgram(api),
     getSites: getSites(api),
+    createSEP: createSEP(api),
   }
 }
 

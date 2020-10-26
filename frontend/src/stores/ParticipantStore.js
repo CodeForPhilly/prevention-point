@@ -152,6 +152,10 @@ export class ParticipantStore {
     this.sites = data
   }
 
+  @action setCurrentSite = currentSite => {
+    this.currentSite = currentSite
+  }
+
   // Utils
   createStartDate = () => {
     return format(new Date(), "yyyy-MM-dd")
@@ -321,6 +325,37 @@ export class ParticipantStore {
       this.setSites(data)
     } catch (error) {
       throw `ParticipantStore:  getSites() Failed  =>  ${error}`
+    }
+  })
+  createSEP = flow(function*({
+    program,
+    urgency,
+    participant,
+    needles_in,
+    needles_out,
+    site,
+  }) {
+    try {
+      //{"participant":["Incorrect type. Expected pk value, received str."]}
+      const { visitOk, visitData } = yield api.createVisits({
+        program: program,
+        urgency: urgency,
+        participant: participant,
+      })
+      if (!visitOk || !visitData) {
+        throw "a placeholder error string!"
+      }
+      const { ok, data } = yield api.createSEP({
+        needles_in: needles_in,
+        needles_out: needles_out,
+        site: site,
+        visit: visitData,
+      })
+      if (!ok || !data) {
+        throw "a placeholder error string!"
+      }
+    } catch (error) {
+      throw `ParticipantStore:  createSEP() Failed  =>  ${error}`
     }
   })
 }
