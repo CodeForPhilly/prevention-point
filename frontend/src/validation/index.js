@@ -36,14 +36,17 @@ const options = {
 
 const visitSchema = Yup.object().shape({
   id: Yup.number()
-    .required()
+    .defined()
     .positive()
     .integer(),
-  participant: Yup.number()
-    .required()
-    .positive()
-    .integer(),
-  // To do: validate that only services available for each program appear, using 'when' maybe?
+  participant: Yup.number().when("id", {
+    is: null,
+    then: Yup.number().defined(),
+    otherwise: Yup.number()
+      .required()
+      .positive()
+      .integer(),
+  }),
   program: Yup.number()
     .required()
     .positive()
@@ -51,15 +54,100 @@ const visitSchema = Yup.object().shape({
     .min(1)
     .max(10),
   service: Yup.number()
-    .required()
-    .positive()
-    .integer(),
+    .when("program", {
+      is: 1,
+      then: Yup.number()
+        .required()
+        .positive()
+        .integer()
+        .min(1)
+        .max(5),
+    })
+    .when("program", {
+      is: 2,
+      then: Yup.number()
+        .required()
+        .positive()
+        .integer()
+        .min(6)
+        .max(10),
+    })
+    .when("program", {
+      is: 3,
+      then: Yup.number()
+        .required()
+        .positive()
+        .integer()
+        .min(11)
+        .max(15),
+    })
+    .when("program", {
+      is: 4,
+      then: Yup.number()
+        .required()
+        .positive()
+        .integer()
+        .min(16)
+        .max(19),
+    })
+    .when("program", {
+      is: 5,
+      then: Yup.number()
+        .required()
+        .positive()
+        .integer()
+        .min(20)
+        .max(24),
+    })
+    .when("program", {
+      is: 6,
+      then: Yup.number()
+        .required()
+        .positive()
+        .integer()
+        .min(25)
+        .max(29),
+    })
+    .when("program", {
+      is: 7,
+      then: Yup.number()
+        .required()
+        .positive()
+        .integer()
+        .min(30)
+        .max(34),
+    })
+    .when("program", {
+      is: 8,
+      then: Yup.number()
+        .required()
+        .positive()
+        .integer()
+        .min(35)
+        .max(39),
+    })
+    .when("program", {
+      is: 9,
+      then: Yup.number()
+        .required()
+        .positive()
+        .integer()
+        .min(40)
+        .max(43),
+    })
+    .when("program", {
+      is: 10,
+      then: Yup.number()
+        .required()
+        .positive()
+        .integer()
+        .test(value => value === 44),
+    }),
   notes: Yup.string().notRequired(),
   urgency: Yup.number()
     .required()
     .positive()
     .integer()
-    .min(1)
     .max(4),
 })
 
