@@ -1,7 +1,7 @@
 from django.db import models
 from core.models import Visit
 
-class BehavioralHealthNotes(models.Model):
+class HCVNote(models.Model):
     visit = models.ForeignKey(Visit, on_delete=models.CASCADE)
     note_timestamp = models.DateTimeField()
-    behavior_note = models.TextField()
+    hcv_note = models.TextField()

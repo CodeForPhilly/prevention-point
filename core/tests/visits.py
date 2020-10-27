@@ -7,9 +7,9 @@ from core.models import (
     UrgencyLevel,
     Medication,
     UrineDrugScreen,
-    BehavioralHealthNotes,
+    BehavioralHealthNote,
     CaseManagement,
-    HCVNotes,
+    HCVNote,
 )
 from core.tests.base import BaseTestCase
 
@@ -261,13 +261,13 @@ class VisitMedicalRelationsTests(BaseTestCase):
             crs_seen=True, visit_id=visit.pk
         ).pk
 
-        bhn_id = BehavioralHealthNotes.objects.create(
+        bhn_id = BehavioralHealthNote.objects.create(
             visit_id=visit.pk,
             note_timestamp=timezone.now(),
             behavior_note="very healthy, much improvement seen",
         ).pk
 
-        hcv_id = HCVNotes.objects.create(
+        hcv_id = HCVNote.objects.create(
             visit_id=visit.pk,
             note_timestamp=timezone.now(),
             hcv_note="important hcv note",
@@ -276,8 +276,8 @@ class VisitMedicalRelationsTests(BaseTestCase):
         uds = UrineDrugScreen.objects.get(pk=uds_id)
         meds = Medication.objects.get(pk=meds_id)
         case_mgmt = CaseManagement.objects.get(pk=case_mgmt_id)
-        health_notes = BehavioralHealthNotes.objects.get(pk=bhn_id)
-        hcv_notes = HCVNotes.objects.get(pk=hcv_id)
+        health_notes = BehavioralHealthNote.objects.get(pk=bhn_id)
+        hcv_notes = HCVNote.objects.get(pk=hcv_id)
 
         self.assertEqual(uds.visit_id, visit.pk)
         self.assertEqual(meds.visit_id, visit.pk)

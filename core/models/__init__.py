@@ -3,14 +3,14 @@ from .participant import *
 from .program import *
 from .service import *
 from .visit import *
-from .hcv_notes import *
+from .hcv_note import *
 from .medication import *
 from .appointment import *
 from .case_management import *
 from .front_desk_event import *
 from .urine_drug_screen import *
 from .program_availability import *
-from .behavioral_health_notes import *
+from .behavioral_health_note import *
 from .form import *
 from .question import *
 from .option import *

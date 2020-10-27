@@ -1,7 +1,7 @@
 from core.viewsets import ModelViewSet
-from core.models import Sep_Data
-from core.sep_data.serializers import Sep_DataSerializer
+from core.models import SepData
+from core.sep_data.serializers import SepDataSerializer
 
 class Sep_DataViewSet(ModelViewSet):
-    queryset = Sep_Data.objects.all()
-    serializer_class = Sep_DataSerializer
+    queryset = SepData.objects.all()
+    serializer_class = SepDataSerializer

@@ -4,6 +4,7 @@ from core.models import Participant, Race, Gender
 from rest_framework import status
 
 
+
 class ParticipantsTestCase(BaseTestCase):
     fixtures = ["participants.yaml"]
 
