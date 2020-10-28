@@ -34,7 +34,7 @@ const VisitRouter = observer(() => {
     // kick off api call for program list from Mobx
     participantStore.getPrograms()
     // populate the global visit object if empty (for new visits)
-    if (!Object.keys(participantStore.visit).length) {
+    if (!participantStore.visit.id) {
       participantStore.setDefaultVisit()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
