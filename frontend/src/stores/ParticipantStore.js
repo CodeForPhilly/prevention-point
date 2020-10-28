@@ -220,9 +220,7 @@ export class ParticipantStore {
       throw errorMessage
     }
   })
-  // called on  =>  ParticipantInfo.js
-  // andVisit temporary hack, this logic should be seperated out when creating VisitView
-  createParticipant = flow(function*(andVisit = true) {
+  createParticipant = flow(function*() {
     if (this.routeToQueueTable) {
       this.setRouteToQueue(false)
     }
@@ -234,9 +232,6 @@ export class ParticipantStore {
         throw new Error(status)
       }
       this.setParticipant(data)
-      if (andVisit) {
-        return this.createVisit()
-      }
       this.setRouteToQueue(true)
     } catch (error) {
       const errorMessage = handleError(error.message)
