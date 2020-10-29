@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect, useRef } from "react"
-import { observer } from "mobx-react-lite"
 import { rootStoreContext } from "../stores/RootStore"
+import PropTypes from "prop-types"
 import { makeStyles } from "@material-ui/core/styles"
 import Container from "@material-ui/core/Container"
 import Grid from "@material-ui/core/Grid"
@@ -46,21 +46,16 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const SepForm = observer(() => {
+const SepForm = ({ sites, currentSite, setCurrentSite }) => {
   const classes = useStyles()
   const rootStore = useContext(rootStoreContext)
   const participantStore = rootStore.ParticipantStore
-  const [sites, setSites] = useState([])
   const [participantId, setParticipantId] = useState()
   const SEPFormRef = useRef()
 
   useEffect(() => {
-    async function fetchSites() {
-      await participantStore.getSites()
-      setSites(participantStore.sites)
-    }
-    fetchSites()
-  }, [])
+    participantStore.getSites()
+  }, [participantStore])
 
   const handleClear = () => {
     setParticipantId(null)
@@ -77,7 +72,7 @@ const SepForm = observer(() => {
         validateOnBlur={false}
         innerRef={SEPFormRef}
         initialValues={{
-          site_id: participantStore.currentSite,
+          site_id: currentSite,
           sep_id: "",
           last_name: "",
           date_of_birth: "",
@@ -93,7 +88,7 @@ const SepForm = observer(() => {
           })
           setSubmitting(false)
           if (participantStore.participants.length === 1) {
-            setParticipantId(participantStore.participants[0].pp_id)
+            setParticipantId(participantStore.participants[0].id)
             setFieldValue("sep_id", participantStore.participants[0].sep_id)
             setFieldValue(
               "last_name",
@@ -125,7 +120,7 @@ const SepForm = observer(() => {
                     name="site_id"
                     onChange={e => {
                       handleChange(e)
-                      participantStore.setCurrentSite(e.target.value)
+                      setCurrentSite(e.target.value)
                     }}
                     value={values.site_id}
                   >
@@ -247,7 +242,7 @@ const SepForm = observer(() => {
           await participantStore.createSEP({
             needles_in: values.needles_in,
             needles_out: values.needles_out,
-            site: participantStore.currentSite,
+            site: currentSite,
             participant: participantId,
             urgency: 1,
             program: 10,
@@ -350,6 +345,11 @@ const SepForm = observer(() => {
       </Formik>
     </Container>
   )
-})
+}
+SepForm.propTypes = {
+  currentSite: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  sites: PropTypes.array,
+  setCurrentSite: PropTypes.func,
+}
 
 export default SepForm
