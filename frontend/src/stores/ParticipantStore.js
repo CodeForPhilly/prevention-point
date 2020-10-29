@@ -334,10 +334,10 @@ export class ParticipantStore {
     needles_in,
     needles_out,
     site,
+    service,
   }) {
     try {
-      //{"participant":["Incorrect type. Expected pk value, received str."]}
-      const { visitOk, visitData } = yield api.createVisits({
+      const { ok: visitOk, data: visitData } = yield api.createVisits({
         program: program,
         urgency: urgency,
         participant: participant,
@@ -349,6 +349,7 @@ export class ParticipantStore {
         needles_in: needles_in,
         needles_out: needles_out,
         site: site,
+        service: service,
         visit: visitData,
       })
       if (!ok || !data) {

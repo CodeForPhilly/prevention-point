@@ -246,6 +246,7 @@ const SepForm = ({ sites, currentSite, setCurrentSite }) => {
             participant: participantId,
             urgency: 1,
             program: 10,
+            service: 44,
           })
           setSubmitting(false)
         }}
