@@ -28,8 +28,8 @@ export class ParticipantStore {
   @observable isEditing = false
   // participant search
   @observable sidebarView = SEARCH
-  @observable sites = []
-  @observable currentSite = ""
+  // snackbar notifications
+  @observable snackbarState = { message: "", open: false }
 
   @computed get hasVisit() {
     return this.visitList.map(visit => {
@@ -150,6 +150,11 @@ export class ParticipantStore {
   @action setSidebarView = sidebarView => {
     this.sidebarView = sidebarView
   }
+  @action setSnackbarState = (message, options = { open: true }) => {
+    // we setup otions like this to maybe add more later
+    this.snackbarState.message = message
+    this.snackbarState.open = options.open
+  }
 
   @action setSites = data => {
     this.sites = data
@@ -259,7 +264,7 @@ export class ParticipantStore {
       this.createNewFrontEndDeskEvents()
     } catch (error) {
       const errorMessage = handleError(error.message)
-      throw errorMessage
+      this.setSnackbarState(errorMessage)
     }
   })
   createNewFrontEndDeskEvents = flow(function*() {
