@@ -172,7 +172,7 @@ export class ParticipantStore {
       this.setInsurers(data)
     } catch (error) {
       const errorMessage = handleError(error.message)
-      throw errorMessage
+      this.setSnackbarState(errorMessage)
     }
   })
   getPrograms = flow(function*() {
@@ -197,7 +197,7 @@ export class ParticipantStore {
       }
     } catch (error) {
       const errorMessage = handleError(error.message)
-      throw errorMessage
+      this.setSnackbarState(errorMessage)
     }
   })
   getParticipant = flow(function*() {
@@ -211,7 +211,7 @@ export class ParticipantStore {
       this.setParticipant(data)
     } catch (error) {
       const errorMessage = handleError(error.message)
-      throw errorMessage
+      this.setSnackbarState(errorMessage)
     }
   })
   // called on  =>  ParticipantList.js
@@ -224,7 +224,7 @@ export class ParticipantStore {
       this.setParticipantsList(data)
     } catch (error) {
       const errorMessage = handleError(error.message)
-      throw errorMessage
+      this.setSnackbarState(errorMessage)
     }
   })
   createParticipant = flow(function*() {
@@ -242,7 +242,7 @@ export class ParticipantStore {
       this.setRouteToQueue(true)
     } catch (error) {
       const errorMessage = handleError(error.message)
-      throw errorMessage
+      this.setSnackbarState(errorMessage)
     }
   })
   createVisit = flow(function*() {
@@ -274,7 +274,7 @@ export class ParticipantStore {
       this.setRouteToQueue(true)
     } catch (error) {
       const errorMessage = handleError(error.message)
-      throw errorMessage
+      this.setSnackbarState(errorMessage)
     }
   })
   getVisits = flow(function*() {
@@ -286,7 +286,7 @@ export class ParticipantStore {
       this.setVisitsList(data)
     } catch (error) {
       const errorMessage = handleError(error.message)
-      throw errorMessage
+      this.setSnackbarState(errorMessage)
     }
   })
   // called on  =>  ParticipantInfo.js
@@ -304,7 +304,7 @@ export class ParticipantStore {
       this.setIsEditing(false)
     } catch (error) {
       const errorMessage = handleError(error.message)
-      throw errorMessage
+      this.setSnackbarState(errorMessage)
     }
   })
   // called on  =>  ParticipantInfo.js
@@ -323,7 +323,7 @@ export class ParticipantStore {
       this.setRouteToQueue(true)
     } catch (error) {
       const errorMessage = handleError(error.message)
-      throw errorMessage
+      this.setSnackbarState(errorMessage)
     }
   })
 }
