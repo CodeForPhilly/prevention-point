@@ -23,4 +23,45 @@ const searchSchema = Yup.object().shape(
   ]
 )
 
-export { searchSchema }
+const SEPSearchErrorMessage = "Please enter a value in at least one field"
+const SEPSearchSiteErrorMessage = "Please select a site"
+const SEPSearchSchema = Yup.object().shape(
+  {
+    site_id: Yup.number().required(SEPSearchSiteErrorMessage),
+    sep_id: Yup.string().when(["last_name", "date_of_birth", "maiden_name"], {
+      is: (lastName, dateOfBirth, maidenName) =>
+        !lastName && !dateOfBirth && !maidenName,
+      then: Yup.string().required(SEPSearchErrorMessage),
+    }),
+    last_name: Yup.string().when(["sep_id", "date_of_birth", "maiden_name"], {
+      is: (sepId, dateOfBirth, maidenName) =>
+        !sepId && !dateOfBirth && !maidenName,
+      then: Yup.string().required(SEPSearchErrorMessage),
+    }),
+    date_of_birth: Yup.string().when(["last_name", "sep_id", "maiden_name"], {
+      is: (lastName, sepId, maidenName) => !lastName && !sepId && !maidenName,
+      then: Yup.string().required(SEPSearchErrorMessage),
+    }),
+    maiden_name: Yup.string().when(["last_name", "date_of_birth", "sep_id"], {
+      is: (lastName, dateOfBirth, sepId) => !lastName && !dateOfBirth && !sepId,
+      then: Yup.string().required(SEPSearchErrorMessage),
+    }),
+  },
+  [
+    ["last_name", "date_of_birth"],
+    ["last_name", "sep_id"],
+    ["maiden_name", "date_of_birth"],
+    ["sep_id", "date_of_birth"],
+    ["sep_id", "maiden_name"],
+    ["last_name", "maiden_name"],
+  ]
+)
+
+const SEPNeedleErrorMessage = "Please complete all fields"
+const SEPNeedleSchema = Yup.object().shape({
+  needles_in: Yup.number().required(SEPNeedleErrorMessage),
+  needles_out: Yup.number().required(SEPNeedleErrorMessage),
+  visit_date: Yup.string().required(SEPNeedleErrorMessage),
+})
+
+export { searchSchema, SEPSearchSchema, SEPNeedleSchema }
