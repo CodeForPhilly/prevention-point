@@ -1,23 +1,28 @@
 import json
 from core.tests.base import BaseTestCase
 from core.models import Participant, Race, Gender
+from rest_framework import status
+
+
 
 class ParticipantsTestCase(BaseTestCase):
     fixtures = ["participants.yaml"]
 
     def test_participants_api_when_authed_as_front_desk(self):
-        headers = self.auth_headers_for_user('front_desk')
-        response = self.client.get('/api/participants', follow=True, **headers)
+        headers = self.auth_headers_for_user("front_desk")
+        response = self.client.get("/api/participants", follow=True, **headers)
 
         self.assertEqual(200, response.status_code)
 
     def test_participants_api_when_unauthenticated(self):
-        response = self.client.get('/api/participants', follow=True)
+        response = self.client.get("/api/participants", follow=True)
         self.assertEqual(401, response.status_code)
 
     def test_participants_can_be_queried_by_pp_id(self):
-        headers = self.auth_headers_for_user('front_desk')
-        response = self.client.get('/api/participants?pp_id=pp_1234', follow=True, **headers)
+        headers = self.auth_headers_for_user("front_desk")
+        response = self.client.get(
+            "/api/participants?pp_id=pp_1234", follow=True, **headers
+        )
         self.assertEqual(200, response.status_code)
 
         assert len(response.data) == 1
@@ -75,16 +80,16 @@ class ParticipantsTestCase(BaseTestCase):
         """
         headers = self.auth_headers_for_user("front_desk")
         participant_1 = {
-            "sep_id" : 11111,
-            "pp_id" : "pp_1111",
-            "first_name" : "foo",
-            "last_name" : "bar",
-            "last_four_ssn" : 3333,
-            "race" : Race.ASIAN_PI.value,
-            "gender" : Gender.FEMALE.value,
-            "date_of_birth" : "1961-01-26",
-            "start_date" : "2019-04-21",
-            "is_insured" : False,
+            "sep_id": 11111,
+            "pp_id": "pp_1111",
+            "first_name": "foo",
+            "last_name": "bar",
+            "last_four_ssn": 3333,
+            "race": Race.ASIAN_PI.value,
+            "gender": Gender.FEMALE.value,
+            "date_of_birth": "1961-01-26",
+            "start_date": "2019-04-21",
+            "is_insured": False,
         }
 
         response_1 = self.client.post(
@@ -93,16 +98,16 @@ class ParticipantsTestCase(BaseTestCase):
         self.assertEqual(201, response_1.status_code)
 
         participant_2 = {
-            "sep_id" : 11111,
-            "pp_id" : "pp_1112",
-            "first_name" : "oof",
-            "last_name" : "rab",
-            "last_four_ssn" : 3334,
-            "race" : Race.LATINO.value,
-            "gender" : Gender.OTHER.value,
-            "date_of_birth" : "1961-01-26",
-            "start_date" : "2019-04-21",
-            "is_insured" : False,
+            "sep_id": 11111,
+            "pp_id": "pp_1112",
+            "first_name": "oof",
+            "last_name": "rab",
+            "last_four_ssn": 3334,
+            "race": Race.LATINO.value,
+            "gender": Gender.OTHER.value,
+            "date_of_birth": "1961-01-26",
+            "start_date": "2019-04-21",
+            "is_insured": False,
         }
 
         response_2 = self.client.post(
@@ -112,9 +117,9 @@ class ParticipantsTestCase(BaseTestCase):
         self.assertEqual(400, response_2.status_code)
 
     def test_can_query_maiden_name(self):
-        #Ensure participant is returned when maiden name is queried
+        # Ensure participant is returned when maiden name is queried
         headers = self.auth_headers_for_user("front_desk")
-        known_maiden_name = 'dwayne'
+        known_maiden_name = "dwayne"
 
         response = self.client.get(
             f"/api/participants?maiden_name={known_maiden_name}", follow=True, **headers
@@ -124,4 +129,13 @@ class ParticipantsTestCase(BaseTestCase):
 
         self.assertEqual(200, response.status_code)
         self.assertTrue(len(content) == 1)
-        
+
+    def test_return_four_oh_four_query(self):
+        headers = self.auth_headers_for_user("front_desk")
+        invalid_id = 100000
+
+        response = self.client.get(
+            f"/api/participants?pp_id={invalid_id}", follow=True, **headers
+        )
+
+        self.assertEqual(404, response.status_code)

@@ -42,6 +42,9 @@ const PrevPointTableBody = props => {
               <PrevPointCopy>{participant.last_name}</PrevPointCopy>
             </TableCell>
             <TableCell aria-label="tcell" className={classes.mobileVisibility}>
+              <PrevPointCopy>{participant.sep_id} </PrevPointCopy>
+            </TableCell>
+            <TableCell aria-label="tcell" className={classes.mobileVisibility}>
               <PrevPointCopy>{participant.gender}</PrevPointCopy>
             </TableCell>
             <TableCell aria-label="tcell" className={classes.mobileVisibility}>

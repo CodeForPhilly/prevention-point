@@ -24,7 +24,7 @@ const NewParticipantView = observer(() => {
   }, [])
 
   const handleSubmit = () => {
-    participantStore.createParticipant(false)
+    participantStore.createParticipant()
     // after all api calls for submit have been completed route to QueueTable
     autorun(() => {
       if (participantStore.routeToQueueTable) {
