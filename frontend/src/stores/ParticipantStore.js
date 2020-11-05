@@ -28,6 +28,8 @@ export class ParticipantStore {
   @observable isEditing = false
   // participant search
   @observable sidebarView = SEARCH
+  @observable sites = []
+  @observable currentSite = ""
 
   @computed get hasVisit() {
     return this.visitList.map(visit => {
@@ -147,6 +149,14 @@ export class ParticipantStore {
 
   @action setSidebarView = sidebarView => {
     this.sidebarView = sidebarView
+  }
+
+  @action setSites = data => {
+    this.sites = data
+  }
+
+  @action setCurrentSite = currentSite => {
+    this.currentSite = currentSite
   }
 
   // Utils
@@ -317,6 +327,50 @@ export class ParticipantStore {
     } catch (error) {
       const errorMessage = handleError(error.message)
       throw errorMessage
+    }
+  })
+  getSites = flow(function*() {
+    try {
+      const { ok, data } = yield api.getSites()
+      if (!ok || !data) {
+        throw "a placeholder error string!"
+      }
+      this.setSites(data)
+    } catch (error) {
+      throw `ParticipantStore:  getSites() Failed  =>  ${error}`
+    }
+  })
+  createSEP = flow(function*({
+    program,
+    urgency,
+    participant,
+    needles_in,
+    needles_out,
+    site,
+    service,
+  }) {
+    try {
+      const { ok: visitOk, data: visitData } = yield api.createVisits({
+        program: program,
+        urgency: urgency,
+        participant: participant,
+        service: service,
+      })
+      if (!visitOk || !visitData) {
+        throw "a placeholder error string!"
+      }
+      const { ok, data } = yield api.createSEP({
+        needles_in: needles_in,
+        needles_out: needles_out,
+        site: site,
+        service: service,
+        visit: visitData.id,
+      })
+      if (!ok || !data) {
+        throw "a placeholder error string!"
+      }
+    } catch (error) {
+      throw `ParticipantStore:  createSEP() Failed  =>  ${error}`
     }
   })
 }

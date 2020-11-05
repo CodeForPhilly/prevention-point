@@ -51,7 +51,13 @@ const Sidebar = observer(({ handleDrawerClose }) => {
       </div>
 
       {participantStore.sidebarView === SEARCH && <ParticipantSearch />}
-      {participantStore.sidebarView === SEP && <SepForm />}
+      {participantStore.sidebarView === SEP && (
+        <SepForm
+          sites={participantStore.sites}
+          currentSite={participantStore.currentSite}
+          setCurrentSite={participantStore.setCurrentSite}
+        />
+      )}
     </>
   )
 })
