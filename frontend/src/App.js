@@ -7,8 +7,12 @@ import theme from "./style/theme"
 import RoutesIndex from "./routes"
 import { rootStoreContext } from "./stores/RootStore"
 
+import Snackbar from "@material-ui/core/Snackbar"
+import SnackbarContent from "@material-ui/core/SnackbarContent"
+
 const App = observer(() => {
   const rootStore = useContext(rootStoreContext)
+  const participantStore = rootStore.ParticipantStore
 
   useEffect(() => {
     async function stillAuthenticated() {
@@ -31,6 +35,17 @@ const App = observer(() => {
   return (
     <MuiThemeProvider theme={theme}>
       <RoutesIndex />
+      <Snackbar
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+        open={participantStore.snackbarState.open}
+        autoHideDuration={6000}
+        onClose={() => participantStore.setSnackbarState("", { open: false })}
+      >
+        <SnackbarContent message={participantStore.snackbarState.message} />
+      </Snackbar>
     </MuiThemeProvider>
   )
 })
