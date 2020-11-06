@@ -28,8 +28,8 @@ export class ParticipantStore {
   @observable isEditing = false
   // participant search
   @observable sidebarView = SEARCH
-  @observable sites = []
-  @observable currentSite = ""
+  // snackbar notifications
+  @observable snackbarState = { message: "", open: false }
 
   @computed get hasVisit() {
     return this.visitList.map(visit => {
@@ -150,6 +150,11 @@ export class ParticipantStore {
   @action setSidebarView = sidebarView => {
     this.sidebarView = sidebarView
   }
+  @action setSnackbarState = (message, options = { open: true }) => {
+    // we setup otions like this to maybe add more later
+    this.snackbarState.message = message
+    this.snackbarState.open = options.open
+  }
 
   @action setSites = data => {
     this.sites = data
@@ -175,7 +180,7 @@ export class ParticipantStore {
       this.setInsurers(data)
     } catch (error) {
       const errorMessage = handleError(error.message)
-      throw errorMessage
+      this.setSnackbarState(errorMessage)
     }
   })
   getPrograms = flow(function*() {
@@ -200,7 +205,7 @@ export class ParticipantStore {
       }
     } catch (error) {
       const errorMessage = handleError(error.message)
-      throw errorMessage
+      this.setSnackbarState(errorMessage)
     }
   })
   getParticipant = flow(function*() {
@@ -214,7 +219,7 @@ export class ParticipantStore {
       this.setParticipant(data)
     } catch (error) {
       const errorMessage = handleError(error.message)
-      throw errorMessage
+      this.setSnackbarState(errorMessage)
     }
   })
   // called on  =>  ParticipantList.js
@@ -227,7 +232,7 @@ export class ParticipantStore {
       this.setParticipantsList(data)
     } catch (error) {
       const errorMessage = handleError(error.message)
-      throw errorMessage
+      this.setSnackbarState(errorMessage)
     }
   })
   createParticipant = flow(function*() {
@@ -245,7 +250,7 @@ export class ParticipantStore {
       this.setRouteToQueue(true)
     } catch (error) {
       const errorMessage = handleError(error.message)
-      throw errorMessage
+      this.setSnackbarState(errorMessage)
     }
   })
   createVisit = flow(function*() {
@@ -259,7 +264,7 @@ export class ParticipantStore {
       this.createNewFrontEndDeskEvents()
     } catch (error) {
       const errorMessage = handleError(error.message)
-      throw errorMessage
+      this.setSnackbarState(errorMessage)
     }
   })
   createNewFrontEndDeskEvents = flow(function*() {
@@ -277,7 +282,7 @@ export class ParticipantStore {
       this.setRouteToQueue(true)
     } catch (error) {
       const errorMessage = handleError(error.message)
-      throw errorMessage
+      this.setSnackbarState(errorMessage)
     }
   })
   getVisits = flow(function*() {
@@ -289,7 +294,7 @@ export class ParticipantStore {
       this.setVisitsList(data)
     } catch (error) {
       const errorMessage = handleError(error.message)
-      throw errorMessage
+      this.setSnackbarState(errorMessage)
     }
   })
   // called on  =>  ParticipantInfo.js
@@ -307,7 +312,7 @@ export class ParticipantStore {
       this.setIsEditing(false)
     } catch (error) {
       const errorMessage = handleError(error.message)
-      throw errorMessage
+      this.setSnackbarState(errorMessage)
     }
   })
   // called on  =>  ParticipantInfo.js
@@ -326,7 +331,7 @@ export class ParticipantStore {
       this.setRouteToQueue(true)
     } catch (error) {
       const errorMessage = handleError(error.message)
-      throw errorMessage
+      this.setSnackbarState(errorMessage)
     }
   })
   getSites = flow(function*() {
