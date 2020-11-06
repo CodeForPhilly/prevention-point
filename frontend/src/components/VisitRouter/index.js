@@ -48,19 +48,19 @@ const VisitRouter = observer(() => {
       if (existingVisit.id) {
         !isValid.length
           ? participantStore.updateVisit()
-          : // To do: map error messages to state and display them in snackbar
-            isValid.map(error =>
-              console.log(
+          : isValid.map(error =>
+              participantStore.setSnackbarState(
                 `Error location: ${error.name}, Error message: ${error.message}`
               )
             )
       } else {
         !isValid.length
           ? participantStore.createVisit()
-          : // To do: map error messages to state and display them in snackbar
-            isValid.map(error =>
+          : isValid.map(error =>
               console.log(
-                `Error location: ${error.name}, Error message: ${error.message}`
+                participantStore.setSnackbarState(
+                  `Error location: ${error.name}, Error message: ${error.message}`
+                )
               )
             )
       }
