@@ -50,105 +50,19 @@ const visitSchema = Yup.object().shape({
   program: Yup.number()
     .required()
     .positive()
-    .integer()
-    .min(1)
-    .max(10),
+    .integer(),
   service: Yup.number()
-    .when("program", {
-      is: 1,
-      then: Yup.number()
-        .required()
-        .positive()
-        .integer()
-        .min(1)
-        .max(5),
-    })
-    .when("program", {
-      is: 2,
-      then: Yup.number()
-        .required()
-        .positive()
-        .integer()
-        .min(6)
-        .max(10),
-    })
-    .when("program", {
-      is: 3,
-      then: Yup.number()
-        .required()
-        .positive()
-        .integer()
-        .min(11)
-        .max(15),
-    })
-    .when("program", {
-      is: 4,
-      then: Yup.number()
-        .required()
-        .positive()
-        .integer()
-        .min(16)
-        .max(19),
-    })
-    .when("program", {
-      is: 5,
-      then: Yup.number()
-        .required()
-        .positive()
-        .integer()
-        .min(20)
-        .max(24),
-    })
-    .when("program", {
-      is: 6,
-      then: Yup.number()
-        .required()
-        .positive()
-        .integer()
-        .min(25)
-        .max(29),
-    })
-    .when("program", {
-      is: 7,
-      then: Yup.number()
-        .required()
-        .positive()
-        .integer()
-        .min(30)
-        .max(34),
-    })
-    .when("program", {
-      is: 8,
-      then: Yup.number()
-        .required()
-        .positive()
-        .integer()
-        .min(35)
-        .max(39),
-    })
-    .when("program", {
-      is: 9,
-      then: Yup.number()
-        .required()
-        .positive()
-        .integer()
-        .min(40)
-        .max(43),
-    })
-    .when("program", {
-      is: 10,
-      then: Yup.number()
-        .required()
-        .positive()
-        .integer()
-        .test(value => value === 44),
-    }),
-  notes: Yup.string().notRequired(),
+    .required()
+    .positive()
+    .integer(),
+  notes: Yup.string()
+    .required()
+    .max(1),
   urgency: Yup.number()
     .required()
     .positive()
     .integer()
-    .max(4),
+    .max(1),
 })
 
 const validateVisitForm = data => {

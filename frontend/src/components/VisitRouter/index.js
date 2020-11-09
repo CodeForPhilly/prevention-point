@@ -14,6 +14,7 @@ import React, { useContext, useEffect } from "react"
 import { autorun, toJS } from "mobx"
 import { observer } from "mobx-react-lite"
 import { Route, Switch, useHistory } from "react-router-dom"
+import handleError from "../../error"
 import VisitForm from "./VisitForm"
 import VisitData from "./VisitData"
 import VisitTable from "./VisitTable"
@@ -50,23 +51,20 @@ const VisitRouter = observer(() => {
           ? participantStore.updateVisit()
           : isValid.map(error =>
               participantStore.setSnackbarState(
-                `Error location: ${error.name}, Error message: ${error.message}`
+                `Theres an error in the ${error.name} field.`
               )
             )
       } else {
         !isValid.length
           ? participantStore.createVisit()
           : isValid.map(error =>
-              console.log(
-                participantStore.setSnackbarState(
-                  `Error location: ${error.name}, Error message: ${error.message}`
-                )
+              participantStore.setSnackbarState(
+                `Theres an error in the ${error.name} field.`
               )
             )
       }
     } catch (err) {
-      // To do: make this into a more robust error statement
-      console.log(err)
+      handleError(err)
     }
     // after all api calls for submit have been completed route to QueueTable
     autorun(() => {
