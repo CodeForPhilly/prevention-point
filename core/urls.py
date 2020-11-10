@@ -75,6 +75,11 @@ urlpatterns = [
         "api/programs/<int:program_id>/queue/",
         queues_views.QueueViewSet.as_view({"get": "retrieve"}),
     ),
+    path(
+        "api/participants/<int:participant_id>/visits/",
+        visits_views.ParticipantVisitsView.as_view(),
+        name="participant-visits"
+    ),
     # above only 'registers' the retrieve path. to use other CRUD actions, must pass that explicitly to .as_view in another register
     path("swagger/", schema_view),
     path("admin/", admin.site.urls),
