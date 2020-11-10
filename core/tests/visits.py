@@ -284,3 +284,32 @@ class VisitMedicalRelationsTests(BaseTestCase):
         self.assertEqual(case_mgmt.visit_id, visit.pk)
         self.assertEqual(health_notes.visit_id, visit.pk)
         self.assertEqual(hcv_notes.visit_id, visit.pk)
+
+
+class ParticipantVisitsViewTestCase(BaseTestCase):
+    fixtures = ["participants.yaml", "programs", "services.yaml", "visits.yaml"]
+
+    def test_get_participant_vists(self):
+        participant_id = 3
+        headers = self.auth_headers_for_user("admin")
+        response = self.client.get(
+            reverse('participant-visits', args=[participant_id]), **headers
+        )
+        expected_visit_ids = Visit.objects.filter(
+            participant_id=participant_id
+        ).values_list('id', flat=True)
+
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(len(response.data), len(expected_visit_ids))
+
+        expected_visit_ids = set(expected_visit_ids)
+        actual_visit_ids = set(actual_visit['id'] for actual_visit in response.data)
+        self.assertEqual(expected_visit_ids, actual_visit_ids)
+
+    def test_404_participant_vists(self):
+        empty_participant_id = 100000
+        headers = self.auth_headers_for_user("admin")
+        response = self.client.get(
+            reverse('participant-visits', args=[empty_participant_id]), **headers
+        )
+        self.assertEqual(404, response.status_code)
