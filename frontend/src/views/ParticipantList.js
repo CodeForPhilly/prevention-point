@@ -14,6 +14,7 @@ import { SEARCH, SEP } from "../constants"
 import Grid from "@material-ui/core/Grid"
 import Select from "@material-ui/core/Select"
 import MenuItem from "@material-ui/core/MenuItem"
+import NoResults from "../components/NoResults"
 
 const ParticipantList = observer(() => {
   const useStyles = makeStyles(theme => ({
@@ -107,14 +108,25 @@ const ParticipantList = observer(() => {
           page={participantTablePage}
           setPage={setParticipantTablePage}
         />
-        <PrevPointTable
-          headerTitles={PARTICIPANT_LIST_TABLE_TITLES}
-          participants={participantStore.participants.slice(
-            50 * participantTablePage,
-            50 * participantTablePage + 50
-          )}
-          handleClick={handleParticipant}
-        />
+        {participantStore.participants.length ? (
+          <PrevPointTable
+            headerTitles={PARTICIPANT_LIST_TABLE_TITLES}
+            participants={participantStore.participants.slice(
+              50 * participantTablePage,
+              50 * participantTablePage + 50
+            )}
+            handleClick={handleParticipant}
+          />
+        ) : (
+          <NoResults
+            heading="No participants found"
+            subheading="Use the sidebar on the right to search"
+            label="Open Sidebar"
+            action={() => {
+              console.log("Action fired")
+            }}
+          />
+        )}
         <PrevPointPagination
           participants={participantStore.participants}
           page={participantTablePage}
