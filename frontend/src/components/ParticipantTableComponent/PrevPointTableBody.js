@@ -48,7 +48,16 @@ const PrevPointTableBody = props => {
               <PrevPointCopy>{participant.gender}</PrevPointCopy>
             </TableCell>
             <TableCell aria-label="tcell" className={classes.mobileVisibility}>
-              <PrevPointCopy>{participant.date_of_birth}</PrevPointCopy>
+              <PrevPointCopy>
+                {new Date(participant.date_of_birth).toLocaleDateString(
+                  "en-US",
+                  {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                  }
+                )}
+              </PrevPointCopy>
             </TableCell>
             <TableCell aria-label="tcell" className={classes.mobileVisibility}>
               <PrevPointCopy>{participant.race}</PrevPointCopy>
