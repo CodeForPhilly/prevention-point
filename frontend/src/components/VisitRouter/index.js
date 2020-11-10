@@ -45,26 +45,21 @@ const VisitRouter = observer(() => {
     // TODO: logic protecting against concurrent queue entries
     // if existing visit we are coming from QueueTable, so update visit
     try {
-      let isValid = await validateVisitForm(existingVisit)
+      let validationErrors = await validateVisitForm(existingVisit)
+      if (validationErrors.length) {
+        return validationErrors.map(error =>
+          participantStore.setSnackbarState(
+            `Theres an error in the ${error.name} field.`
+          )
+        )
+      }
       if (existingVisit.id) {
-        !isValid.length
-          ? participantStore.updateVisit()
-          : isValid.map(error =>
-              participantStore.setSnackbarState(
-                `Theres an error in the ${error.name} field.`
-              )
-            )
+        participantStore.updateVisit()
       } else {
-        !isValid.length
-          ? participantStore.createVisit()
-          : isValid.map(error =>
-              participantStore.setSnackbarState(
-                `Theres an error in the ${error.name} field.`
-              )
-            )
+        participantStore.createVisit()
       }
     } catch (err) {
-      handleError(err)
+      participantStore.setSnackbarState(handleError(err))
     }
     // after all api calls for submit have been completed route to QueueTable
     autorun(() => {

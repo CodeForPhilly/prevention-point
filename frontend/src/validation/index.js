@@ -55,14 +55,11 @@ const visitSchema = Yup.object().shape({
     .required()
     .positive()
     .integer(),
-  notes: Yup.string()
-    .required()
-    .max(1),
+  notes: Yup.string().notRequired(),
   urgency: Yup.number()
     .required()
     .positive()
-    .integer()
-    .max(1),
+    .integer(),
 })
 
 const validateVisitForm = data => {
