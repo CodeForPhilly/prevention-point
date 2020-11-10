@@ -23,7 +23,7 @@ class SiteTests(BaseTestCase):
         Ensure we can get all site as admin
         """
         headers = self.auth_headers_for_user('admin')
-        response = self.client.get('/api/site/', follow=True, **headers)
+        response = self.client.get('/api/sites/', follow=True, **headers)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -38,7 +38,7 @@ class SiteTests(BaseTestCase):
         headers = self.auth_headers_for_user('admin')
         site_id = Site.objects.filter(site_name='TESTING1')[0].id
 
-        response = self.client.get('/api/site/{}'.format(site_id), follow=True, **headers)
+        response = self.client.get('/api/sites/{}'.format(site_id), follow=True, **headers)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         self.assertContains(response, 'TESTING1')
@@ -49,5 +49,5 @@ class SiteTests(BaseTestCase):
 # UNAUTHENTICATED TEST
 
     def test_site_api_when_unauthenticated(self):
-        response = self.client.get('/api/site', follow=True)
+        response = self.client.get('/api/sites', follow=True)
         self.assertEqual(401, response.status_code)
