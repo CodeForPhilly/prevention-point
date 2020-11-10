@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import * as Yup from "yup"
 
 const searchErrorMessage = "Please enter a participant id or a name"
@@ -22,6 +23,58 @@ const searchSchema = Yup.object().shape(
     ["first_name", "last_name"],
   ]
 )
+
+// Options for Visit Schema:
+// Strict doesn't coerce any values
+// Abort Early bails out at the first sign of error
+// Strip unknown removes unknown values, set to false because we don't expect any unknown values
+const options = {
+  strict: true,
+  abortEarly: false,
+  stripUnknown: false,
+}
+
+const visitSchema = Yup.object().shape({
+  id: Yup.number()
+    .defined()
+    .positive()
+    .integer(),
+  participant: Yup.number().when("id", {
+    is: null,
+    then: Yup.number().defined(),
+    otherwise: Yup.number()
+      .required()
+      .positive()
+      .integer(),
+  }),
+  program: Yup.number()
+    .required()
+    .positive()
+    .integer(),
+  service: Yup.number()
+    .required()
+    .positive()
+    .integer(),
+  notes: Yup.string().notRequired(),
+  urgency: Yup.number()
+    .required()
+    .positive()
+    .integer(),
+})
+
+const validateVisitForm = data => {
+  let errors = []
+  return visitSchema
+    .validate(data, options)
+    .then(() => [])
+    .catch(err => {
+      err.inner.map(item => {
+        let obj = { name: item.path, message: item.message }
+        errors.push(obj)
+      })
+      return errors
+    })
+}
 
 const SEPSearchErrorMessage = "Please enter a value in at least one field"
 const SEPSearchSiteErrorMessage = "Please select a site"
@@ -64,4 +117,4 @@ const SEPNeedleSchema = Yup.object().shape({
   visit_date: Yup.string().required(SEPNeedleErrorMessage),
 })
 
-export { searchSchema, SEPSearchSchema, SEPNeedleSchema }
+export { searchSchema, SEPSearchSchema, SEPNeedleSchema, validateVisitForm }
