@@ -46,7 +46,7 @@ router.register(r"front-desk-events", front_events_views.FrontDeskEventViewSet)
 router.register(r"programs", programs_views.ProgramViewSet)
 router.register(r"services", services_views.ServiceViewSet)
 router.register(r"insurers", insurer_views.InsurerViewSet)
-router.register(r"site", site_views.SiteViewSet)
+router.register(r"sites", site_views.SiteViewSet)
 router.register(r"sep", sep_data_views.Sep_DataViewSet)
 
 
