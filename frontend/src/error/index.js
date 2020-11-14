@@ -5,6 +5,10 @@ const standardizedErrors = [
       "Your submission was incorrect. Check the values for accuracy and try again.",
   },
   {
+    status: 401,
+    description: "You are not authorized to do that.",
+  },
+  {
     status: 404,
     description: "We couldn't find what you are looking for.",
   },
@@ -20,13 +24,13 @@ const standardizedErrors = [
 
 function handleError(statusCode) {
   // Remove || {} when pushed live
-  const { description } = standardizedErrors.find(
-    error => error.status === parseInt(statusCode) || {}
+  const standardizedError = standardizedErrors.find(
+    error => error.status === parseInt(statusCode)
   )
-  if (!description) {
+  if (!standardizedError) {
     return "Something went wrong"
   }
-  return description
+  return standardizedError.description
 }
 
 export default handleError
