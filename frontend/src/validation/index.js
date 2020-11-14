@@ -117,4 +117,24 @@ const SEPNeedleSchema = Yup.object().shape({
   visit_date: Yup.string().required(SEPNeedleErrorMessage),
 })
 
+// eslint-disable-next-line no-unused-vars
+const participantSchema = Yup.object().shape({
+  first_name: Yup.string()
+    .required()
+    .max(50),
+  last_name: Yup.string()
+    .required()
+    .max(100),
+  date_of_birth: Yup.date().required(),
+  uuid: Yup.string()
+    .required()
+    .max(200),
+  sep_id: Yup.number()
+    .defined()
+    .positive(),
+  maiden_name: Yup.string()
+    .notRequired()
+    .max(100),
+})
+
 export { searchSchema, SEPSearchSchema, SEPNeedleSchema, validateVisitForm }
