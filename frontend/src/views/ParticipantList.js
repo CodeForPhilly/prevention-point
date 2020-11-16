@@ -122,9 +122,7 @@ const ParticipantList = observer(() => {
             heading="No participants found"
             subheading="Use the sidebar on the right to search"
             label="Open Sidebar"
-            action={() => {
-              console.log("Action fired")
-            }}
+            action={() => participantStore.handleDrawerOpen()}
           />
         )}
         <PrevPointPagination
