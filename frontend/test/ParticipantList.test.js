@@ -20,17 +20,27 @@ describe("<ParticipantList />", () => {
     )
     const prevPointHeadingText = getAllByLabelText(/heading/i)
     expect(prevPointHeadingText[0]).toHaveTextContent("Participants")
-    expect(prevPointHeadingText).toHaveLength(2)
+    expect(prevPointHeadingText).toHaveLength(3)
   })
 
-  it("should render a ParticipantList component and contain the table", () => {
-    const { getByLabelText } = render(
+  // it("should render a ParticipantList component and contain the table", () => {
+  //   const { getByLabelText } = render(
+  //     <BrowserRouter>
+  //       <ParticipantList />
+  //     </BrowserRouter>
+  //   )
+  //   const tableElement = getByLabelText(/list of participants/i)
+  //   expect(tableElement).toBeInTheDocument()
+  // })
+
+  it("should render a PreventionPoint button with a string as a label", () => {
+    const { getByTestId } = render(
       <BrowserRouter>
         <ParticipantList />
       </BrowserRouter>
     )
-    const tableElement = getByLabelText(/list of participants/i)
-    expect(tableElement).toBeInTheDocument()
+    const noResultsButton = getByTestId("no-results-button")
+    expect(noResultsButton).not.toHaveTextContent("")
   })
 
   it("should render a ParticipantList component and have a bottom navigation", () => {
@@ -40,6 +50,6 @@ describe("<ParticipantList />", () => {
       </BrowserRouter>
     )
     const bottomNavElement = getByLabelText(/Bottom Navigation/i)
-    expect(bottomNavElement).toBeInTheDOM()
+    expect(bottomNavElement).toBeInTheDocument()
   })
 })

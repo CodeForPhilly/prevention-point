@@ -25,6 +25,7 @@ const NoResults = ({ heading, subheading, action, label }) => {
           <PrevPointHeading>{heading}</PrevPointHeading>
           {subheading ? <PrevPointCopy>{subheading}</PrevPointCopy> : null}
           <PrevPointButton
+            data-testid="no-results-button"
             onClick={() => {
               action()
             }}
