@@ -31,6 +31,8 @@ export class ParticipantStore {
   // snackbar notifications
   @observable snackbarState = { message: "", open: false }
   @observable isDrawerOpen = false
+  @observable sites = []
+  @observable currentSite = ""
   @computed get hasVisit() {
     return this.visitList.map(visit => {
       return visit.participant === this.participant.id ? true : false
