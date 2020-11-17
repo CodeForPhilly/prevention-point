@@ -116,15 +116,17 @@ const participantSchema = Yup.object().shape({
     .required()
     .min(4)
     .max(200),
-  sep_id: Yup.string().defined(),
+  sep_id: Yup.string()
+    .required()
+    .matches(/[0-9]/),
   maiden_name: Yup.string()
     .notRequired()
     .max(100),
   is_insured: Yup.boolean().required(),
-  insurer: Yup.number().when("is_insured", {
-    is: true,
-    then: Yup.number().required(),
-    otherwise: Yup.number().notRequired(),
+  insurer: Yup.string().when("is_insured", {
+    is: false,
+    then: Yup.string().notRequired(),
+    otherwise: Yup.number().required(),
   }),
 })
 
