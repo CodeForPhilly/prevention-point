@@ -28,8 +28,6 @@ export class ParticipantStore {
   @observable isEditing = false
   // participant search
   @observable sidebarView = SEARCH
-  @observable sites = []
-  @observable currentSite = ""
   // snackbar notifications
   @observable snackbarState = { message: "", open: false }
   @observable isDrawerOpen = false
