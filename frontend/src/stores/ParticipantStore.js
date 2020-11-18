@@ -32,7 +32,9 @@ export class ParticipantStore {
   @observable currentSite = ""
   // snackbar notifications
   @observable snackbarState = { message: "", open: false }
-
+  @observable isDrawerOpen = false
+  @observable sites = []
+  @observable currentSite = ""
   @computed get hasVisit() {
     return this.visitList.map(visit => {
       return visit.participant === this.participant.id ? true : false
@@ -40,6 +42,13 @@ export class ParticipantStore {
   }
 
   // Setters
+  @action handleDrawerOpen = () => {
+    this.isDrawerOpen = true
+  }
+  @action handleDrawerClose = () => {
+    this.isDrawerOpen = false
+  }
+
   @action setDefaultParticipant = () => {
     this.participant = {
       id: null,
@@ -229,6 +238,7 @@ export class ParticipantStore {
     try {
       const { ok, data, status } = yield api.getParticipants(toJS(params))
       if (!ok || !data) {
+        this.setParticipantsList([])
         throw new Error(status)
       }
       this.setParticipantsList(data)
