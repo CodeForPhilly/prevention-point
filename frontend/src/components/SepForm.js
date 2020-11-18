@@ -124,11 +124,12 @@ const SepForm = ({ sites, currentSite, setCurrentSite }) => {
                     }}
                     value={values.site_id}
                   >
-                    {sites.map((site, i) => (
-                      <MenuItem key={i} value={site.id}>
-                        {site.site_name}
-                      </MenuItem>
-                    ))}
+                    {sites &&
+                      sites.map((site, i) => (
+                        <MenuItem key={i} value={site.id}>
+                          {site.site_name}
+                        </MenuItem>
+                      ))}
                   </Select>
                   {errors.site_id && (
                     <PrevPointCopy className={classes.errorMessage}>
