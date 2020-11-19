@@ -236,7 +236,7 @@ const SepForm = ({ sites, currentSite, setCurrentSite }) => {
         initialValues={{
           needles_in: "",
           needles_out: "",
-          visit_date: "",
+          visit_date: new Date().toISOString().substring(0, 10),
         }}
         validationSchema={SEPNeedleSchema}
         onSubmit={async (values, { setSubmitting }) => {
