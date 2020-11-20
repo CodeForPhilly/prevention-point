@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from "react"
 import { rootStoreContext } from "../stores/RootStore"
 import PropTypes from "prop-types"
+import { useHistory } from "react-router-dom"
 import { makeStyles } from "@material-ui/core/styles"
 import Container from "@material-ui/core/Container"
 import Grid from "@material-ui/core/Grid"
@@ -52,6 +53,7 @@ const SepForm = ({ sites, currentSite, setCurrentSite }) => {
   const participantStore = rootStore.ParticipantStore
   const [participantId, setParticipantId] = useState()
   const SEPFormRef = useRef()
+  const history = useHistory()
 
   useEffect(() => {
     participantStore.getSites()
@@ -86,6 +88,7 @@ const SepForm = ({ sites, currentSite, setCurrentSite }) => {
             dob: values.date_of_birth,
             maiden_name: values.maiden_name,
           })
+          history.push("/participants")
           setSubmitting(false)
           if (participantStore.participants.length === 1) {
             setParticipantId(participantStore.participants[0].id)
@@ -124,11 +127,12 @@ const SepForm = ({ sites, currentSite, setCurrentSite }) => {
                     }}
                     value={values.site_id}
                   >
-                    {sites.map((site, i) => (
-                      <MenuItem key={i} value={site.id}>
-                        {site.site_name}
-                      </MenuItem>
-                    ))}
+                    {sites &&
+                      sites.map((site, i) => (
+                        <MenuItem key={i} value={site.id}>
+                          {site.site_name}
+                        </MenuItem>
+                      ))}
                   </Select>
                   {errors.site_id && (
                     <PrevPointCopy className={classes.errorMessage}>
