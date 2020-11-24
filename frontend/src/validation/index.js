@@ -75,6 +75,9 @@ const options = {
   stripUnknown: false,
 }
 
+const VISIT_SCHEMA = "VISIT_SCHEMA"
+const PARTICIPANT_SCHEMA = "PARTICIPANT_SCHEMA"
+
 const visitSchema = Yup.object().shape({
   id: Yup.number()
     .defined()
@@ -111,14 +114,17 @@ const participantSchema = Yup.object().shape({
   last_name: Yup.string()
     .required()
     .max(100),
-  date_of_birth: Yup.string().required(),
+  date_of_birth: Yup.date()
+    .required()
+    .min(new Date("1899-12-31"))
+    .max(new Date(Date.now())),
   pp_id: Yup.string()
     .required()
     .min(4)
     .max(200),
   sep_id: Yup.string()
     .required()
-    .matches(/[0-9]/),
+    .matches(/^\d+$/),
   maiden_name: Yup.string()
     .notRequired()
     .max(100),
@@ -133,7 +139,7 @@ const participantSchema = Yup.object().shape({
 const validateForm = (data, inputSchema) => {
   let errors = []
   let schema
-  if (inputSchema === "visitSchema") {
+  if (inputSchema === "VISIT_SCHEMA") {
     schema = visitSchema
   } else {
     schema = participantSchema
@@ -150,4 +156,11 @@ const validateForm = (data, inputSchema) => {
     })
 }
 
-export { searchSchema, SEPSearchSchema, SEPNeedleSchema, validateForm }
+export {
+  searchSchema,
+  SEPSearchSchema,
+  SEPNeedleSchema,
+  validateForm,
+  VISIT_SCHEMA,
+  PARTICIPANT_SCHEMA,
+}

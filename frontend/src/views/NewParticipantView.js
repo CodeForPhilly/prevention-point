@@ -6,7 +6,7 @@ import WithSubmit from "../components/WithSubmit"
 import handleError from "../error"
 import { rootStoreContext } from "../stores/RootStore"
 import ParticipantForm from "../components/ParticipantForm"
-import { validateForm } from "../validation/index"
+import { validateForm, PARTICIPANT_SCHEMA } from "../validation/index"
 
 const NewParticipantView = observer(() => {
   const rootStore = useContext(rootStoreContext)
@@ -29,7 +29,7 @@ const NewParticipantView = observer(() => {
     try {
       let validationErrors = await validateForm(
         participantInfo,
-        "participantSchema"
+        PARTICIPANT_SCHEMA
       )
       if (validationErrors.length) {
         return validationErrors.map(error =>
