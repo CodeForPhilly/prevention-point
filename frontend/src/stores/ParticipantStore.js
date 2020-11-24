@@ -361,6 +361,7 @@ export class ParticipantStore {
     participant,
     needles_in,
     needles_out,
+    visit_date,
     site,
     service,
   }) {
@@ -370,6 +371,7 @@ export class ParticipantStore {
         urgency: urgency,
         participant: participant,
         service: service,
+        visit_date: visit_date,
       })
       if (!visitOk || !visitData) {
         throw "a placeholder error string!"
@@ -380,6 +382,7 @@ export class ParticipantStore {
         site: site,
         service: service,
         visit: visitData.id,
+        visit_date: visit_date,
       })
       if (!ok || !data) {
         throw "a placeholder error string!"

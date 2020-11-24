@@ -243,6 +243,7 @@ const SepForm = ({ sites, currentSite, setCurrentSite }) => {
           await participantStore.createSEP({
             needles_in: values.needles_in,
             needles_out: values.needles_out,
+            visit_date: values.visit_date,
             site: currentSite,
             participant: participantId,
             urgency: 1,
