@@ -346,13 +346,14 @@ export class ParticipantStore {
   })
   getSites = flow(function*() {
     try {
-      const { ok, data } = yield api.getSites()
+      const { ok, data, status } = yield api.getSites()
       if (!ok || !data) {
-        throw "a placeholder error string!"
+        throw new Error(status)
       }
       this.setSites(data)
     } catch (error) {
-      throw `ParticipantStore:  getSites() Failed  =>  ${error}`
+      const errorMessage = handleError(error.message)
+      this.setSnackbarState(errorMessage)
     }
   })
   createSEP = flow(function*({
@@ -366,7 +367,11 @@ export class ParticipantStore {
     service,
   }) {
     try {
-      const { ok: visitOk, data: visitData } = yield api.createVisits({
+      const {
+        ok: visitOk,
+        data: visitData,
+        status: visitStatus,
+      } = yield api.createVisits({
         program: program,
         urgency: urgency,
         participant: participant,
@@ -374,9 +379,9 @@ export class ParticipantStore {
         visit_date: visit_date,
       })
       if (!visitOk || !visitData) {
-        throw "a placeholder error string!"
+        throw new Error(visitStatus)
       }
-      const { ok, data } = yield api.createSEP({
+      const { ok, data, status } = yield api.createSEP({
         needles_in: needles_in,
         needles_out: needles_out,
         site: site,
@@ -385,10 +390,11 @@ export class ParticipantStore {
         visit_date: visit_date,
       })
       if (!ok || !data) {
-        throw "a placeholder error string!"
+        throw new Error(status)
       }
     } catch (error) {
-      throw `ParticipantStore:  createSEP() Failed  =>  ${error}`
+      const errorMessage = handleError(error.message)
+      this.setSnackbarState(errorMessage)
     }
   })
 }
