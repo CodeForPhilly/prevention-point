@@ -26,6 +26,8 @@ const NewParticipantView = observer(() => {
   }, [])
 
   const handleSubmit = async () => {
+    let dob = new Date(participantInfo.date_of_birth)
+    participantInfo.date_of_birth = dob
     try {
       let validationErrors = await validateForm(
         participantInfo,
