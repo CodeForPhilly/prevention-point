@@ -11,7 +11,7 @@ import Checkbox from "@material-ui/core/Checkbox"
 import PrevPointInput from "./Input/PrevPointInput"
 import PrevPointButton from "./PrevPointButton"
 import PrevPointCopy from "./Typography/PrevPointCopy"
-import { rootStoreContext } from "../stores/RootStore"
+import { RootStoreContext } from "../stores/RootStore"
 import PrevPointHeading from "./Typography/PrevPointHeading"
 import { Formik, Form } from "formik"
 import { searchSchema } from "../validation"
@@ -48,7 +48,7 @@ const useStyles = makeStyles({
 
 const ParticipantSearch = observer(() => {
   const classes = useStyles()
-  const rootStore = useContext(rootStoreContext)
+  const rootStore = useContext(RootStoreContext)
   const participantStore = rootStore.ParticipantStore
   const utilityStore = rootStore.UtilityStore
   const history = useHistory()

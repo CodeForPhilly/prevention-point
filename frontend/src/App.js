@@ -5,13 +5,13 @@ import { observer } from "mobx-react-lite"
 import api from "./api"
 import theme from "./style/theme"
 import RoutesIndex from "./routes"
-import { rootStoreContext } from "./stores/RootStore"
+import { RootStoreContext } from "./stores/RootStore"
 
 import Snackbar from "@material-ui/core/Snackbar"
 import Alert from "@material-ui/lab/Alert"
 
 const App = observer(() => {
-  const rootStore = useContext(rootStoreContext)
+  const rootStore = useContext(RootStoreContext)
   const utilityStore = rootStore.UtilityStore
 
   useEffect(() => {

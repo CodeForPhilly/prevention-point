@@ -8,6 +8,9 @@ import { Button } from "@material-ui/core"
 import { createMount } from "@material-ui/core/test-utils"
 import { BrowserRouter } from "react-router-dom"
 import api from "../src/api"
+import AppBar from "@material-ui/core/AppBar"
+import AllQueues from "../src/views/AllQueues"
+import { RootStoreContext, RootStore } from "../src/stores/RootStore"
 
 jest.mock("../src/api")
 api.getProgram = jest
@@ -29,9 +32,6 @@ api.getPrograms = jest.fn().mockResolvedValue({
 })
 api.getQueue = jest.fn().mockResolvedValue({ ok: true, data: [] })
 api.patchProgram = jest.fn().mockResolvedValue({ ok: true })
-
-import AppBar from "@material-ui/core/AppBar"
-import AllQueues from "../src/views/AllQueues"
 
 configure({ adapter: new Adapter() })
 
@@ -60,11 +60,13 @@ describe("<AllQueues />", () => {
       mount = createMount()
       await act(async () => {
         wrapper = mount(
-          <ThemeProvider theme={theme}>
-            <BrowserRouter>
-              <AllQueues {...initialProps} />
-            </BrowserRouter>
-          </ThemeProvider>
+          <RootStoreContext.Provider value={new RootStore()}>
+            <ThemeProvider theme={theme}>
+              <BrowserRouter>
+                <AllQueues {...initialProps} />
+              </BrowserRouter>
+            </ThemeProvider>
+          </RootStoreContext.Provider>
         )
       })
       wrapper.update()

@@ -7,7 +7,7 @@ import Navbar from "../components/Navbar"
 import Sidebar from "../components/Sidebar"
 import PropTypes from "prop-types"
 import { observer } from "mobx-react-lite"
-import { rootStoreContext } from "../stores/RootStore"
+import { RootStoreContext } from "../stores/RootStore"
 
 const drawerWidth = 300
 
@@ -48,7 +48,8 @@ const MainLayout = observer(props => {
     },
   }))
 
-  const rootStore = useContext(rootStoreContext)
+
+  const rootStore = useContext(RootStoreContext)
   const utilityStore = rootStore.UtilityStore
 
   const classes = useStyles()

@@ -6,7 +6,7 @@ import Breadcrumbs from "@material-ui/core/Breadcrumbs"
 import PersonAddIcon from "@material-ui/icons/PersonAdd"
 import PrevPointCopy from "../components/Typography/PrevPointCopy"
 import PrevPointHeading from "../components/Typography/PrevPointHeading"
-import { rootStoreContext } from "../stores/RootStore"
+import { RootStoreContext } from "../stores/RootStore"
 import PrevPointTable from "../components/ParticipantTableComponent/PrevPointTable"
 import PrevPointPagination from "../components/ParticipantTableComponent/PrevPointPagination"
 import { PARTICIPANT_LIST_TABLE_TITLES } from "../constants"
@@ -61,7 +61,7 @@ const ParticipantList = observer(() => {
   }))
   const classes = useStyles()
 
-  const rootStore = useContext(rootStoreContext)
+  const rootStore = useContext(RootStoreContext)
   const participantStore = rootStore.ParticipantStore
   const utilityStore = rootStore.UtilityStore
   const [participantTablePage, setParticipantTablePage] = useState(0)

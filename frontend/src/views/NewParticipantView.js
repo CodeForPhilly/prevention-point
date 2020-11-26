@@ -4,13 +4,14 @@ import { observer } from "mobx-react-lite"
 import { useHistory } from "react-router-dom"
 import WithSubmit from "../components/WithSubmit"
 import { handleSnackbarError } from "../error"
-import { rootStoreContext } from "../stores/RootStore"
+
+import { RootStoreContext } from "../stores/RootStore"
 import ParticipantForm from "../components/ParticipantForm"
 import { validateForm, PARTICIPANT_SCHEMA } from "../validation/index"
 import { SNACKBAR_SEVERITY } from "../constants"
 
 const NewParticipantView = observer(() => {
-  const rootStore = useContext(rootStoreContext)
+  const rootStore = useContext(RootStoreContext)
   const utilityStore = rootStore.UtilityStore
   const participantStore = rootStore.ParticipantStore
   const participantInfo = toJS(participantStore.participant)

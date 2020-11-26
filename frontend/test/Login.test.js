@@ -3,18 +3,18 @@ import React from "react"
 import { shallow, configure } from "enzyme"
 import { render, fireEvent, cleanup } from "@testing-library/react"
 import Adapter from "enzyme-adapter-react-16"
+import { createMount } from "@material-ui/core/test-utils"
 
 import LoginForm from "../src/views/LoginForm"
 import PrevPointButton from "../src/components/PrevPointButton"
+import { RootStore, RootStoreContext } from "../src/stores/RootStore"
+import { createMuiTheme, ThemeProvider } from "@material-ui/core"
+import { BrowserRouter } from "react-router-dom"
 
 configure({ adapter: new Adapter() })
+const theme = createMuiTheme({})
 
 describe("<LoginForm />", () => {
-  let wrapper
-  let usernameInput
-  let passwordInput
-  let signInButton
-
   // Create initial props that get passed into the component
   const initialProps = {
     location: {
@@ -26,12 +26,26 @@ describe("<LoginForm />", () => {
     },
   }
 
+  let wrapper
+  let usernameInput
+  let passwordInput
+  let signInButton
+
   // Unit testing
   describe("Unit tests", () => {
+    const mount = createMount()
     // what to do before each test
     beforeEach(() => {
       // Render the login form component, pass in props. (Shallow method renders the component without its children, good for unit tests.)
-      wrapper = shallow(<LoginForm {...initialProps} />)
+      wrapper = mount(
+        <RootStoreContext.Provider value={new RootStore()}>
+          <ThemeProvider theme={theme}>
+            <BrowserRouter>
+              <LoginForm {...initialProps} />
+            </BrowserRouter>
+          </ThemeProvider>
+        </RootStoreContext.Provider>
+      )
       usernameInput = wrapper.find("#username")
       passwordInput = wrapper.find("#password")
       signInButton = wrapper.find(PrevPointButton)
@@ -49,11 +63,11 @@ describe("<LoginForm />", () => {
     })
 
     it("should have a username inputs", () => {
-      expect(usernameInput.length).toEqual(1)
+      expect(usernameInput.hostNodes().length).toEqual(1)
     })
 
     it("should have the expected props on the username field", () => {
-      expect(usernameInput.props()).toEqual({
+      expect(usernameInput.first().props()).toEqual({
         id: "username",
         name: "username",
         value: "",
@@ -64,11 +78,11 @@ describe("<LoginForm />", () => {
     })
 
     it("should have a password field", () => {
-      expect(passwordInput.length).toEqual(1)
+      expect(passwordInput.hostNodes().length).toEqual(1)
     })
 
     it("should have the expected props on the password field", () => {
-      expect(passwordInput.props()).toEqual({
+      expect(passwordInput.first().props()).toEqual({
         id: "password",
         name: "password",
         value: "",
@@ -83,7 +97,7 @@ describe("<LoginForm />", () => {
     })
 
     it("should have the expected props on the button", () => {
-      expect(signInButton.props()).toEqual({
+      expect(signInButton.first().props()).toEqual({
         size: "small",
         type: "submit",
         disabled: false,
@@ -98,12 +112,17 @@ describe("<LoginForm />", () => {
   describe("Integrations tests", () => {
     beforeEach(() => {
       // Render the login form component, pass in props. (render method renders the component with its children, good for integrations tests, uses react-test-library.)
-      const { getByLabelText, getByText } = render(
-        <LoginForm {...initialProps} />
+      const { getByLabelText } = render(
+        <RootStoreContext.Provider value={new RootStore()}>
+          <ThemeProvider theme={theme}>
+            <BrowserRouter>
+              <LoginForm {...initialProps} />
+            </BrowserRouter>
+          </ThemeProvider>
+        </RootStoreContext.Provider>
       )
       usernameInput = getByLabelText(/Username/i)
       passwordInput = getByLabelText(/Password/i)
-      signInButton = getByText("Sign In")
     })
 
     afterEach(cleanup)

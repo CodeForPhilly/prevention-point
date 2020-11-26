@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect, useRef } from "react"
-import { rootStoreContext } from "../stores/RootStore"
+import { RootStoreContext } from "../stores/RootStore"
 import PropTypes from "prop-types"
 import { useHistory } from "react-router-dom"
 import { makeStyles } from "@material-ui/core/styles"
@@ -50,7 +50,7 @@ const useStyles = makeStyles(theme => ({
 
 const SepForm = ({ sites, currentSite, setCurrentSite }) => {
   const classes = useStyles()
-  const rootStore = useContext(rootStoreContext)
+  const rootStore = useContext(RootStoreContext)
   const participantStore = rootStore.ParticipantStore
   const utilityStore = rootStore.UtilityStore
   const [participantId, setParticipantId] = useState()

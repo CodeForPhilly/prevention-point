@@ -10,10 +10,10 @@ import FormControl from "@material-ui/core/FormControl"
 import PrevPointInput from "../components/Input/PrevPointInput"
 import PrevPointButton from "../components/PrevPointButton"
 import PrevPointCopy from "../components/Typography/PrevPointCopy"
-import { rootStoreContext } from "../stores/RootStore"
+import { RootStoreContext } from "../stores/RootStore"
 
 const LoginForm = observer(({ location }) => {
-  const rootStore = useContext(rootStoreContext)
+  const rootStore = useContext(RootStoreContext)
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const { from } = location.state || { from: { pathname: "/" } }
