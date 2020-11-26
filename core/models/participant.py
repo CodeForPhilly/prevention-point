@@ -33,7 +33,7 @@ class Participant(models.Model):
     is_insured = models.BooleanField(default=False)
     insurer = models.ForeignKey(Insurer, on_delete=models.CASCADE, null=True)
     maiden_name = models.CharField(null=True, max_length=100, verbose_name="Mother's Maiden Name")
-    sep_id = models.CharField(null=True, unique=True, max_length=100)
+    sep_id = models.IntegerField(null=True, unique=True)
 
     def __str__(self):
         return '%s %s' % (self.first_name, self.last_name)
