@@ -5,10 +5,12 @@ import { useHistory, Link } from "react-router-dom"
 import { makeStyles } from "@material-ui/styles"
 import Grid from "@material-ui/core/Grid"
 import Container from "@material-ui/core/Container"
+import handleError from "../error"
 import PrevPointButton from "../components/PrevPointButton"
 import { rootStoreContext } from "../stores/RootStore"
 import ParticipantForm from "../components/ParticipantForm"
 import VisitRouter from "../components/VisitRouter"
+import { validateForm, PARTICIPANT_SCHEMA } from "../validation/index"
 
 const useStyles = makeStyles(() => ({
   ButtonWrapper: {
@@ -58,10 +60,27 @@ const ExistingParticipantView = observer(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const handleUpdateParticipant = e => {
+  const handleUpdateParticipant = async e => {
     e.preventDefault()
-    // TODO: validate
-    participantStore.updateParticipant()
+    let dob = new Date(existingParticipant.date_of_birth)
+    existingParticipant.date_of_birth = dob
+    try {
+      let validationErrors = await validateForm(
+        existingParticipant,
+        PARTICIPANT_SCHEMA
+      )
+      if (validationErrors.length) {
+        return validationErrors.map(error =>
+          participantStore.setSnackbarState(
+            `Theres an error in the ${error.name} field.`
+          )
+        )
+      } else {
+        participantStore.updateParticipant()
+      }
+    } catch (err) {
+      participantStore.setSnackbarState(handleError(err))
+    }
   }
 
   const handleCancelEditParticipant = () => {

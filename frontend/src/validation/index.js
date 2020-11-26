@@ -24,58 +24,6 @@ const searchSchema = Yup.object().shape(
   ]
 )
 
-// Options for Visit Schema:
-// Strict doesn't coerce any values
-// Abort Early bails out at the first sign of error
-// Strip unknown removes unknown values, set to false because we don't expect any unknown values
-const options = {
-  strict: true,
-  abortEarly: false,
-  stripUnknown: false,
-}
-
-const visitSchema = Yup.object().shape({
-  id: Yup.number()
-    .defined()
-    .positive()
-    .integer(),
-  participant: Yup.number().when("id", {
-    is: null,
-    then: Yup.number().defined(),
-    otherwise: Yup.number()
-      .required()
-      .positive()
-      .integer(),
-  }),
-  program: Yup.number()
-    .required()
-    .positive()
-    .integer(),
-  service: Yup.number()
-    .required()
-    .positive()
-    .integer(),
-  notes: Yup.string().notRequired(),
-  urgency: Yup.number()
-    .required()
-    .positive()
-    .integer(),
-})
-
-const validateVisitForm = data => {
-  let errors = []
-  return visitSchema
-    .validate(data, options)
-    .then(() => [])
-    .catch(err => {
-      err.inner.map(item => {
-        let obj = { name: item.path, message: item.message }
-        errors.push(obj)
-      })
-      return errors
-    })
-}
-
 const SEPSearchErrorMessage = "Please enter a value in at least one field"
 const SEPSearchSiteErrorMessage = "Please select a site"
 const SEPSearchSchema = Yup.object().shape(
@@ -117,4 +65,102 @@ const SEPNeedleSchema = Yup.object().shape({
   visit_date: Yup.string().required(SEPNeedleErrorMessage),
 })
 
-export { searchSchema, SEPSearchSchema, SEPNeedleSchema, validateVisitForm }
+// Options for Visit Schema:
+// Strict doesn't coerce any values
+// Abort Early bails out at the first sign of error
+// Strip unknown removes unknown values, set to false because we don't expect any unknown values
+const options = {
+  strict: true,
+  abortEarly: false,
+  stripUnknown: false,
+}
+
+const VISIT_SCHEMA = "VISIT_SCHEMA"
+const PARTICIPANT_SCHEMA = "PARTICIPANT_SCHEMA"
+
+const visitSchema = Yup.object().shape({
+  id: Yup.number()
+    .defined()
+    .positive()
+    .integer(),
+  participant: Yup.number().when("id", {
+    is: null,
+    then: Yup.number().defined(),
+    otherwise: Yup.number()
+      .required()
+      .positive()
+      .integer(),
+  }),
+  program: Yup.number()
+    .required()
+    .positive()
+    .integer(),
+  service: Yup.number()
+    .required()
+    .positive()
+    .integer(),
+  notes: Yup.string().notRequired(),
+  urgency: Yup.number()
+    .required()
+    .positive()
+    .integer(),
+})
+
+// eslint-disable-next-line no-unused-vars
+const participantSchema = Yup.object().shape({
+  first_name: Yup.string()
+    .required()
+    .max(50),
+  last_name: Yup.string()
+    .required()
+    .max(100),
+  date_of_birth: Yup.date()
+    .required()
+    .min(new Date("1899-12-31"))
+    .max(new Date(Date.now())),
+  pp_id: Yup.string()
+    .required()
+    .min(4)
+    .max(200),
+  sep_id: Yup.string()
+    .required()
+    .matches(/^\d+$/),
+  maiden_name: Yup.string()
+    .notRequired()
+    .max(100),
+  is_insured: Yup.boolean().required(),
+  insurer: Yup.string().when("is_insured", {
+    is: false,
+    then: Yup.string().notRequired(),
+    otherwise: Yup.number().required(),
+  }),
+})
+
+const validateForm = (data, inputSchema) => {
+  let errors = []
+  let schema
+  if (inputSchema === "VISIT_SCHEMA") {
+    schema = visitSchema
+  } else {
+    schema = participantSchema
+  }
+  return schema
+    .validate(data, options)
+    .then(() => [])
+    .catch(err => {
+      err.inner.map(item => {
+        let obj = { name: item.path, message: item.message }
+        errors.push(obj)
+      })
+      return errors
+    })
+}
+
+export {
+  searchSchema,
+  SEPSearchSchema,
+  SEPNeedleSchema,
+  validateForm,
+  VISIT_SCHEMA,
+  PARTICIPANT_SCHEMA,
+}
