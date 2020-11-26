@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react"
 import { useHistory } from "react-router-dom"
-import { rootStoreContext } from "../stores/RootStore"
+import { RootStoreContext } from "../stores/RootStore"
 import { observer } from "mobx-react-lite"
 import { makeStyles } from "@material-ui/core/styles"
 import PreventionPointLogo from "../../public/img/logo.svg"
@@ -59,7 +59,7 @@ const NavHeader = observer(({ drawerOpen, handleDrawerOpen, drawerWidth }) => {
     },
   }))
 
-  const rootStore = useContext(rootStoreContext)
+  const rootStore = useContext(RootStoreContext)
   const history = useHistory()
   const [anchorEl, setAnchorEl] = useState(null)
   const isMenuOpen = Boolean(anchorEl)

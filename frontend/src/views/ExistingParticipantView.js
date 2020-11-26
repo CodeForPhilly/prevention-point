@@ -6,7 +6,7 @@ import { makeStyles } from "@material-ui/styles"
 import Grid from "@material-ui/core/Grid"
 import Container from "@material-ui/core/Container"
 import PrevPointButton from "../components/PrevPointButton"
-import { rootStoreContext } from "../stores/RootStore"
+import { RootStoreContext } from "../stores/RootStore"
 import ParticipantForm from "../components/ParticipantForm"
 import VisitRouter from "../components/VisitRouter"
 
@@ -33,7 +33,7 @@ const useStyles = makeStyles(() => ({
 
 const ExistingParticipantView = observer(() => {
   const classes = useStyles()
-  const rootStore = useContext(rootStoreContext)
+  const rootStore = useContext(RootStoreContext)
   // particiant store derived from root store
   const participantStore = rootStore.ParticipantStore
   // set up history for routing pushes

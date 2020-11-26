@@ -3,11 +3,11 @@ import { autorun, toJS } from "mobx"
 import { observer } from "mobx-react-lite"
 import { useHistory } from "react-router-dom"
 import WithSubmit from "../components/WithSubmit"
-import { rootStoreContext } from "../stores/RootStore"
+import { RootStoreContext } from "../stores/RootStore"
 import ParticipantForm from "../components/ParticipantForm"
 
 const NewParticipantView = observer(() => {
-  const rootStore = useContext(rootStoreContext)
+  const rootStore = useContext(RootStoreContext)
   const participantStore = rootStore.ParticipantStore
   const participantInfo = toJS(participantStore.participant)
   const insurers = toJS(participantStore.insurers)

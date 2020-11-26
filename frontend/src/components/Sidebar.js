@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles"
 import ParticipantSearch from "../components/ParticipantSearch"
 import SepForm from "../components/SepForm"
 import { SEARCH, SEP } from "../constants"
-import { rootStoreContext } from "../stores/RootStore"
+import { RootStoreContext } from "../stores/RootStore"
 import Select from "@material-ui/core/Select"
 import MenuItem from "@material-ui/core/MenuItem"
 import IconButton from "@material-ui/core/IconButton"
@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
 
 const Sidebar = observer(({ handleDrawerClose }) => {
   const classes = useStyles()
-  const rootStore = useContext(rootStoreContext)
+  const rootStore = useContext(RootStoreContext)
   const participantStore = rootStore.ParticipantStore
 
   return (

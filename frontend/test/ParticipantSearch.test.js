@@ -6,6 +6,7 @@ import Adapter from "enzyme-adapter-react-16"
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles"
 
 import ParticipantSearch from "../src/components/ParticipantSearch"
+import { RootStoreContext, RootStore } from "../src/stores/RootStore"
 
 configure({ adapter: new Adapter() })
 
@@ -18,12 +19,13 @@ describe("<ParticipantSearch />", () => {
   const initialProps = {}
 
   beforeAll(() => {
-    // This is Mocha; in Jest, use beforeAll
     mount = createMount()
     wrapper = mount(
-      <ThemeProvider theme={theme}>
-        <ParticipantSearch {...initialProps} />
-      </ThemeProvider>
+      <RootStoreContext.Provider value={new RootStore()}>
+        <ThemeProvider theme={theme}>
+          <ParticipantSearch {...initialProps} />
+        </ThemeProvider>
+      </RootStoreContext.Provider>
     )
   })
 
@@ -33,7 +35,11 @@ describe("<ParticipantSearch />", () => {
   })
 
   it("should work", () => {
-    wrapper = mount(<ParticipantSearch />)
+    wrapper = mount(
+      <RootStoreContext.Provider value={new RootStore()}>
+        <ParticipantSearch />
+      </RootStoreContext.Provider>
+    )
   })
 
   it("should match the snapshot", () => {

@@ -10,4 +10,4 @@ export class RootStore {
   QueueStore = new QueueStore(this)
 }
 
-export const rootStoreContext = createContext(new RootStore())
+export const RootStoreContext = createContext()
