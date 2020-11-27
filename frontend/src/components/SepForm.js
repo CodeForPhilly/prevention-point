@@ -239,13 +239,14 @@ const SepForm = ({ sites, currentSite, setCurrentSite }) => {
         initialValues={{
           needles_in: "",
           needles_out: "",
-          visit_date: "",
+          visit_date: new Date().toISOString().substring(0, 10),
         }}
         validationSchema={SEPNeedleSchema}
         onSubmit={async (values, { setSubmitting }) => {
           await participantStore.createSEP({
             needles_in: values.needles_in,
             needles_out: values.needles_out,
+            visit_date: values.visit_date,
             site: currentSite,
             participant: participantId,
             urgency: 1,
