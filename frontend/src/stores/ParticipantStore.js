@@ -28,8 +28,6 @@ export class ParticipantStore {
   @observable isEditing = false
   // participant search
   @observable sidebarView = SEARCH
-  // snackbar notifications
-  @observable snackbarState = { message: "", open: false }
   @observable isDrawerOpen = false
   @observable sites = []
   @observable currentSite = ""
@@ -87,8 +85,11 @@ export class ParticipantStore {
   // Full Participant and Visit Assignment Actions
   @action setParticipant = data => {
     const { sep_id } = data
-    // eslint-disable-next-line camelcase
-    this.participant = { ...data, sep_id: sep_id ? sep_id.toString() : "" }
+    this.participant = {
+      ...data,
+      // eslint-disable-next-line camelcase
+      sep_id: sep_id ? sep_id.toString() : "",
+    }
   }
   @action setVisit = data => {
     this.visit = data
@@ -161,11 +162,6 @@ export class ParticipantStore {
   @action setSidebarView = sidebarView => {
     this.sidebarView = sidebarView
   }
-  @action setSnackbarState = (message, options = { open: true }) => {
-    // we setup otions like this to maybe add more later
-    this.snackbarState.message = message
-    this.snackbarState.open = options.open
-  }
 
   @action setSites = data => {
     this.sites = data
@@ -191,7 +187,7 @@ export class ParticipantStore {
       this.setInsurers(data)
     } catch (error) {
       const errorMessage = handleError(error.message)
-      this.setSnackbarState(errorMessage)
+      this.rootStore.NotificationStore.setSnackbarState(errorMessage)
     }
   })
   getPrograms = flow(function*() {
@@ -216,7 +212,7 @@ export class ParticipantStore {
       }
     } catch (error) {
       const errorMessage = handleError(error.message)
-      this.setSnackbarState(errorMessage)
+      this.rootStore.NotificationStore.setSnackbarState(errorMessage)
     }
   })
   getParticipant = flow(function*() {
@@ -230,7 +226,7 @@ export class ParticipantStore {
       this.setParticipant(data)
     } catch (error) {
       const errorMessage = handleError(error.message)
-      this.setSnackbarState(errorMessage)
+      this.rootStore.NotificationStore.setSnackbarState(errorMessage)
     }
   })
   // called on  =>  ParticipantList.js
@@ -244,7 +240,7 @@ export class ParticipantStore {
       this.setParticipantsList(data)
     } catch (error) {
       const errorMessage = handleError(error.message)
-      this.setSnackbarState(errorMessage)
+      this.rootStore.NotificationStore.setSnackbarState(errorMessage)
     }
   })
   createParticipant = flow(function*() {
@@ -262,7 +258,7 @@ export class ParticipantStore {
       this.setRouteToQueue(true)
     } catch (error) {
       const errorMessage = handleError(error.message)
-      this.setSnackbarState(errorMessage)
+      this.rootStore.NotificationStore.setSnackbarState(errorMessage)
     }
   })
   createVisit = flow(function*() {
@@ -276,7 +272,7 @@ export class ParticipantStore {
       this.createNewFrontEndDeskEvents()
     } catch (error) {
       const errorMessage = handleError(error.message)
-      this.setSnackbarState(errorMessage)
+      this.rootStore.NotificationStore.setSnackbarState(errorMessage)
     }
   })
   createNewFrontEndDeskEvents = flow(function*() {
@@ -294,7 +290,7 @@ export class ParticipantStore {
       this.setRouteToQueue(true)
     } catch (error) {
       const errorMessage = handleError(error.message)
-      this.setSnackbarState(errorMessage)
+      this.rootStore.NotificationStore.setSnackbarState(errorMessage)
     }
   })
   getVisits = flow(function*() {
@@ -306,7 +302,7 @@ export class ParticipantStore {
       this.setVisitsList(data)
     } catch (error) {
       const errorMessage = handleError(error.message)
-      this.setSnackbarState(errorMessage)
+      this.rootStore.NotificationStore.setSnackbarState(errorMessage)
     }
   })
   // called on  =>  ParticipantInfo.js
@@ -324,7 +320,7 @@ export class ParticipantStore {
       this.setIsEditing(false)
     } catch (error) {
       const errorMessage = handleError(error.message)
-      this.setSnackbarState(errorMessage)
+      this.rootStore.NotificationStore.setSnackbarState(errorMessage)
     }
   })
   // called on  =>  ParticipantInfo.js
@@ -343,14 +339,16 @@ export class ParticipantStore {
       this.setRouteToQueue(true)
     } catch (error) {
       const errorMessage = handleError(error.message)
-      this.setSnackbarState(errorMessage)
+      this.rootStore.NotificationStore.setSnackbarState(errorMessage)
     }
   })
   getSites = flow(function*() {
     try {
       const { ok, data } = yield api.getSites()
       if (!ok || !data) {
-        throw "a placeholder error string!"
+        //throw "a placeholder error string!"
+        const errorMessage = handleError("Error Getting Sites")
+        this.rootStore.NotificationStore.setSnackbarState(errorMessage)
       }
       this.setSites(data)
     } catch (error) {

@@ -27,6 +27,7 @@ const VisitRouter = observer(() => {
 
   const rootStore = useContext(rootStoreContext)
   const participantStore = rootStore.ParticipantStore
+  const notificationStore = rootStore.NotificationStore
   const existingVisit = toJS(participantStore.visit)
   const programList = toJS(participantStore.programs)
   const serviceList = toJS(participantStore.services)
@@ -48,7 +49,7 @@ const VisitRouter = observer(() => {
       let validationErrors = await validateForm(existingVisit, VISIT_SCHEMA)
       if (validationErrors.length) {
         return validationErrors.map(error =>
-          participantStore.setSnackbarState(
+          notificationStore.setSnackbarState(
             `Theres an error in the ${error.name} field.`
           )
         )
@@ -59,7 +60,7 @@ const VisitRouter = observer(() => {
         participantStore.createVisit()
       }
     } catch (err) {
-      participantStore.setSnackbarState(handleError(err))
+      notificationStore.setSnackbarState(handleError(err))
     }
     // after all api calls for submit have been completed route to QueueTable
     autorun(() => {

@@ -10,6 +10,7 @@ import { validateForm, PARTICIPANT_SCHEMA } from "../validation/index"
 
 const NewParticipantView = observer(() => {
   const rootStore = useContext(rootStoreContext)
+  const notificationStore = rootStore.NotificationStore
   const participantStore = rootStore.ParticipantStore
   const participantInfo = toJS(participantStore.participant)
   const insurers = toJS(participantStore.insurers)
@@ -35,7 +36,7 @@ const NewParticipantView = observer(() => {
       )
       if (validationErrors.length) {
         return validationErrors.map(error =>
-          participantStore.setSnackbarState(
+          notificationStore.setSnackbarState(
             `Theres an error in the ${error.name} field.`
           )
         )
@@ -43,7 +44,7 @@ const NewParticipantView = observer(() => {
         participantStore.createParticipant()
       }
     } catch (err) {
-      participantStore.setSnackbarState(handleError(err))
+      notificationStore.setSnackbarState(handleError(err))
     }
     // after all api calls for submit have been completed route to QueueTable
     autorun(() => {
