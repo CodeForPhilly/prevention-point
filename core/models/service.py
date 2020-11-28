@@ -8,3 +8,6 @@ class Service(models.Model):
     program = models.ForeignKey(
         Program, related_name="services", on_delete=models.CASCADE
     ) #related name replaces "service_set" fro backwards nested relationships
+
+    def __str__(self):
+        return '%s: %s' % (self.program, self.name)
