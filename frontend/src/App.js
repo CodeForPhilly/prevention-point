@@ -8,7 +8,7 @@ import RoutesIndex from "./routes"
 import { rootStoreContext } from "./stores/RootStore"
 
 import Snackbar from "@material-ui/core/Snackbar"
-import SnackbarContent from "@material-ui/core/SnackbarContent"
+import Alert from "@material-ui/lab/Alert"
 
 const App = observer(() => {
   const rootStore = useContext(rootStoreContext)
@@ -44,7 +44,13 @@ const App = observer(() => {
         autoHideDuration={6000}
         onClose={() => participantStore.setSnackbarState("", { open: false })}
       >
-        <SnackbarContent message={participantStore.snackbarState.message} />
+        <Alert
+          variant="filled"
+          severity={participantStore.snackbarState.severity}
+          onClose={() => participantStore.setSnackbarState("", { open: false })}
+        >
+          {participantStore.snackbarState.message}
+        </Alert>
       </Snackbar>
     </MuiThemeProvider>
   )

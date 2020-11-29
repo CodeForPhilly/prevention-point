@@ -2,7 +2,7 @@ import { observable, action, flow, toJS, computed } from "mobx"
 import { createContext } from "react"
 import { format } from "date-fns"
 import api from "../api"
-import { SEARCH } from "../constants"
+import { SEARCH, SNACKBAR_SEVERITY } from "../constants"
 import handleError from "../error"
 
 export class ParticipantStore {
@@ -29,7 +29,11 @@ export class ParticipantStore {
   // participant search
   @observable sidebarView = SEARCH
   // snackbar notifications
-  @observable snackbarState = { message: "", open: false }
+  @observable snackbarState = {
+    message: "",
+    severity: SNACKBAR_SEVERITY.INFO,
+    open: false,
+  }
   @observable isDrawerOpen = false
   @observable sites = []
   @observable currentSite = ""
