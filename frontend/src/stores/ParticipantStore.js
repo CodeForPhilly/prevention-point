@@ -3,7 +3,7 @@ import { createContext } from "react"
 import { format } from "date-fns"
 import api from "../api"
 import { SEARCH, SNACKBAR_SEVERITY } from "../constants"
-import handleError from "../error"
+import { handleSnackbarError } from "../error"
 
 export class ParticipantStore {
   constructor(rootStore) {
@@ -165,10 +165,17 @@ export class ParticipantStore {
   @action setSidebarView = sidebarView => {
     this.sidebarView = sidebarView
   }
-  @action setSnackbarState = (message, options = { open: true }) => {
-    // we setup otions like this to maybe add more later
-    this.snackbarState.message = message
-    this.snackbarState.open = options.open
+  @action setSnackbarState = ({
+    message = "",
+    severity = SNACKBAR_SEVERITY.INFO,
+    open = true,
+  }) => {
+    // prevent visual change to severity or message when closing the snackbar
+    if (open) {
+      this.snackbarState.severity = severity
+      this.snackbarState.message = message
+    }
+    this.snackbarState.open = open
   }
 
   @action setSites = data => {
@@ -194,8 +201,11 @@ export class ParticipantStore {
       }
       this.setInsurers(data)
     } catch (error) {
-      const errorMessage = handleError(error.message)
-      this.setSnackbarState(errorMessage)
+      const snackbarError = handleSnackbarError(error.message)
+      this.setSnackbarState({
+        message: snackbarError.message,
+        severity: snackbarError.severity,
+      })
     }
   })
   getPrograms = flow(function*() {
@@ -219,8 +229,11 @@ export class ParticipantStore {
         this.setServiceList(preloadedServices.services)
       }
     } catch (error) {
-      const errorMessage = handleError(error.message)
-      this.setSnackbarState(errorMessage)
+      const snackbarError = handleSnackbarError(error.message)
+      this.setSnackbarState({
+        message: snackbarError.message,
+        severity: snackbarError.severity,
+      })
     }
   })
   getParticipant = flow(function*() {
@@ -233,8 +246,11 @@ export class ParticipantStore {
       }
       this.setParticipant(data)
     } catch (error) {
-      const errorMessage = handleError(error.message)
-      this.setSnackbarState(errorMessage)
+      const snackbarError = handleSnackbarError(error.message)
+      this.setSnackbarState({
+        message: snackbarError.message,
+        severity: snackbarError.severity,
+      })
     }
   })
   // called on  =>  ParticipantList.js
@@ -247,8 +263,11 @@ export class ParticipantStore {
       }
       this.setParticipantsList(data)
     } catch (error) {
-      const errorMessage = handleError(error.message)
-      this.setSnackbarState(errorMessage)
+      const snackbarError = handleSnackbarError(error.message)
+      this.setSnackbarState({
+        message: snackbarError.message,
+        severity: snackbarError.severity,
+      })
     }
   })
   createParticipant = flow(function*() {
@@ -265,8 +284,11 @@ export class ParticipantStore {
       this.setParticipant(data)
       this.setRouteToQueue(true)
     } catch (error) {
-      const errorMessage = handleError(error.message)
-      this.setSnackbarState(errorMessage)
+      const snackbarError = handleSnackbarError(error.message)
+      this.setSnackbarState({
+        message: snackbarError.message,
+        severity: snackbarError.severity,
+      })
     }
   })
   createVisit = flow(function*() {
@@ -279,8 +301,11 @@ export class ParticipantStore {
       this.setVisit(data)
       this.createNewFrontEndDeskEvents()
     } catch (error) {
-      const errorMessage = handleError(error.message)
-      this.setSnackbarState(errorMessage)
+      const snackbarError = handleSnackbarError(error.message)
+      this.setSnackbarState({
+        message: snackbarError.message,
+        severity: snackbarError.severity,
+      })
     }
   })
   createNewFrontEndDeskEvents = flow(function*() {
@@ -297,8 +322,11 @@ export class ParticipantStore {
       }
       this.setRouteToQueue(true)
     } catch (error) {
-      const errorMessage = handleError(error.message)
-      this.setSnackbarState(errorMessage)
+      const snackbarError = handleSnackbarError(error.message)
+      this.setSnackbarState({
+        message: snackbarError.message,
+        severity: snackbarError.severity,
+      })
     }
   })
   getVisits = flow(function*() {
@@ -309,8 +337,11 @@ export class ParticipantStore {
       }
       this.setVisitsList(data)
     } catch (error) {
-      const errorMessage = handleError(error.message)
-      this.setSnackbarState(errorMessage)
+      const snackbarError = handleSnackbarError(error.message)
+      this.setSnackbarState({
+        message: snackbarError.message,
+        severity: snackbarError.severity,
+      })
     }
   })
   // called on  =>  ParticipantInfo.js
@@ -327,8 +358,11 @@ export class ParticipantStore {
       this.setParticipant(data)
       this.setIsEditing(false)
     } catch (error) {
-      const errorMessage = handleError(error.message)
-      this.setSnackbarState(errorMessage)
+      const snackbarError = handleSnackbarError(error.message)
+      this.setSnackbarState({
+        message: snackbarError.message,
+        severity: snackbarError.severity,
+      })
     }
   })
   // called on  =>  ParticipantInfo.js
@@ -346,8 +380,11 @@ export class ParticipantStore {
       }
       this.setRouteToQueue(true)
     } catch (error) {
-      const errorMessage = handleError(error.message)
-      this.setSnackbarState(errorMessage)
+      const snackbarError = handleSnackbarError(error.message)
+      this.setSnackbarState({
+        message: snackbarError.message,
+        severity: snackbarError.severity,
+      })
     }
   })
   getSites = flow(function*() {
@@ -358,8 +395,11 @@ export class ParticipantStore {
       }
       this.setSites(data)
     } catch (error) {
-      const errorMessage = handleError(error.message)
-      this.setSnackbarState(errorMessage)
+      const snackbarError = handleSnackbarError(error.message)
+      this.setSnackbarState({
+        message: snackbarError.message,
+        severity: snackbarError.severity,
+      })
     }
   })
   createSEP = flow(function*({
@@ -399,8 +439,11 @@ export class ParticipantStore {
         throw new Error(status)
       }
     } catch (error) {
-      const errorMessage = handleError(error.message)
-      this.setSnackbarState(errorMessage)
+      const snackbarError = handleSnackbarError(error.message)
+      this.setSnackbarState({
+        message: snackbarError.message,
+        severity: snackbarError.severity,
+      })
     }
   })
 }

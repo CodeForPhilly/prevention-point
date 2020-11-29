@@ -14,7 +14,7 @@ import React, { useContext, useEffect } from "react"
 import { autorun, toJS } from "mobx"
 import { observer } from "mobx-react-lite"
 import { Route, Switch, useHistory } from "react-router-dom"
-import handleError from "../../error"
+import { handleSnackbarError } from "../../error"
 import VisitForm from "./VisitForm"
 import VisitData from "./VisitData"
 import VisitTable from "./VisitTable"
@@ -59,7 +59,11 @@ const VisitRouter = observer(() => {
         participantStore.createVisit()
       }
     } catch (err) {
-      participantStore.setSnackbarState(handleError(err))
+      const snackbarError = handleSnackbarError(err)
+      participantStore.setSnackbarState({
+        message: snackbarError.message,
+        severity: snackbarError.severity,
+      })
     }
     // after all api calls for submit have been completed route to QueueTable
     autorun(() => {

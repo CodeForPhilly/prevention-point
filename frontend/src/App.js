@@ -42,12 +42,12 @@ const App = observer(() => {
         }}
         open={participantStore.snackbarState.open}
         autoHideDuration={6000}
-        onClose={() => participantStore.setSnackbarState("", { open: false })}
+        onClose={() => participantStore.setSnackbarState({ open: false })}
       >
         <Alert
           variant="filled"
           severity={participantStore.snackbarState.severity}
-          onClose={() => participantStore.setSnackbarState("", { open: false })}
+          onClose={() => participantStore.setSnackbarState({ open: false })}
         >
           {participantStore.snackbarState.message}
         </Alert>

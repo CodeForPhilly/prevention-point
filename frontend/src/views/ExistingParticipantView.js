@@ -5,12 +5,13 @@ import { useHistory, Link } from "react-router-dom"
 import { makeStyles } from "@material-ui/styles"
 import Grid from "@material-ui/core/Grid"
 import Container from "@material-ui/core/Container"
-import handleError from "../error"
+import { handleSnackbarError } from "../error"
 import PrevPointButton from "../components/PrevPointButton"
 import { rootStoreContext } from "../stores/RootStore"
 import ParticipantForm from "../components/ParticipantForm"
 import VisitRouter from "../components/VisitRouter"
 import { validateForm, PARTICIPANT_SCHEMA } from "../validation/index"
+import { SNACKBAR_SEVERITY } from "../constants"
 
 const useStyles = makeStyles(() => ({
   ButtonWrapper: {
@@ -71,15 +72,20 @@ const ExistingParticipantView = observer(() => {
       )
       if (validationErrors.length) {
         return validationErrors.map(error =>
-          participantStore.setSnackbarState(
-            `Theres an error in the ${error.name} field.`
-          )
+          participantStore.setSnackbarState({
+            message: `Theres an error in the ${error.name} field.`,
+            severity: SNACKBAR_SEVERITY.ERROR,
+          })
         )
       } else {
         participantStore.updateParticipant()
       }
     } catch (err) {
-      participantStore.setSnackbarState(handleError(err))
+      const snackbarError = handleSnackbarError(err)
+      participantStore.setSnackbarState({
+        message: snackbarError.message,
+        severity: snackbarError.severity,
+      })
     }
   }
 
