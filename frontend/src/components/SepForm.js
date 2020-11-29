@@ -15,6 +15,7 @@ import PrevPointHeading from "./Typography/PrevPointHeading"
 import PrevPointCopy from "./Typography/PrevPointCopy"
 import { Formik, Form } from "formik"
 import { SEPSearchSchema, SEPNeedleSchema } from "../validation"
+import { SNACKBAR_SEVERITY } from "../constants"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -243,7 +244,7 @@ const SepForm = ({ sites, currentSite, setCurrentSite }) => {
         }}
         validationSchema={SEPNeedleSchema}
         onSubmit={async (values, { setSubmitting }) => {
-          await participantStore.createSEP({
+          const success = await participantStore.createSEP({
             needles_in: values.needles_in,
             needles_out: values.needles_out,
             visit_date: values.visit_date,
@@ -254,6 +255,13 @@ const SepForm = ({ sites, currentSite, setCurrentSite }) => {
             service: 44,
           })
           setSubmitting(false)
+          if (success) {
+            handleClear()
+            participantStore.setSnackbarState({
+              message: "SEP data submitted",
+              severity: SNACKBAR_SEVERITY.SUCCESS,
+            })
+          }
         }}
       >
         {({ errors, touched, values, handleChange, isSubmitting }) => (

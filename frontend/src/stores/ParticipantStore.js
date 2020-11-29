@@ -412,6 +412,7 @@ export class ParticipantStore {
     site,
     service,
   }) {
+    let success = false
     try {
       const {
         ok: visitOk,
@@ -437,6 +438,8 @@ export class ParticipantStore {
       })
       if (!ok || !data) {
         throw new Error(status)
+      } else {
+        success = true
       }
     } catch (error) {
       const snackbarError = handleSnackbarError(error.message)
@@ -445,6 +448,7 @@ export class ParticipantStore {
         severity: snackbarError.severity,
       })
     }
+    return success
   })
 }
 
