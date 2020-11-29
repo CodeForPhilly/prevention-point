@@ -12,7 +12,7 @@ import SnackbarContent from "@material-ui/core/SnackbarContent"
 
 const App = observer(() => {
   const rootStore = useContext(rootStoreContext)
-  const notificationStore = rootStore.NotificationStore
+  const utilityStore = rootStore.UtilityStore
 
   useEffect(() => {
     async function stillAuthenticated() {
@@ -40,11 +40,11 @@ const App = observer(() => {
           vertical: "bottom",
           horizontal: "right",
         }}
-        open={notificationStore.snackbarState.open}
+        open={utilityStore.snackbarState.open}
         autoHideDuration={6000}
-        onClose={() => notificationStore.setSnackbarState("", { open: false })}
+        onClose={() => utilityStore.setSnackbarState("", { open: false })}
       >
-        <SnackbarContent message={notificationStore.snackbarState.message} />
+        <SnackbarContent message={utilityStore.snackbarState.message} />
       </Snackbar>
     </MuiThemeProvider>
   )
