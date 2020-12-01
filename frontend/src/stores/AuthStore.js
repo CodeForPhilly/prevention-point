@@ -1,7 +1,7 @@
 import { observable, action, flow } from "mobx"
 import { createContext } from "react"
 import api from "../api"
-import handleError from "../error"
+import { handleError } from "../error"
 
 export class AuthStore {
   constructor(rootStore) {

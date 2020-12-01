@@ -29,7 +29,7 @@ const standardizedErrors = [
   },
 ]
 
-function handleError(statusCode) {
+export function handleError(statusCode) {
   // Remove || {} when pushed live
   const standardizedError = standardizedErrors.find(
     error => error.status === parseInt(statusCode)
@@ -55,5 +55,3 @@ export function handleSnackbarError(statusCode) {
     severity: standardizedError.severity,
   }
 }
-
-export default handleError
