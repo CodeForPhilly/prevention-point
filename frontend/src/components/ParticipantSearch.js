@@ -50,6 +50,7 @@ const ParticipantSearch = observer(() => {
   const classes = useStyles()
   const rootStore = useContext(rootStoreContext)
   const participantStore = rootStore.ParticipantStore
+  const utilityStore = rootStore.UtilityStore
   const history = useHistory()
   const [toggleForm, setToggleForm] = useState(false)
 
@@ -74,7 +75,7 @@ const ParticipantSearch = observer(() => {
           history.push("/participants")
           setSubmitting(false)
           if (toggleForm) {
-            participantStore.setSidebarView(SEP)
+            utilityStore.setSidebarView(SEP)
           }
         }}
       >

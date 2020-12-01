@@ -63,6 +63,7 @@ const ParticipantList = observer(() => {
 
   const rootStore = useContext(rootStoreContext)
   const participantStore = rootStore.ParticipantStore
+  const utilityStore = rootStore.UtilityStore
   const [participantTablePage, setParticipantTablePage] = useState(0)
 
   const handleParticipant = participant => {
@@ -92,8 +93,8 @@ const ParticipantList = observer(() => {
         <Grid item>
           <Select
             name="sidebarForm"
-            value={participantStore.sidebarView}
-            onChange={e => participantStore.setSidebarView(e.target.value)}
+            value={utilityStore.sidebarView}
+            onChange={e => utilityStore.setSidebarView(e.target.value)}
             className={classes.select}
           >
             <MenuItem value={SEARCH}>Participant Search</MenuItem>
@@ -122,7 +123,7 @@ const ParticipantList = observer(() => {
             heading="No participants found"
             subheading="Use the sidebar on the right to search"
             label="Open Sidebar"
-            action={() => participantStore.handleDrawerOpen()}
+            action={() => utilityStore.handleDrawerOpen()}
           />
         )}
         <PrevPointPagination
