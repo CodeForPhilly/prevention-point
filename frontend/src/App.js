@@ -12,7 +12,7 @@ import Alert from "@material-ui/lab/Alert"
 
 const App = observer(() => {
   const rootStore = useContext(rootStoreContext)
-  const participantStore = rootStore.ParticipantStore
+  const utilityStore = rootStore.UtilityStore
 
   useEffect(() => {
     async function stillAuthenticated() {
@@ -40,16 +40,16 @@ const App = observer(() => {
           vertical: "bottom",
           horizontal: "right",
         }}
-        open={participantStore.snackbarState.open}
+        open={utilityStore.snackbarState.open}
         autoHideDuration={6000}
-        onClose={() => participantStore.setSnackbarState({ open: false })}
+        onClose={() => utilityStore.setSnackbarState({ open: false })}
       >
         <Alert
           variant="filled"
-          severity={participantStore.snackbarState.severity}
-          onClose={() => participantStore.setSnackbarState({ open: false })}
+          severity={utilityStore.snackbarState.severity}
+          onClose={() => utilityStore.setSnackbarState({ open: false })}
         >
-          {participantStore.snackbarState.message}
+          {utilityStore.snackbarState.message}
         </Alert>
       </Snackbar>
     </MuiThemeProvider>

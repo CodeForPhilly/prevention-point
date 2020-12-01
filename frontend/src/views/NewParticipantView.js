@@ -11,6 +11,7 @@ import { SNACKBAR_SEVERITY } from "../constants"
 
 const NewParticipantView = observer(() => {
   const rootStore = useContext(rootStoreContext)
+  const utilityStore = rootStore.UtilityStore
   const participantStore = rootStore.ParticipantStore
   const participantInfo = toJS(participantStore.participant)
   const insurers = toJS(participantStore.insurers)
@@ -36,7 +37,7 @@ const NewParticipantView = observer(() => {
       )
       if (validationErrors.length) {
         return validationErrors.map(error =>
-          participantStore.setSnackbarState({
+          utilityStore.setSnackbarState({
             message: `Theres an error in the ${error.name} field.`,
             severity: SNACKBAR_SEVERITY.ERROR,
           })
@@ -46,7 +47,7 @@ const NewParticipantView = observer(() => {
       }
     } catch (err) {
       const snackbarError = handleSnackbarError(err)
-      participantStore.setSnackbarState({
+      utilityStore.setSnackbarState({
         message: snackbarError.message,
         severity: snackbarError.severity,
       })

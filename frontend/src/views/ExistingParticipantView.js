@@ -39,6 +39,8 @@ const ExistingParticipantView = observer(() => {
   const rootStore = useContext(rootStoreContext)
   // particiant store derived from root store
   const participantStore = rootStore.ParticipantStore
+  // Utility store derived from root store
+  const utilityStore = rootStore.UtilityStore
   // set up history for routing pushes
   const history = useHistory()
 
@@ -72,7 +74,7 @@ const ExistingParticipantView = observer(() => {
       )
       if (validationErrors.length) {
         return validationErrors.map(error =>
-          participantStore.setSnackbarState({
+          utilityStore.setSnackbarState({
             message: `Theres an error in the ${error.name} field.`,
             severity: SNACKBAR_SEVERITY.ERROR,
           })
@@ -82,7 +84,7 @@ const ExistingParticipantView = observer(() => {
       }
     } catch (err) {
       const snackbarError = handleSnackbarError(err)
-      participantStore.setSnackbarState({
+      utilityStore.setSnackbarState({
         message: snackbarError.message,
         severity: snackbarError.severity,
       })

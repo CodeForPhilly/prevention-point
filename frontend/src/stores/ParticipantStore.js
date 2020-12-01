@@ -2,7 +2,6 @@ import { observable, action, flow, toJS, computed } from "mobx"
 import { createContext } from "react"
 import { format } from "date-fns"
 import api from "../api"
-import { SEARCH, SNACKBAR_SEVERITY } from "../constants"
 import { handleSnackbarError } from "../error"
 
 export class ParticipantStore {
@@ -26,15 +25,6 @@ export class ParticipantStore {
   @observable services = []
   @observable visitList = []
   @observable isEditing = false
-  // participant search
-  @observable sidebarView = SEARCH
-  // snackbar notifications
-  @observable snackbarState = {
-    message: "",
-    severity: SNACKBAR_SEVERITY.INFO,
-    open: false,
-  }
-  @observable isDrawerOpen = false
   @observable sites = []
   @observable currentSite = ""
   @computed get hasVisit() {
@@ -44,13 +34,6 @@ export class ParticipantStore {
   }
 
   // Setters
-  @action handleDrawerOpen = () => {
-    this.isDrawerOpen = true
-  }
-  @action handleDrawerClose = () => {
-    this.isDrawerOpen = false
-  }
-
   @action setDefaultParticipant = () => {
     this.participant = {
       id: null,
@@ -162,22 +145,6 @@ export class ParticipantStore {
     this.visitList = data
   }
 
-  @action setSidebarView = sidebarView => {
-    this.sidebarView = sidebarView
-  }
-  @action setSnackbarState = ({
-    message = "",
-    severity = SNACKBAR_SEVERITY.INFO,
-    open = true,
-  }) => {
-    // prevent visual change to severity or message when closing the snackbar
-    if (open) {
-      this.snackbarState.severity = severity
-      this.snackbarState.message = message
-    }
-    this.snackbarState.open = open
-  }
-
   @action setSites = data => {
     this.sites = data
   }
@@ -202,7 +169,7 @@ export class ParticipantStore {
       this.setInsurers(data)
     } catch (error) {
       const snackbarError = handleSnackbarError(error.message)
-      this.setSnackbarState({
+      this.rootStore.UtilityStore.setSnackbarState({
         message: snackbarError.message,
         severity: snackbarError.severity,
       })
@@ -230,7 +197,7 @@ export class ParticipantStore {
       }
     } catch (error) {
       const snackbarError = handleSnackbarError(error.message)
-      this.setSnackbarState({
+      this.rootStore.UtilityStore.setSnackbarState({
         message: snackbarError.message,
         severity: snackbarError.severity,
       })
@@ -247,7 +214,7 @@ export class ParticipantStore {
       this.setParticipant(data)
     } catch (error) {
       const snackbarError = handleSnackbarError(error.message)
-      this.setSnackbarState({
+      this.rootStore.UtilityStore.setSnackbarState({
         message: snackbarError.message,
         severity: snackbarError.severity,
       })
@@ -264,7 +231,7 @@ export class ParticipantStore {
       this.setParticipantsList(data)
     } catch (error) {
       const snackbarError = handleSnackbarError(error.message)
-      this.setSnackbarState({
+      this.rootStore.UtilityStore.setSnackbarState({
         message: snackbarError.message,
         severity: snackbarError.severity,
       })
@@ -285,7 +252,7 @@ export class ParticipantStore {
       this.setRouteToQueue(true)
     } catch (error) {
       const snackbarError = handleSnackbarError(error.message)
-      this.setSnackbarState({
+      this.rootStore.UtilityStore.setSnackbarState({
         message: snackbarError.message,
         severity: snackbarError.severity,
       })
@@ -302,7 +269,7 @@ export class ParticipantStore {
       this.createNewFrontEndDeskEvents()
     } catch (error) {
       const snackbarError = handleSnackbarError(error.message)
-      this.setSnackbarState({
+      this.rootStore.UtilityStore.setSnackbarState({
         message: snackbarError.message,
         severity: snackbarError.severity,
       })
@@ -323,7 +290,7 @@ export class ParticipantStore {
       this.setRouteToQueue(true)
     } catch (error) {
       const snackbarError = handleSnackbarError(error.message)
-      this.setSnackbarState({
+      this.rootStore.UtilityStore.setSnackbarState({
         message: snackbarError.message,
         severity: snackbarError.severity,
       })
@@ -338,7 +305,7 @@ export class ParticipantStore {
       this.setVisitsList(data)
     } catch (error) {
       const snackbarError = handleSnackbarError(error.message)
-      this.setSnackbarState({
+      this.rootStore.UtilityStore.setSnackbarState({
         message: snackbarError.message,
         severity: snackbarError.severity,
       })
@@ -359,7 +326,7 @@ export class ParticipantStore {
       this.setIsEditing(false)
     } catch (error) {
       const snackbarError = handleSnackbarError(error.message)
-      this.setSnackbarState({
+      this.rootStore.UtilityStore.setSnackbarState({
         message: snackbarError.message,
         severity: snackbarError.severity,
       })
@@ -381,7 +348,7 @@ export class ParticipantStore {
       this.setRouteToQueue(true)
     } catch (error) {
       const snackbarError = handleSnackbarError(error.message)
-      this.setSnackbarState({
+      this.rootStore.UtilityStore.setSnackbarState({
         message: snackbarError.message,
         severity: snackbarError.severity,
       })
@@ -396,7 +363,7 @@ export class ParticipantStore {
       this.setSites(data)
     } catch (error) {
       const snackbarError = handleSnackbarError(error.message)
-      this.setSnackbarState({
+      this.rootStore.UtilityStore.setSnackbarState({
         message: snackbarError.message,
         severity: snackbarError.severity,
       })
@@ -443,7 +410,7 @@ export class ParticipantStore {
       }
     } catch (error) {
       const snackbarError = handleSnackbarError(error.message)
-      this.setSnackbarState({
+      this.rootStore.UtilityStore.setSnackbarState({
         message: snackbarError.message,
         severity: snackbarError.severity,
       })

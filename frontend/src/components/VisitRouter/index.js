@@ -21,12 +21,14 @@ import VisitTable from "./VisitTable"
 import WithSubmit from "../WithSubmit"
 import { rootStoreContext } from "../../stores/RootStore"
 import { validateForm, VISIT_SCHEMA } from "../../validation/index"
+import { SNACKBAR_SEVERITY } from "../../constants"
 
 const VisitRouter = observer(() => {
   const history = useHistory()
 
   const rootStore = useContext(rootStoreContext)
   const participantStore = rootStore.ParticipantStore
+  const utilityStore = rootStore.UtilityStore
   const existingVisit = toJS(participantStore.visit)
   const programList = toJS(participantStore.programs)
   const serviceList = toJS(participantStore.services)
@@ -48,9 +50,10 @@ const VisitRouter = observer(() => {
       let validationErrors = await validateForm(existingVisit, VISIT_SCHEMA)
       if (validationErrors.length) {
         return validationErrors.map(error =>
-          participantStore.setSnackbarState(
-            `Theres an error in the ${error.name} field.`
-          )
+          utilityStore.setSnackbarState({
+            message: `Theres an error in the ${error.name} field.`,
+            severity: SNACKBAR_SEVERITY.ERROR,
+          })
         )
       }
       if (existingVisit.id) {
@@ -60,7 +63,7 @@ const VisitRouter = observer(() => {
       }
     } catch (err) {
       const snackbarError = handleSnackbarError(err)
-      participantStore.setSnackbarState({
+      utilityStore.setSnackbarState({
         message: snackbarError.message,
         severity: snackbarError.severity,
       })
