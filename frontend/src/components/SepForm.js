@@ -52,6 +52,7 @@ const SepForm = ({ sites, currentSite, setCurrentSite }) => {
   const classes = useStyles()
   const rootStore = useContext(rootStoreContext)
   const participantStore = rootStore.ParticipantStore
+  const utilityStore = rootStore.UtilityStore
   const [participantId, setParticipantId] = useState()
   const SEPFormRef = useRef()
   const history = useHistory()
@@ -257,7 +258,7 @@ const SepForm = ({ sites, currentSite, setCurrentSite }) => {
           setSubmitting(false)
           if (success) {
             handleClear()
-            participantStore.setSnackbarState({
+            utilityStore.setSnackbarState({
               message: "SEP data submitted",
               severity: SNACKBAR_SEVERITY.SUCCESS,
             })
