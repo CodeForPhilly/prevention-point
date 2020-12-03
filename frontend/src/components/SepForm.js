@@ -258,8 +258,7 @@ const SepForm = ({ sites, currentSite, setCurrentSite }) => {
           setSubmitting(false)
           if (success) {
             handleClear()
-            utilityStore.setSnackbarState({
-              message: "SEP data submitted",
+            utilityStore.setSnackbarState("SEP data submitted", {
               severity: SNACKBAR_SEVERITY.SUCCESS,
             })
           }

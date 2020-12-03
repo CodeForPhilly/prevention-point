@@ -28,11 +28,11 @@ export class UtilityStore {
     this.sidebarView = sidebarView
   }
 
-  @action setSnackbarState = ({
-    message = "",
-    severity = SNACKBAR_SEVERITY.INFO,
-    open = true,
-  }) => {
+  @action setSnackbarState = (message, options = {}) => {
+    const severity = options.severity
+      ? options.severity
+      : SNACKBAR_SEVERITY.INFO
+    const open = options.open === undefined ? true : options.open
     // prevent visual change to severity or message when closing the snackbar
     if (open) {
       this.snackbarState.severity = severity

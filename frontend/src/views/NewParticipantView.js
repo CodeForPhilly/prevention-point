@@ -37,18 +37,19 @@ const NewParticipantView = observer(() => {
       )
       if (validationErrors.length) {
         return validationErrors.map(error =>
-          utilityStore.setSnackbarState({
-            message: `Theres an error in the ${error.name} field.`,
-            severity: SNACKBAR_SEVERITY.ERROR,
-          })
+          utilityStore.setSnackbarState(
+            `Theres an error in the ${error.name} field.`,
+            {
+              severity: SNACKBAR_SEVERITY.ERROR,
+            }
+          )
         )
       } else {
         participantStore.createParticipant()
       }
     } catch (err) {
       const snackbarError = handleSnackbarError(err)
-      utilityStore.setSnackbarState({
-        message: snackbarError.message,
+      utilityStore.setSnackbarState(snackbarError.message, {
         severity: snackbarError.severity,
       })
     }
