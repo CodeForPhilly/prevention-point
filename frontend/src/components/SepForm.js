@@ -54,7 +54,8 @@ const SepForm = ({ sites, currentSite, setCurrentSite }) => {
   const participantStore = rootStore.ParticipantStore
   const utilityStore = rootStore.UtilityStore
   const [participantId, setParticipantId] = useState()
-  const SEPFormRef = useRef()
+  const SEPParticipantFormRef = useRef()
+  const SEPNeedleFormRef = useRef()
   const history = useHistory()
 
   useEffect(() => {
@@ -63,8 +64,11 @@ const SepForm = ({ sites, currentSite, setCurrentSite }) => {
 
   const handleClear = () => {
     setParticipantId(null)
-    if (SEPFormRef.current) {
-      SEPFormRef.current.resetForm()
+    if (SEPParticipantFormRef.current) {
+      SEPParticipantFormRef.current.resetForm()
+    }
+    if (SEPNeedleFormRef.current) {
+      SEPNeedleFormRef.current.resetForm()
     }
   }
 
@@ -74,7 +78,7 @@ const SepForm = ({ sites, currentSite, setCurrentSite }) => {
         className={classes.form}
         validateOnChange={false}
         validateOnBlur={false}
-        innerRef={SEPFormRef}
+        innerRef={SEPParticipantFormRef}
         initialValues={{
           site_id: currentSite,
           sep_id: "",
@@ -238,6 +242,7 @@ const SepForm = ({ sites, currentSite, setCurrentSite }) => {
         className={classes.form}
         validateOnChange={false}
         validateOnBlur={false}
+        innerRef={SEPNeedleFormRef}
         initialValues={{
           needles_in: "",
           needles_out: "",
