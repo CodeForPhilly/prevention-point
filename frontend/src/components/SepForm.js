@@ -65,7 +65,12 @@ const SepForm = ({ sites, currentSite, setCurrentSite }) => {
   const handleClear = () => {
     setParticipantId(null)
     if (SEPParticipantFormRef.current) {
-      SEPParticipantFormRef.current.resetForm()
+      SEPParticipantFormRef.current.resetForm({
+        values: {
+          ...SEPParticipantFormRef.current.initialValues,
+          site_id: SEPParticipantFormRef.current.values.site_id,
+        },
+      })
     }
     if (SEPNeedleFormRef.current) {
       SEPNeedleFormRef.current.resetForm()
