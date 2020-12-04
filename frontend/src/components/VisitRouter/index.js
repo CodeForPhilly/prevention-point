@@ -14,13 +14,14 @@ import React, { useContext, useEffect } from "react"
 import { autorun, toJS } from "mobx"
 import { observer } from "mobx-react-lite"
 import { Route, Switch, useHistory } from "react-router-dom"
-import handleError from "../../error"
+import { handleSnackbarError } from "../../error"
 import VisitForm from "./VisitForm"
 import VisitData from "./VisitData"
 import VisitTable from "./VisitTable"
 import WithSubmit from "../WithSubmit"
 import { rootStoreContext } from "../../stores/RootStore"
 import { validateForm, VISIT_SCHEMA } from "../../validation/index"
+import { SNACKBAR_SEVERITY } from "../../constants"
 
 const VisitRouter = observer(() => {
   const history = useHistory()
@@ -50,7 +51,10 @@ const VisitRouter = observer(() => {
       if (validationErrors.length) {
         return validationErrors.map(error =>
           utilityStore.setSnackbarState(
-            `Theres an error in the ${error.name} field.`
+            `Theres an error in the ${error.name} field.`,
+            {
+              severity: SNACKBAR_SEVERITY.ERROR,
+            }
           )
         )
       }
@@ -60,7 +64,10 @@ const VisitRouter = observer(() => {
         participantStore.createVisit()
       }
     } catch (err) {
-      utilityStore.setSnackbarState(handleError(err))
+      const snackbarError = handleSnackbarError(err)
+      utilityStore.setSnackbarState(snackbarError.message, {
+        severity: snackbarError.severity,
+      })
     }
     // after all api calls for submit have been completed route to QueueTable
     autorun(() => {

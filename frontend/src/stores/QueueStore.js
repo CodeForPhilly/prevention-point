@@ -2,7 +2,7 @@ import { observable, action, flow } from "mobx"
 import { createContext } from "react"
 import moment from "moment"
 import api from "../api"
-import handleError from "../error"
+import { handleError } from "../error"
 
 export class QueueStore {
   constructor(rootStore) {

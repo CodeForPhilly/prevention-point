@@ -45,3 +45,9 @@ export const PARTICIPANT_GENDER_OPTIONS = [
 // values for sidebarView
 export const SEARCH = "SEARCH"
 export const SEP = "SEP"
+
+export const SNACKBAR_SEVERITY = {
+  INFO: "info",
+  SUCCESS: "success",
+  ERROR: "error",
+}
