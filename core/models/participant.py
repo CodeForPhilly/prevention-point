@@ -51,7 +51,7 @@ class Participant(models.Model):
         if the participant is not insured, but the insurer is set to a non-empty string,
         throw an error
         """
-        if self.is_insured == (False) and (bool(self.insurer)):
+        if self.is_insured == (False) and (self.insurer.name != ""):
             raise ValidationError(
                 "Insurer must be an empty string if the participant is uninsured.",
                 code=400,
