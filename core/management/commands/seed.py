@@ -152,15 +152,15 @@ def create_insurers(output=True):
                     insurer.name, insurer.is_active
                 )
             )
+    insurer = Insurer(name="", is_active=True)
+    insurer.full_clean()
+    insurer.save()
 
 def add_empty_insurer(insured, insurer_list):
     if insured == False:
-        insurer = Insurer(name="", is_active=False)
-        insurer.full_clean()
-        insurer.save()
-        return insurer
+        return insurer_list[len(insurer_list)-1]
     else:
-        return random.choice(insurer_list)
+        return random.choice(insurer_list[0:DEFAULT_NUMBER_INSURERS])
 
 def create_participants():
     """Create a fake participant, and optionally associated UDS and meds"""
