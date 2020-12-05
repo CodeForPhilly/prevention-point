@@ -37,7 +37,7 @@ class Participant(models.Model):
     date_of_birth = models.DateField()
     start_date = models.DateField()
     is_insured = models.BooleanField(default=False)
-    insurer = models.ForeignKey(Insurer, on_delete=models.CASCADE, null=True)
+    insurer = models.ForeignKey(Insurer, on_delete=models.CASCADE, null=True, blank=True)
     maiden_name = models.CharField(
         null=True, max_length=100, verbose_name="Mother's Maiden Name"
     )
@@ -48,14 +48,10 @@ class Participant(models.Model):
 
     def clean(self):
         """
-        if the participant is not insured, but the insurer is set to a non-empty string,
-        throw an error
+        Set insurer ForeignKey to null when the participant is uninsured.
         """
-        if self.is_insured == (False) and (self.insurer.name != ""):
-            raise ValidationError(
-                "Insurer must be an empty string if the participant is uninsured.",
-                code=400,
-            )
+        if (self.is_insured is False) and (self.insurer is not None):
+            self.insurer = None
 
         self.is_cleaned = True
 
