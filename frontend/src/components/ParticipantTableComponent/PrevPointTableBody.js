@@ -57,6 +57,7 @@ const PrevPointTableBody = props => {
                     year: "numeric",
                     month: "2-digit",
                     day: "2-digit",
+                    timeZone: "UTC", //the the database's Datefield is not timezone aware, so without the localestring assumes UTC. this was causing an off by one error
                   }
                 )}
               </PrevPointCopy>
@@ -67,7 +68,7 @@ const PrevPointTableBody = props => {
             <TableCell aria-label="tcell">
               {props.sidebarView === SEARCH && (
                 <Link
-                  to="/existingParticipant/visits"
+                  to="/participants/visits"
                   onClick={() => props.handleClick(participant)}
                 >
                   <Fab color="primary" size="small" aria-label="add">

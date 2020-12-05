@@ -204,20 +204,22 @@ export class ParticipantStore {
       })
     }
   })
-  getParticipant = flow(function*() {
+  getParticipant = flow(function*(participantId) {
     try {
-      const { ok, data, status } = yield api.getParticipantById(
-        toJS(this.participant.id)
-      )
+      const { ok, data, status } = yield api.getParticipantById(participantId)
       if (!ok || !data) {
         throw new Error(status)
       }
       this.setParticipant(data)
+      // for redirect in exiting participant V
+      return ok
     } catch (error) {
       const snackbarError = handleSnackbarError(error.message)
       this.rootStore.UtilityStore.setSnackbarState(snackbarError.message, {
         severity: snackbarError.severity,
       })
+
+      return false
     }
   })
   // called on  =>  ParticipantList.js
