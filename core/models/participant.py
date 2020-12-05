@@ -39,7 +39,7 @@ class Participant(models.Model):
     is_insured = models.BooleanField(default=False)
     insurer = models.ForeignKey(Insurer, on_delete=models.CASCADE, null=True, blank=True)
     maiden_name = models.CharField(
-        null=True, max_length=100, verbose_name="Mother's Maiden Name"
+        null=True, blank=True, max_length=100, verbose_name="Mother's Maiden Name"
     )
     sep_id = models.IntegerField(null=True, unique=True)
 
