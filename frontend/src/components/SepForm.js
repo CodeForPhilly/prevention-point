@@ -15,6 +15,7 @@ import PrevPointHeading from "./Typography/PrevPointHeading"
 import PrevPointCopy from "./Typography/PrevPointCopy"
 import { Formik, Form } from "formik"
 import { SEPSearchSchema, SEPNeedleSchema } from "../validation"
+import { SNACKBAR_SEVERITY } from "../constants"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -51,8 +52,10 @@ const SepForm = ({ sites, currentSite, setCurrentSite }) => {
   const classes = useStyles()
   const rootStore = useContext(rootStoreContext)
   const participantStore = rootStore.ParticipantStore
+  const utilityStore = rootStore.UtilityStore
   const [participantId, setParticipantId] = useState()
-  const SEPFormRef = useRef()
+  const SEPParticipantFormRef = useRef()
+  const SEPNeedleFormRef = useRef()
   const history = useHistory()
 
   useEffect(() => {
@@ -61,8 +64,16 @@ const SepForm = ({ sites, currentSite, setCurrentSite }) => {
 
   const handleClear = () => {
     setParticipantId(null)
-    if (SEPFormRef.current) {
-      SEPFormRef.current.resetForm()
+    if (SEPParticipantFormRef.current) {
+      SEPParticipantFormRef.current.resetForm({
+        values: {
+          ...SEPParticipantFormRef.current.initialValues,
+          site_id: SEPParticipantFormRef.current.values.site_id,
+        },
+      })
+    }
+    if (SEPNeedleFormRef.current) {
+      SEPNeedleFormRef.current.resetForm()
     }
   }
 
@@ -72,7 +83,7 @@ const SepForm = ({ sites, currentSite, setCurrentSite }) => {
         className={classes.form}
         validateOnChange={false}
         validateOnBlur={false}
-        innerRef={SEPFormRef}
+        innerRef={SEPParticipantFormRef}
         initialValues={{
           site_id: currentSite,
           sep_id: "",
@@ -236,6 +247,7 @@ const SepForm = ({ sites, currentSite, setCurrentSite }) => {
         className={classes.form}
         validateOnChange={false}
         validateOnBlur={false}
+        innerRef={SEPNeedleFormRef}
         initialValues={{
           needles_in: "",
           needles_out: "",
@@ -243,7 +255,7 @@ const SepForm = ({ sites, currentSite, setCurrentSite }) => {
         }}
         validationSchema={SEPNeedleSchema}
         onSubmit={async (values, { setSubmitting }) => {
-          await participantStore.createSEP({
+          const success = await participantStore.createSEP({
             needles_in: values.needles_in,
             needles_out: values.needles_out,
             visit_date: values.visit_date,
@@ -254,6 +266,12 @@ const SepForm = ({ sites, currentSite, setCurrentSite }) => {
             service: 44,
           })
           setSubmitting(false)
+          if (success) {
+            handleClear()
+            utilityStore.setSnackbarState("SEP data submitted", {
+              severity: SNACKBAR_SEVERITY.SUCCESS,
+            })
+          }
         }}
       >
         {({ errors, touched, values, handleChange, isSubmitting }) => (

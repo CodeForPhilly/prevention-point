@@ -14,20 +14,21 @@ import React, { useContext, useEffect } from "react"
 import { autorun, toJS } from "mobx"
 import { observer } from "mobx-react-lite"
 import { Route, Switch, useHistory } from "react-router-dom"
-import handleError from "../../error"
+import { handleSnackbarError } from "../../error"
 import VisitForm from "./VisitForm"
 import VisitData from "./VisitData"
 import VisitTable from "./VisitTable"
 import WithSubmit from "../WithSubmit"
 import { rootStoreContext } from "../../stores/RootStore"
 import { validateForm, VISIT_SCHEMA } from "../../validation/index"
+import { SNACKBAR_SEVERITY } from "../../constants"
 
 const VisitRouter = observer(() => {
   const history = useHistory()
 
   const rootStore = useContext(rootStoreContext)
   const participantStore = rootStore.ParticipantStore
-  const notificationStore = rootStore.NotificationStore
+  const utilityStore = rootStore.UtilityStore
   const existingVisit = toJS(participantStore.visit)
   const programList = toJS(participantStore.programs)
   const serviceList = toJS(participantStore.services)
@@ -49,8 +50,11 @@ const VisitRouter = observer(() => {
       let validationErrors = await validateForm(existingVisit, VISIT_SCHEMA)
       if (validationErrors.length) {
         return validationErrors.map(error =>
-          notificationStore.setSnackbarState(
-            `Theres an error in the ${error.name} field.`
+          utilityStore.setSnackbarState(
+            `Theres an error in the ${error.name} field.`,
+            {
+              severity: SNACKBAR_SEVERITY.ERROR,
+            }
           )
         )
       }
@@ -60,7 +64,10 @@ const VisitRouter = observer(() => {
         participantStore.createVisit()
       }
     } catch (err) {
-      notificationStore.setSnackbarState(handleError(err))
+      const snackbarError = handleSnackbarError(err)
+      utilityStore.setSnackbarState(snackbarError.message, {
+        severity: snackbarError.severity,
+      })
     }
     // after all api calls for submit have been completed route to QueueTable
     autorun(() => {

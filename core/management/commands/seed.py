@@ -153,7 +153,6 @@ def create_insurers(output=True):
                 )
             )
 
-
 def create_participants():
     """Create a fake participant, and optionally associated UDS and meds"""
     gender_list = list(Gender)
@@ -166,7 +165,7 @@ def create_participants():
         profile = fake.profile()
         gender = random.choice(gender_list)
         race = random.choice(race_list)
-
+        
         participant = Participant(
             first_name=fake.first_name(),
             last_name=fake.last_name(),

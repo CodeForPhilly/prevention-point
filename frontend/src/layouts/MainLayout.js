@@ -49,7 +49,7 @@ const MainLayout = observer(props => {
   }))
 
   const rootStore = useContext(rootStoreContext)
-  const participantStore = rootStore.ParticipantStore
+  const utilityStore = rootStore.UtilityStore
 
   const classes = useStyles()
 
@@ -57,27 +57,25 @@ const MainLayout = observer(props => {
     <div className={classes.root}>
       <CssBaseline />
       <Navbar
-        drawerOpen={participantStore.isDrawerOpen}
-        handleDrawerOpen={() => participantStore.handleDrawerOpen()}
-        handleDrawerClose={() => participantStore.handleDrawerClose()}
+        drawerOpen={utilityStore.isDrawerOpen}
+        handleDrawerOpen={() => utilityStore.handleDrawerOpen()}
+        handleDrawerClose={() => utilityStore.handleDrawerClose()}
         drawerWidth={drawerWidth}
       />
       <Drawer
         className={classes.drawer}
         variant="persistent"
         anchor="left"
-        open={participantStore.isDrawerOpen}
+        open={utilityStore.isDrawerOpen}
         classes={{
           paper: classes.drawerPaper,
         }}
       >
-        <Sidebar
-          handleDrawerClose={() => participantStore.handleDrawerClose()}
-        />
+        <Sidebar handleDrawerClose={() => utilityStore.handleDrawerClose()} />
       </Drawer>
       <main
         className={clsx(classes.content, {
-          [classes.contentShift]: participantStore.isDrawerOpen,
+          [classes.contentShift]: utilityStore.isDrawerOpen,
         })}
       >
         <div className={classes.navbarOffset} />

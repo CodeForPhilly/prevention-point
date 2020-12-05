@@ -5,12 +5,13 @@ import { useHistory, Link } from "react-router-dom"
 import { makeStyles } from "@material-ui/styles"
 import Grid from "@material-ui/core/Grid"
 import Container from "@material-ui/core/Container"
-import handleError from "../error"
+import { handleSnackbarError } from "../error"
 import PrevPointButton from "../components/PrevPointButton"
 import { rootStoreContext } from "../stores/RootStore"
 import ParticipantForm from "../components/ParticipantForm"
 import VisitRouter from "../components/VisitRouter"
 import { validateForm, PARTICIPANT_SCHEMA } from "../validation/index"
+import { SNACKBAR_SEVERITY } from "../constants"
 
 const useStyles = makeStyles(() => ({
   ButtonWrapper: {
@@ -38,8 +39,8 @@ const ExistingParticipantView = observer(() => {
   const rootStore = useContext(rootStoreContext)
   // particiant store derived from root store
   const participantStore = rootStore.ParticipantStore
-  // Notification store derived from root store
-  const notificationStore = rootStore.NotificationStore
+  // Utility store derived from root store
+  const utilityStore = rootStore.UtilityStore
   // set up history for routing pushes
   const history = useHistory()
 
@@ -73,15 +74,21 @@ const ExistingParticipantView = observer(() => {
       )
       if (validationErrors.length) {
         return validationErrors.map(error =>
-          notificationStore.setSnackbarState(
-            `Theres an error in the ${error.name} field.`
+          utilityStore.setSnackbarState(
+            `Theres an error in the ${error.name} field.`,
+            {
+              severity: SNACKBAR_SEVERITY.ERROR,
+            }
           )
         )
       } else {
         participantStore.updateParticipant()
       }
     } catch (err) {
-      notificationStore.setSnackbarState(handleError(err))
+      const snackbarError = handleSnackbarError(err)
+      utilityStore.setSnackbarState(snackbarError.message, {
+        severity: snackbarError.severity,
+      })
     }
   }
 

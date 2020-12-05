@@ -8,11 +8,11 @@ import RoutesIndex from "./routes"
 import { rootStoreContext } from "./stores/RootStore"
 
 import Snackbar from "@material-ui/core/Snackbar"
-import SnackbarContent from "@material-ui/core/SnackbarContent"
+import Alert from "@material-ui/lab/Alert"
 
 const App = observer(() => {
   const rootStore = useContext(rootStoreContext)
-  const notificationStore = rootStore.NotificationStore
+  const utilityStore = rootStore.UtilityStore
 
   useEffect(() => {
     async function stillAuthenticated() {
@@ -40,11 +40,17 @@ const App = observer(() => {
           vertical: "bottom",
           horizontal: "right",
         }}
-        open={notificationStore.snackbarState.open}
+        open={utilityStore.snackbarState.open}
         autoHideDuration={6000}
-        onClose={() => notificationStore.setSnackbarState("", { open: false })}
+        onClose={() => utilityStore.setSnackbarState("", { open: false })}
       >
-        <SnackbarContent message={notificationStore.snackbarState.message} />
+        <Alert
+          variant="filled"
+          severity={utilityStore.snackbarState.severity}
+          onClose={() => utilityStore.setSnackbarState("", { open: false })}
+        >
+          {utilityStore.snackbarState.message}
+        </Alert>
       </Snackbar>
     </MuiThemeProvider>
   )

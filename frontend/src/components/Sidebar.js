@@ -32,14 +32,15 @@ const Sidebar = observer(({ handleDrawerClose }) => {
   const classes = useStyles()
   const rootStore = useContext(rootStoreContext)
   const participantStore = rootStore.ParticipantStore
+  const utilityStore = rootStore.UtilityStore
 
   return (
     <>
       <div className={classes.drawerHeader}>
         <Select
           name="sidebarForm"
-          value={participantStore.sidebarView}
-          onChange={e => participantStore.setSidebarView(e.target.value)}
+          value={utilityStore.sidebarView}
+          onChange={e => utilityStore.setSidebarView(e.target.value)}
           className={classes.select}
         >
           <MenuItem value={SEARCH}>Participant Search</MenuItem>
@@ -50,8 +51,8 @@ const Sidebar = observer(({ handleDrawerClose }) => {
         </IconButton>
       </div>
 
-      {participantStore.sidebarView === SEARCH && <ParticipantSearch />}
-      {participantStore.sidebarView === SEP && (
+      {utilityStore.sidebarView === SEARCH && <ParticipantSearch />}
+      {utilityStore.sidebarView === SEP && (
         <SepForm
           sites={participantStore.sites}
           currentSite={participantStore.currentSite}
