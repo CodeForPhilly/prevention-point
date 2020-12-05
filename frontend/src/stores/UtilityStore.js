@@ -1,6 +1,6 @@
 import { observable, action } from "mobx"
 import { createContext } from "react"
-import { SEARCH } from "../constants"
+import { SEARCH, SNACKBAR_SEVERITY } from "../constants"
 
 export class UtilityStore {
   constructor(rootStore) {
@@ -8,7 +8,11 @@ export class UtilityStore {
   }
 
   // snackbar notifications
-  @observable snackbarState = { message: "", open: false }
+  @observable snackbarState = {
+    message: "",
+    severity: SNACKBAR_SEVERITY.INFO,
+    open: false,
+  }
   // participant search
   @observable sidebarView = SEARCH
   @observable isDrawerOpen = false
@@ -24,10 +28,17 @@ export class UtilityStore {
     this.sidebarView = sidebarView
   }
 
-  @action setSnackbarState = (message, options = { open: true }) => {
-    // we setup otions like this to maybe add more later
-    this.snackbarState.message = message
-    this.snackbarState.open = options.open
+  @action setSnackbarState = (message, options = {}) => {
+    const severity = options.severity
+      ? options.severity
+      : SNACKBAR_SEVERITY.INFO
+    const open = options.open === undefined ? true : options.open
+    // prevent visual change to severity or message when closing the snackbar
+    if (open) {
+      this.snackbarState.severity = severity
+      this.snackbarState.message = message
+    }
+    this.snackbarState.open = open
   }
 }
 

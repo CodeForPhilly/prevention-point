@@ -3,10 +3,11 @@ import { autorun, toJS } from "mobx"
 import { observer } from "mobx-react-lite"
 import { useHistory } from "react-router-dom"
 import WithSubmit from "../components/WithSubmit"
-import handleError from "../error"
+import { handleSnackbarError } from "../error"
 import { rootStoreContext } from "../stores/RootStore"
 import ParticipantForm from "../components/ParticipantForm"
 import { validateForm, PARTICIPANT_SCHEMA } from "../validation/index"
+import { SNACKBAR_SEVERITY } from "../constants"
 
 const NewParticipantView = observer(() => {
   const rootStore = useContext(rootStoreContext)
@@ -37,14 +38,20 @@ const NewParticipantView = observer(() => {
       if (validationErrors.length) {
         return validationErrors.map(error =>
           utilityStore.setSnackbarState(
-            `Theres an error in the ${error.name} field.`
+            `Theres an error in the ${error.name} field.`,
+            {
+              severity: SNACKBAR_SEVERITY.ERROR,
+            }
           )
         )
       } else {
         participantStore.createParticipant()
       }
     } catch (err) {
-      utilityStore.setSnackbarState(handleError(err))
+      const snackbarError = handleSnackbarError(err)
+      utilityStore.setSnackbarState(snackbarError.message, {
+        severity: snackbarError.severity,
+      })
     }
     // after all api calls for submit have been completed route to QueueTable
     autorun(() => {
