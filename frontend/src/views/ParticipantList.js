@@ -71,6 +71,11 @@ const ParticipantList = observer(() => {
     participantStore.setDefaultVisit()
   }
 
+  const handleSEPPopulation = participant => {
+    utilityStore.setSEPFormValues(participant)
+    utilityStore.handleDrawerOpen()
+  }
+
   return (
     <Fragment>
       <Breadcrumbs separator="›" aria-label="breadcrumb">
@@ -116,7 +121,9 @@ const ParticipantList = observer(() => {
               50 * participantTablePage,
               50 * participantTablePage + 50
             )}
+            sidebarView={utilityStore.sidebarView}
             handleClick={handleParticipant}
+            handleSEPPopulation={handleSEPPopulation}
           />
         ) : (
           <NoResults

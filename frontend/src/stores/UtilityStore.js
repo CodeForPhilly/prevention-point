@@ -16,6 +16,12 @@ export class UtilityStore {
   // participant search
   @observable sidebarView = SEARCH
   @observable isDrawerOpen = false
+  @observable SEPFormValues = {
+    last_name: "",
+    date_of_birth: "",
+    maiden_name: "",
+    sep_id: "",
+  }
   // Drawer
   @action handleDrawerOpen = () => {
     this.isDrawerOpen = true
@@ -39,6 +45,24 @@ export class UtilityStore {
       this.snackbarState.message = message
     }
     this.snackbarState.open = open
+  }
+
+  @action setSEPFormValues = participant => {
+    this.SEPFormValues = {
+      last_name: participant.last_name,
+      date_of_birth: participant.date_of_birth,
+      maiden_name: participant.maiden_name,
+      sep_id: participant.sep_id,
+    }
+  }
+
+  @action clearSEPFormValues = () => {
+    this.SEPFormValues = {
+      last_name: "",
+      date_of_birth: "",
+      maiden_name: "",
+      sep_id: "",
+    }
   }
 }
 
