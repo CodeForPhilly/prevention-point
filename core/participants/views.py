@@ -1,7 +1,12 @@
+from rest_framework.exceptions import NotFound, PermissionDenied
+from rest_framework.response import Response
+from rest_framework.decorators import action
+
 from core.viewsets import ModelViewSet
 from core.models import Participant
 from core.participants.serializers import ParticipantSerializer
-from rest_framework.exceptions import NotFound 
+from core.visits.serializer import ParticipantVisitsSerializer
+
 
 class ParticipantViewSet(ModelViewSet):
     """
@@ -37,3 +42,12 @@ class ParticipantViewSet(ModelViewSet):
             raise NotFound()
 
         return queryset
+
+    @action(detail=True)
+    def visits(self, request, pk=None):
+        """List all visits for a given participant."""
+        if not request.user.has_perm('core.view_visit'):
+            raise PermissionDenied()
+        participant = self.get_object()
+        serializer = ParticipantVisitsSerializer(participant.visit_set.all(), many=True)
+        return Response(serializer.data)
