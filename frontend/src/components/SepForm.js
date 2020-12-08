@@ -65,6 +65,10 @@ const SepForm = ({
   const history = useHistory()
 
   useEffect(() => {
+    return handleClear
+  }, [])
+
+  useEffect(() => {
     participantStore.getSites()
   }, [participantStore])
 
