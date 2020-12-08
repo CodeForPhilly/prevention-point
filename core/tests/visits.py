@@ -1,6 +1,7 @@
 import json
 from django.utils import timezone
 from django.urls import reverse
+from django.contrib.auth.models import User, Permission
 from rest_framework import status
 from core.models import (
     Visit,
@@ -12,6 +13,7 @@ from core.models import (
     HCVNote,
 )
 from core.tests.base import BaseTestCase
+from core.management.commands.users_and_groups import DEFAULT_DEV_ENV_PASS
 
 
 class VisitTests(BaseTestCase):
@@ -313,3 +315,66 @@ class ParticipantVisitsViewTestCase(BaseTestCase):
             reverse('participant-visits', args=[empty_participant_id]), **headers
         )
         self.assertEqual(404, response.status_code)
+
+    def test_no_auth_participant_vists(self):
+        """Test that users that aren't logged in get a 401 response."""
+        participant_id = 3
+        response = self.client.get(
+            reverse('participant-visits', args=[participant_id])
+        )
+        expected_data = {"detail": "Authentication credentials were not provided."}
+        self.assertEqual(401, response.status_code)
+        self.assertEqual(expected_data, response.data)
+
+    def test_no_permission_participant_vists(self):
+        """Test that users without view permissions for both participant and visit get a 403."""
+        participant_id = 3
+        user = User.objects.create_user(
+            username='participant-visits-user', password=DEFAULT_DEV_ENV_PASS
+        )
+        participant_permission = Permission.objects.get(codename='view_participant')
+        visits_permission = Permission.objects.get(codename='view_visit')
+        expected_data = {"detail": "You do not have permission to perform this action."}
+
+        # Test that having no model perms fails.
+        headers = self.auth_headers_for_user('participant-visits-user')
+        response = self.client.get(
+            reverse('participant-visits', args=[participant_id]), **headers
+        )
+        self.assertEqual(403, response.status_code)
+        self.assertEqual(expected_data, response.data)
+
+        # Test that having only participant permission fails.
+        user.user_permissions.set([participant_permission])
+        headers = self.auth_headers_for_user('participant-visits-user')
+        response = self.client.get(
+            reverse('participant-visits', args=[participant_id]), **headers
+        )
+        self.assertEqual(403, response.status_code)
+        self.assertEqual(expected_data, response.data)
+
+        # Test that having only visit participant_permission fails.
+        user.user_permissions.set([visits_permission])
+        headers = self.auth_headers_for_user('participant-visits-user')
+        response = self.client.get(
+            reverse('participant-visits', args=[participant_id]), **headers
+        )
+        self.assertEqual(403, response.status_code)
+        self.assertEqual(expected_data, response.data)
+
+
+    def test_model_permission_participant_vists(self):
+        """Test that users with view permissions for both participant and visit get a 200."""
+        participant_id = 3
+        user = User.objects.create_user(
+            username='participant-visits-user', password=DEFAULT_DEV_ENV_PASS
+        )
+        participant_permission = Permission.objects.get(codename='view_participant')
+        visits_permission = Permission.objects.get(codename='view_visit')
+        user.user_permissions.add(participant_permission, visits_permission)
+
+        headers = self.auth_headers_for_user('participant-visits-user')
+        response = self.client.get(
+            reverse('participant-visits', args=[participant_id]), **headers
+        )
+        self.assertEqual(200, response.status_code)
