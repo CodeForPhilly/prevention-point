@@ -1,16 +1,6 @@
-from django.core.exceptions import ObjectDoesNotExist
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.generics import ListAPIView
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.exceptions import NotFound
-
 from core.viewsets import ModelViewSet
-from core.models import Visit, Participant
-from core.visits.serializer import (
-    VisitSerializer, PopulatedVisitSerializer, ParticipantVisitsSerializer
-)
-from core.permissions import DjangoModelPermissions
+from core.models import Visit
+from core.visits.serializer import VisitSerializer, PopulatedVisitSerializer
 
 
 class VisitViewSet(ModelViewSet):
