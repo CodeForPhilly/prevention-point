@@ -74,8 +74,11 @@ export class ParticipantStore {
   // Full Participant and Visit Assignment Actions
   @action setParticipant = data => {
     const { sep_id } = data
-    // eslint-disable-next-line camelcase
-    this.participant = { ...data, sep_id: sep_id ? sep_id.toString() : "" }
+    this.participant = {
+      ...data,
+      // eslint-disable-next-line camelcase
+      sep_id: sep_id ? sep_id.toString() : "",
+    }
   }
   @action setVisit = data => {
     this.visit = data
