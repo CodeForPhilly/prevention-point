@@ -12,4 +12,4 @@ export class RootStore {
   UtilityStore = new UtilityStore(this)
 }
 
-export const rootStoreContext = createContext(new RootStore())
+export const RootStoreContext = createContext()

@@ -19,14 +19,14 @@ import VisitForm from "./VisitForm"
 import VisitData from "./VisitData"
 import VisitTable from "./VisitTable"
 import WithSubmit from "../WithSubmit"
-import { rootStoreContext } from "../../stores/RootStore"
 import { validateForm, VISIT_SCHEMA } from "../../validation/index"
 import { SNACKBAR_SEVERITY } from "../../constants"
+import { RootStoreContext } from "../../stores/RootStore"
 
 const VisitRouter = observer(() => {
   const history = useHistory()
 
-  const rootStore = useContext(rootStoreContext)
+  const rootStore = useContext(RootStoreContext)
   const participantStore = rootStore.ParticipantStore
   const utilityStore = rootStore.UtilityStore
   const existingVisit = toJS(participantStore.visit)

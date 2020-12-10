@@ -7,7 +7,7 @@ import Grid from "@material-ui/core/Grid"
 import Container from "@material-ui/core/Container"
 import { handleSnackbarError } from "../error"
 import PrevPointButton from "../components/PrevPointButton"
-import { rootStoreContext } from "../stores/RootStore"
+import { RootStoreContext } from "../stores/RootStore"
 import ParticipantForm from "../components/ParticipantForm"
 import VisitRouter from "../components/VisitRouter"
 import { validateForm, PARTICIPANT_SCHEMA } from "../validation/index"
@@ -36,7 +36,7 @@ const useStyles = makeStyles(() => ({
 
 const ExistingParticipantView = observer(() => {
   const classes = useStyles()
-  const rootStore = useContext(rootStoreContext)
+  const rootStore = useContext(RootStoreContext)
   // particiant store derived from root store
   const participantStore = rootStore.ParticipantStore
   // Utility store derived from root store

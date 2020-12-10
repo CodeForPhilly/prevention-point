@@ -10,7 +10,7 @@ import MaterialTable from "material-table"
 import moment from "moment"
 import QueueTableDropdown from "./QueueTableDropdown/QueueTableDropdown"
 import { QueueStoreContext } from "../../../stores/QueueStore"
-import { rootStoreContext } from "../../../stores/RootStore"
+import { RootStoreContext } from "../../../stores/RootStore"
 import NotesDialog from "../../NotesDialog"
 import { useHistory } from "react-router-dom"
 import { STATUS_OPTIONS, URGENCY_OPTIONS } from "../../../constants"
@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
 
 const QueueTable = observer(({ queueData }) => {
   const queueStore = useContext(QueueStoreContext)
-  const rootStore = useContext(rootStoreContext)
+  const rootStore = useContext(RootStoreContext)
   const participantStore = rootStore.ParticipantStore
   const classes = useStyles()
   const [visibleDialog, setVisibleDialog] = useState(false)
