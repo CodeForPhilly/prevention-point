@@ -23,7 +23,6 @@ import { validateForm, VISIT_SCHEMA } from "../../validation/index"
 import { SNACKBAR_SEVERITY } from "../../constants"
 import { RootStoreContext } from "../../stores/RootStore"
 
-
 const VisitRouter = observer(() => {
   const history = useHistory()
 

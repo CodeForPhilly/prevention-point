@@ -48,7 +48,6 @@ const MainLayout = observer(props => {
     },
   }))
 
-
   const rootStore = useContext(RootStoreContext)
   const utilityStore = rootStore.UtilityStore
 
