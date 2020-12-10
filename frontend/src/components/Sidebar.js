@@ -57,6 +57,8 @@ const Sidebar = observer(({ handleDrawerClose }) => {
           sites={participantStore.sites}
           currentSite={participantStore.currentSite}
           setCurrentSite={participantStore.setCurrentSite}
+          SEPFormValues={utilityStore.SEPFormValues}
+          clearSEPFormValues={utilityStore.clearSEPFormValues}
         />
       )}
     </>

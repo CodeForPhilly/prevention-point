@@ -21,7 +21,6 @@ export const PARTICIPANT_LIST_TABLE_TITLES = [
   { mobile: false, title: "Gender" },
   { mobile: false, title: "DOB" },
   { mobile: false, title: "Race" },
-  { mobile: true, title: "Edit Participant" },
 ]
 
 export const PARTICIPANT_RACE_OPTIONS = [

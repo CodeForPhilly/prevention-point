@@ -48,7 +48,13 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const SepForm = ({ sites, currentSite, setCurrentSite }) => {
+const SepForm = ({
+  sites,
+  currentSite,
+  setCurrentSite,
+  SEPFormValues,
+  clearSEPFormValues,
+}) => {
   const classes = useStyles()
   const rootStore = useContext(rootStoreContext)
   const participantStore = rootStore.ParticipantStore
@@ -59,11 +65,32 @@ const SepForm = ({ sites, currentSite, setCurrentSite }) => {
   const history = useHistory()
 
   useEffect(() => {
+    return handleClear
+  }, [])
+
+  useEffect(() => {
     participantStore.getSites()
   }, [participantStore])
 
+  useEffect(() => {
+    if (SEPParticipantFormRef.current) {
+      SEPParticipantFormRef.current.resetForm({
+        values: {
+          ...SEPParticipantFormRef.current.initialValues,
+          ...SEPFormValues,
+          site_id: SEPParticipantFormRef.current.values.site_id,
+        },
+      })
+    }
+    if (SEPNeedleFormRef.current) {
+      SEPNeedleFormRef.current.resetForm()
+    }
+    setParticipantId(SEPFormValues.sep_id)
+  }, [SEPFormValues])
+
   const handleClear = () => {
     setParticipantId(null)
+    clearSEPFormValues()
     if (SEPParticipantFormRef.current) {
       SEPParticipantFormRef.current.resetForm({
         values: {
@@ -85,11 +112,8 @@ const SepForm = ({ sites, currentSite, setCurrentSite }) => {
         validateOnBlur={false}
         innerRef={SEPParticipantFormRef}
         initialValues={{
+          ...SEPFormValues,
           site_id: currentSite,
-          sep_id: "",
-          last_name: "",
-          date_of_birth: "",
-          maiden_name: "",
         }}
         validationSchema={SEPSearchSchema}
         onSubmit={async (values, { setSubmitting, setFieldValue }) => {
@@ -126,7 +150,7 @@ const SepForm = ({ sites, currentSite, setCurrentSite }) => {
                 <FormControl
                   className={classes.siteId}
                   error={errors.site_id && touched.site_id}
-                  disabled={participantId ? true : false}
+                  disabled={participantId && currentSite ? true : false}
                 >
                   <InputLabel htmlFor="site_id">Site ID</InputLabel>
                   <Select
@@ -160,7 +184,7 @@ const SepForm = ({ sites, currentSite, setCurrentSite }) => {
               <Grid item xs={12}>
                 <FormControl
                   error={errors.sep_id && touched.sep_id}
-                  disabled={participantId ? true : false}
+                  disabled={participantId && currentSite ? true : false}
                 >
                   <InputLabel htmlFor="sep_id">SEP ID</InputLabel>
                   <PrevPointInput
@@ -174,7 +198,7 @@ const SepForm = ({ sites, currentSite, setCurrentSite }) => {
               <Grid item xs={12}>
                 <FormControl
                   error={errors.last_name && touched.last_name}
-                  disabled={participantId ? true : false}
+                  disabled={participantId && currentSite ? true : false}
                 >
                   <InputLabel htmlFor="last_name">
                     Participant&apos;s Last Name
@@ -190,7 +214,7 @@ const SepForm = ({ sites, currentSite, setCurrentSite }) => {
               <Grid item xs={12}>
                 <FormControl
                   error={errors.date_of_birth && touched.date_of_birth}
-                  disabled={participantId ? true : false}
+                  disabled={participantId && currentSite ? true : false}
                 >
                   <InputLabel shrink htmlFor="date_of_birth">
                     Date of Birth
@@ -207,7 +231,7 @@ const SepForm = ({ sites, currentSite, setCurrentSite }) => {
               <Grid item xs={12}>
                 <FormControl
                   error={errors.maiden_name && touched.maiden_name}
-                  disabled={participantId ? true : false}
+                  disabled={participantId && currentSite ? true : false}
                 >
                   <InputLabel htmlFor="maiden_name">
                     Mother&apos;s Maiden Name
@@ -223,7 +247,10 @@ const SepForm = ({ sites, currentSite, setCurrentSite }) => {
               <Grid item xs={12}>
                 <PrevPointButton
                   type="submit"
-                  disabled={(participantId ? true : false) || isSubmitting}
+                  disabled={
+                    (participantId && currentSite ? true : false) ||
+                    isSubmitting
+                  }
                 >
                   Search
                 </PrevPointButton>
@@ -282,7 +309,7 @@ const SepForm = ({ sites, currentSite, setCurrentSite }) => {
                   <Grid item xs={6}>
                     <FormControl
                       error={errors.needles_in && touched.needles_in}
-                      disabled={participantId ? false : true}
+                      disabled={participantId && currentSite ? false : true}
                     >
                       <InputLabel htmlFor="needles_in">Needles In</InputLabel>
                       <Select
@@ -302,7 +329,7 @@ const SepForm = ({ sites, currentSite, setCurrentSite }) => {
                   <Grid item xs={6}>
                     <FormControl
                       error={errors.needles_out && touched.needles_out}
-                      disabled={participantId ? false : true}
+                      disabled={participantId && currentSite ? false : true}
                     >
                       <InputLabel htmlFor="needles_out">Needles Out</InputLabel>
                       <Select
@@ -324,7 +351,7 @@ const SepForm = ({ sites, currentSite, setCurrentSite }) => {
               <Grid item xs={12}>
                 <FormControl
                   error={errors.visit_date && touched.visit_date}
-                  disabled={participantId ? false : true}
+                  disabled={participantId && currentSite ? false : true}
                 >
                   <InputLabel shrink htmlFor="visit_date">
                     Visit Date
@@ -341,14 +368,18 @@ const SepForm = ({ sites, currentSite, setCurrentSite }) => {
               <Grid item xs={12}>
                 <PrevPointButton
                   type="submit"
-                  disabled={isSubmitting || participantId ? false : true}
+                  disabled={
+                    isSubmitting || (participantId && currentSite)
+                      ? false
+                      : true
+                  }
                 >
                   Submit
                 </PrevPointButton>
                 <PrevPointButton
                   type="button"
                   className={classes.clearButton}
-                  disabled={participantId ? false : true}
+                  disabled={participantId && currentSite ? false : true}
                   onClick={handleClear}
                 >
                   Clear
@@ -374,6 +405,8 @@ SepForm.propTypes = {
   currentSite: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   sites: PropTypes.array,
   setCurrentSite: PropTypes.func,
+  SEPFormValues: PropTypes.object,
+  clearSEPFormValues: PropTypes.func,
 }
 
 export default SepForm

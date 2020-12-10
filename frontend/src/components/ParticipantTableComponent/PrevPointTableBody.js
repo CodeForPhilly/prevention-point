@@ -4,10 +4,12 @@ import TableRow from "@material-ui/core/TableRow"
 import TableCell from "@material-ui/core/TableCell"
 import TableBody from "@material-ui/core/TableBody"
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd"
+import AssignmentReturnIcon from "@material-ui/icons/AssignmentReturn"
 import Fab from "@material-ui/core/Fab"
 import PrevPointCopy from "../Typography/PrevPointCopy"
 import { Link } from "react-router-dom"
 import { makeStyles } from "@material-ui/core/styles"
+import { SEARCH, SEP } from "../../constants"
 
 const useStyles = makeStyles(theme => ({
   mobileVisibility: {
@@ -63,14 +65,26 @@ const PrevPointTableBody = props => {
               <PrevPointCopy>{participant.race}</PrevPointCopy>
             </TableCell>
             <TableCell aria-label="tcell">
-              <Link
-                to="/existingParticipant/visits"
-                onClick={() => props.handleClick(participant)}
-              >
-                <Fab color="primary" size="small" aria-label="add">
-                  <AssignmentIndIcon />
+              {props.sidebarView === SEARCH && (
+                <Link
+                  to="/existingParticipant/visits"
+                  onClick={() => props.handleClick(participant)}
+                >
+                  <Fab color="primary" size="small" aria-label="add">
+                    <AssignmentIndIcon />
+                  </Fab>
+                </Link>
+              )}
+              {props.sidebarView === SEP && (
+                <Fab
+                  color="primary"
+                  size="small"
+                  aria-label="add"
+                  onClick={() => props.handleSEPPopulation(participant)}
+                >
+                  <AssignmentReturnIcon />
                 </Fab>
-              </Link>
+              )}
             </TableCell>
           </TableRow>
         ))
@@ -82,6 +96,8 @@ const PrevPointTableBody = props => {
 PrevPointTableBody.propTypes = {
   participants: PropTypes.array,
   handleClick: PropTypes.func,
+  sidebarView: PropTypes.string,
+  handleSEPPopulation: PropTypes.func,
 }
 
 export default PrevPointTableBody
