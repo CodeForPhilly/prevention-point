@@ -102,7 +102,7 @@ class ProgramsTests(BaseTestCase):
             "/api/programs/", follow=True, **headers
         )
         content = json.loads(response.content)
-        true_queue = [n for n in content if n["has_queue"] is not False]
+        true_queue = [n for n in content if n["has_queue"] is True]
         false_queue = [n for n in content if n["has_queue"] is False]
         self.assertTrue(len(true_queue), 4)
         self.assertTrue(len(false_queue), 5)
