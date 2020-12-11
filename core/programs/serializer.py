@@ -17,4 +17,4 @@ class ProgramForVisitSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Program
-        fields = ("id", "name", "is_closed", "is_frozen")
+        fields = ("id", "name", "is_closed", "is_frozen", "has_queue")
