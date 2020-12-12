@@ -53,7 +53,7 @@ const ExistingParticipantView = observer(() => {
     participantStore.getInsurers()
     participantStore.getPrograms()
     async function matchParticpantIdToParams() {
-      if (!participantStore.participant.id !== participantId) {
+      if (participantStore.participant.id !== parseInt(participantId, 10)) {
         // get participant data via param id if not in state or mismatch between state and route
         const ok = await participantStore.getParticipant(participantId)
         if (!ok) {

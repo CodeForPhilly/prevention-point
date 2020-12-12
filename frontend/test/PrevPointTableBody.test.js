@@ -44,7 +44,10 @@ describe("<PrevPointTableBody />", () => {
     render(
       <BrowserRouter>
         <PrevPointTableBody participants={mockParticipantsList} />
-      </BrowserRouter>
+      </BrowserRouter>,
+      {
+        container: document.body.appendChild(table),
+      }
     )
   })
 
@@ -53,7 +56,10 @@ describe("<PrevPointTableBody />", () => {
     const { getByText } = render(
       <BrowserRouter>
         <PrevPointTableBody participants={[]} />
-      </BrowserRouter>
+      </BrowserRouter>,
+      {
+        container: document.body.appendChild(table),
+      }
     )
     const tableBodyError = getByText(errorMessage)
     expect(tableBodyError).toBeInTheDocument()

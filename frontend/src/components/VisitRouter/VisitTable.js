@@ -27,7 +27,7 @@ const VisitTable = ({ fullName /** current participants visits*/ }) => {
               {`${fullName}'s previous visits`}
             </PrevPointHeading>
           </div>
-          <Table>
+          <Table aria-label="visits table">
             <PrevPointTableHead headerTitles={mockHeaderTitles} />
             <TableBody>
               <TableRow>

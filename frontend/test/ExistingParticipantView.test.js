@@ -1,8 +1,12 @@
 import { render } from "@testing-library/react"
 import React from "react"
+import { createMemoryHistory } from "history"
 import ExistingParticipantView from "../src/views/ExistingParticipantView"
-import { BrowserRouter } from "react-router-dom"
+import { Router, Route } from "react-router-dom"
 import { RootStore, RootStoreContext } from "../src/stores/RootStore"
+import api from "../src/api"
+
+jest.mock("../src/api")
 
 const mockRootStore = new RootStore()
 mockRootStore.ParticipantStore.setParticipant({
@@ -21,14 +25,137 @@ mockRootStore.ParticipantStore.setParticipant({
   maiden_name: "Hernandez",
 })
 
-describe("<ExistingParticipantView />", () => {
-  it("should render an ExistingParticipantView component", () => {
-    render(
-      <RootStoreContext.Provider value={mockRootStore}>
-        <BrowserRouter>
-          <ExistingParticipantView />
-        </BrowserRouter>
-      </RootStoreContext.Provider>
+// eslint-disable-next-line react/prop-types
+const StateAndRouterProviders = ({ children, state, history }) => (
+  //testing-library.com/docs/react-testing-library/setup#custom-render
+  <RootStoreContext.Provider value={state}>
+    <Router history={history}>
+      <Route path="/participants/:participantId"> {children} </Route>
+      <Route path="/404">the 404 page</Route>
+    </Router>
+  </RootStoreContext.Provider>
+)
+
+const renderWithRouter = (children, state, { route = "/" } = {}) => {
+  // https://testing-library.com/docs/example-react-router/
+  const history = createMemoryHistory()
+  history.push(route)
+  return render(StateAndRouterProviders({ children, state, history }))
+}
+
+describe("<ExistingParticipantView /> router basics", () => {
+  it("renders a participant form", () => {
+    const { getByLabelText } = renderWithRouter(
+      <ExistingParticipantView />,
+      mockRootStore,
+      { route: "/participants/6/" }
     )
+    expect(getByLabelText("Participant Form")).toBeInTheDocument()
+  })
+
+  it("renders a participant form", () => {
+    const { getByText, queryByLabelText, getByLabelText } = renderWithRouter(
+      <ExistingParticipantView />,
+      mockRootStore,
+      {
+        route: "/participants/6/",
+      }
+    )
+    expect(getByLabelText("Participant Form")).toBeInTheDocument()
+    expect(queryByLabelText("visits table")).toBeNull()
+    expect(getByText("Create Visit")).toBeInTheDocument()
+  })
+
+  it("renders the visits table when /visits/ is the path ending", () => {
+    const { getByLabelText, queryByText } = renderWithRouter(
+      <ExistingParticipantView />,
+      mockRootStore,
+      {
+        route: "/participants/6/visits",
+      }
+    )
+    expect(getByLabelText("Participant Form")).toBeInTheDocument()
+    expect(queryByText("Create Visit")).toBeNull()
+    expect(getByLabelText("visits table")).toBeInTheDocument()
+  })
+
+  it("renders the visits data when /visits/:id is the path ending", () => {
+    const { queryByText, getByLabelText } = renderWithRouter(
+      <ExistingParticipantView />,
+      mockRootStore,
+      {
+        route: "/participants/6/visits/32",
+      }
+    )
+    expect(getByLabelText("Participant Form")).toBeInTheDocument()
+    expect(queryByText("Create Visit")).toBeNull()
+    expect(queryByText("Visit Data")).toBeInTheDocument()
+  })
+})
+
+describe("<ExistingParticipantView /> mounting process", () => {
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
+  it("calls get insurers and get programs", () => {
+    const getInsurers = jest.spyOn(
+      mockRootStore.ParticipantStore,
+      "getInsurers"
+    )
+    const getPrograms = jest.spyOn(
+      mockRootStore.ParticipantStore,
+      "getPrograms"
+    )
+    renderWithRouter(<ExistingParticipantView />, mockRootStore, {
+      route: "/participants/6/",
+    })
+
+    expect(getInsurers).toHaveBeenCalled()
+    expect(getPrograms).toHaveBeenCalled()
+  })
+
+  it("does not try to get participant from server if route particpant id param mataches store id", () => {
+    const getParticipant = jest.spyOn(
+      mockRootStore.ParticipantStore,
+      "getParticipant"
+    )
+    renderWithRouter(<ExistingParticipantView />, mockRootStore, {
+      route: "/participants/6/",
+    })
+    expect(getParticipant).toHaveBeenCalledTimes(0)
+  })
+
+  it("tries to get participant from server if route particpant id param mataches store id", () => {
+    const getParticipant = jest.spyOn(
+      mockRootStore.ParticipantStore,
+      "getParticipant"
+    )
+    renderWithRouter(<ExistingParticipantView />, mockRootStore, {
+      route: "/participants/500/",
+    })
+    expect(getParticipant).toHaveBeenCalledTimes(1)
+  })
+
+  it("redirects to 404 if the server returns !ok", async () => {
+    api.getParticipantById = jest
+      .fn()
+      .mockResolvedValue({ ok: false, data: {} })
+    const history = createMemoryHistory()
+    history.push("/participants/500/")
+
+    // findbytext is async
+    const { findByText } = render(
+      StateAndRouterProviders({
+        children: <ExistingParticipantView />,
+        state: mockRootStore,
+        history,
+      })
+    )
+
+    const notFound = await findByText(/the 404 page/i)
+    expect(notFound).toBeInTheDocument()
+
+    expect(history.location.pathname).toEqual("/404/")
   })
 })

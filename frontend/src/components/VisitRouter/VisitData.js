@@ -13,7 +13,7 @@ if the project is improved, this view would become more complex
 import React from "react"
 import Grid from "@material-ui/core/Grid"
 import Container from "@material-ui/core/Container"
-import { PrevPointCopy } from "../Typography"
+import { PrevPointCopy, PrevPointHeading } from "../Typography"
 import { makeStyles } from "@material-ui/core"
 
 const VisitData = () => {
@@ -30,10 +30,13 @@ const VisitData = () => {
     <Container maxWidth="md">
       <Grid container>
         <Grid item xs={12}>
-          <PrevPointCopy className={classes.tempPadding}>
-            Will display the information about one visit including the sep data.
-            high permissions
-          </PrevPointCopy>
+          <div className={classes.tempPadding}>
+            <PrevPointHeading>Visit Data</PrevPointHeading>
+            <PrevPointCopy>
+              Will display the information about one visit including the sep
+              data. high permissions
+            </PrevPointCopy>
+          </div>
         </Grid>
       </Grid>
     </Container>

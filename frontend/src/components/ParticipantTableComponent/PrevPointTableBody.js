@@ -68,7 +68,7 @@ const PrevPointTableBody = props => {
             <TableCell aria-label="tcell">
               {props.sidebarView === SEARCH && (
                 <Link
-                  to="/participants/visits"
+                  to={`/participants/${participant.id}/visits`}
                   onClick={() => props.handleClick(participant)}
                 >
                   <Fab color="primary" size="small" aria-label="add">
