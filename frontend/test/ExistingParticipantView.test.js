@@ -50,6 +50,16 @@ describe("<ExistingParticipantView /> router basics", () => {
       mockRootStore,
       { route: "/participants/6/" }
     )
+
+    const fname = getByLabelText(/first name/i)
+    const lname = getByLabelText(/last name/i)
+    expect(fname.value).toEqual(
+      mockRootStore.ParticipantStore.participant.first_name
+    )
+    expect(lname.value).toEqual(
+      mockRootStore.ParticipantStore.participant.last_name
+    )
+
     expect(getByLabelText("Participant Form")).toBeInTheDocument()
   })
 
@@ -157,5 +167,45 @@ describe("<ExistingParticipantView /> mounting process", () => {
     expect(notFound).toBeInTheDocument()
 
     expect(history.location.pathname).toEqual("/404/")
+  })
+
+  it("updates the participant to match the url id", async () => {
+    const mockServerResponse = {
+      ok: true,
+      data: {
+        id: 1,
+        pp_id: "GFDRT",
+        sep_id: 10000,
+        first_name: "Jesse",
+        last_name: "Owens",
+        last_four_ssn: "7241",
+        race: "Black (African American)",
+        gender: "m",
+        date_of_birth: "1917-05-31",
+        start_date: "1989-12-05",
+        is_insured: false,
+        insurer: 2,
+        maiden_name: "Rodriguez",
+      },
+    }
+
+    api.getParticipantById = jest.fn().mockResolvedValue(mockServerResponse)
+    const history = createMemoryHistory()
+    history.push("/participants/1/")
+
+    const { findByLabelText } = render(
+      StateAndRouterProviders({
+        children: <ExistingParticipantView />,
+        state: mockRootStore,
+        history,
+      })
+    )
+
+    const fname = await findByLabelText(/first name/i)
+    const lname = await findByLabelText(/last name/i)
+    expect(fname.value).toEqual(mockServerResponse.data.first_name)
+    expect(lname.value).toEqual(mockServerResponse.data.last_name)
+
+    expect(history.location.pathname).toEqual("/participants/1/")
   })
 })
