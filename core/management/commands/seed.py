@@ -239,6 +239,7 @@ def create_programs(output=True):
     for program, services in DEFAULT_PROGRAMS.items():
         p = Program()
         p.name = program
+        p.has_queue = random_bool()
         p.full_clean()
         p.save()
 
