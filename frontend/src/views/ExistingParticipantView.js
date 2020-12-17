@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react"
 import { toJS } from "mobx"
 import { observer } from "mobx-react-lite"
-import { useHistory, Link } from "react-router-dom"
+import { useHistory, Link, useParams } from "react-router-dom"
 import { makeStyles } from "@material-ui/styles"
 import Grid from "@material-ui/core/Grid"
 import Container from "@material-ui/core/Container"
@@ -41,25 +41,30 @@ const ExistingParticipantView = observer(() => {
   const participantStore = rootStore.ParticipantStore
   // Utility store derived from root store
   const utilityStore = rootStore.UtilityStore
-  // set up history for routing pushes
+
+  const { participantId } = useParams()
   const history = useHistory()
 
   const existingParticipant = toJS(participantStore.participant)
   const insurers = toJS(participantStore.insurers)
 
   useEffect(() => {
-    // kick off api calls for insurance list from Mobx
+    // kick off api calls for relevant data
     participantStore.getInsurers()
-    // kick off api calls for program list from Mobx
     participantStore.getPrograms()
-    // -----------------------------------
-
-    // return to /participants page if current participant is not verified with an id
-    // add participants in NewParticipantView
-    if (!participantStore.participant.id) {
-      // todo: reset to empty  object?
-      history.push("/participants")
+    async function matchParticpantIdToParams() {
+      if (participantStore.participant.id !== parseInt(participantId, 10)) {
+        // get participant data via param id if not in state or mismatch between state and route
+        const ok = await participantStore.getParticipant(participantId)
+        if (!ok) {
+          participantStore.setDefaultParticipant()
+          participantStore.setDefaultVisit()
+          history.push("/404/")
+        }
+      }
     }
+
+    matchParticpantIdToParams()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -95,10 +100,15 @@ const ExistingParticipantView = observer(() => {
   const handleCancelEditParticipant = () => {
     if (participantStore.isEditing) {
       participantStore.setIsEditing(false)
-      participantStore.getParticipant()
+      participantStore.getParticipant(participantId)
     } else {
       participantStore.setIsEditing(true)
     }
+  }
+
+  //  this logic should be replaced by a loading component
+  if (!existingParticipant.id) {
+    return null
   }
 
   return (
@@ -137,12 +147,18 @@ const ExistingParticipantView = observer(() => {
         </Grid>
         <Grid container spacing={2} className={classes.TempNav}>
           <Grid item xs={12} sm={6} className={classes.ButtonCenter}>
-            <PrevPointButton component={Link} to="/existingParticipant">
+            <PrevPointButton
+              component={Link}
+              to={`/participants/${existingParticipant.id}`}
+            >
               Visit Form
             </PrevPointButton>
           </Grid>
           <Grid item xs={12} sm={6} className={classes.ButtonCenter}>
-            <PrevPointButton component={Link} to="/existingParticipant/visits">
+            <PrevPointButton
+              component={Link}
+              to={`/participants/${existingParticipant.id}/visits`}
+            >
               All Visits Table
             </PrevPointButton>
           </Grid>

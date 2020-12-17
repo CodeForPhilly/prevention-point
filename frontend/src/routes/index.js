@@ -17,7 +17,7 @@ const Routes = () => {
         <PrivateRoute exact path="/" component={AllQueues} />
         <PrivateRoute exact path="/participants" component={ParticipantList} />
         <PrivateRoute
-          path="/existingParticipant"
+          path="/participants/:participantId"
           component={ExistingParticipantView}
         />
         <PrivateRoute
