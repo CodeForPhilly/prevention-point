@@ -20,7 +20,7 @@ import { validateForm, VISIT_SCHEMA } from "../../validation/index"
 import { SNACKBAR_SEVERITY } from "../../constants"
 import { RootStoreContext } from "../../stores/RootStore"
 
-const VisitRouter = observer(() => {
+const VisitRouter = observer(({ participantId }) => {
   const history = useHistory()
 
   const rootStore = useContext(RootStoreContext)
@@ -47,9 +47,34 @@ const VisitRouter = observer(() => {
     await participantStore.getParticipantVisits(participantStore.participant.id)
   }
 
+  const getProtectedVisitData = async (visitId /* slug */) => {
+    // right now we really only have one type of Protected Data, SEP.
+    // in the future, program or service table entries can have a slug field, and that can be used in an api route back to whatever *_data we want to get data for
+    try {
+      // TODO
+      // send request to sepdata endpoint, with visitID as query parameter
+      // request endpoint should abort the request if there is no visit id query parameter, as we DO NOT want a list of all sep datas
+
+      //const ok = await participantStore.getVisitData(visitID, /* slug */)
+      const ok = false
+      if (!ok) {
+        throw new Error("temp error")
+        // return
+      }
+
+      history.push(`/participants/${participantId}/visits/${visitId}`)
+    } catch (e) {
+      // temp
+      utilityStore.setSnackbarState(
+        "SEP data by id not implemented yet, and you might not have permission anyway",
+        {
+          severity: SNACKBAR_SEVERITY.ERROR,
+        }
+      )
+    }
+  }
+
   const handleSubmitVisit = async () => {
-    // TODO: logic protecting against concurrent queue entries
-    // if existing visit we are coming from QueueTable, so update visit
     try {
       let validationErrors = await validateForm(existingVisit, VISIT_SCHEMA)
       if (validationErrors.length) {
@@ -103,6 +128,7 @@ const VisitRouter = observer(() => {
           fullName={fullName}
           getParticipantVisits={() => getParticipantVisits()}
           participantVisits={participantStore.visitList}
+          getProtectedVisitData={id => getProtectedVisitData(id)}
         />
       </Route>
       <Route

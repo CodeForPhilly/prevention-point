@@ -1,5 +1,4 @@
 import React from "react"
-import { Link } from "react-router-dom"
 import Grid from "@material-ui/core/Grid"
 import Paper from "@material-ui/core/Paper"
 import Fab from "@material-ui/core/Fab"
@@ -11,7 +10,12 @@ import { TableBody, TableCell, TableRow, Table } from "@material-ui/core"
 import PropTypes from "prop-types"
 import { useEffect } from "react"
 
-const VisitTable = ({ fullName, getParticipantVisits, participantVisits }) => {
+const VisitTable = ({
+  fullName,
+  getParticipantVisits,
+  participantVisits,
+  getProtectedVisitData,
+}) => {
   useEffect(() => {
     getParticipantVisits()
     //eslint-disable-next-line react-hooks/exhaustive-deps
@@ -63,13 +67,14 @@ const VisitTable = ({ fullName, getParticipantVisits, participantVisits }) => {
                       </PrevPointCopy>
                     </TableCell>
                     <TableCell>
-                      <Link
-                        to={`/participants/${visit.participant}/visits/${visit.id}`} //participant is just an id on this object
+                      <Fab
+                        color="primary"
+                        size="small"
+                        aria-label="add"
+                        onClick={() => getProtectedVisitData(visit.id)}
                       >
-                        <Fab color="primary" size="small" aria-label="add">
-                          <VerifiedUserIcon />
-                        </Fab>
-                      </Link>
+                        <VerifiedUserIcon />
+                      </Fab>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -86,6 +91,7 @@ VisitTable.propTypes = {
   fullName: PropTypes.string,
   getParticipantVisits: PropTypes.func,
   participantVisits: PropTypes.array,
+  getProtectedVisitData: PropTypes.func,
 }
 
 export default VisitTable
