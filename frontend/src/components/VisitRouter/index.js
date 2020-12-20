@@ -41,6 +41,12 @@ const VisitRouter = observer(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const getParticipantVisits = async () => {
+    // the route and the participant in store are validated in this component's parent, ExistingParticipantView
+    // thus there should be no need to pass any other id than the current participant in the store
+    await participantStore.getParticipantVisits(participantStore.participant.id)
+  }
+
   const handleSubmitVisit = async () => {
     // TODO: logic protecting against concurrent queue entries
     // if existing visit we are coming from QueueTable, so update visit
@@ -93,7 +99,11 @@ const VisitRouter = observer(() => {
         ) : null}
       </Route>
       <Route exact path="/participants/:participantId/visits">
-        <VisitTable fullName={fullName} />
+        <VisitTable
+          fullName={fullName}
+          getParticipantVisits={() => getParticipantVisits()}
+          participantVisits={participantStore.visitList}
+        />
       </Route>
       <Route
         exact

@@ -24,7 +24,7 @@ export class ParticipantStore {
   @observable routeToQueueTable = false
   @observable services = []
   @observable visitList = []
-  @observable isEditing = false
+  @observable isEditing = false // 'is editing an existing participant'
   @observable sites = []
   @observable currentSite = ""
   @computed get hasVisit() {
@@ -226,6 +226,22 @@ export class ParticipantStore {
       })
       this.rootStore.UtilityStore.setLoadingState(false)
       return false
+    }
+  })
+
+  getParticipantVisits = flow(function*(participantId) {
+    try {
+      const { ok, data, status } = yield api.getParticipantVisits(participantId)
+      if (!ok || !data) {
+        throw new Error(status)
+      }
+
+      this.setVisitsList(data)
+    } catch (error) {
+      const snackbarError = handleSnackbarError(error.message)
+      this.rootStore.UtilityStore.setSnackbarState(snackbarError.message, {
+        severity: snackbarError.severity,
+      })
     }
   })
   // called on  =>  ParticipantList.js
