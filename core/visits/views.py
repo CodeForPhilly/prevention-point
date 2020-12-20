@@ -1,7 +1,3 @@
-from django.core.exceptions import ObjectDoesNotExist
-from rest_framework.response import Response
-from rest_framework import status
-
 from core.viewsets import ModelViewSet
 from core.models import Visit
 from core.visits.serializer import VisitSerializer, PopulatedVisitSerializer

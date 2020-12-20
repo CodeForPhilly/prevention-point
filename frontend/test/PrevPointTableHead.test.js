@@ -9,11 +9,13 @@ const tableContainer = {
 
 describe("<PrevPointTableHead />", () => {
   it("should render a PrevPointTableHead component", () => {
-    render(<PrevPointTableHead />)
+    render(<PrevPointTableHead />, tableContainer)
   })
 
   it("should render a PrevPointTableHead and have a TableHead element", () => {
-    const { getByLabelText } = render(<PrevPointTableHead />, tableContainer)
+    const { getByLabelText } = render(<PrevPointTableHead />, {
+      container: document.body.appendChild(table),
+    })
     const tableHeadElement = getByLabelText(/thead/i)
     expect(tableHeadElement).toBeInTheDocument()
   })

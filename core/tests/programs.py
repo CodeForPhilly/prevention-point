@@ -92,3 +92,17 @@ class ProgramsTests(BaseTestCase):
         ).values()[0]
 
         self.assertTrue(updated_program['is_frozen'])
+
+    def test_filter_by_queue(self):
+        """
+        Ensure that the data has a "has_queue" field that can be filtered.
+        """
+        headers = self.auth_headers_for_user('internal_provider')
+        response = self.client.get(
+            "/api/programs/", follow=True, **headers
+        )
+        content = json.loads(response.content)
+        true_queue = [n for n in content if n["has_queue"] is True]
+        false_queue = [n for n in content if n["has_queue"] is False]
+        self.assertTrue(len(true_queue), 4)
+        self.assertTrue(len(false_queue), 5)

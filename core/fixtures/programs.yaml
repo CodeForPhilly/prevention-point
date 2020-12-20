@@ -3,43 +3,52 @@
   fields:
     name: TESTING
     is_closed: false
+    has_queue: true
 - model: core.program
   pk: 2
   fields:
     name: CM
     is_closed: false
+    has_queue: true
 - model: core.program
   pk: 3
   fields:
     name: SSHP
     is_closed: false
+    has_queue: true
 - model: core.program
   pk: 4
   fields:
     name: LEGAL
     is_closed: false
+    has_queue: true
 - model: core.program
   pk: 5
   fields:
     name: CRAFT
     is_closed: false
+    has_queue: false
 - model: core.program
   pk: 6
   fields:
     name: PHAN
     is_closed: false
+    has_queue: false
 - model: core.program
   pk: 7
   fields:
     name: STEP
     is_closed: false
+    has_queue: false
 - model: core.program
   pk: 8
   fields:
     name: BIENESTAR
     is_closed: false
+    has_queue: false
 - model: core.program
   pk: 9
   fields:
     name: SKWC
     is_closed: false
+    has_queue: false
