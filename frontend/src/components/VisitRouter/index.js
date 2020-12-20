@@ -1,8 +1,5 @@
-/* eslint-disable no-console */
 /*
-// it might be easier to maintain state integrity if we put the participant id in the route
-// '/existingParticipant/:participantId/*'
-
+future:
 we will have to differentiate
 navigating a single visit's medical visitData,
 and editing the top level visit info.
@@ -32,6 +29,7 @@ const VisitRouter = observer(() => {
   const existingVisit = toJS(participantStore.visit)
   const programList = toJS(participantStore.programs)
   const serviceList = toJS(participantStore.services)
+  const fullName = `${participantStore.participant.first_name} ${participantStore.participant.last_name}`
 
   useEffect(() => {
     // kick off api call for program list from Mobx
@@ -79,7 +77,7 @@ const VisitRouter = observer(() => {
 
   return (
     <Switch>
-      <Route exact path="/existingParticipant">
+      <Route exact path="/participants/:participantId">
         {Object.keys(participantStore.visit).length ? (
           <WithSubmit
             component={VisitForm}
@@ -94,10 +92,12 @@ const VisitRouter = observer(() => {
           />
         ) : null}
       </Route>
-      <Route exact path="/existingParticipant/visits" component={VisitTable} />
+      <Route exact path="/participants/:participantId/visits">
+        <VisitTable fullName={fullName} />
+      </Route>
       <Route
         exact
-        path="/existingParticipant/visitData"
+        path="/participants/:participantId/visits/:visitId"
         component={VisitData}
       />
     </Switch>

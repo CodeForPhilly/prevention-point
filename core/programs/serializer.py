@@ -8,4 +8,13 @@ class ProgramSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Program
-        fields = ("id", "name", "is_closed", "is_frozen", "services")  # related_name on model allows for services instead of service_set
+        fields = ("id", "name", "is_closed", "is_frozen", "services", "has_queue")  # related_name on model allows for services instead of service_set
+
+
+class ProgramForVisitSerializer(serializers.ModelSerializer):
+    """
+    Basic serializer for embedding programs into visits.
+    """
+    class Meta:
+        model = Program
+        fields = ("id", "name", "is_closed", "is_frozen", "has_queue")

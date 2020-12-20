@@ -4,32 +4,39 @@ here you can see all the data from the visit and
 fill out forms. this will have user based permissions on
 the backend ( for third party health providers )
 
+right now, we only care about displaying the sepData, so this can become more
+of a 'hard coded' display of data
 
-
-the api route would be
-'api/visit/:visit_id/populated/'
-
-the front end route may also benefit from id based path
-thus being '/existingParticipant/:participant_id/visits/:visit_id/'
-
-This Component is not very well defined yet, and could be come to different routes, such as:
-'/existingParticipant/:participant_id/visits/:visit_id/forms'
-'/existingParticipant/:participant_id/visits/:visit_id/data'
+if the project is improved, this view would become more complex
 */
 
 import React from "react"
 import Grid from "@material-ui/core/Grid"
 import Container from "@material-ui/core/Container"
-import { PrevPointCopy } from "../Typography"
+import { PrevPointCopy, PrevPointHeading } from "../Typography"
+import { makeStyles } from "@material-ui/core"
 
 const VisitData = () => {
+  const useStyles = makeStyles({
+    tempPadding: {
+      paddingTop: 100,
+      paddingBottom: 100,
+    },
+  })
+
+  const classes = useStyles()
+
   return (
     <Container maxWidth="md">
       <Grid container>
         <Grid item xs={12}>
-          <PrevPointCopy>
-            secret visit data and/or a form would go here
-          </PrevPointCopy>
+          <div className={classes.tempPadding}>
+            <PrevPointHeading>Visit Data</PrevPointHeading>
+            <PrevPointCopy>
+              Will display the information about one visit including the sep
+              data. high permissions
+            </PrevPointCopy>
+          </div>
         </Grid>
       </Grid>
     </Container>
