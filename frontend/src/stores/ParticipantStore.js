@@ -226,7 +226,6 @@ export class ParticipantStore {
     }
     this.rootStore.UtilityStore.setLoadingState(false)
   })
-  // called on  =>  ParticipantList.js
   getParticipants = flow(function*(params) {
     this.rootStore.UtilityStore.setLoadingState(true)
     try {
