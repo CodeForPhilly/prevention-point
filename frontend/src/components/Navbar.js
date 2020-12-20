@@ -25,6 +25,7 @@ const NavHeader = observer(({ drawerOpen, handleDrawerOpen, drawerWidth }) => {
       "& .navbar__logo": {
         marginRight: "auto",
       },
+      zIndex: 2,
     },
     appBarShift: {
       width: `calc(100% - ${drawerWidth}px)`,

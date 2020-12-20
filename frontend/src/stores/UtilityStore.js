@@ -13,6 +13,7 @@ export class UtilityStore {
     severity: SNACKBAR_SEVERITY.INFO,
     open: false,
   }
+  @observable loadingState = false
   // participant search
   @observable sidebarView = SEARCH
   @observable isDrawerOpen = false
@@ -45,6 +46,10 @@ export class UtilityStore {
       this.snackbarState.message = message
     }
     this.snackbarState.open = open
+  }
+
+  @action setLoadingState = isLoading => {
+    this.loadingState = isLoading
   }
 
   @action setSEPFormValues = participant => {

@@ -9,7 +9,6 @@ import IconButton from "@material-ui/core/IconButton"
 import MaterialTable from "material-table"
 import moment from "moment"
 import QueueTableDropdown from "./QueueTableDropdown/QueueTableDropdown"
-import { QueueStoreContext } from "../../../stores/QueueStore"
 import { RootStoreContext } from "../../../stores/RootStore"
 import NotesDialog from "../../NotesDialog"
 import { useHistory } from "react-router-dom"
@@ -27,9 +26,9 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const QueueTable = observer(({ queueData }) => {
-  const queueStore = useContext(QueueStoreContext)
   const rootStore = useContext(RootStoreContext)
   const participantStore = rootStore.ParticipantStore
+  const queueStore = rootStore.QueueStore
   const classes = useStyles()
   const [visibleDialog, setVisibleDialog] = useState(false)
   const [notesVisit, setNotesVisit] = useState(1)

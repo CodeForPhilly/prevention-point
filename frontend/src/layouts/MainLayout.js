@@ -19,6 +19,7 @@ const MainLayout = observer(props => {
     drawer: {
       width: drawerWidth,
       flexShrink: 0,
+      zIndex: 1,
     },
     drawerPaper: {
       width: drawerWidth,

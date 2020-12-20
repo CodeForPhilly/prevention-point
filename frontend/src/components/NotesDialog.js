@@ -9,11 +9,12 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import TextField from "@material-ui/core/TextField"
 
 import PrevPointButton from "./PrevPointButton"
-import { QueueStoreContext } from "../stores/QueueStore"
+import { RootStoreContext } from "../stores/RootStore"
 
 const NotesDialog = observer(
   ({ visibleDialog, toggleVisibleDialog, queueData, id }) => {
-    const queueStore = useContext(QueueStoreContext)
+    const rootStore = useContext(RootStoreContext)
+    const queueStore = rootStore.QueueStore
 
     const handleSubmit = (queueId, visitId) => {
       queueStore.patchVisit(queueId, visitId, {

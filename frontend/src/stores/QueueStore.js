@@ -48,6 +48,7 @@ export class QueueStore {
 
   getQueue = flow(function*(programId) {
     // takes programId, not queueIndex
+    this.rootStore.UtilityStore.setLoadingState(true)
     try {
       const { ok, data, status } = yield api.getQueue(programId)
       if (!ok) {
@@ -58,9 +59,11 @@ export class QueueStore {
       const errorMessage = handleError(error.message)
       throw errorMessage
     }
+    this.rootStore.UtilityStore.setLoadingState(false)
   })
 
   patchVisit = flow(function*(queueIndex, visitIndex, data) {
+    this.rootStore.UtilityStore.setLoadingState(true)
     try {
       const { ok, status } = yield api.patchVisit(visitIndex, data)
       if (!ok) {
@@ -72,9 +75,11 @@ export class QueueStore {
       const errorMessage = handleError(error.message)
       throw errorMessage
     }
+    this.rootStore.UtilityStore.setLoadingState(false)
   })
 
   updateStatus = flow(function*(queueIndex, visitIndex, eventType) {
+    this.rootStore.UtilityStore.setLoadingState(true)
     try {
       const body = {
         visit: visitIndex,
@@ -90,6 +95,7 @@ export class QueueStore {
       const errorMessage = handleError(error.message)
       throw errorMessage
     }
+    this.rootStore.UtilityStore.setLoadingState(false)
   })
 
   getNotes(queueIndex, visitId) {

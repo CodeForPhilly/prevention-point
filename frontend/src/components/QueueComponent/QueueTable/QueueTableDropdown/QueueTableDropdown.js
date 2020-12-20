@@ -2,10 +2,11 @@ import React, { useContext } from "react"
 import PropTypes, { oneOfType, string, number } from "prop-types"
 import MenuItem from "@material-ui/core/MenuItem"
 import Select from "@material-ui/core/Select"
-import { QueueStoreContext } from "../../../../stores/QueueStore"
+import { RootStoreContext } from "../../../../stores/RootStore"
 
 const QueueTableDropdown = props => {
-  const queueStore = useContext(QueueStoreContext)
+  const rootStore = useContext(RootStoreContext)
+  const queueStore = rootStore.QueueStore
   let value = props.initialValue
   const col = props.column
 

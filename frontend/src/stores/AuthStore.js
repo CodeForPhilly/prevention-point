@@ -39,6 +39,7 @@ export class AuthStore {
   }
 
   login = flow(function*(username, password) {
+    this.rootStore.UtilityStore.setLoadingState(true)
     try {
       const { ok, data, status } = yield api.createToken(username, password)
       if (!ok) {
@@ -52,6 +53,7 @@ export class AuthStore {
       const errorMessage = handleError(error.message)
       throw errorMessage
     }
+    this.rootStore.UtilityStore.setLoadingState(false)
   })
 }
 
