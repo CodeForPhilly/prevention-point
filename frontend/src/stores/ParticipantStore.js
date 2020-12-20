@@ -217,16 +217,16 @@ export class ParticipantStore {
       }
       this.setParticipant(data)
       // for redirect in exiting participant V
+      this.rootStore.UtilityStore.setLoadingState(false)
       return ok
     } catch (error) {
       const snackbarError = handleSnackbarError(error.message)
       this.rootStore.UtilityStore.setSnackbarState(snackbarError.message, {
         severity: snackbarError.severity,
       })
-
+      this.rootStore.UtilityStore.setLoadingState(false)
       return false
     }
-    this.rootStore.UtilityStore.setLoadingState(false)
   })
   // called on  =>  ParticipantList.js
   getParticipants = flow(function*(params) {
