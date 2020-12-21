@@ -64,6 +64,11 @@ export class ParticipantStore {
   }
   // ParticipantList Component Actions
   @action setParticipantsList = data => {
+    if (!Array.isArray(data)) {
+      // dev server bug workaround
+      this.participants = []
+      return
+    }
     this.participants = data
   }
 

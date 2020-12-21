@@ -1,5 +1,6 @@
 import React from "react"
 import Grid from "@material-ui/core/Grid"
+import { makeStyles } from "@material-ui/core"
 import Paper from "@material-ui/core/Paper"
 import Fab from "@material-ui/core/Fab"
 import Container from "@material-ui/core/Container"
@@ -16,6 +17,15 @@ const VisitTable = ({
   participantVisits,
   getProtectedVisitData,
 }) => {
+  const useStyles = makeStyles({
+    visitTable: {
+      marginTop: 50,
+      width: "100%",
+    },
+  })
+
+  const classes = useStyles()
+
   useEffect(() => {
     getParticipantVisits()
     //eslint-disable-next-line react-hooks/exhaustive-deps
@@ -39,7 +49,7 @@ const VisitTable = ({
             </PrevPointHeading>
           </div>
           <Paper>
-            <Table class="visits-table" aria-label="visits table">
+            <Table class={classes.visitTable} aria-label="visits table">
               <PrevPointTableHead
                 headerTitles={mockHeaderTitles}
                 forParticipantTable={false}
