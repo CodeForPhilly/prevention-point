@@ -52,9 +52,12 @@ const AllQueues = observer(() => {
     api
       .getPrograms()
       .then(({ data }) => {
-        data.sort((a, b) => a.id - b.id)
-        queueStore.setQueues(data)
-        return Promise.all(data.map(item => queueStore.getQueue(item.id)))
+        let filteredByQueue = data.filter(datum => datum.has_queue === true)
+        filteredByQueue.sort((a, b) => a.id - b.id)
+        queueStore.setQueues(filteredByQueue)
+        return Promise.all(
+          filteredByQueue.map(item => queueStore.getQueue(item.id))
+        )
       })
       .then(() => setQueuesLoaded(true))
   }, [queueStore])
