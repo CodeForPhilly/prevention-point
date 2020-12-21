@@ -64,6 +64,8 @@ const SepForm = ({
   const SEPNeedleFormRef = useRef()
   const history = useHistory()
 
+  const { participant_id, ...OtherSEPValues } = SEPFormValues
+
   useEffect(() => {
     return handleClear
   }, [])
@@ -77,7 +79,7 @@ const SepForm = ({
       SEPParticipantFormRef.current.resetForm({
         values: {
           ...SEPParticipantFormRef.current.initialValues,
-          ...SEPFormValues,
+          ...OtherSEPValues,
           site_id: SEPParticipantFormRef.current.values.site_id,
         },
       })
@@ -85,8 +87,10 @@ const SepForm = ({
     if (SEPNeedleFormRef.current) {
       SEPNeedleFormRef.current.resetForm()
     }
-    setParticipantId(SEPFormValues.sep_id)
-  }, [SEPFormValues])
+
+    setParticipantId(participant_id)
+    // eslint-disable-next-line camelcase
+  }, [OtherSEPValues, participant_id])
 
   const handleClear = () => {
     setParticipantId(null)
@@ -112,7 +116,7 @@ const SepForm = ({
         validateOnBlur={false}
         innerRef={SEPParticipantFormRef}
         initialValues={{
-          ...SEPFormValues,
+          ...OtherSEPValues,
           site_id: currentSite,
         }}
         validationSchema={SEPSearchSchema}
