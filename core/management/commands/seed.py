@@ -67,6 +67,7 @@ DEFAULT_PROGRAMS = {
     "SEP": ("NEEDLE EXCHANGE",),
 }
 
+HAS_QUEUE = ["TESTING", "CM", "SSHP", "LEGAL", "CRAFT", "PHAN", "STEP", "BIENESTAR", "SKWC"]
 
 class Command(BaseCommand):
     help = "seed database for testing and development."
@@ -239,7 +240,10 @@ def create_programs(output=True):
     for program, services in DEFAULT_PROGRAMS.items():
         p = Program()
         p.name = program
-        p.has_queue = random_bool()
+        if p.name in HAS_QUEUE:
+            p.has_queue = True
+        else:
+            p.has_queue = False
         p.full_clean()
         p.save()
 
