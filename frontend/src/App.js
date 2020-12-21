@@ -14,7 +14,7 @@ import CircularProgress from "@material-ui/core/CircularProgress"
 
 const useStyles = makeStyles(theme => ({
   backdrop: {
-    zIndex: 3,
+    zIndex: 1,
   },
   spinner: {
     color: theme.palette.background.default,

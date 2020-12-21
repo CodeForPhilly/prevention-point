@@ -15,11 +15,12 @@ const MainLayout = observer(props => {
   const useStyles = makeStyles(theme => ({
     root: {
       display: "flex",
+      position: "relative",
+      zIndex: 0,
     },
     drawer: {
       width: drawerWidth,
       flexShrink: 0,
-      zIndex: 1,
     },
     drawerPaper: {
       width: drawerWidth,
