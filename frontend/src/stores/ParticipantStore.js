@@ -164,6 +164,7 @@ export class ParticipantStore {
   // API Calls
   // called on  =>  QueueTable.js
   getInsurers = flow(function*() {
+    this.rootStore.UtilityStore.setLoadingState(true)
     try {
       const { ok, data, status } = yield api.getInsurers()
       if (!ok || !data) {
@@ -176,8 +177,10 @@ export class ParticipantStore {
         severity: snackbarError.severity,
       })
     }
+    this.rootStore.UtilityStore.setLoadingState(false)
   })
   getPrograms = flow(function*() {
+    this.rootStore.UtilityStore.setLoadingState(true)
     try {
       const { ok, data, status } = yield api.getPrograms()
       if (!ok || !data) {
@@ -203,8 +206,10 @@ export class ParticipantStore {
         severity: snackbarError.severity,
       })
     }
+    this.rootStore.UtilityStore.setLoadingState(false)
   })
   getParticipant = flow(function*(participantId) {
+    this.rootStore.UtilityStore.setLoadingState(true)
     try {
       const { ok, data, status } = yield api.getParticipantById(participantId)
       if (!ok || !data) {
@@ -212,18 +217,20 @@ export class ParticipantStore {
       }
       this.setParticipant(data)
       // for redirect in exiting participant V
+      this.rootStore.UtilityStore.setLoadingState(false)
       return ok
     } catch (error) {
       const snackbarError = handleSnackbarError(error.message)
       this.rootStore.UtilityStore.setSnackbarState(snackbarError.message, {
         severity: snackbarError.severity,
       })
-
+      this.rootStore.UtilityStore.setLoadingState(false)
       return false
     }
   })
   // called on  =>  ParticipantList.js
   getParticipants = flow(function*(params) {
+    this.rootStore.UtilityStore.setLoadingState(true)
     try {
       const { ok, data, status } = yield api.getParticipants(toJS(params))
       if (!ok || !data) {
@@ -237,8 +244,10 @@ export class ParticipantStore {
         severity: snackbarError.severity,
       })
     }
+    this.rootStore.UtilityStore.setLoadingState(false)
   })
   createParticipant = flow(function*() {
+    this.rootStore.UtilityStore.setLoadingState(true)
     if (this.routeToQueueTable) {
       this.setRouteToQueue(false)
     }
@@ -257,8 +266,10 @@ export class ParticipantStore {
         severity: snackbarError.severity,
       })
     }
+    this.rootStore.UtilityStore.setLoadingState(false)
   })
   createVisit = flow(function*() {
+    this.rootStore.UtilityStore.setLoadingState(true)
     try {
       this.setVisitParticipantId(this.participant.id)
       const { ok, data, status } = yield api.createVisits(toJS(this.visit))
@@ -273,8 +284,10 @@ export class ParticipantStore {
         severity: snackbarError.severity,
       })
     }
+    this.rootStore.UtilityStore.setLoadingState(false)
   })
   createNewFrontEndDeskEvents = flow(function*() {
+    this.rootStore.UtilityStore.setLoadingState(true)
     if (this.routeToQueueTable) {
       this.setRouteToQueue(false)
     }
@@ -293,8 +306,10 @@ export class ParticipantStore {
         severity: snackbarError.severity,
       })
     }
+    this.rootStore.UtilityStore.setLoadingState(false)
   })
   getVisits = flow(function*() {
+    this.rootStore.UtilityStore.setLoadingState(true)
     try {
       const { ok, data, status } = yield api.getVisits()
       if (!ok || !data) {
@@ -307,10 +322,12 @@ export class ParticipantStore {
         severity: snackbarError.severity,
       })
     }
+    this.rootStore.UtilityStore.setLoadingState(false)
   })
   // called on  =>  ParticipantInfo.js
   // only update basic facts about the participant
   updateParticipant = flow(function*() {
+    this.rootStore.UtilityStore.setLoadingState(true)
     try {
       const { ok, data, status } = yield api.updateParticipant(
         toJS(this.participant.id),
@@ -327,9 +344,11 @@ export class ParticipantStore {
         severity: snackbarError.severity,
       })
     }
+    this.rootStore.UtilityStore.setLoadingState(false)
   })
   // called on  =>  ParticipantInfo.js
   updateVisit = flow(function*() {
+    this.rootStore.UtilityStore.setLoadingState(true)
     if (this.routeToQueueTable) {
       this.setRouteToQueue(false)
     }
@@ -348,8 +367,10 @@ export class ParticipantStore {
         severity: snackbarError.severity,
       })
     }
+    this.rootStore.UtilityStore.setLoadingState(false)
   })
   getSites = flow(function*() {
+    this.rootStore.UtilityStore.setLoadingState(true)
     try {
       const { ok, data, status } = yield api.getSites()
       if (!ok || !data) {
@@ -362,6 +383,7 @@ export class ParticipantStore {
         severity: snackbarError.severity,
       })
     }
+    this.rootStore.UtilityStore.setLoadingState(false)
   })
   createSEP = flow(function*({
     program,
@@ -373,6 +395,7 @@ export class ParticipantStore {
     site,
     service,
   }) {
+    this.rootStore.UtilityStore.setLoadingState(true)
     let success = false
     try {
       const {
@@ -408,6 +431,7 @@ export class ParticipantStore {
         severity: snackbarError.severity,
       })
     }
+    this.rootStore.UtilityStore.setLoadingState(false)
     return success
   })
 }

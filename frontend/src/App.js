@@ -6,13 +6,25 @@ import api from "./api"
 import theme from "./style/theme"
 import RoutesIndex from "./routes"
 import { RootStoreContext } from "./stores/RootStore"
-
+import { makeStyles } from "@material-ui/core/styles"
 import Snackbar from "@material-ui/core/Snackbar"
 import Alert from "@material-ui/lab/Alert"
+import Backdrop from "@material-ui/core/Backdrop"
+import CircularProgress from "@material-ui/core/CircularProgress"
+
+const useStyles = makeStyles(theme => ({
+  backdrop: {
+    zIndex: 1,
+  },
+  spinner: {
+    color: theme.palette.background.default,
+  },
+}))
 
 const App = observer(() => {
   const rootStore = useContext(RootStoreContext)
   const utilityStore = rootStore.UtilityStore
+  const classes = useStyles()
 
   useEffect(() => {
     async function stillAuthenticated() {
@@ -52,6 +64,9 @@ const App = observer(() => {
           {utilityStore.snackbarState.message}
         </Alert>
       </Snackbar>
+      <Backdrop open={utilityStore.loadingState} className={classes.backdrop}>
+        <CircularProgress className={classes.spinner} />
+      </Backdrop>
     </MuiThemeProvider>
   )
 })

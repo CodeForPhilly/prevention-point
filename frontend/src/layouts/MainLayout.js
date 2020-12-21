@@ -15,6 +15,8 @@ const MainLayout = observer(props => {
   const useStyles = makeStyles(theme => ({
     root: {
       display: "flex",
+      position: "relative",
+      zIndex: 0,
     },
     drawer: {
       width: drawerWidth,

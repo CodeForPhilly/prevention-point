@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/styles"
 import { Tabs } from "@material-ui/core"
 import QueueTab from "../components/QueueComponent/QueueTab/QueueTab"
 import AppBar from "@material-ui/core/AppBar"
-import { QueueStoreContext } from "../stores/QueueStore"
+import { RootStoreContext } from "../stores/RootStore"
 import QueueTable from "../components/QueueComponent/QueueTable/QueueTable"
 import api from "../api"
 import PrevPointButton from "../components/PrevPointButton"
@@ -25,7 +25,8 @@ const useStyles = makeStyles(() => ({
 }))
 
 const AllQueues = observer(() => {
-  const queueStore = useContext(QueueStoreContext)
+  const rootStore = useContext(RootStoreContext)
+  const queueStore = rootStore.QueueStore
   const classes = useStyles()
   const [queuesLoaded, setQueuesLoaded] = useState(false)
   const [tabValue, setTabValue] = useState(0)
