@@ -90,3 +90,23 @@ class Sep_DataTestCase(BaseTestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         self.assertEqual(pre_post_entry_count, SepData.objects.count())
 
+    def test_filter_by_visit(self):
+        """
+        Test SepData objects can be filtered by visit_id using a query parameter.
+        """
+        # visit id that is present in sep_data.yaml fixture
+        visit_id = 2
+        headers = self.auth_headers_for_user('admin')
+        url = reverse('sepdata-list')
+
+        expected_ids = SepData.objects.filter(
+            visit_id=visit_id
+        ).values_list('id', flat=True)
+        response = self.client.get(url, data={'visit_id': visit_id}, format='json', follow=True, **headers)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(expected_ids), len(response.data))
+
+        expected_ids = set(expected_ids)
+        actual_ids = set(actual_object['id'] for actual_object in response.data)
+        self.assertEqual(expected_ids, actual_ids)
