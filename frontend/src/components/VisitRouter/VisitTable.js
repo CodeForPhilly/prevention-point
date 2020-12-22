@@ -49,7 +49,7 @@ const VisitTable = ({
             </PrevPointHeading>
           </div>
           <Paper>
-            <Table class={classes.visitTable} aria-label="visits table">
+            <Table className={classes.visitTable} aria-label="visits table">
               <PrevPointTableHead
                 headerTitles={mockHeaderTitles}
                 forParticipantTable={false}
