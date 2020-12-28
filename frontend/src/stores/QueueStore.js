@@ -51,13 +51,15 @@ export class QueueStore {
     this.rootStore.UtilityStore.setLoadingState(true)
     try {
       const { ok, data, status } = yield api.getQueue(programId)
-      if (!ok) {
+      if (!ok || !data) {
         throw new Error(status)
       }
       this.setQueue(programId, data)
     } catch (error) {
-      const errorMessage = handleError(error.message)
-      throw errorMessage
+      const snackbarError = handleError(error)
+      this.rootStore.UtilityStore.setSnackbarState(snackbarError, {
+        severity: "error",
+      })
     }
     this.rootStore.UtilityStore.setLoadingState(false)
   })
@@ -72,8 +74,10 @@ export class QueueStore {
       const programId = this.queues[queueIndex].id
       this.getQueue(programId)
     } catch (error) {
-      const errorMessage = handleError(error.message)
-      throw errorMessage
+      const snackbarError = handleError(error)
+      this.rootStore.UtilityStore.setSnackbarState(snackbarError, {
+        severity: "error",
+      })
     }
     this.rootStore.UtilityStore.setLoadingState(false)
   })
@@ -92,8 +96,10 @@ export class QueueStore {
       const programId = this.queues[queueIndex].id
       this.getQueue(programId)
     } catch (error) {
-      const errorMessage = handleError(error.message)
-      throw errorMessage
+      const snackbarError = handleError(error)
+      this.rootStore.UtilityStore.setSnackbarState(snackbarError, {
+        severity: "error",
+      })
     }
     this.rootStore.UtilityStore.setLoadingState(false)
   })
