@@ -4,6 +4,6 @@ import PrevPointTable from "./../src/components/ParticipantTableComponent/PrevPo
 
 describe("<PrevPointTable />", () => {
   it("should render a PrevPointTable component", () => {
-    render(<PrevPointTable participants={[]} />)
+    render(<PrevPointTable participants={[]} headerTitles={[]} />)
   })
 })

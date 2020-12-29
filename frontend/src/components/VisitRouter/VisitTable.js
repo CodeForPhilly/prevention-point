@@ -31,7 +31,7 @@ const VisitTable = ({
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fullName])
 
-  const mockHeaderTitles = [
+  const headerTitles = [
     { title: "Program", mobile: true },
     { title: "Service", mobile: true },
     { title: "Date", mobile: true },
@@ -51,12 +51,12 @@ const VisitTable = ({
           <Paper>
             <Table className={classes.visitTable} aria-label="visits table">
               <PrevPointTableHead
-                headerTitles={mockHeaderTitles}
+                headerTitles={headerTitles}
                 forParticipantTable={false}
               />
               <TableBody>
                 {participantVisits.map(visit => (
-                  <TableRow key={visit.id}>
+                  <TableRow aria-label="visit row" key={visit.id}>
                     <TableCell>
                       <PrevPointCopy>{visit.program.name}</PrevPointCopy>
                     </TableCell>
@@ -80,7 +80,7 @@ const VisitTable = ({
                       <Fab
                         color="primary"
                         size="small"
-                        aria-label="add"
+                        aria-label="get protected visit data"
                         onClick={() => getProtectedVisitData(visit.id)}
                       >
                         <VerifiedUserIcon />
