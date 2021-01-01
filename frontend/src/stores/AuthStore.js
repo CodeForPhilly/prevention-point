@@ -44,7 +44,7 @@ export class AuthStore {
       this.setUsername(data.username)
       this.setEmail(data.email)
     } catch (error) {
-      const snackbarError = handleSnackbarError(error)
+      const snackbarError = handleSnackbarError(error.message)
       this.rootStore.UtilityStore.setSnackbarState(snackbarError.message, {
         severity: snackbarError.severity,
       })

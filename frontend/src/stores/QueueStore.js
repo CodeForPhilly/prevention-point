@@ -56,7 +56,7 @@ export class QueueStore {
       }
       this.setQueue(programId, data)
     } catch (error) {
-      const snackbarError = handleSnackbarError(error)
+      const snackbarError = handleSnackbarError(error.message)
       this.rootStore.UtilityStore.setSnackbarState(snackbarError.message, {
         severity: snackbarError.severity,
       })
@@ -74,7 +74,7 @@ export class QueueStore {
       const programId = this.queues[queueIndex].id
       this.getQueue(programId)
     } catch (error) {
-      const snackbarError = handleSnackbarError(error)
+      const snackbarError = handleSnackbarError(error.message)
       this.rootStore.UtilityStore.setSnackbarState(snackbarError.message, {
         severity: snackbarError.severity,
       })
@@ -96,7 +96,7 @@ export class QueueStore {
       const programId = this.queues[queueIndex].id
       this.getQueue(programId)
     } catch (error) {
-      const snackbarError = handleSnackbarError(error)
+      const snackbarError = handleSnackbarError(error.message)
       this.rootStore.UtilityStore.setSnackbarState(snackbarError.message, {
         severity: snackbarError.severity,
       })
