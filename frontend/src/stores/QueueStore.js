@@ -2,7 +2,7 @@ import { observable, action, flow } from "mobx"
 import { createContext } from "react"
 import moment from "moment"
 import api from "../api"
-import { handleError } from "../error"
+import { handleSnackbarError } from "../error"
 
 export class QueueStore {
   constructor(rootStore) {
@@ -56,9 +56,9 @@ export class QueueStore {
       }
       this.setQueue(programId, data)
     } catch (error) {
-      const snackbarError = handleError(error)
-      this.rootStore.UtilityStore.setSnackbarState(snackbarError, {
-        severity: "error",
+      const snackbarError = handleSnackbarError(error)
+      this.rootStore.UtilityStore.setSnackbarState(snackbarError.message, {
+        severity: snackbarError.severity,
       })
     }
     this.rootStore.UtilityStore.setLoadingState(false)
@@ -74,9 +74,9 @@ export class QueueStore {
       const programId = this.queues[queueIndex].id
       this.getQueue(programId)
     } catch (error) {
-      const snackbarError = handleError(error)
-      this.rootStore.UtilityStore.setSnackbarState(snackbarError, {
-        severity: "error",
+      const snackbarError = handleSnackbarError(error)
+      this.rootStore.UtilityStore.setSnackbarState(snackbarError.message, {
+        severity: snackbarError.severity,
       })
     }
     this.rootStore.UtilityStore.setLoadingState(false)
@@ -96,9 +96,9 @@ export class QueueStore {
       const programId = this.queues[queueIndex].id
       this.getQueue(programId)
     } catch (error) {
-      const snackbarError = handleError(error)
-      this.rootStore.UtilityStore.setSnackbarState(snackbarError, {
-        severity: "error",
+      const snackbarError = handleSnackbarError(error)
+      this.rootStore.UtilityStore.setSnackbarState(snackbarError.message, {
+        severity: snackbarError.severity,
       })
     }
     this.rootStore.UtilityStore.setLoadingState(false)

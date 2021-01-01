@@ -1,7 +1,7 @@
 import { observable, action, flow } from "mobx"
 import { createContext } from "react"
 import api from "../api"
-import { handleError } from "../error"
+import { handleSnackbarError } from "../error"
 
 export class AuthStore {
   constructor(rootStore) {
@@ -44,9 +44,9 @@ export class AuthStore {
       this.setUsername(data.username)
       this.setEmail(data.email)
     } catch (error) {
-      const snackbarError = handleError(error)
-      this.rootStore.UtilityStore.setSnackbarState(snackbarError, {
-        severity: "error",
+      const snackbarError = handleSnackbarError(error)
+      this.rootStore.UtilityStore.setSnackbarState(snackbarError.message, {
+        severity: snackbarError.severity,
       })
     }
     this.rootStore.UtilityStore.setLoadingState(false)
