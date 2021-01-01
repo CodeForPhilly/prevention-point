@@ -9,13 +9,16 @@ const tableContainer = {
 
 describe("<PrevPointTableHead />", () => {
   it("should render a PrevPointTableHead component", () => {
-    render(<PrevPointTableHead />, tableContainer)
+    render(<PrevPointTableHead headerTitles={[]} />, tableContainer)
   })
 
   it("should render a PrevPointTableHead and have a TableHead element", () => {
-    const { getByLabelText } = render(<PrevPointTableHead />, {
-      container: document.body.appendChild(table),
-    })
+    const { getByLabelText } = render(
+      <PrevPointTableHead headerTitles={[]} />,
+      {
+        container: document.body.appendChild(table),
+      }
+    )
     const tableHeadElement = getByLabelText(/thead/i)
     expect(tableHeadElement).toBeInTheDocument()
   })
@@ -36,5 +39,23 @@ describe("<PrevPointTableHead />", () => {
     )
     const tableCellList = getAllByLabelText("cell")
     expect(tableCellList).toHaveLength(8)
+  })
+
+  it("should have 7 columns if forParticipantTable is false", () => {
+    const titles = [
+      "PPID",
+      "First Name",
+      "Last Name",
+      "SEP ID",
+      "Gender",
+      "DOB",
+      "Race",
+    ]
+    const { getAllByLabelText } = render(
+      <PrevPointTableHead forParticipantTable={false} headerTitles={titles} />,
+      tableContainer
+    )
+    const tableCellList = getAllByLabelText("cell")
+    expect(tableCellList).toHaveLength(7)
   })
 })

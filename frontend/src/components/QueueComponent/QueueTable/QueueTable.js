@@ -124,7 +124,7 @@ const QueueTable = observer(({ queueData }) => {
                 notes: rowData.notes ? rowData.notes : "",
                 urgency: rowData.urgency,
               })
-              history.push(`/participants/${rowData.id}`)
+              history.push(`/participants/${rowData.participantId}`)
             },
           },
         ]}

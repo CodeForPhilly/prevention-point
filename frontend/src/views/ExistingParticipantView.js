@@ -164,7 +164,7 @@ const ExistingParticipantView = observer(() => {
           </Grid>
         </Grid>
       </Container>
-      <VisitRouter />
+      <VisitRouter participantId={participantId} />
     </>
   )
 })
