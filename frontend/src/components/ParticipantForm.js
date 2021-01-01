@@ -188,7 +188,7 @@ const ParticipantForm = ({
       </Grid>
       {participantInfo.is_insured && (
         <Grid item xs={12} md={6}>
-          <FormControl>
+          <FormControl disabled={isDisabled}>
             <InputLabel id="insurance-select">Select Insurance</InputLabel>
             <Select
               name="insurer"

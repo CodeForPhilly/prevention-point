@@ -6,6 +6,7 @@ import {
   createParticipant,
   updateParticipant,
   getParticipantById,
+  getParticipantVisits,
 } from "./participantEndpoints"
 import { createToken, verifyToken } from "./authEndpoints"
 import { getQueue } from "./queueEndpoints"
@@ -47,6 +48,7 @@ const create = () => {
     createParticipant: createParticipant(api),
     updateParticipant: updateParticipant(api),
     getParticipantById: getParticipantById(api),
+    getParticipantVisits: getParticipantVisits(api),
     getVisits: getVisits(api),
     updateVisits: updateVisits(api),
     createVisits: createVisits(api),

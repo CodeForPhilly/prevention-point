@@ -25,6 +25,9 @@ export const getParticipantByName = api => async (firstname, lastname) =>
 export const getParticipant = api => async id =>
   await api.get(`/participants/${id}`)
 
+export const getParticipantVisits = api => async id =>
+  await api.get(`/participants/${id}/visits/`)
+
 export const updateParticipant = api => async (id, body) =>
   await api.put(`/participants/${id}/`, body)
 

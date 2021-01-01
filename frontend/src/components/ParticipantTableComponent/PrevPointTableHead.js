@@ -18,12 +18,17 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const PrevPointTableHead = ({ headerTitles, sidebarView }) => {
+const PrevPointTableHead = ({
+  headerTitles,
+  sidebarView,
+  forParticipantTable = true,
+}) => {
   const classes = useStyles()
   const [linkTitle, setLinkTitle] = useState({
     mobile: true,
     title: sidebarView === SEARCH ? "Edit Participant" : "Populate SEP Form",
   })
+  const [allTitles, setAllTitles] = useState(headerTitles)
 
   useEffect(() => {
     if (sidebarView === SEARCH) {
@@ -33,11 +38,18 @@ const PrevPointTableHead = ({ headerTitles, sidebarView }) => {
     }
   }, [sidebarView])
 
+  useEffect(() => {
+    if (forParticipantTable) {
+      // if this header component starts to be used a lot, we can swap the default value to false
+      setAllTitles([...headerTitles, linkTitle])
+    }
+  }, [forParticipantTable, headerTitles, linkTitle])
+
   return (
     <TableHead aria-label="thead">
       <TableRow>
         {headerTitles
-          ? [...headerTitles, linkTitle].map(({ title, mobile }, index) => (
+          ? allTitles.map(({ title, mobile }, index) => (
               <TableCell
                 key={`${title}_${index}`}
                 aria-label="cell"
@@ -55,6 +67,7 @@ const PrevPointTableHead = ({ headerTitles, sidebarView }) => {
 PrevPointTableHead.propTypes = {
   headerTitles: PropTypes.array,
   sidebarView: PropTypes.string,
+  forParticipantTable: PropTypes.bool,
 }
 
 export default PrevPointTableHead
