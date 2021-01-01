@@ -1,7 +1,7 @@
 import { observable, action, flow } from "mobx"
 import { createContext } from "react"
 import api from "../api"
-import { handleError } from "../error"
+import { handleSnackbarError } from "../error"
 
 export class AuthStore {
   constructor(rootStore) {
@@ -11,7 +11,6 @@ export class AuthStore {
   @observable isAuthenticated = null
   @observable username = null
   @observable email = null
-  @observable error = null
 
   @action
   setIsAuthenticated(auth) {
@@ -26,10 +25,6 @@ export class AuthStore {
     this.username = email
   }
   @action
-  setError(error) {
-    this.error = error
-  }
-  @action
   logout() {
     document.cookie = "JWT_ACCESS=; expires=Thu, 01 Jan 1970 00:00:01 GMT;"
     document.cookie = "JWT_REFRESH=; expires=Thu, 01 Jan 1970 00:00:01 GMT;"
@@ -42,16 +37,17 @@ export class AuthStore {
     this.rootStore.UtilityStore.setLoadingState(true)
     try {
       const { ok, data, status } = yield api.createToken(username, password)
-      if (!ok) {
+      if (!ok || !data) {
         throw new Error(status)
       }
       this.setIsAuthenticated(true)
       this.setUsername(data.username)
       this.setEmail(data.email)
-      this.setError(data.null)
     } catch (error) {
-      const errorMessage = handleError(error.message)
-      throw errorMessage
+      const snackbarError = handleSnackbarError(error.message)
+      this.rootStore.UtilityStore.setSnackbarState(snackbarError.message, {
+        severity: snackbarError.severity,
+      })
     }
     this.rootStore.UtilityStore.setLoadingState(false)
   })

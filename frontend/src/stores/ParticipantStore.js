@@ -177,7 +177,7 @@ export class ParticipantStore {
       }
       this.setInsurers(data)
     } catch (error) {
-      const snackbarError = handleSnackbarError(error.message)
+      const snackbarError = handleSnackbarError(error)
       this.rootStore.UtilityStore.setSnackbarState(snackbarError.message, {
         severity: snackbarError.severity,
       })
