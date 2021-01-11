@@ -7,10 +7,11 @@ import { RootStore, RootStoreContext } from "../src/stores/RootStore"
 import api from "../src/api"
 
 jest.mock("../src/api")
-
+const participantId = 6
 const mockRootStore = new RootStore()
-mockRootStore.ParticipantStore.setParticipant({
-  id: 6,
+const history = createMemoryHistory()
+const mockParticipant = {
+  id: participantId,
   pp_id: "ZG0DI",
   sep_id: 41673,
   first_name: "Erik",
@@ -23,32 +24,38 @@ mockRootStore.ParticipantStore.setParticipant({
   is_insured: false,
   insurer: 4,
   maiden_name: "Hernandez",
-})
+}
 
 // eslint-disable-next-line react/prop-types
-const StateAndRouterProviders = ({ children, state, history }) => (
+const StateAndRouterProviders = ({ children, state, history }) => {
   //testing-library.com/docs/react-testing-library/setup#custom-render
-  <RootStoreContext.Provider value={state}>
-    <Router history={history}>
-      <Route path="/participants/:participantId"> {children} </Route>
-      <Route path="/404">the 404 page</Route>
-    </Router>
-  </RootStoreContext.Provider>
-)
+  return (
+    <RootStoreContext.Provider value={state}>
+      <Router history={history}>
+        <Route path="/participants/:participantId"> {children} </Route>
+        <Route path="/404">the 404 page</Route>
+      </Router>
+    </RootStoreContext.Provider>
+  )
+}
 
+// https://testing-library.com/docs/example-react-router/
 const renderWithRouter = (children, state, { route = "/" } = {}) => {
-  // https://testing-library.com/docs/example-react-router/
-  const history = createMemoryHistory()
   history.push(route)
   return render(StateAndRouterProviders({ children, state, history }))
 }
 
 describe("<ExistingParticipantView /> router basics", () => {
+  beforeEach(() => {
+    mockRootStore.ParticipantStore.setParticipant(mockParticipant)
+    mockRootStore.ParticipantStore.setVisitData({})
+  })
+
   it("renders a participant form", () => {
     const { getByLabelText } = renderWithRouter(
       <ExistingParticipantView />,
       mockRootStore,
-      { route: "/participants/6/" }
+      { route: `/participants/${participantId}` }
     )
 
     const fname = getByLabelText(/first name/i)
@@ -68,7 +75,7 @@ describe("<ExistingParticipantView /> router basics", () => {
       <ExistingParticipantView />,
       mockRootStore,
       {
-        route: "/participants/6/",
+        route: `/participants/${participantId}`,
       }
     )
     expect(getByLabelText("Participant Form")).toBeInTheDocument()
@@ -81,7 +88,7 @@ describe("<ExistingParticipantView /> router basics", () => {
       <ExistingParticipantView />,
       mockRootStore,
       {
-        route: "/participants/6/visits",
+        route: `/participants/${participantId}/visits`,
       }
     )
     expect(getByLabelText("Participant Form")).toBeInTheDocument()
@@ -90,11 +97,20 @@ describe("<ExistingParticipantView /> router basics", () => {
   })
 
   it("renders the visits data when /visits/:id is the path ending", () => {
+    // for visit data route to render correctly
+    mockRootStore.ParticipantStore.setVisitData({
+      id: 1,
+      created_at: new Date(),
+      site: { name: "site name" },
+      needles_in: 1,
+      needles_out: 1,
+    })
+
     const { queryByText, getByLabelText } = renderWithRouter(
       <ExistingParticipantView />,
       mockRootStore,
       {
-        route: "/participants/6/visits/32",
+        route: `/participants/${participantId}/visits/1`,
       }
     )
     expect(getByLabelText("Participant Form")).toBeInTheDocument()
@@ -104,6 +120,11 @@ describe("<ExistingParticipantView /> router basics", () => {
 })
 
 describe("<ExistingParticipantView /> mounting process", () => {
+  beforeEach(() => {
+    mockRootStore.ParticipantStore.setParticipant(mockParticipant)
+    mockRootStore.ParticipantStore.setVisitData({})
+  })
+
   afterEach(() => {
     jest.clearAllMocks()
   })
@@ -118,7 +139,7 @@ describe("<ExistingParticipantView /> mounting process", () => {
       "getPrograms"
     )
     renderWithRouter(<ExistingParticipantView />, mockRootStore, {
-      route: "/participants/6/",
+      route: `/participants/${participantId}`,
     })
 
     expect(getInsurers).toHaveBeenCalled()
@@ -131,7 +152,7 @@ describe("<ExistingParticipantView /> mounting process", () => {
       "getParticipant"
     )
     renderWithRouter(<ExistingParticipantView />, mockRootStore, {
-      route: "/participants/6/",
+      route: `/participants/${participantId}`,
     })
     expect(getParticipant).toHaveBeenCalledTimes(0)
   })
@@ -147,33 +168,46 @@ describe("<ExistingParticipantView /> mounting process", () => {
     expect(getParticipant).toHaveBeenCalledTimes(1)
   })
 
+  it("redirects to /participants/:participantId/visits if participantStore.visitData is an empty {}", async () => {
+    const { findByLabelText } = renderWithRouter(
+      <ExistingParticipantView />,
+      mockRootStore,
+      {
+        route: `/participants/${participantId}/visits/32`,
+      }
+    )
+
+    const table = await findByLabelText(/visits table/i)
+    expect(table).toBeInTheDocument()
+    expect(history.location.pathname).toEqual(
+      `/participants/${participantId}/visits`
+    )
+  })
+
   it("redirects to 404 if the server returns !ok", async () => {
     api.getParticipantById = jest
       .fn()
       .mockResolvedValue({ ok: false, data: {} })
-    const history = createMemoryHistory()
-    history.push("/participants/500/")
 
-    // findbytext is async
-    const { findByText } = render(
-      StateAndRouterProviders({
-        children: <ExistingParticipantView />,
-        state: mockRootStore,
-        history,
-      })
+    const { findByText } = renderWithRouter(
+      <ExistingParticipantView />,
+      mockRootStore,
+      {
+        route: "/participants/500/",
+      }
     )
 
     const notFound = await findByText(/the 404 page/i)
     expect(notFound).toBeInTheDocument()
-
     expect(history.location.pathname).toEqual("/404/")
   })
 
   it("updates the participant to match the url id", async () => {
+    const newId = 10
     const mockServerResponse = {
       ok: true,
       data: {
-        id: 1,
+        id: newId,
         pp_id: "GFDRT",
         sep_id: 10000,
         first_name: "Jesse",
@@ -190,15 +224,12 @@ describe("<ExistingParticipantView /> mounting process", () => {
     }
 
     api.getParticipantById = jest.fn().mockResolvedValue(mockServerResponse)
-    const history = createMemoryHistory()
-    history.push("/participants/1/")
-
-    const { findByLabelText } = render(
-      StateAndRouterProviders({
-        children: <ExistingParticipantView />,
-        state: mockRootStore,
-        history,
-      })
+    const { findByLabelText } = renderWithRouter(
+      <ExistingParticipantView />,
+      mockRootStore,
+      {
+        route: `/participants/${newId}`,
+      }
     )
 
     const fname = await findByLabelText(/first name/i)
@@ -206,6 +237,6 @@ describe("<ExistingParticipantView /> mounting process", () => {
     expect(fname.value).toEqual(mockServerResponse.data.first_name)
     expect(lname.value).toEqual(mockServerResponse.data.last_name)
 
-    expect(history.location.pathname).toEqual("/participants/1/")
+    expect(history.location.pathname).toEqual(`/participants/${newId}`)
   })
 })

@@ -31,6 +31,9 @@ const VisitData = ({ visitData }) => {
   const { participantId } = useParams()
 
   useEffect(() => {
+    // this is send the user back to existingParticipantView with the visit table.
+    // this protects VisitData from attempting to load sensitive data just after login or refresh
+
     if (!visitData || !visitData.id) {
       history.push(`/participants/${participantId}/visits`)
     }
@@ -40,8 +43,8 @@ const VisitData = ({ visitData }) => {
     return null
   }
 
+  // todo fix markup
   return (
-    // really ugly markup sorry
     <Container maxWidth="md">
       <Grid container>
         <Grid item xs={12}>
