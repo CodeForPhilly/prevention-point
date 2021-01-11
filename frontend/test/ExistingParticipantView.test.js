@@ -101,7 +101,7 @@ describe("<ExistingParticipantView /> router basics", () => {
     mockRootStore.ParticipantStore.setVisitData({
       id: 1,
       created_at: new Date(),
-      site: { name: "site name" },
+      site: { site_name: "site name" },
       needles_in: 1,
       needles_out: 1,
     })
