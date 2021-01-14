@@ -105,7 +105,7 @@ export class ParticipantStore {
       case "is_insured":
         this.participant.is_insured = value === "true"
         if (!this.participant.is_insured) {
-          this.participant.insurer = " "
+          this.participant.insurer = ""
         }
         break
       case "pp_id":
@@ -355,7 +355,6 @@ export class ParticipantStore {
   // called on  =>  ParticipantInfo.js
   // only update basic facts about the participant
   updateParticipant = flow(function*() {
-    this.rootStore.UtilityStore.setLoadingState(true)
     try {
       const { ok, data, status } = yield api.updateParticipant(
         toJS(this.participant.id),

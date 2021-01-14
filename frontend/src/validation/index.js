@@ -130,10 +130,10 @@ const participantSchema = Yup.object().shape({
     .max(100),
   is_insured: Yup.boolean().required(),
   insurer: Yup.string()
-    .required()
+    .notRequired()
     .when("is_insured", {
       is: false,
-      then: Yup.string().matches(/^\s$/),
+      then: Yup.string().matches(/^\d+$/, { excludeEmptyString: true }),
       otherwise: Yup.string().matches(/^\d+$/),
     }),
 })
