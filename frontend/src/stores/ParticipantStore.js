@@ -105,11 +105,14 @@ export class ParticipantStore {
       case "is_insured":
         this.participant.is_insured = value === "true"
         if (!this.participant.is_insured) {
-          this.participant.insurer = ""
+          this.participant.insurer = " "
         }
         break
       case "pp_id":
         this.setPPId(value)
+        break
+      case "insurer":
+        this.setInsurer(value)
         break
       default:
         this.participant[name] = value
@@ -128,6 +131,10 @@ export class ParticipantStore {
     const serviceListing = this.programs.find(program => program.id === data)
     this.visit.program = data
     this.setServiceList(serviceListing.services)
+  }
+
+  @action setInsurer = data => {
+    this.participant.insurer = data.toString()
   }
 
   @action handleVisitChange = ({ name, value }) => {
