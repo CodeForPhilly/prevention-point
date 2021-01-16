@@ -27,6 +27,7 @@ export class ParticipantStore {
   @observable isEditing = false // 'is editing an existing participant'
   @observable sites = []
   @observable currentSite = ""
+  @observable visitData = {}
   @computed get hasVisit() {
     return this.visitList.map(visit => {
       return visit.participant === this.participant.id ? true : false
@@ -159,6 +160,10 @@ export class ParticipantStore {
 
   @action setCurrentSite = currentSite => {
     this.currentSite = currentSite
+  }
+
+  @action setVisitData = data => {
+    this.visitData = data
   }
 
   // Utils
@@ -454,6 +459,44 @@ export class ParticipantStore {
     }
     this.rootStore.UtilityStore.setLoadingState(false)
     return success
+  })
+
+  getProtectedVisitData = flow(function*(visitId /**slug */) {
+    this.rootStore.UtilityStore.setLoadingState(true)
+    try {
+      // "hard coded" endpoint; would eventually take slug in path
+      const { ok, data, status } = yield api.getSepDataByVisitId(visitId)
+
+      if (!ok || !data) {
+        throw new Error(status)
+      }
+
+      const {
+        ok: siteOk,
+        data: siteData,
+        status: siteStatus,
+      } = yield api.getSite(data[0].site)
+
+      if (!siteOk || !siteData) {
+        throw new Error(siteStatus)
+      }
+
+      // there will only be one data object per visit at the moment
+      const visitData = { ...data[0], site: siteData }
+
+      this.setVisitData(visitData)
+      this.rootStore.UtilityStore.setLoadingState(false)
+
+      return ok
+    } catch (error) {
+      const snackbarError = handleSnackbarError(error.message)
+      this.rootStore.UtilityStore.setSnackbarState(snackbarError.message, {
+        severity: snackbarError.severity,
+      })
+    }
+    this.rootStore.UtilityStore.setLoadingState(false)
+
+    return false
   })
 }
 

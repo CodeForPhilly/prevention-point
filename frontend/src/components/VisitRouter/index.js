@@ -55,8 +55,9 @@ const VisitRouter = observer(({ participantId }) => {
       // send request to sepdata endpoint, with visitID as query parameter
       // request endpoint should abort the request if there is no visit id query parameter, as we DO NOT want a list of all sep datas
 
-      //const ok = await participantStore.getVisitData(visitID, /* slug */)
-      const ok = false
+      const ok = await participantStore.getProtectedVisitData(
+        visitId /* slug */
+      )
       if (!ok) {
         throw new Error("temp error")
         // return
@@ -131,11 +132,9 @@ const VisitRouter = observer(({ participantId }) => {
           getProtectedVisitData={id => getProtectedVisitData(id)}
         />
       </Route>
-      <Route
-        exact
-        path="/participants/:participantId/visits/:visitId"
-        component={VisitData}
-      />
+      <Route exact path="/participants/:participantId/visits/:visitId">
+        <VisitData visitData={toJS(participantStore.visitData)} />
+      </Route>
     </Switch>
   )
 })
