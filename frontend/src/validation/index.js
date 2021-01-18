@@ -129,17 +129,19 @@ const participantSchema = Yup.object().shape({
     .notRequired()
     .max(100),
   is_insured: Yup.boolean().required(),
-  insurer: Yup.string().when("is_insured", {
-    is: false,
-    then: Yup.string().notRequired(),
-    otherwise: Yup.number().required(),
-  }),
+  insurer: Yup.string()
+    .notRequired()
+    .when("is_insured", {
+      is: false,
+      then: Yup.string().matches(/^\d+$/, { excludeEmptyString: true }),
+      otherwise: Yup.string().matches(/^\d+$/),
+    }),
 })
 
 const validateForm = (data, inputSchema) => {
   let errors = []
   let schema
-  if (inputSchema === "VISIT_SCHEMA") {
+  if (inputSchema === VISIT_SCHEMA) {
     schema = visitSchema
   } else {
     schema = participantSchema
