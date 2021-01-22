@@ -8,3 +8,4 @@ class SepData(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     needles_in = models.IntegerField()
     needles_out = models.IntegerField()
+    needles_exchanged = models.IntegerField(default=None, null=True)

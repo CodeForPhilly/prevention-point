@@ -62,6 +62,7 @@ const SEPNeedleErrorMessage = "Please complete all fields"
 const SEPNeedleSchema = Yup.object().shape({
   needles_in: Yup.number().required(SEPNeedleErrorMessage),
   needles_out: Yup.number().required(SEPNeedleErrorMessage),
+  needles_exchanged: Yup.number().defined(SEPNeedleErrorMessage),
   visit_date: Yup.string().required(SEPNeedleErrorMessage),
 })
 

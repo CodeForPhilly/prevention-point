@@ -423,6 +423,7 @@ export class ParticipantStore {
     participant,
     needles_in,
     needles_out,
+    needles_exchaged,
     visit_date,
     site,
     service,
@@ -447,6 +448,7 @@ export class ParticipantStore {
       const { ok, data, status } = yield api.createSEP({
         needles_in: needles_in,
         needles_out: needles_out,
+        needles_exchanged: needles_exchaged,
         site: site,
         service: service,
         visit: visitData.id,
