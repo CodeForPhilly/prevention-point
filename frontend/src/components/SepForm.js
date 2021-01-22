@@ -78,6 +78,13 @@ const SepForm = ({
   }, [participantStore])
 
   useEffect(() => {
+    utilityStore.getServiceBySlug("sep-needle-exchange")
+    return function cleanup() {
+      utilityStore.setServiceSlugResponse({})
+    }
+  }, [utilityStore])
+
+  useEffect(() => {
     if (SEPParticipantFormRef.current) {
       SEPParticipantFormRef.current.resetForm({
         values: {
@@ -298,8 +305,8 @@ const SepForm = ({
             site: currentSite,
             participant: participantId,
             urgency: 1,
-            program: 10,
-            service: 44,
+            program: utilityStore.serviceSlugResponse.program,
+            service: utilityStore.serviceSlugResponse.id,
           })
           setSubmitting(false)
           if (success) {

@@ -1,4 +1,4 @@
-import random, pytz, datetime, json
+import random, pytz, datetime, json, re
 
 from django.utils import timezone
 from django.db import IntegrityError
@@ -166,7 +166,7 @@ def create_participants():
         profile = fake.profile()
         gender = random.choice(gender_list)
         race = random.choice(race_list)
-        
+
         participant = Participant(
             first_name=fake.first_name(),
             last_name=fake.last_name(),
@@ -240,6 +240,9 @@ def create_programs(output=True):
     for program, services in DEFAULT_PROGRAMS.items():
         p = Program()
         p.name = program
+        p.slug = re.sub(r' [^a-zA-Z0-9\-]+', '',
+                        '-'.join(program.lower().split()))
+
         if p.name in HAS_QUEUE:
             p.has_queue = True
         else:
@@ -253,13 +256,16 @@ def create_programs(output=True):
         for service in services:
             s = Service()
             s.name = service
+            s.slug = p.slug+ '-'+re.sub(r'  [^a-zA-Z0-9\-]',
+                                   '', '-'.join(service.lower().split()))
+
             s.available = random_bool()
             s.program = p
             s.full_clean()
             s.save()
 
             if output:
-                print("Created {}: '{}'".format(p.name, s.name))
+                print("Created {}: '{}'".format(p.slug, s.slug))
 
         """ Create forms for the program """
         for _ in range(DEFAULT_NUMBER_FORMS):

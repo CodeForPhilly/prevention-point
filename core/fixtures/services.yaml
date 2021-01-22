@@ -2,257 +2,300 @@
   pk: 1
   fields:
     name: RAPID
+    slug: RAPID
     available: true
     program: 1
 - model: core.service
   pk: 2
   fields:
     name: CONFIRM
+    slug: CONFIRM
     available: false
     program: 1
 - model: core.service
   pk: 3
   fields:
     name: NEED RESULTS
+    slug: NEED RESULTS
     available: true
     program: 1
 - model: core.service
   pk: 4
   fields:
     name: C-CHANGE
+    slug: C-CHANGE
     available: true
     program: 1
 - model: core.service
   pk: 5
   fields:
     name: SNS
+    slug: SNS
     available: false
     program: 1
 - model: core.service
   pk: 6
   fields:
     name: BENEFITS
+    slug: BENEFITS
     available: true
     program: 2
 - model: core.service
   pk: 7
   fields:
     name: MENTAL HEALTH
+    slug: MENTAL HEALTH
     available: true
     program: 2
 - model: core.service
   pk: 8
   fields:
     name: HOUSING
+    slug: HOUSING
     available: true
     program: 2
 - model: core.service
   pk: 9
   fields:
     name: D&A
+    slug: D&A
     available: true
     program: 2
 - model: core.service
   pk: 10
   fields:
     name: APPT
+    slug: APPT
     available: true
     program: 2
 - model: core.service
   pk: 11
   fields:
     name: WOUND CARE
+    slug: WOUND CARE
     available: true
     program: 3
 - model: core.service
   pk: 12
   fields:
     name: MEDICAL FORM
+    slug: MEDICAL FORM
     available: true
     program: 3
 - model: core.service
   pk: 13
   fields:
     name: PHYSICAL
+    slug: PHYSICAL
     available: false
     program: 3
 - model: core.service
   pk: 14
   fields:
     name: FOLLOW UP
+    slug: FOLLOW-UP
     available: true
     program: 3
 - model: core.service
   pk: 15
   fields:
     name: OTHER:ENTER IN NOTES
+    slug: OTHER-ENTER-IN-NOTES
     available: false
     program: 3
 - model: core.service
   pk: 16
   fields:
     name: BIRTH CERT
+    slug: BIRTH-CERT
     available: true
     program: 4
 - model: core.service
   pk: 17
   fields:
     name: CONSULT
+    slug: CONSULT
     available: true
     program: 4
 - model: core.service
   pk: 18
   fields:
     name: APPT
+    slug: APPT-2
     available: false
     program: 4
 - model: core.service
   pk: 19
   fields:
     name: PUBLIC DEF
+    slug: PUBLIC-DEF
     available: true
     program: 4
 - model: core.service
   pk: 20
   fields:
     name: DETOX
+    slug: DETOX
     available: false
     program: 5
 - model: core.service
   pk: 21
   fields:
     name: INPATIENT
+    slug: INPATIENT
     available: true
     program: 5
 - model: core.service
   pk: 22
   fields:
     name: IOP
+    slug: IOP
     available: false
     program: 5
 - model: core.service
   pk: 23
   fields:
     name: SUBOXONE
+    slug: SUBOXONE
     available: true
     program: 5
 - model: core.service
   pk: 24
   fields:
     name: METHADONE
+    slug: METHADONE
     available: true
     program: 5
 - model: core.service
   pk: 25
   fields:
     name: BENEFITS
+    slug: BENEFITS-2
     available: false
     program: 6
 - model: core.service
   pk: 26
   fields:
     name: FOLLOW UP
+    slug: FOLLOW-UP-2
     available: true
     program: 6
 - model: core.service
   pk: 27
   fields:
     name: APPT
+    slug: APPT-3
     available: true
     program: 6
 - model: core.service
   pk: 28
   fields:
     name: FOUND THEM!
+    slug: FOUND-THEM-2
     available: true
     program: 6
 - model: core.service
   pk: 29
   fields:
     name: 'OTHER: ENTER IN NOTES'
+    slug: 'OTHER-ENTER-IN-NOTES-2'
     available: true
     program: 6
 - model: core.service
   pk: 30
   fields:
     name: 'APPT: DR BARCLAY'
+    slug: 'APPT-DR-BARCLAY'
     available: true
     program: 7
 - model: core.service
   pk: 31
   fields:
     name: 'APPT: DR SERGE'
+    slug: 'APPT-DR-SERGE'
     available: false
     program: 7
 - model: core.service
   pk: 32
   fields:
     name: 'APPT: MOBILE MAT'
+    slug: 'APPT-MOBILE-MAT'
     available: false
     program: 7
 - model: core.service
   pk: 33
   fields:
     name: PATIENT/ NO APPT
+    slug: PATIENT-NO-APPT
     available: true
     program: 7
 - model: core.service
   pk: 34
   fields:
     name: MEDICATION
+    slug: MEDICATION
     available: false
     program: 7
 - model: core.service
   pk: 35
   fields:
     name: APPT DR. BAMFORD
+    slug: APPT-DR-BAMFORD
     available: false
     program: 8
 - model: core.service
   pk: 36
   fields:
     name: LABWORK
+    slug: LABWORK
     available: true
     program: 8
 - model: core.service
   pk: 37
   fields:
     name: FIBROSCAN
+    slug: FIBROSCAN
     available: true
     program: 8
 - model: core.service
   pk: 38
   fields:
     name: MCM
+    slug: MCM
     available: true
     program: 8
 - model: core.service
   pk: 39
   fields:
     name: FOUND THEM!
+    slug: FOUND-THEM
     available: true
     program: 8
 - model: core.service
   pk: 40
   fields:
     name: DR. MORALES
+    slug: DR-MORALES
     available: true
     program: 9
 - model: core.service
   pk: 41
   fields:
     name: NEW PATIENT
+    slug: NEW-PATIENT
     available: true
     program: 9
 - model: core.service
   pk: 42
   fields:
     name: SICK VISIT
+    slug: SICK-VISIT
     available: false
     program: 9
 - model: core.service
   pk: 43
   fields:
     name: OTHER
+    slug: OTHER-2
     available: false
     program: 9

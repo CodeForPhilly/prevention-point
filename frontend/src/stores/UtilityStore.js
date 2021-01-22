@@ -1,6 +1,8 @@
-import { observable, action } from "mobx"
+import { observable, action, flow } from "mobx"
 import { createContext } from "react"
 import { SEARCH, SNACKBAR_SEVERITY } from "../constants"
+import { handleSnackbarError } from "../error"
+import api from "../api"
 
 export class UtilityStore {
   constructor(rootStore) {
@@ -23,6 +25,8 @@ export class UtilityStore {
     maiden_name: "",
     sep_id: "",
   }
+  @observable serviceSlugResponse = {}
+
   // Drawer
   @action handleDrawerOpen = () => {
     this.isDrawerOpen = true
@@ -70,6 +74,27 @@ export class UtilityStore {
       sep_id: "",
     }
   }
+
+  @action setServiceSlugResponse = service => {
+    this.serviceSlugResponse = service
+  }
+
+  getServiceBySlug = flow(function*(slug) {
+    try {
+      const { ok, data, status } = yield api.getServiceBySlug(slug)
+      if (!ok || !data) {
+        throw new Error(status)
+      }
+
+      const [service] = data
+      this.setServiceSlugResponse(service)
+    } catch (error) {
+      const snackbarError = handleSnackbarError(error.message)
+      this.setSnackbarState(snackbarError.message, {
+        severity: snackbarError.severity,
+      })
+    }
+  })
 }
 
 export const UtilityStoreContext = createContext(new UtilityStore())

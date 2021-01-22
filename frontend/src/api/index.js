@@ -22,6 +22,7 @@ import { getPrograms, getProgram, patchProgram } from "./programEndpoints"
 import { getSites, getSite } from "./siteEndpoints"
 import { createSEP, getSepDataByVisitId } from "./sepEndpoints"
 import cookieValue from "./cookies"
+import { getServiceBySlug } from "./serviceEndpoints"
 
 const create = () => {
   const api = apisauce.create({
@@ -60,6 +61,7 @@ const create = () => {
     getSites: getSites(api),
     getSite: getSite(api),
     createSEP: createSEP(api),
+    getServiceBySlug: getServiceBySlug(api),
     getSepDataByVisitId: getSepDataByVisitId(api),
   }
 }
