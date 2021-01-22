@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: theme.spacing(1),
   },
   needlesExchanged: {
-    paddingLeft: theme.spacing(1),
+    marginTop: "-12% !important",
   },
   clearButton: {
     marginLeft: theme.spacing(1),
@@ -285,7 +285,7 @@ const SepForm = ({
         initialValues={{
           needles_in: "",
           needles_out: "",
-          needles_exchanged: "",
+          exchanged_for: "",
           visit_date: new Date().toISOString().substring(0, 10),
         }}
         validationSchema={SEPNeedleSchema}
@@ -293,7 +293,7 @@ const SepForm = ({
           const success = await participantStore.createSEP({
             needles_in: values.needles_in,
             needles_out: values.needles_out,
-            needles_exchanged: values.needles_exchanged,
+            exchanged_for: values.exchanged_for,
             visit_date: values.visit_date,
             site: currentSite,
             participant: participantId,
@@ -315,7 +315,7 @@ const SepForm = ({
             <Grid container>
               <Grid item xs={12}>
                 <Grid container spacing={2}>
-                  <Grid item xs={12}>
+                  <Grid item xs={6}>
                     <FormControl
                       error={errors.needles_in && touched.needles_in}
                       disabled={participantId && currentSite ? false : true}
@@ -329,7 +329,7 @@ const SepForm = ({
                       />
                     </FormControl>
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={6}>
                     <FormControl
                       error={errors.needles_out && touched.needles_out}
                       disabled={participantId && currentSite ? false : true}
@@ -343,21 +343,19 @@ const SepForm = ({
                       />
                     </FormControl>
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid className={classes.needlesExchanged} item xs={12}>
                     <FormControl
-                      error={
-                        errors.needles_exchanged && touched.needles_exchanged
-                      }
+                      error={errors.exchanged_for && touched.exchanged_for}
                       disabled={participantId && currentSite ? false : true}
                     >
-                      <InputLabel htmlFor="needles_exchanged">
-                        Needles Exchanged
+                      <InputLabel htmlFor="exchanged_for">
+                        Needles Exchanged For
                       </InputLabel>
                       <PrevPointInput
-                        id="needles_exchanged"
-                        name="needles_exchanged"
+                        id="exchanged_for"
+                        name="exchanged_for"
                         onChange={handleChange}
-                        value={values.needles_exchanged}
+                        value={values.exchanged_for}
                       />
                     </FormControl>
                   </Grid>
@@ -401,12 +399,12 @@ const SepForm = ({
                 </PrevPointButton>
                 {(errors.needles_in ||
                   errors.needles_out ||
-                  errors.needles_exchanged ||
+                  errors.exchanged_for ||
                   errors.visit_date) && (
                   <PrevPointCopy className={classes.errorMessage}>
                     {errors.needles_in ||
                       errors.needles_out ||
-                      errors.needles_exchanged ||
+                      errors.exchanged_for ||
                       errors.visit_date}
                   </PrevPointCopy>
                 )}

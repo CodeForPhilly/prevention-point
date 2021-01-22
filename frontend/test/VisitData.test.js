@@ -10,6 +10,7 @@ const mockVisitData = {
   id: 1,
   needles_in: 1,
   needles_out: 2,
+  exchanged_for: 3,
   created_at: new Date(),
   site: { site_name: "a-site" },
 }
@@ -43,6 +44,13 @@ describe("<VisitData />", () => {
       <VisitData visitData={mockVisitData} />
     )
     expect(getByText(/needles out: 2/i)).toBeInTheDocument()
+  })
+
+  it("has needles exchanged for value in dom", () => {
+    const { getByText } = renderWithRouter(
+      <VisitData visitData={mockVisitData} />
+    )
+    expect(getByText(/needles exchanged for: 3/i)).toBeInTheDocument()
   })
 
   it("has site value in dom", () => {

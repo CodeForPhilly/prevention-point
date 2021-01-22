@@ -62,7 +62,7 @@ class Sep_DataTestCase(BaseTestCase):
             "site": 3,
             "needles_in": 5,
             "needles_out": 5,
-            "needles_exchanged": 10,
+            "exchanged_for": 10,
         }
 
         response = self.client.post(url, data, format="json", follow=True, **headers)
@@ -83,7 +83,7 @@ class Sep_DataTestCase(BaseTestCase):
             "site": 3,
             "needles_in": 5,
             "needles_out": 5,
-            "needles_exchanged": 10,
+            "exchanged_for": 10,
         }
 
         pre_post_entry_count = SepData.objects.count()
