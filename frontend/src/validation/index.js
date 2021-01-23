@@ -109,9 +109,11 @@ const visitSchema = Yup.object().shape({
 const participantSchema = Yup.object().shape({
   first_name: Yup.string()
     .required()
+    .min(2)
     .max(50),
   last_name: Yup.string()
     .required()
+    .min(2)
     .max(100),
   date_of_birth: Yup.date()
     .required()
@@ -132,7 +134,7 @@ const participantSchema = Yup.object().shape({
     .notRequired()
     .when("is_insured", {
       is: false,
-      then: Yup.string().matches(/^\d+$/, { excludeEmptyString: true }),
+      then: Yup.string().matches(/^\s*$/, { excludeEmptyString: true }),
       otherwise: Yup.string().matches(/^\d+$/),
     }),
 })
