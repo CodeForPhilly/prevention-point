@@ -106,7 +106,6 @@ const visitSchema = Yup.object().shape({
     .integer(),
 })
 
-// eslint-disable-next-line no-unused-vars
 const participantSchema = Yup.object().shape({
   first_name: Yup.string()
     .required()
