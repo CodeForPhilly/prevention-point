@@ -1,6 +1,7 @@
 from core.models import Service
 from core.viewsets import ModelViewSet
 from core.services.serializers import ServiceSerializer
+from rest_framework.exceptions import NotFound
 
 class ServiceViewSet(ModelViewSet):
     queryset = Service.objects.all()

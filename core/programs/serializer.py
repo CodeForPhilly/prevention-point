@@ -9,11 +9,8 @@ class ProgramSerializer(serializers.ModelSerializer):
     class Meta:
         model = Program
         # related_name on model allows for services instead of service_set
-        fields = ("id", "name", "slug", "is_closed",
-                  "is_frozen", "services", "has_queue")
-        extra_kwargs = {
-            "slug": {"read_only": True}
-        }
+        fields = ("id", "name", "is_closed", "is_frozen", "services", "has_queue")
+
 
 
 class ProgramForVisitSerializer(serializers.ModelSerializer):
@@ -22,7 +19,4 @@ class ProgramForVisitSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Program
-        fields = ("id", "name", "slug", "is_closed", "is_frozen", "has_queue")
-        extra_kwargs = {
-            "slug": {"read_only": True}
-        }
+        fields = ("id", "name", "is_closed", "is_frozen", "has_queue")

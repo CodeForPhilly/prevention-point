@@ -50,3 +50,5 @@ export const SNACKBAR_SEVERITY = {
   SUCCESS: "success",
   ERROR: "error",
 }
+
+export const SYRINGE_EXCHANGE_SLUG = "sep-needle-exchange"

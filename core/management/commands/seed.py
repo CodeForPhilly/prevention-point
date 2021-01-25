@@ -240,8 +240,6 @@ def create_programs(output=True):
     for program, services in DEFAULT_PROGRAMS.items():
         p = Program()
         p.name = program
-        p.slug = re.sub(r' [^a-zA-Z0-9\-]+', '',
-                        '-'.join(program.lower().split()))
 
         if p.name in HAS_QUEUE:
             p.has_queue = True
@@ -256,8 +254,7 @@ def create_programs(output=True):
         for service in services:
             s = Service()
             s.name = service
-            s.slug = p.slug+ '-'+re.sub(r'  [^a-zA-Z0-9\-]',
-                                   '', '-'.join(service.lower().split()))
+            s.slug = f"{p.name}-{s.name}"
 
             s.available = random_bool()
             s.program = p

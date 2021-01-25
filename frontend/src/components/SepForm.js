@@ -15,7 +15,7 @@ import PrevPointHeading from "./Typography/PrevPointHeading"
 import PrevPointCopy from "./Typography/PrevPointCopy"
 import { Formik, Form } from "formik"
 import { SEPSearchSchema, SEPNeedleSchema } from "../validation"
-import { SNACKBAR_SEVERITY } from "../constants"
+import { SNACKBAR_SEVERITY, SYRINGE_EXCHANGE_SLUG } from "../constants"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -78,7 +78,8 @@ const SepForm = ({
   }, [participantStore])
 
   useEffect(() => {
-    utilityStore.getServiceBySlug("sep-needle-exchange")
+    utilityStore.getServiceBySlug(SYRINGE_EXCHANGE_SLUG)
+
     return function cleanup() {
       utilityStore.setServiceSlugResponse({})
     }

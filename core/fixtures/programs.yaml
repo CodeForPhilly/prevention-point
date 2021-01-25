@@ -2,62 +2,53 @@
   pk: 1
   fields:
     name: TESTING
-    slug: TESTING
     is_closed: false
     has_queue: true
 - model: core.program
   pk: 2
   fields:
     name: CM
-    slug: CM
     is_closed: false
     has_queue: true
 - model: core.program
   pk: 3
   fields:
     name: SSHP
-    slug: SSHP
     is_closed: false
     has_queue: true
 - model: core.program
   pk: 4
   fields:
     name: LEGAL
-    slug: LEGAL
     is_closed: false
     has_queue: true
 - model: core.program
   pk: 5
   fields:
     name: CRAFT
-    slug: CRAFT
     is_closed: false
     has_queue: false
 - model: core.program
   pk: 6
   fields:
     name: PHAN
-    slug: PHAN
     is_closed: false
     has_queue: false
 - model: core.program
   pk: 7
   fields:
     name: STEP
-    slug: STEP
     is_closed: false
     has_queue: false
 - model: core.program
   pk: 8
   fields:
     name: BIENESTAR
-    slug: BIENESTAR
     is_closed: false
     has_queue: false
 - model: core.program
   pk: 9
   fields:
     name: SKWC
-    slug: SKWC
     is_closed: false
     has_queue: false

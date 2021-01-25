@@ -8,13 +8,3 @@ from core.services.serializers import ServiceSerializer
 class ProgramViewSet(ModelViewSet):
     queryset = Program.objects.all()
     serializer_class = ProgramSerializer
-
-
-    def get_queryset(self):
-        slug = self.request.query_params.get('slug', None)
-        queryset = Program.objects.all()
-        if slug is not None:
-            queryset = queryset.filter(slug__iexact=slug)
-        if not queryset.exists():
-            raise NotFound()
-        return queryset
