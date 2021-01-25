@@ -67,6 +67,9 @@ const VisitData = ({ visitData }) => {
             </PrevPointCopy>
             <PrevPointCopy>Needles in: {visitData.needles_in}</PrevPointCopy>
             <PrevPointCopy>Needles out: {visitData.needles_out}</PrevPointCopy>
+            <PrevPointCopy>
+              Needles exchanged for: {visitData.exchanged_for}
+            </PrevPointCopy>
           </div>
         </Grid>
       </Grid>

@@ -43,6 +43,9 @@ const useStyles = makeStyles(theme => ({
   needlesOut: {
     paddingLeft: theme.spacing(1),
   },
+  needlesExchanged: {
+    marginTop: "-12% !important",
+  },
   clearButton: {
     marginLeft: theme.spacing(1),
   },
@@ -282,6 +285,7 @@ const SepForm = ({
         initialValues={{
           needles_in: "",
           needles_out: "",
+          exchanged_for: "",
           visit_date: new Date().toISOString().substring(0, 10),
         }}
         validationSchema={SEPNeedleSchema}
@@ -289,6 +293,7 @@ const SepForm = ({
           const success = await participantStore.createSEP({
             needles_in: values.needles_in,
             needles_out: values.needles_out,
+            exchanged_for: values.exchanged_for,
             visit_date: values.visit_date,
             site: currentSite,
             participant: participantId,
@@ -316,18 +321,12 @@ const SepForm = ({
                       disabled={participantId && currentSite ? false : true}
                     >
                       <InputLabel htmlFor="needles_in">Needles In</InputLabel>
-                      <Select
+                      <PrevPointInput
                         id="needles_in"
                         name="needles_in"
                         onChange={handleChange}
                         value={values.needles_in}
-                      >
-                        {[...Array(20)].map((x, i) => (
-                          <MenuItem key={i + 1} value={i + 1}>
-                            {i + 1}
-                          </MenuItem>
-                        ))}
-                      </Select>
+                      />
                     </FormControl>
                   </Grid>
                   <Grid item xs={6}>
@@ -336,18 +335,28 @@ const SepForm = ({
                       disabled={participantId && currentSite ? false : true}
                     >
                       <InputLabel htmlFor="needles_out">Needles Out</InputLabel>
-                      <Select
+                      <PrevPointInput
                         id="needles_out"
                         name="needles_out"
                         onChange={handleChange}
                         value={values.needles_out}
-                      >
-                        {[...Array(20)].map((x, i) => (
-                          <MenuItem key={i + 1} value={i + 1}>
-                            {i + 1}
-                          </MenuItem>
-                        ))}
-                      </Select>
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid className={classes.needlesExchanged} item xs={12}>
+                    <FormControl
+                      error={errors.exchanged_for && touched.exchanged_for}
+                      disabled={participantId && currentSite ? false : true}
+                    >
+                      <InputLabel htmlFor="exchanged_for">
+                        Needles Exchanged For
+                      </InputLabel>
+                      <PrevPointInput
+                        id="exchanged_for"
+                        name="exchanged_for"
+                        onChange={handleChange}
+                        value={values.exchanged_for}
+                      />
                     </FormControl>
                   </Grid>
                 </Grid>
@@ -390,10 +399,12 @@ const SepForm = ({
                 </PrevPointButton>
                 {(errors.needles_in ||
                   errors.needles_out ||
+                  errors.exchanged_for ||
                   errors.visit_date) && (
                   <PrevPointCopy className={classes.errorMessage}>
                     {errors.needles_in ||
                       errors.needles_out ||
+                      errors.exchanged_for ||
                       errors.visit_date}
                   </PrevPointCopy>
                 )}

@@ -12,4 +12,5 @@ class SepDataSerializer(serializers.ModelSerializer):
             "created_at",
             "needles_in",
             "needles_out",
+            "exchanged_for",
         )

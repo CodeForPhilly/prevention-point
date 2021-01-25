@@ -60,8 +60,15 @@ const SEPSearchSchema = Yup.object().shape(
 
 const SEPNeedleErrorMessage = "Please complete all fields"
 const SEPNeedleSchema = Yup.object().shape({
-  needles_in: Yup.number().required(SEPNeedleErrorMessage),
-  needles_out: Yup.number().required(SEPNeedleErrorMessage),
+  needles_in: Yup.number()
+    .min(0)
+    .required(SEPNeedleErrorMessage),
+  needles_out: Yup.number()
+    .min(0)
+    .required(SEPNeedleErrorMessage),
+  exchanged_for: Yup.number()
+    .min(0)
+    .defined(SEPNeedleErrorMessage),
   visit_date: Yup.string().required(SEPNeedleErrorMessage),
 })
 
