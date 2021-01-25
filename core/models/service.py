@@ -2,13 +2,19 @@ from django.db import models
 from core.models import Program
 import re
 
+
 class Service(models.Model):
     name = models.CharField(max_length=100)
     available = models.BooleanField(default=False)
     program = models.ForeignKey(
-        Program, related_name="services", on_delete=models.CASCADE #related name replaces "service_set" for backwards nested relationships
+        # related name replaces "service_set" for backwards nested relationships
+        Program, related_name="services", on_delete=models.CASCADE
     )
-    slug = models.CharField(max_length=100, unique=True)
+    slug = models.CharField(
+        max_length=100,
+        unique=True,
+        verbose_name="Concise Descriptive Identifier"
+    )
 
     def __str__(self):
         return '%s: %s' % (self.program, self.name)
@@ -18,17 +24,11 @@ class Service(models.Model):
         normalize slugs to lowercase, but only when first saving
         """
 
-        # admin validation VVV
-        # https://stackoverflow.com/questions/48908102/is-it-possible-to-disable-a-field-in-django-admin
+        if self.pk:
+            self.is_cleaned = True
+            return
 
-
-        # TODO:
-        # only service has slug
-        #  make name unique by program here
-        # automatically generate slug from program name and service name
-        #  make editable false on model
-
-        slug = re.sub(r'[^a-zA-Z0-9\-]', '', self.slug.lower())
+        slug = re.sub(r'[^a-zA-Z0-9\-\s]', '', self.slug.lower())
         self.slug = '-'.join(slug.split())
 
         self.is_cleaned = True

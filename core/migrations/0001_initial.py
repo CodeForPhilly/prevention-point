@@ -55,7 +55,6 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=100)),
                 ('is_closed', models.BooleanField(default=False)),
                 ('is_frozen', models.BooleanField(default=False)),
-                ('slug', models.CharField(max_length=100, unique=True)),
             ],
         ),
         migrations.CreateModel(
