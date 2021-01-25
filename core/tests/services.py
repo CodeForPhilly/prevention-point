@@ -1,11 +1,11 @@
+import json
+import random
 from django.forms.models import model_to_dict
 from core.tests.base import BaseTestCase
 from django.core.exceptions import ValidationError
 from django.core.management import call_command
 from core.models import Service, Program
 from rest_framework import status
-import random
-import json
 
 
 def get_random_service():
@@ -43,7 +43,7 @@ class ServicesTests(BaseTestCase):
             json.dumps(random_service),
             content_type="application/json",
             follow=True,
-            **headers
+            **headers,
         )
         updated_availabilty = Service.objects.get(pk=random_service["id"]).available
 
@@ -65,7 +65,7 @@ class ServicesTests(BaseTestCase):
             json.dumps(random_service),
             content_type="application/json",
             follow=True,
-            **headers
+            **headers,
         )
         unchanged_name = Service.objects.get(pk=random_service["id"]).name
         # returns a 200 status, but field is unchanged
@@ -80,6 +80,7 @@ class ServicesTests(BaseTestCase):
         route = "/api/services/{}/".format(random_service["id"])
         res = self.client.get(route, follow=True, **headers)
         content = json.loads(res.content)
+
         self.assertTrue("slug" in content)
         self.assertTrue(content["slug"], random_service["slug"])
 
@@ -90,7 +91,7 @@ class ServicesTests(BaseTestCase):
         headers = self.auth_headers_for_user("admin")
         random_service = get_random_service()
         service_slug = random_service["slug"]
-        random_service["name"] = "a fake slug"
+        random_service["slug"] = "a fake slug"
         route = "/api/services/{}/".format(random_service["id"])
 
         self.client.put(
@@ -98,9 +99,9 @@ class ServicesTests(BaseTestCase):
             json.dumps(random_service),
             content_type="application/json",
             follow=True,
-            **headers
+            **headers,
         )
-        unchanged_slug = Service.objects.get(pk=random_service["id"]).name
+        unchanged_slug = Service.objects.get(pk=random_service["id"]).slug
         # returns a 200 status, but field is unchanged
         self.assertEqual(service_slug, unchanged_slug)
 
@@ -130,4 +131,25 @@ class ServicesTests(BaseTestCase):
         slug = "   $%^$#    543 Sligh Bannaga *&^%*&   "
         program = Program.objects.all().first()
         service = Service.objects.create(name="some name", slug=slug, program=program)
+
         self.assertRegex(service.slug, r"[a-z0-9\-]")
+
+    def test_slug_query(self):
+        headers = self.auth_headers_for_user("admin")
+        random_service = get_random_service()
+        service_slug = random_service["slug"]
+
+        route = f"/api/services/?slug={service_slug}"
+        res = self.client.get(route, follow=True, **headers)
+        content = json.loads(res.content)
+
+        self.assertEqual(len(content), 1)
+        self.assertEqual(content[0]['id'], random_service['id'])
+
+    def test_slug_query_404(self):
+        headers = self.auth_headers_for_user("admin")
+
+        route = f"/api/services/?slug=a-fake-ol-slug"
+        res = self.client.get(route, follow=True, **headers)
+
+        self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
