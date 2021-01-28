@@ -1,5 +1,72 @@
 import { ParticipantStore } from "../src/stores/ParticipantStore"
 import { format } from "date-fns"
+import api from "../src/api"
+//import { RootStoreContext, RootStore } from "../src/stores/RootStore"
+
+//Mock API calls
+jest.mock("../src/api")
+api.createParticipant = jest
+  .fn()
+  .mockResolvedValue({ ok: true, data: {}, status: 200 })
+api.getInsurers = jest
+  .fn()
+  .mockResolvedValue({ ok: true, data: {}, status: 200 })
+api.getPrograms = jest
+  .fn()
+  .mockResolvedValue({ ok: true, data: {}, status: 200 })
+api.getParticipantById = jest
+  .fn()
+  .mockResolvedValue({ ok: true, data: {}, status: 200 })
+api.getParticipantVisits = jest
+  .fn()
+  .mockResolvedValue({ ok: true, data: {}, status: 200 })
+api.getParticipants = jest
+  .fn()
+  .mockResolvedValue({ ok: true, data: {}, status: 200 })
+api.createVisits = jest
+  .fn()
+  .mockResolvedValue({ ok: true, data: {}, status: 200 })
+api.postFrontDeskEvent = jest
+  .fn()
+  .mockResolvedValue({ ok: true, data: {}, status: 200 })
+api.getVisits = jest.fn().mockResolvedValue({
+  ok: true,
+  data: { ok: true, data: {}, status: 200 },
+  status: 200,
+})
+api.updateParticipant = jest.fn().mockResolvedValue({
+  ok: true,
+  data: { ok: true, data: {}, status: 200 },
+})
+api.patchVisit = jest.fn().mockResolvedValue({
+  ok: true,
+  status: 200,
+})
+api.getSites = jest.fn().mockResolvedValue({
+  ok: true,
+  data: { ok: true, data: {}, status: 200 },
+  status: 200,
+})
+api.createVisits = jest.fn().mockResolvedValue({
+  ok: true,
+  data: { ok: true, data: {}, status: 200 },
+  status: 200,
+})
+api.createSEP = jest.fn().mockResolvedValue({
+  ok: true,
+  data: { ok: true, data: {}, status: 200 },
+  status: 200,
+})
+api.getSepDataByVisitId = jest.fn().mockResolvedValue({
+  ok: true,
+  data: { ok: true, data: {}, status: 200 },
+  status: 200,
+})
+api.getSite = jest.fn().mockResolvedValue({
+  ok: true,
+  data: { ok: true, data: {}, status: 200 },
+  status: 200,
+})
 
 //Test the participant store actions
 describe("Participant Store", () => {
@@ -81,25 +148,161 @@ describe("Participant Store", () => {
     expect(store.participant.last_four_ssn).toBe("1234")
   })
 
-  //   it("sets last four digits of SSN from user data", () => {})
+  it("sets last four digits of SSN from user data", () => {
+    store.setLastFourSSN("1234")
+    expect(store.participant.last_four_ssn).toBe("1234")
+  })
 
-  //   it("sets visit program from user data", () => {})
+  it("sets visit program from user data", () => {
+    let data = [
+      {
+        id: 1,
+        name: "test1",
+        is_closed: false,
+        is_frozen: false,
+        has_queue: false,
+      },
+      {
+        id: 2,
+        name: "test2",
+        is_closed: false,
+        is_frozen: false,
+        has_queue: false,
+      },
+      {
+        id: 3,
+        name: "test3",
+        is_closed: false,
+        is_frozen: false,
+        has_queue: false,
+      },
+      {
+        id: 4,
+        name: "test4",
+        is_closed: true,
+        is_frozen: true,
+        has_queue: false,
+      },
+      {
+        id: 5,
+        name: "test5",
+        is_closed: true,
+        is_frozen: true,
+        has_queue: false,
+      },
+    ]
+    store.setPrograms(data)
+    expect(store.programs.length).toBe(3)
+  })
 
-  //   it("sets visit service from user data", () => {})
+  it("sets visit program, visit service and services list from user data", () => {
+    let programID = 3
+    let data = [
+      {
+        id: 1,
+        name: "test1",
+        is_closed: false,
+        is_frozen: false,
+        has_queue: false,
+        services: Array(1),
+      },
+      {
+        id: 2,
+        name: "test2",
+        is_closed: false,
+        is_frozen: false,
+        has_queue: false,
+        services: Array(1, 2),
+      },
+      {
+        id: 3,
+        name: "test3",
+        is_closed: false,
+        is_frozen: false,
+        has_queue: false,
+        services: Array(1, 2, 3),
+      },
+      {
+        id: 4,
+        name: "test4",
+        is_closed: true,
+        is_frozen: true,
+        has_queue: false,
+        services: Array(1, 2, 3, 4),
+      },
+      {
+        id: 5,
+        name: "test5",
+        is_closed: true,
+        is_frozen: true,
+        has_queue: false,
+        services: Array(1, 2, 3, 4, 5),
+      },
+    ]
+    store.setPrograms(data)
+    store.setVisitProgram(programID)
+    expect(store.visit.service).toBe("")
+    expect(store.visit.program).toBe(3)
+    expect(store.services.length).toBe(3)
+  })
 
-  //   it("sets the route to the queue table", () => {})
+  it("sets the route to the queue table", () => {
+    expect(store.routeToQueueTable).toBe(false)
+    store.setRouteToQueue(true)
+    expect(store.routeToQueueTable).toBe(true)
+  })
 
-  //   it("sets the participant id from user data", () => {})
+  it("sets the participant id from user data", () => {
+    let id = 1
+    store.setVisitParticipantId(id)
+    expect(store.visit.participant).toBe(1)
+  })
 
-  //   it("sets the services list", () => {})
+  it("sets the visit list", () => {
+    let data = Array(1, 2, 3, 4, 5)
+    store.setVisitsList(data)
+    expect(store.visitList.length).toBe(5)
+  })
 
-  //   it("sets the visits list", () => {})
+  it("sets the site list", () => {
+    let data = [
+      { id: 1, site_name: "test1", site_type: "hq" },
+      { id: 2, site_name: "test2", site_type: "hq2" },
+      { id: 3, site_name: "test3", site_type: "hq3" },
+      { id: 4, site_name: "test4", site_type: "hq4" },
+      { id: 5, site_name: "test5", site_type: "hq5" },
+    ]
+    store.setSites(data)
+    expect(store.sites.length).toBe(5)
+    expect(store.sites[3].id).toBe(4)
+  })
 
-  //   it("sets the sites list", () => {})
+  it("sets the current site", () => {
+    let data = [
+      { id: 1, site_name: "test1", site_type: "hq" },
+      { id: 2, site_name: "test2", site_type: "hq2" },
+      { id: 3, site_name: "test3", site_type: "hq3" },
+      { id: 4, site_name: "test4", site_type: "hq4" },
+      { id: 5, site_name: "test5", site_type: "hq5" },
+    ]
+    store.setCurrentSite(data[1])
+    expect(store.currentSite.id).toBe(2)
+  })
 
-  //   it("sets the current site", () => {})
-
-  //   it("sets the visit data", () => {})
+  it("sets the visit data", () => {
+    let data = {
+      id: 5,
+      participant: 5,
+      URGENCY_LEVEL: { TIME_SENSITIVE: 1 },
+      program: 5,
+      service: 1,
+      notes: "blah five five five",
+      urgency: "TIME_SENSITIVE",
+    }
+    store.setVisitData(data)
+    expect(store.visitData.id).toBe(5)
+    expect(store.visitData.urgency).toBe("TIME_SENSITIVE")
+  })
 
   //   //State actions
   it("creates a default participant", () => {
@@ -143,11 +346,23 @@ describe("Participant Store", () => {
     expect(store.participants.length).toBe(0)
   })
 
-  //   it("handles changes to participant data", () => {})
+  it("handles changes to participant data", () => {
+    store.handleParticipantChange({ name: "is_insured", value: "true" })
+    expect(store.participant.is_insured).toBe(true)
+    store.handleParticipantChange({ name: "pp_id", value: "ab1234" })
+    expect(store.participant.pp_id).toBe("ab1234")
+    store.handleParticipantChange({ name: "insurer", value: 2 })
+    expect(store.participant.insurer).toBe("2")
+  })
 
-  //   it("handles changes to visit data", () => {})
+  it("handles changes to visit data", () => {
+    store.handleVisitChange({ name: "test", value: 7 })
+    expect(store.visit.test).toBe(7)
+  })
 
-  //   it("creates a new participant", () => {})
+  // it("creates a new participant", () => {
+
+  // })
 
   //   it("creates a visit", () => {})
 
@@ -159,8 +374,11 @@ describe("Participant Store", () => {
 
   //   it("updates a visit", () => {})
 
-  //   //Utility functions
-  //   it("creates a start date", () => {})
+  //Utility functions
+  it("creates a start date", () => {
+    let newDate = format(new Date("07-13-1989"), "yyyy-MM-dd")
+    expect(newDate).toBe("1989-07-13")
+  })
 
   //   //Getters
   //   it("gets insurers", () => {})
