@@ -1,72 +1,5 @@
 import { ParticipantStore } from "../src/stores/ParticipantStore"
 import { format } from "date-fns"
-import api from "../src/api"
-//import { RootStoreContext, RootStore } from "../src/stores/RootStore"
-
-//Mock API calls
-jest.mock("../src/api")
-api.createParticipant = jest
-  .fn()
-  .mockResolvedValue({ ok: true, data: {}, status: 200 })
-api.getInsurers = jest
-  .fn()
-  .mockResolvedValue({ ok: true, data: {}, status: 200 })
-api.getPrograms = jest
-  .fn()
-  .mockResolvedValue({ ok: true, data: {}, status: 200 })
-api.getParticipantById = jest
-  .fn()
-  .mockResolvedValue({ ok: true, data: {}, status: 200 })
-api.getParticipantVisits = jest
-  .fn()
-  .mockResolvedValue({ ok: true, data: {}, status: 200 })
-api.getParticipants = jest
-  .fn()
-  .mockResolvedValue({ ok: true, data: {}, status: 200 })
-api.createVisits = jest
-  .fn()
-  .mockResolvedValue({ ok: true, data: {}, status: 200 })
-api.postFrontDeskEvent = jest
-  .fn()
-  .mockResolvedValue({ ok: true, data: {}, status: 200 })
-api.getVisits = jest.fn().mockResolvedValue({
-  ok: true,
-  data: { ok: true, data: {}, status: 200 },
-  status: 200,
-})
-api.updateParticipant = jest.fn().mockResolvedValue({
-  ok: true,
-  data: { ok: true, data: {}, status: 200 },
-})
-api.patchVisit = jest.fn().mockResolvedValue({
-  ok: true,
-  status: 200,
-})
-api.getSites = jest.fn().mockResolvedValue({
-  ok: true,
-  data: { ok: true, data: {}, status: 200 },
-  status: 200,
-})
-api.createVisits = jest.fn().mockResolvedValue({
-  ok: true,
-  data: { ok: true, data: {}, status: 200 },
-  status: 200,
-})
-api.createSEP = jest.fn().mockResolvedValue({
-  ok: true,
-  data: { ok: true, data: {}, status: 200 },
-  status: 200,
-})
-api.getSepDataByVisitId = jest.fn().mockResolvedValue({
-  ok: true,
-  data: { ok: true, data: {}, status: 200 },
-  status: 200,
-})
-api.getSite = jest.fn().mockResolvedValue({
-  ok: true,
-  data: { ok: true, data: {}, status: 200 },
-  status: 200,
-})
 
 //Test the participant store actions
 describe("Participant Store", () => {
@@ -360,40 +293,9 @@ describe("Participant Store", () => {
     expect(store.visit.test).toBe(7)
   })
 
-  // it("creates a new participant", () => {
-
-  // })
-
-  //   it("creates a visit", () => {})
-
-  //   it("creates a front desk event", () => {})
-
-  //   it("creates SEP", () => {})
-
-  //   it("updates a participant", () => {})
-
-  //   it("updates a visit", () => {})
-
   //Utility functions
   it("creates a start date", () => {
     let newDate = format(new Date("07-13-1989"), "yyyy-MM-dd")
     expect(newDate).toBe("1989-07-13")
   })
-
-  //   //Getters
-  //   it("gets insurers", () => {})
-
-  //   it("gets programs", () => {})
-
-  //   it("gets a participant", () => {})
-
-  //   it("gets participant visits", () => {})
-
-  //   it("gets participants", () => {})
-
-  //   it("gets visits", () => {})
-
-  //   it("gets sites", () => {})
-
-  //   it("gets protected visit data", () => {})
 })
