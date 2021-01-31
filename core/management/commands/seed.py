@@ -262,7 +262,7 @@ def create_programs(output=True):
             s.save()
 
             if output:
-                print("Created {}: '{}'".format(p.slug, s.slug))
+                print("Created {}: '{}'".format(p.name, s.slug))
 
         """ Create forms for the program """
         for _ in range(DEFAULT_NUMBER_FORMS):
