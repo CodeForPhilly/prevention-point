@@ -2,7 +2,7 @@ import cookieValue, { setAuthCookie } from "./cookies"
 
 const refreshAuthLogic = api => async failedRequest => {
   const refreshToken = cookieValue("JWT_REFRESH")
-  const tokenRefreshResponse = await api.post("/token/refresh/", {
+  const tokenRefreshResponse = await api.post("/api/token/refresh/", {
     refresh: refreshToken,
   })
   setAuthCookie("JWT_ACCESS", tokenRefreshResponse.data.access)

@@ -24,9 +24,7 @@ import { createSEP, getSepDataByVisitId } from "./sepEndpoints"
 import cookieValue from "./cookies"
 
 const create = () => {
-  const api = apisauce.create({
-    baseURL: "/api",
-  })
+  const api = apisauce.create({})
 
   createAuthRefreshInterceptor(api.axiosInstance, refreshAuthLogic(api))
 
