@@ -9,7 +9,7 @@
     race: black (african american)
     date_of_birth: 1963-02-17
     start_date: 2019-04-21
-    sep_id: asd12345
+    sep_id: abc12345
     maiden_name: momjordan
 
 - model: core.participant
@@ -23,7 +23,7 @@
     race: white (caucasian)
     date_of_birth: 1961-01-26
     start_date: 2019-04-21
-    sep_id: aer12346
+    sep_id: abr12346
     maiden_name: dwayne
 
 

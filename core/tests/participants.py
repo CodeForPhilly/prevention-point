@@ -53,7 +53,7 @@ class ParticipantsTestCase(BaseTestCase):
         ensure known sep id returned when entered completely
         """
         headers = self.auth_headers_for_user("front_desk")
-        known_sep_id = 'ab12347'
+        known_sep_id = 'abr12346'
 
         response = self.client.get(
             f"/api/participants?sep_id={known_sep_id}", follow=True, **headers
@@ -68,7 +68,7 @@ class ParticipantsTestCase(BaseTestCase):
         ensure sep ids containing the search query are returned
         """
         headers = self.auth_headers_for_user("front_desk")
-        known_sep_id_contains = 'ab23'
+        known_sep_id_contains = 'ab'
 
         response = self.client.get(
             f"/api/participants?sep_id={known_sep_id_contains}", follow=True, **headers

@@ -41,7 +41,7 @@ class Participant(models.Model):
     maiden_name = models.CharField(db_index=True,
         null=True, blank=True, max_length=100, verbose_name="Mother's Maiden Name"
     )
-    sep_id = models.CharField(db_index=True, null=True, blank=True, max_length=16)
+    sep_id = models.CharField(db_index=True, null=True, blank=True, max_length=16, unique=True)
 
     def __str__(self):
         return "%s %s" % (self.first_name, self.last_name)
