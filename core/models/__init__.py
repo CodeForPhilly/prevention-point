@@ -5,7 +5,6 @@ from .service import *
 from .visit import *
 from .hcv_note import *
 from .medication import *
-from .appointment import *
 from .case_management import *
 from .front_desk_event import *
 from .urine_drug_screen import *
