@@ -83,7 +83,7 @@ export class ParticipantStore {
     this.participant = {
       ...data,
       // eslint-disable-next-line camelcase
-      sep_id: sep_id ? sep_id.toString() : "",
+      sep_id: sep_id ? sep_id.toUpperCase() : "",
     }
   }
   @action setVisit = data => {

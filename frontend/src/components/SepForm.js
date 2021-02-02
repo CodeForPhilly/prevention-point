@@ -71,7 +71,7 @@ const SepForm = ({
 
   useEffect(() => {
     return handleClear
-  })
+  }, [])
 
   useEffect(() => {
     participantStore.getSites()

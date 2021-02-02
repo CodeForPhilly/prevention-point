@@ -34,14 +34,14 @@ class Participant(models.Model):
     )
     gender = models.CharField(choices=GENDER_CHOICES, max_length=12)
     race = models.CharField(choices=RACE_CHOICES, max_length=24)
-    date_of_birth = models.DateField()
+    date_of_birth = models.DateField(db_index=True)
     start_date = models.DateField()
     is_insured = models.BooleanField(default=False)
     insurer = models.ForeignKey(Insurer, on_delete=models.CASCADE, null=True, blank=True)
-    maiden_name = models.CharField(
+    maiden_name = models.CharField(db_index=True,
         null=True, blank=True, max_length=100, verbose_name="Mother's Maiden Name"
     )
-    sep_id = models.IntegerField(null=True, unique=True)
+    sep_id = models.CharField(db_index=True, null=True, blank=True, max_length=16)
 
     def __str__(self):
         return "%s %s" % (self.first_name, self.last_name)

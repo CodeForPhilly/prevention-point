@@ -10,7 +10,7 @@ mockRootStore.ParticipantStore.setParticipantsList([
   {
     id: 6,
     pp_id: "ZG0DI",
-    sep_id: 41673,
+    sep_id: "er41673",
     first_name: "Erik",
     last_name: "Wagner",
     last_four_ssn: "7241",
@@ -25,7 +25,7 @@ mockRootStore.ParticipantStore.setParticipantsList([
   {
     id: 7,
     pp_id: "8AXHR",
-    sep_id: 10009,
+    sep_id: "ab10009",
     first_name: "Gabriella",
     last_name: "Brown",
     last_four_ssn: "8294",
