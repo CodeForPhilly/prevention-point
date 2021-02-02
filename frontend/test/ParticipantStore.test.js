@@ -86,6 +86,11 @@ describe("Participant Store", () => {
     expect(store.participant.last_four_ssn).toBe("1234")
   })
 
+  it("lowercases sep_id", () => {
+    store.setSEPID("ABCD1234")
+    expect(store.participant.sep_id).toBe("abcd1234")
+  })
+
   it("sets visit program from user data", () => {
     let data = [
       {

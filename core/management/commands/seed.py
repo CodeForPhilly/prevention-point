@@ -155,13 +155,12 @@ def create_insurers(output=True):
             )
 
 def sep_id_generator(size=6, num_participants=10):
-    chars=string.ascii_uppercase + string.digits
+    chars=string.ascii_lowercase + string.digits
     participant_list = []
     for ind in range(num_participants):
         sepID = ''.join(random.choice(chars) for _ in range(size))
         participant_list.append(sepID)
     return participant_list
-    #return ''.join(random.choice(chars) for _ in range(size))
 
 def create_participants():
     """Create a fake participant, and optionally associated UDS and meds"""
@@ -169,7 +168,6 @@ def create_participants():
     race_list = list(Race)
     insurers = Insurer.objects.all()
     sep_ids = sep_id_generator(6, DEFAULT_NUMBER_PARTICIPANTS)
-    #random.sample(range(1, 99999), DEFAULT_NUMBER_PARTICIPANTS)
 
     for index in range(DEFAULT_NUMBER_PARTICIPANTS):
         last_four = fake.ssn(taxpayer_identification_number_type="SSN")[-4:]
