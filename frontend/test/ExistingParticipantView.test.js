@@ -13,7 +13,7 @@ const history = createMemoryHistory()
 const mockParticipant = {
   id: participantId,
   pp_id: "ZG0DI",
-  sep_id: 41673,
+  sep_id: "aq41673",
   first_name: "Erik",
   last_name: "Wagner",
   last_four_ssn: "7241",
@@ -209,7 +209,7 @@ describe("<ExistingParticipantView /> mounting process", () => {
       data: {
         id: newId,
         pp_id: "GFDRT",
-        sep_id: 10000,
+        sep_id: "rt10000",
         first_name: "Jesse",
         last_name: "Owens",
         last_four_ssn: "7241",

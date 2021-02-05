@@ -1,12 +1,11 @@
 import { validateForm, PARTICIPANT_SCHEMA } from "../src/validation/index"
 
-//SEP_ID is alphanumeric going forward
 let MOCK_SCHEMA = {
   first_name: "ted",
   last_name: "nougat",
   date_of_birth: new Date("1989-07-13"),
-  pp_id: "12345",
-  sep_id: "1234",
+  pp_id: "sb12345",
+  sep_id: "sd1234",
   maiden_name: "Haroldson",
   is_insured: true,
   insurer: "7",
@@ -97,7 +96,7 @@ describe("Participant Schema Validation", () => {
     const validationErrors = await validateForm(MOCK_SCHEMA, PARTICIPANT_SCHEMA)
     expect(validationErrors[0].name).toEqual("sep_id")
     expect(validationErrors.length).toEqual(1)
-    MOCK_SCHEMA.sep_id = "1234"
+    MOCK_SCHEMA.sep_id = "sd1234"
   })
 
   it("should return an error when is_insured is not bool", async () => {

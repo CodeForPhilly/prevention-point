@@ -21,7 +21,7 @@ describe("Participant Store", () => {
       date_of_birth: "10-28-1929",
       start_date: startDate,
       pp_id: "12345",
-      sep_id: "12345",
+      sep_id: "ab12345",
       maiden_name: "Strangelove",
       race: "white (caucasian)",
       gender: "male",
@@ -37,7 +37,7 @@ describe("Participant Store", () => {
     expect(store.participant.date_of_birth).toBe("10-28-1929")
     expect(store.participant.start_date).toBe(startDate)
     expect(store.participant.pp_id).toBe("12345")
-    expect(store.participant.sep_id).toBe("12345")
+    expect(store.participant.sep_id).toBe("ab12345")
     expect(store.participant.maiden_name).toBe("Strangelove")
     expect(store.participant.race).toBe("white (caucasian)")
     expect(store.participant.gender).toBe("male")
@@ -84,6 +84,11 @@ describe("Participant Store", () => {
   it("sets last four digits of SSN from user data", () => {
     store.setLastFourSSN("1234")
     expect(store.participant.last_four_ssn).toBe("1234")
+  })
+
+  it("lowercases sep_id", () => {
+    store.setSEPID("ABCD1234")
+    expect(store.participant.sep_id).toBe("abcd1234")
   })
 
   it("sets visit program from user data", () => {
