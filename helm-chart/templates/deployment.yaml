@@ -83,6 +83,7 @@ spec:
           volumeMounts:
             - name: {{ $.Release.Name }}-postgresql-data
               mountPath: /var/lib/postgresql/data
+              subPath: postgresql-data
         {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
