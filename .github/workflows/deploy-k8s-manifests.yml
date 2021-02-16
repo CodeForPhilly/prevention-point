@@ -1,0 +1,111 @@
+name: Deploy k8s-manifests
+
+on:
+  push:
+    branches: [ deploys/k8s-manifests ]
+
+env:
+  BRANCH_RELEASE: releases/k8s-manifests
+  BRANCH_DEPLOY: deploys/k8s-manifests
+  REGCRED_NAMESPACES: |
+    prevention-point
+
+jobs:
+  deploy-k8s-manifests:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ env.BRANCH_DEPLOY }}
+
+    - name: Configure .kube/config
+      run: |
+        set -e
+
+        test -e ~/.kube || mkdir ~/.kube
+
+        echo "${{ secrets.KUBECONFIG_BASE64 }}" | base64 -d > ~/.kube/config
+
+        # initialize empty log of kube operations
+        echo -n '' > /tmp/kube.log
+
+    - name: 'Apply manifests: CRD resources'
+      run: |
+        if [ -d ./_/CustomResourceDefinition ]; then
+          kubectl apply -Rf ./_/CustomResourceDefinition | tee -a /tmp/kube.log
+        fi
+
+    - name: 'Apply manifests: non-CRD global resources'
+      run: |
+        if [ -d ./_ ]; then
+          (
+            find _ \
+              -maxdepth 1 \
+              -mindepth 1 \
+              -type d \
+              -not -name 'CustomResourceDefinition' \
+              -print0 \
+            | sort -z \
+            | xargs -r0 -n 1 kubectl apply -Rf
+          ) | tee -a /tmp/kube.log
+        fi
+
+    - name: 'Apply manifests: namespaced resources'
+      run: |
+        (
+          find . \
+            -maxdepth 1 \
+            -type d \
+            -not -name '_' \
+            -not -name '.*' \
+            -print0 \
+          | sort -z \
+          | xargs -r0 -n 1 kubectl apply -Rf
+        ) | tee -a /tmp/kube.log
+
+    - name: 'Apply manifests: generated regcred secrets'
+      run: |
+
+        while IFS= read -r namespace; do
+          cat <<EOF | kubectl apply -f - | tee -a /tmp/kube.log
+        apiVersion: v1
+        kind: Namespace
+        metadata:
+          namespace: ${namespace}
+
+        ---
+
+        apiVersion: v1
+        kind: Secret
+        metadata:
+          name: regcred
+          namespace: ${namespace}
+        type: kubernetes.io/dockerconfigjson
+        data:
+          .dockerconfigjson: ${{ secrets.DOCKER_CONFIG_BASE64 }}
+        EOF
+        done <<< "${REGCRED_NAMESPACES}"
+
+    - name: Add comment to PR
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        set -e
+
+        # format comment
+        cat <<EOF > /tmp/pr-comment.txt
+        \`kubectl apply\` output (excluding unchanged) for $(git describe --always --tag) was:
+
+        \`\`\`
+        $(cat /tmp/kube.log | grep -v ' unchanged$')
+        \`\`\`
+        EOF
+
+        # get last PR
+        last_pr_number=$(hub pr list -s merged -b "${BRANCH_DEPLOY}" -h "${BRANCH_RELEASE}" -f '%I' -L 1)
+
+        # post comment
+        if [ -n "${last_pr_number}" ]; then
+          echo "Adding comment to PR #${last_pr_number}"
+          hub api "/repos/${GITHUB_REPOSITORY}/issues/${last_pr_number}/comments" -f body="$(cat /tmp/pr-comment.txt)"
+        fi
