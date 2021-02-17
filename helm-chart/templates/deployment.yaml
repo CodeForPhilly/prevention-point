@@ -40,8 +40,7 @@ spec:
           image: "{{ .image.repository }}:{{ .image.tag | default $.Chart.AppVersion }}"
           imagePullPolicy: {{ .image.pullPolicy }}
           ports:
-            - name: http
-              containerPort: 8000
+            - containerPort: 8000
               protocol: TCP
           env:
             - name: DJANGO_SETTINGS_MODULE
@@ -49,11 +48,11 @@ spec:
           livenessProbe:
             httpGet:
               path: /
-              port: http
+              port: 8000
           readinessProbe:
             httpGet:
               path: /
-              port: http
+              port: 8000
         {{- end }}
         {{- with .Values.frontend }}
         - name: {{ $.Chart.Name }}-frontend
