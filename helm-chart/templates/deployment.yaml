@@ -43,9 +43,6 @@ spec:
           ports:
             - containerPort: 8000
               protocol: TCP
-          env:
-            - name: DJANGO_SETTINGS_MODULE
-              value: core.settings.docker
           livenessProbe:
             httpGet:
               path: /admin/
