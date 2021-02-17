@@ -13,8 +13,6 @@ services:
       - "8000:8000"
     depends_on:
       - db
-    environment:
-      - DJANGO_SETTINGS_MODULE=core.settings.docker
   client:
     build: ./frontend
     ports:

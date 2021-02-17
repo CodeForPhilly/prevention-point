@@ -1,4 +1,7 @@
+.cache/
+dist/
 node_modules/
 test/
-.cache
-dist/
+
+Dockerfile
+nginx.conf

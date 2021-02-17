@@ -1,2 +1,17 @@
+.git/
+.github/
+.holo/
+computer-vision-form-project/
 env/
 frontend/
+helm-chart/
+metabase/
+node_modules/
+script/
+unified-reporting-system/
+
+**/*.md
+.dockerignore
+.gitignore
+Dockerfile
+docker-compose.yml

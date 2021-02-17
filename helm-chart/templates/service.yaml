@@ -8,9 +8,13 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.port }}
+    - port: 80
       targetPort: http
       protocol: TCP
-      name: http
+      name: frontend-http
+    - port: 8000
+      targetPort: 8000
+      protocol: TCP
+      name: backend-http
   selector:
     {{- include "prevention-point.selectorLabels" . | nindent 4 }}
