@@ -1,6 +1,7 @@
 FROM python:3.7-slim
 
 ARG APP_USER=appuser
+ENV DJANGO_SETTINGS_MODULE=core.settings.docker
 
 COPY . /app
 WORKDIR /app
