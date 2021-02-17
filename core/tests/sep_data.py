@@ -1,5 +1,4 @@
 import json
-from django.utils import timezone
 from django.urls import reverse
 from rest_framework import status
 from core.models import SepData
@@ -18,21 +17,22 @@ class Sep_DataTestCase(BaseTestCase):
 
     def test_get_sep_data_admin_and_ip(self):
         """
-        Ensure we can get a list of visits as admin and internal provider
+        Ensure even high permission users cannot access all sep data objects at once.
         """
         header1 = self.auth_headers_for_user("admin")
         url = reverse("sepdata-list")
         res1 = self.client.get(url, format="json", follow=True, **header1)
+        expected_content = {'detail': 'Sep data must be queried by visit id.'}
 
-        self.assertEqual(res1.status_code, status.HTTP_200_OK)
-        self.assertEqual(SepData.objects.count(), len(json.loads(res1.content)))
+        self.assertEqual(res1.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(expected_content, json.loads(res1.content))
 
         header2 = self.auth_headers_for_user("internal_provider")
         url = reverse("sepdata-list")
         res2 = self.client.get(url, format="json", follow=True, **header2)
 
-        self.assertEqual(res2.status_code, status.HTTP_200_OK)
-        self.assertEqual(SepData.objects.count(), len(json.loads(res2.content)))
+        self.assertEqual(res2.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(expected_content, json.loads(res2.content))
 
     def test_get_sep_auth_denial_unauthorized(self):
         """
