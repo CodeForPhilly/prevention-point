@@ -46,14 +46,14 @@ spec:
           env:
             - name: DJANGO_SETTINGS_MODULE
               value: core.settings.docker
-          # livenessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: 8000
-          # readinessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: 8000
+          livenessProbe:
+            httpGet:
+              path: /admin/
+              port: 8000
+          readinessProbe:
+            httpGet:
+              path: /admin/
+              port: 8000
         {{- end }}
         {{- with .Values.frontend }}
         - name: {{ $.Chart.Name }}-frontend
