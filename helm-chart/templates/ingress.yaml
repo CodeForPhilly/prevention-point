@@ -1,6 +1,5 @@
 {{- if .Values.ingress.enabled -}}
 {{- $fullName := include "prevention-point.fullname" . -}}
-{{- $svcPort := .Values.service.port -}}
 {{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1beta1
 {{- else -}}
@@ -36,7 +35,19 @@ spec:
           - path: {{ . }}
             backend:
               serviceName: {{ $fullName }}
-              servicePort: {{ $svcPort }}
+              servicePort: frontend-http
+          - path: {{ . | trimSuffix "/" }}/api/
+            backend:
+              serviceName: {{ $fullName }}
+              servicePort: backend-http
+          - path: {{ . | trimSuffix "/" }}/admin/
+            backend:
+              serviceName: {{ $fullName }}
+              servicePort: backend-http
+          - path: {{ . | trimSuffix "/" }}/static/admin/
+            backend:
+              serviceName: {{ $fullName }}
+              servicePort: backend-http
           {{- end }}
     {{- end }}
   {{- end }}
