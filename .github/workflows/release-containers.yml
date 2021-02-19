@@ -30,13 +30,16 @@ jobs:
 
         echo "Using: ${DOCKER_REPOSITORY}/*:${DOCKER_TAG}"
 
-    - name: 'Pull latest existing Docker container image: backend'
+    - name: 'Pull previous Docker container image: backend:latest'
       run: docker pull "${DOCKER_REPOSITORY}/backend:latest" || true
 
-    - name: 'Pull latest existing Docker container image: frontend'
+    - name: 'Pull previous Docker container image: frontend:latest-builder'
+      run: docker pull "${DOCKER_REPOSITORY}/frontend:latest-builder" || true
+
+    - name: 'Pull previous Docker container image: frontend:latest'
       run: docker pull "${DOCKER_REPOSITORY}/frontend:latest" || true
 
-    - name: 'Build Docker container image: backend'
+    - name: 'Build Docker container image: backend:latest'
       run: |
         docker build \
             --cache-from "${DOCKER_REPOSITORY}/backend:latest" \
@@ -44,13 +47,26 @@ jobs:
             --tag "${DOCKER_REPOSITORY}/backend:${DOCKER_TAG}" \
             .
 
-    - name: 'Build Docker container image: frontend'
+    - name: 'Build Docker container image: frontend:latest-builder'
       run: |
         docker build \
+            --target builder \
+            --cache-from "${DOCKER_REPOSITORY}/frontend:latest-builder" \
+            --tag "${DOCKER_REPOSITORY}/frontend:latest-builder" \
+            frontend
+
+    - name: 'Build Docker container image: frontend:latest'
+      run: |
+        docker build \
+            --target runtime \
+            --cache-from "${DOCKER_REPOSITORY}/frontend:latest-builder" \
             --cache-from "${DOCKER_REPOSITORY}/frontend:latest" \
             --tag "${DOCKER_REPOSITORY}/frontend:latest" \
             --tag "${DOCKER_REPOSITORY}/frontend:${DOCKER_TAG}" \
             frontend
+
+    - name: Push Docker container image frontend:latest-builder"
+      run: docker push "${DOCKER_REPOSITORY}/frontend:latest-builder"
 
     - name: Push Docker container image frontend:latest"
       run: docker push "${DOCKER_REPOSITORY}/frontend:latest"
