@@ -1,0 +1,65 @@
+name: Release Containers
+
+on:
+  push:
+    tags: [ 'v*' ]
+
+
+jobs:
+  release-containers:
+    name: Build and Push
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Login to ghcr.io Docker registry
+      uses: docker/login-action@v1
+      with:
+        registry: ghcr.io
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Compute Docker container image addresses
+      run: |
+        DOCKER_REPOSITORY="ghcr.io/${GITHUB_REPOSITORY,,}"
+        DOCKER_TAG="${GITHUB_REF:11}"
+
+        echo "DOCKER_REPOSITORY=${DOCKER_REPOSITORY}" >> $GITHUB_ENV
+        echo "DOCKER_TAG=${DOCKER_TAG}" >> $GITHUB_ENV
+
+        echo "Using: ${DOCKER_REPOSITORY}/*:${DOCKER_TAG}"
+
+    - name: 'Pull latest existing Docker container image: backend'
+      run: docker pull "${DOCKER_REPOSITORY}/backend:latest" || true
+
+    - name: 'Pull latest existing Docker container image: frontend'
+      run: docker pull "${DOCKER_REPOSITORY}/frontend:latest" || true
+
+    - name: 'Build Docker container image: backend'
+      run: |
+        docker build \
+            --cache-from "${DOCKER_REPOSITORY}/backend:latest" \
+            --tag "${DOCKER_REPOSITORY}/backend:latest" \
+            --tag "${DOCKER_REPOSITORY}/backend:${DOCKER_TAG}" \
+            .
+
+    - name: 'Build Docker container image: frontend'
+      run: |
+        docker build \
+            --cache-from "${DOCKER_REPOSITORY}/frontend:latest" \
+            --tag "${DOCKER_REPOSITORY}/frontend:latest" \
+            --tag "${DOCKER_REPOSITORY}/frontend:${DOCKER_TAG}" \
+            frontend
+
+    - name: Push Docker container image frontend:v*"
+      run: docker push "${DOCKER_REPOSITORY}/frontend:${DOCKER_TAG}"
+
+    - name: Push Docker container image frontend:latest"
+      run: docker push "${DOCKER_REPOSITORY}/frontend:latest"
+
+    - name: Push Docker container image backend:v*"
+      run: docker push "${DOCKER_REPOSITORY}/backend:${DOCKER_TAG}"
+
+    - name: Push Docker container image backend:latest"
+      run: docker push "${DOCKER_REPOSITORY}/backend:latest"
