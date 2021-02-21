@@ -16,4 +16,4 @@ class Drugs(Enum):
 
 class DrugsUsed(models.Model):
     DRUG_CHOICES = [(key.value, key.value.title()) for key in Drugs]
-    drugs = models.CharField(choices=DRUG_CHOICES, max_length=11)
+    drugs = models.CharField(choices=DRUG_CHOICES, max_length=11, verbose_name="Drug injected most often")
