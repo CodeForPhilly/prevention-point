@@ -1,0 +1,66 @@
+- model: core.sep_enrollment
+  pk: 1
+  fields:
+    participant: 1
+    created_at: '2020-12-30 03:23:39.204290+00:00'
+    zip_code: '19123'
+    housing: permanent_housing
+    drug_matrix: cocaine
+    in_treatment: True
+    treatment_type: methadone
+    health_insurance: medicare
+    health_insurance_other: null
+    hep_c_test: True
+    hep_c_test_date: '2021-01-01 03:23:39.204290+00:00'
+    hiv_test: True 
+    hiv_test_date: '2020-12-21 03:23:39.204290+00:00'
+    narcan: True
+    harm_reduction_counseling: True
+    left_with_narcan: True
+    overdose_prevention: True
+    mobile_site_schedule: True
+    referred_to_testing: True
+  model: core.sep_enrollment
+  pk: 2
+  fields:
+    participant: 2
+    created_at: '2021-01-12 01:38:42.204290+00:00'
+    zip_code: '19103'
+    housing: shelter
+    drug_matrix: heroin_only
+    in_treatment: False
+    treatment_type: Null
+    health_insurance: Medicaid
+    health_insurance_other: null
+    hep_c_test: True
+    hep_c_test_date: '2021-02-21 03:23:39.204290+00:00'
+    hiv_test: True 
+    hiv_test_date: '2021-02-21 04:23:39.204290+00:00'
+    narcan: True
+    harm_reduction_counseling: False
+    left_with_narcan: False
+    overdose_prevention: False
+    mobile_site_schedule: False
+    referred_to_testing: False
+  model: core.sep_enrollment
+  pk: 3
+  fields:
+    participant: 3
+    created_at: '2021-02-21 01:48:39.204290+00:00'
+    zip_code: '19146'
+    housing: street
+    drug_matrix: crack
+    in_treatment: False
+    treatment_type: Null
+    health_insurance: Other
+    health_insurance_other: Independence Blue Cross
+    hep_c_test: False
+    hep_c_test_date: null
+    hiv_test: True
+    hiv_test_date: '2021-02-19 01:48:39.204290+00:00'
+    narcan: False
+    harm_reduction_counseling: True
+    left_with_narcan: True
+    overdose_prevention: False
+    mobile_site_schedule: False
+    referred_to_testing: True

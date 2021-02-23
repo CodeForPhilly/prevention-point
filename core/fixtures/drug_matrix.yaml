@@ -1,0 +1,20 @@
+- model: core.drug_matrix
+  pk: 1
+  fields:
+    drug: "heroin_only"
+- model: core.drug_matrix
+  pk: 2
+  fields:
+    drug: "other"
+- model: core.drug_matrix
+  pk: 3
+  fields:
+    drug: "cocaine"
+- model: core.drug_matrix
+  pk: 4
+  fields:
+    drug: "fentanyl"
+- model: core.drug_matrix
+  pk: 5
+  fields:
+    drug: "hormones"

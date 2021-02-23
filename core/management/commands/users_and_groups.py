@@ -45,6 +45,12 @@ INTERNAL_PROVIDER_PERMISSIONS = [
     "add_sepdata",
     "change_sepdata",
     "view_sepdata",
+    "add_sepenrollment",
+    "change_sepenrollment",
+    "view_sepenrollment",
+    "add_drugmatrix",
+    "change_drugmatrix",
+    "view_drugmatrix",
 ]
 
 FRONT_DESK_PERMISSIONS = [
@@ -70,6 +76,12 @@ FRONT_DESK_PERMISSIONS = [
     "view_programavailability",
     "view_site",
     "add_sepdata",
+    "add_sepenrollment",
+    "change_sepenrollment",
+    "view_sepenrollment",
+    "add_drugmatrix",
+    "change_drugmatrix",
+    "view_drugmatrix",
 ]
 
 UDS_PROVIDER_PERMISSIONS = [

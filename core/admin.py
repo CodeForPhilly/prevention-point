@@ -5,6 +5,8 @@ from core.models import *
 admin.site.register(ProgramAvailability)
 admin.site.register(Program)
 admin.site.register(Site)
+admin.site.register(DrugMatrix)
+admin.site.register(SepEnrollment)
 
 
 class ServiceAdmin(admin.ModelAdmin):

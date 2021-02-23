@@ -32,6 +32,8 @@ from core.insurers import views as insurer_views
 from core.medications import views as medications_views
 from core.site import views as site_views
 from core.sep_data import views as sep_data_views
+from core.drug_matrix import views as drug_matrix_views
+from core.sep_enrollment import views as sep_enrollment_views
 
 admin.site.site_header = "Prevention Point Philadelphia"
 
@@ -48,7 +50,8 @@ router.register(r"services", services_views.ServiceViewSet)
 router.register(r"insurers", insurer_views.InsurerViewSet)
 router.register(r"sites", site_views.SiteViewSet)
 router.register(r"sep", sep_data_views.Sep_DataViewSet, basename='sepdata')
-
+router.register(r"drug_matrix", drug_matrix_views.DrugMatrixViewSet)
+router.register(r"sep_enrollment", sep_enrollment_views.SepEnrollmentViewSet)
 
 schema_view = get_swagger_view(title="PreventionPoint API")
 
