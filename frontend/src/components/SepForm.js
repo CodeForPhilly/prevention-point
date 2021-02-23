@@ -133,7 +133,7 @@ const SepForm = ({
         validationSchema={SEPSearchSchema}
         onSubmit={async (values, { setSubmitting, setFieldValue }) => {
           await participantStore.getParticipants({
-            sep_id: values.sep_id,
+            sep_id: values.sep_id.toLowerCase(),
             last_name: values.last_name,
             dob: values.date_of_birth,
             maiden_name: values.maiden_name,

@@ -1,0 +1,53 @@
+{{- if .Values.ingress.enabled -}}
+{{- $fullName := include "prevention-point.fullname" . -}}
+{{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
+apiVersion: extensions/v1beta1
+{{- end }}
+kind: Ingress
+metadata:
+  name: {{ $fullName }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "prevention-point.labels" . | nindent 4 }}
+  {{- with .Values.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if .Values.ingress.tls }}
+  tls:
+    {{- range .Values.ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .Values.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ . }}
+            backend:
+              serviceName: {{ $fullName }}
+              servicePort: frontend-http
+          - path: {{ . | trimSuffix "/" }}/api/
+            backend:
+              serviceName: {{ $fullName }}
+              servicePort: backend-http
+          - path: {{ . | trimSuffix "/" }}/admin/
+            backend:
+              serviceName: {{ $fullName }}
+              servicePort: backend-http
+          - path: {{ . | trimSuffix "/" }}/static/admin/
+            backend:
+              serviceName: {{ $fullName }}
+              servicePort: backend-http
+          {{- end }}
+    {{- end }}
+  {{- end }}

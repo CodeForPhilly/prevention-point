@@ -132,7 +132,7 @@ const participantSchema = Yup.object().shape({
     .max(200),
   sep_id: Yup.string()
     .required()
-    .matches(/^\d+$/),
+    .max(16),
   maiden_name: Yup.string()
     .notRequired()
     .max(100),

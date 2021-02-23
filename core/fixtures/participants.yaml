@@ -9,7 +9,7 @@
     race: black (african american)
     date_of_birth: 1963-02-17
     start_date: 2019-04-21
-    sep_id: 12345
+    sep_id: abc12345
     maiden_name: momjordan
 
 - model: core.participant
@@ -23,7 +23,7 @@
     race: white (caucasian)
     date_of_birth: 1961-01-26
     start_date: 2019-04-21
-    sep_id: 12346
+    sep_id: abr12346
     maiden_name: dwayne
 
 
@@ -38,7 +38,7 @@
     race: black (african american)
     date_of_birth: 1981-09-26
     start_date: 2019-04-21
-    sep_id: 123
+    sep_id: rooip123
     maiden_name: dunbar
 
 - model: core.participant
@@ -52,5 +52,5 @@
     race: black (african american)
     date_of_birth: 1981-09-26
     start_date: 2019-04-19
-    sep_id: 12347
+    sep_id: ppeo12347
     maiden_name: baseball

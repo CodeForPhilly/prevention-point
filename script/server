@@ -13,10 +13,6 @@ echo
 echo "==> Starting containers with docker-compose…"
 docker-compose up -d --build
 
-echo 
-echo "==> Initialize static assets"
-docker-compose exec app python manage.py collectstatic
-
 echo
 echo "==> App is now ready to go!"
 echo "    *Open http://localhost:8080"

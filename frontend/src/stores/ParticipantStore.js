@@ -83,11 +83,15 @@ export class ParticipantStore {
     this.participant = {
       ...data,
       // eslint-disable-next-line camelcase
-      sep_id: sep_id ? sep_id.toString() : "",
+      sep_id: sep_id ? sep_id.toLowerCase() : "",
     }
   }
   @action setVisit = data => {
     this.visit = data
+  }
+
+  @action setSEPID = data => {
+    this.participant.sep_id = data.toLowerCase()
   }
 
   // Insurance and Programs Actions
@@ -114,6 +118,9 @@ export class ParticipantStore {
         break
       case "insurer":
         this.setInsurer(value)
+        break
+      case "sep_id":
+        this.setSEPID(value)
         break
       default:
         this.participant[name] = value

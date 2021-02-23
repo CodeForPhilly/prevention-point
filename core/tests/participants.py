@@ -53,7 +53,7 @@ class ParticipantsTestCase(BaseTestCase):
         ensure known sep id returned when entered completely
         """
         headers = self.auth_headers_for_user("front_desk")
-        known_sep_id = 12347
+        known_sep_id = 'abr12346'
 
         response = self.client.get(
             f"/api/participants?sep_id={known_sep_id}", follow=True, **headers
@@ -68,7 +68,7 @@ class ParticipantsTestCase(BaseTestCase):
         ensure sep ids containing the search query are returned
         """
         headers = self.auth_headers_for_user("front_desk")
-        known_sep_id_contains = 23
+        known_sep_id_contains = 'ab'
 
         response = self.client.get(
             f"/api/participants?sep_id={known_sep_id_contains}", follow=True, **headers
@@ -84,7 +84,7 @@ class ParticipantsTestCase(BaseTestCase):
         """
         headers = self.auth_headers_for_user("front_desk")
         participant_1 = {
-            "sep_id": 11111,
+            "sep_id": "jr1234",
             "pp_id": "pp_1111",
             "first_name": "foo",
             "last_name": "bar",
@@ -102,7 +102,7 @@ class ParticipantsTestCase(BaseTestCase):
         self.assertEqual(201, response_1.status_code)
 
         participant_2 = {
-            "sep_id": 11111,
+            "sep_id": "jr1234",
             "pp_id": "pp_1112",
             "first_name": "oof",
             "last_name": "rab",

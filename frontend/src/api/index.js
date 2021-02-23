@@ -25,9 +25,7 @@ import cookieValue from "./cookies"
 import { getServiceBySlug } from "./serviceEndpoints"
 
 const create = () => {
-  const api = apisauce.create({
-    baseURL: "/api",
-  })
+  const api = apisauce.create({})
 
   createAuthRefreshInterceptor(api.axiosInstance, refreshAuthLogic(api))
 

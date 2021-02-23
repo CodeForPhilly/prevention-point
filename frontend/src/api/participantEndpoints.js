@@ -12,27 +12,26 @@ const removeEmptyParams = params => {
 export const getParticipants = api => async params => {
   const queryParams = queryString.stringify(removeEmptyParams(params))
   return await api.get(
-    queryParams ? `participants/?${queryParams}` : "participants/"
+    queryParams ? `/api/participants/?${queryParams}` : "/api/participants/"
   )
 }
 
 export const getParticipantById = api => async id =>
-  await api.get(`participants/${id}/`)
+  await api.get(`/api/participants/${id}/`)
 
 export const getParticipantByName = api => async (firstname, lastname) =>
-  await api.get(`participants/?first_name=${firstname}&last_name=${lastname}`)
+  await api.get(
+    `/api/participants/?first_name=${firstname}&last_name=${lastname}`
+  )
 
 export const getParticipant = api => async id =>
-  await api.get(`/participants/${id}`)
+  await api.get(`/api/participants/${id}`)
 
 export const getParticipantVisits = api => async id =>
-  await api.get(`/participants/${id}/visits/`)
+  await api.get(`/api/participants/${id}/visits/`)
 
 export const updateParticipant = api => async (id, body) =>
-  await api.put(`/participants/${id}/`, body)
+  await api.put(`/api/participants/${id}/`, body)
 
 export const createParticipant = api => async body =>
-  await api.post("/participants/", body)
-
-// export const postParticipant = api => async (id, body) =>
-// await api.post(`/participant/${id}`, body)
+  await api.post("/api/participants/", body)
