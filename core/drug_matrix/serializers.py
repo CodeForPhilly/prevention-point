@@ -5,5 +5,6 @@ class DrugMatrixSerializer(serializers.ModelSerializer):
     class Meta:
         model = DrugMatrix
         fields = (
-            "drug",
+            "drug_name",
+            "created_at"
         )

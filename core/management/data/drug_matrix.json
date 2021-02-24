@@ -1,0 +1,38 @@
+[
+    {
+        "drug_name": "heroin" 
+    },
+    {
+        "drug_name": "cocaine" 
+    },
+    {
+        "drug_name": "crack cocaine" 
+    },
+    {
+        "drug_name": "synthetic marijuana" 
+    },
+    {
+        "drug_name": "fentanyl" 
+    },
+    {
+        "drug_name": "methamphetamines" 
+    },
+    {
+        "drug_name": "opioids" 
+    },
+    {
+        "drug_name": "steroids" 
+    },
+    {
+        "drug_name": "hormones" 
+    },
+    {
+        "drug_name": "silicone" 
+    },
+    {
+        "drug_name": "botox" 
+    },
+    {
+        "drug_name": "other" 
+    }
+]

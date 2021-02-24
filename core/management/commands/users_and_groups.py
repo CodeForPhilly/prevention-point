@@ -101,6 +101,8 @@ UDS_PROVIDER_PERMISSIONS = [
     "change_urinedrugscreen",
     "view_urinedrugscreen",
     "view_site",
+    "view_drugmatrix",
+    "view_sepenrollment",
 ]
 
 DEFAULT_GROUPS = {

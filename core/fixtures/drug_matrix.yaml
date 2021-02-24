@@ -1,20 +1,62 @@
 - model: core.drug_matrix
   pk: 1
   fields:
-    drug: "heroin_only"
+    drug_name: heroin
+    created_at: '2021-02-24 08:38:00.204290+00:00'
 - model: core.drug_matrix
   pk: 2
   fields:
-    drug: "other"
+    drug_name: cocaine
+    created_at: '2021-02-24 08:38:00.204290+00:00'
 - model: core.drug_matrix
   pk: 3
   fields:
-    drug: "cocaine"
+    drug_name: synthetic_marijuana
+    created_at: '2021-02-24 08:38:00.204290+00:00'
 - model: core.drug_matrix
   pk: 4
   fields:
-    drug: "fentanyl"
+    drug_name: fentanyl
+    created_at: '2021-02-24 08:38:00.204290+00:00'
 - model: core.drug_matrix
   pk: 5
   fields:
-    drug: "hormones"
+    drug_name: hormones
+    created_at: '2021-02-24 08:38:00.204290+00:00'
+- model: core.drug_matrix
+  pk: 6
+  fields:
+    drug_name: methamphetamines
+    created_at: '2021-02-24 08:38:00.204290+00:00'
+- model: core.drug_matrix
+  pk: 7
+  fields:
+    drug_name: opioids
+    created_at: '2021-02-24 08:38:00.204290+00:00'
+- model: core.drug_matrix
+  pk: 8
+  fields:
+    drug_name: other
+    created_at: '2021-02-24 08:38:00.204290+00:00'
+- model: core.drug_matrix
+  pk: 9
+  fields:
+    drug_name: crack_cocaine
+    created_at: '2021-02-24 08:38:00.204290+00:00'
+- model: core.drug_matrix
+  pk: 10
+  fields:
+    drug_name: steroids
+    created_at: '2021-02-24 08:38:00.204290+00:00'
+- model: core.drug_matrix
+  pk: 11
+  fields:
+    drug_name: silicone
+    created_at: '2021-02-24 08:38:00.204290+00:00'
+- model: core.drug_matrix
+  pk: 12
+  fields:
+    drug_name: botox
+    created_at: '2021-02-24 08:38:00.204290+00:00'
+
+

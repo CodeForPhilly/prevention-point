@@ -30,7 +30,7 @@ from core.models import (
     Option,
     Site,
     SepEnrollment,
-    DrugMatrix
+    DrugMatrix,
 )
 
 
@@ -69,7 +69,18 @@ DEFAULT_PROGRAMS = {
     "SEP": ("NEEDLE EXCHANGE",),
 }
 
-HAS_QUEUE = ["TESTING", "CM", "SSHP", "LEGAL", "CRAFT", "PHAN", "STEP", "BIENESTAR", "SKWC"]
+HAS_QUEUE = [
+    "TESTING",
+    "CM",
+    "SSHP",
+    "LEGAL",
+    "CRAFT",
+    "PHAN",
+    "STEP",
+    "BIENESTAR",
+    "SKWC",
+]
+
 
 class Command(BaseCommand):
     help = "seed database for testing and development."
@@ -83,7 +94,7 @@ class MedsProvider(BaseProvider):
     __lang__ = "en_US"
 
     def meds(self):
-        meds = [u"film", u"tab", u"vivitrol"]
+        meds = ["film", "tab", "vivitrol"]
         return random.choices(meds)
 
 
@@ -107,7 +118,7 @@ class MonFriProvider(BaseProvider):
     __lang__ = "en_US"
 
     def mon_fri(self):
-        days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+        days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
         return random.choices(days)
 
 
@@ -116,10 +127,11 @@ fake.add_provider(MonFriProvider)
 
 class AvailabilityWindowProvider(BaseProvider):
     """For HRSC sign in. HRSC appointments are available Mon-Fri, 10a-4p"""
+
     __provider__ = "availability window"
     __lang__ = "en_US"
 
-    def availability_window(self, start_hour = 10, end_hour = 17):
+    def availability_window(self, start_hour=10, end_hour=17):
         """Returns a tuple (start_time, end_time)"""
         window_begin = random.randint(start_hour, end_hour - 2)
         end_hour = random.randint(window_begin + 1, end_hour)
@@ -140,6 +152,7 @@ def run_seed(self):
     create_visits(output=False)
     create_program_availability(output=False)
     add_sites()
+    add_drugs()
     print("seed complete!")
 
 
@@ -156,13 +169,15 @@ def create_insurers(output=True):
                 )
             )
 
+
 def sep_id_generator(size=6, num_participants=10):
-    chars=string.ascii_lowercase + string.digits
+    chars = string.ascii_lowercase + string.digits
     participant_list = []
     for ind in range(num_participants):
-        sepID = ''.join(random.choice(chars) for _ in range(size))
+        sepID = "".join(random.choice(chars) for _ in range(size))
         participant_list.append(sepID)
     return participant_list
+
 
 def create_participants():
     """Create a fake participant, and optionally associated UDS and meds"""
@@ -183,7 +198,7 @@ def create_participants():
             pp_id=fake.password(
                 length=5, special_chars=False, digits=True, lower_case=False
             ),
-            sep_id = sep_ids[index],
+            sep_id=sep_ids[index],
             gender=gender.value,
             maiden_name=fake.last_name(),
             race=race.value,
@@ -195,6 +210,7 @@ def create_participants():
         )
         participant.full_clean()
         participant.save()
+
 
 def random_bool():
     return bool(random.getrandbits(1))
@@ -321,6 +337,7 @@ def create_visits(output=True, uds=True, medication=True):
                 )
             )
 
+
 def create_event(visit, type):
     """Create a FrontDeskEvent for thie visit and of this type, e.g. ARRIVED, STEPPED_OUT. Events are created now(), i.e. today"""
     f = FrontDeskEvent()
@@ -333,15 +350,25 @@ def create_event(visit, type):
 def create_program_availability(output=True):
     """create program availability"""
     programs = Program.objects.all()
-    days_of_week = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    days_of_week = [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+    ]
     for program in programs:
         for day in days_of_week:
             if random.randint(0, 10) < 8:
                 availability = ProgramAvailability()
                 availability.program = program
                 availability.day_of_week = day
-                availability.start_time, availability.end_time = fake.availability_window(
-                    start_hour=8, end_hour=18)
+                (
+                    availability.start_time,
+                    availability.end_time,
+                ) = fake.availability_window(start_hour=8, end_hour=18)
                 window_one_end = availability.end_time.hour
                 availability.full_clean()
                 availability.save()
@@ -349,19 +376,25 @@ def create_program_availability(output=True):
                     availability_two = ProgramAvailability()
                     availability_two.program = program
                     availability_two.day_of_week = day
-                    availability_two.start_time, availability_two.end_time = fake.availability_window(
-                        start_hour=window_one_end+1, end_hour=23)
+                    (
+                        availability_two.start_time,
+                        availability_two.end_time,
+                    ) = fake.availability_window(
+                        start_hour=window_one_end + 1, end_hour=23
+                    )
                     availability_two.full_clean()
                     availability_two.save()
 
     if output:
-        for availability in ProgramAvailability.objects.all().order_by('program'):
-            print(f"Created program availability: {availability.program.name} {availability.day_of_week} {availability.start_time} {availability.end_time}")
+        for availability in ProgramAvailability.objects.all().order_by("program"):
+            print(
+                f"Created program availability: {availability.program.name} {availability.day_of_week} {availability.start_time} {availability.end_time}"
+            )
 
 
 def create_form(program):
     """ Create fake form """
-    form = Form(label=fake.profile()['username'], name=fake.company(), program=program)
+    form = Form(label=fake.profile()["username"], name=fake.company(), program=program)
     form.full_clean()
     form.save()
 
@@ -380,8 +413,12 @@ def create_questions(form):
     type_list = list(Type)
     for _ in range(DEFAULT_NUMBER_QUESTIONS):
         _type = random.choice(type_list)
-        question = Question(form=form, name=fake.profile()['username'],
-                            question=fake.lexify(text='Random Question: ??????????'), input_type=_type.value)
+        question = Question(
+            form=form,
+            name=fake.profile()["username"],
+            question=fake.lexify(text="Random Question: ??????????"),
+            input_type=_type.value,
+        )
         question.full_clean()
         question.save()
 
@@ -391,28 +428,38 @@ def create_questions(form):
 def create_options(question):
     """ Create fake options for a question """
     for i in range(DEFAULT_NUMBER_OPTIONS):
-        option = Option(question=question, option=fake.lexify(text='Random Option: ??????????'), value=i)
+        option = Option(
+            question=question,
+            option=fake.lexify(text="Random Option: ??????????"),
+            value=i,
+        )
         option.full_clean()
         option.save()
+
 
 def arrived(visit):
     """After ARRIVED, can be either LEFT, SEEN, STEPPED_OUT or pending (still in ARRIVED status)"""
     create_event(visit, "ARRIVED")
     random.choice([left, seen, stepped_out, pending])(visit)
 
+
 def left(visit):
     create_event(visit, "LEFT")
 
+
 def seen(visit):
     create_event(visit, "SEEN")
+
 
 def stepped_out(visit):
     """After STEPPED_OUT can be either LEFT, ARRIVED or pending (still in STEPPED_OUT status)"""
     create_event(visit, "STEPPED_OUT")
     random.choice([left, arrived, pending])(visit)
 
+
 def pending(visit):
     pass
+
 
 def add_sites():
     """
@@ -422,10 +469,23 @@ def add_sites():
         sites = json.load(json_file)
 
         for site in sites:
-          Site.objects.create(
-            site_name=site["site_name"],
-            site_type=site["site_type"],
-            description=site["description"],
-            address=site.get("address", None),
-            zip_code=site.get("zip_code", None)
-          )
+            Site.objects.create(
+                site_name=site["site_name"],
+                site_type=site["site_type"],
+                description=site["description"],
+                address=site.get("address", None),
+                zip_code=site.get("zip_code", None),
+            )
+
+
+def add_drugs():
+    """
+    Adds drugs defined in management/data/drug_matrix.json to database
+    """
+    with open(f"{BASE_DIR}/management/data/drug_matrix.json") as json_file:
+        drugs = json.load(json_file)
+
+        for drug in drugs:
+            DrugMatrix.objects.create(
+                drug_name=drug["drug_name"],
+            )

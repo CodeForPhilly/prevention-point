@@ -1,19 +1,9 @@
 from django.db import models
-from enum import Enum
-
-class Drugs(Enum):
-    HEROIN = "heroin_only"
-    HEROIN_COCAINE = "heroin_and_cocaine"
-    COCAINE = "cocaine"
-    FENTANYL = "fentanyl"
-    CRACK = "crack"
-    AMPHETAMINES = "amphetamines_speed_crystalMeth_ice"
-    HORMONES = "hormones"
-    STEROIDS = "steroids"
-    SILICONE = "silicone"
-    BOTOX = "botox"
-    OTHER = "other"
+from django.utils import timezone
 
 class DrugMatrix(models.Model):
-    DRUG_CHOICES = [(key.value, key.value.title()) for key in Drugs]
-    drug = models.CharField(choices=DRUG_CHOICES, max_length=11, verbose_name="Drug injected most often")
+    drug_name = models.CharField(max_length=100)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return '%s' % (self.drug_name) 
