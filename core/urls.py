@@ -50,8 +50,8 @@ router.register(r"services", services_views.ServiceViewSet)
 router.register(r"insurers", insurer_views.InsurerViewSet)
 router.register(r"sites", site_views.SiteViewSet)
 router.register(r"sep", sep_data_views.Sep_DataViewSet, basename='sepdata')
-router.register(r"drug_matrix", drug_matrix_views.DrugMatrixViewSet)
-router.register(r"sep_enrollment", sep_enrollment_views.SepEnrollmentViewSet)
+router.register(r"drugmatrix", drug_matrix_views.DrugMatrixViewSet)
+router.register(r"sepenrollment", sep_enrollment_views.SepEnrollmentViewSet)
 
 schema_view = get_swagger_view(title="PreventionPoint API")
 
