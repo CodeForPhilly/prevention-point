@@ -46,7 +46,7 @@ python manage.py migrate
  ```bash
 python manage.py seed
 ```
-- Create a superuser:
+- Create a superuser (optional):
  ```bash
  python manage.py createsuperuser
 ```
@@ -65,11 +65,23 @@ python manage.py seed
 $ docker-compose down
 ```
 
+### Reinstall backend
+- Shut down the app (if running):
+```bash
+$ docker-compose down
+```
+- Delete docker instances (WARNING: delete all docker instances):
+```bash
+$ docker volume prune
+```
+- Repeat steps starting from [`Getting Started > Activate virtualenv`](https://github.com/CodeForPhilly/prevention-point#back-end)
+
 ### Front-end
  - Make sure you have [`node (>=10.15.3)`](https://nodejs.org/en/) and [`yarn (>=1.15.2)`](https://yarnpkg.com/en/docs/install) installed
  - From the project's root directory, `cd frontend`
  - Run `yarn` to install dependencies
  - Run `yarn dev` and navigate to `localhost:1234`
+ - Default username / password: admin / password123
 
  For more information on the front-end please see the [front-end README](./frontend/readme)
 
@@ -81,6 +93,10 @@ This project implements the [Scripts To Rule Them All](https://github.com/github
 * `script/server` — Brings a fully working environment up at [localhost:8080](http://localhost:8080)
 * `script/setup` — Run after `script/server` to initialize local database with seed data
 * `script/update` — Run after changing code or switching branches to refresh server
+
+## Merges
+
+Once your branch is ready to be merged, request merge approval from one other user. After approval is received, proceed to merge the branch.
 
 Other tools
 ## Links
