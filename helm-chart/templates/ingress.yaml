@@ -34,28 +34,28 @@ spec:
               service:
                 name: {{ $fullName }}
                 port:
-                  number: frontend-http
+                  name: frontend-http
           - path: {{ . | trimSuffix "/" }}/api/
             pathType: Prefix
             backend:
               service:
                 name: {{ $fullName }}
                 port:
-                  number: backend-http
+                  name: backend-http
           - path: {{ . | trimSuffix "/" }}/admin/
             pathType: Prefix
             backend:
               service:
                 name: {{ $fullName }}
                 port:
-                  number: backend-http
+                  name: backend-http
           - path: {{ . | trimSuffix "/" }}/static/admin/
             pathType: Prefix
             backend:
               service:
                 name: {{ $fullName }}
                 port:
-                  number: backend-http
+                  name: backend-http
           {{- end }}
     {{- end }}
   {{- end }}
